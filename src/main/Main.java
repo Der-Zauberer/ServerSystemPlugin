@@ -18,7 +18,7 @@ public class Main extends JavaPlugin{
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(label.equalsIgnoreCase("test")) {
-			sender.sendMessage("Aloch");
+			sender.sendMessage("Hurensohn");
 			return true;
 		}
 		if(sender instanceof Player) {
