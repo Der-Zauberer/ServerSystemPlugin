@@ -1,4 +1,4 @@
-main: main.Main
+main: system.main.Main
 name: DZSystem
 version: 1.0
 author: Der_Zauberer
