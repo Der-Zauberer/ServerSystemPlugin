@@ -1,26 +1,29 @@
 package system.main;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import system.commands.SystemCommands;
+import system.events.SystemEvents;
 
 public class Main extends JavaPlugin{
 	
 	@Override
 	public void onEnable() {
+		registerEvents();
+		registerCommands();
 	}
-	
+
 	@Override
 	public void onDisable() {
 	}
+
+	public void registerEvents() {
+		Bukkit.getPluginManager().registerEvents(new SystemEvents(), this);
+	}
 	
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(label.equalsIgnoreCase("test")) {
-			sender.sendMessage("Hurensohn");
-			return true;
-		}
-		return false;
+	public void registerCommands() {
+		getCommand("test").setExecutor(new SystemCommands());
 	}
 
 }
