@@ -2,8 +2,22 @@ main: system.main.Main
 name: DZSystem
 version: 1.0
 author: Der_Zauberer
+api-version: 1.14
  
 commands:
-  test:
-    desciption: Es ist ein Test Command
+  admin:
+    desciption: Open the admin inventory
     usage: /<command>
+    permission: system.admin
+  build:
+    desciption: Allow the player to build
+    usage: /<command> [player]
+    permission: system.build
+    
+permissions:
+  system.admin:
+    description: Open the admin inventory
+    default: op
+  system.build:
+    description: Allow the player to build
+    default: op
