@@ -2,6 +2,7 @@ package system.commands;
 
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,14 +19,14 @@ public class BuildCommand implements Listener, CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(label.equalsIgnoreCase("build") && sender.hasPermission("system.build")) {
+		if(sender instanceof Player) {
 			Player player = (Player) sender;
 			if(buildPlayers.contains(player.getUniqueId().toString())) {
 				buildPlayers.remove(player.getUniqueId().toString());
-				player.sendMessage("§e[Server] !Du kannst jetzt nicht mehr bauen!");
+				player.sendMessage(ChatColor.YELLOW + "[Server] !Du kannst jetzt nicht mehr bauen!");
 			} else {
 				buildPlayers.add(player.getUniqueId().toString());
-				player.sendMessage("§e[Server] Du kannst jetzt bauen");
+				player.sendMessage(ChatColor.YELLOW + "[Server] Du kannst jetzt bauen");
 			}
 		}
 		return true;

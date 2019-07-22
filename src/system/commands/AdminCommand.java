@@ -1,19 +1,14 @@
 package system.commands;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
+
+import system.menus.AdminMenu;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,20 +20,7 @@ public class AdminCommand implements CommandExecutor, Listener{
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player) {
 			Player player = (Player) sender;
-			Inventory inventory = Bukkit.createInventory(player, 36, "Admin");
-			inventory.setItem(0, createItemStack(Material.IRON_SHOVEL, "Gamemode Survival"));
-			inventory.setItem(9, createItemStack(Material.IRON_PICKAXE, "Gamemode Creative"));
-			inventory.setItem(18, createItemStack(Material.IRON_SWORD, "Gamemode Adventure"));
-			inventory.setItem(27, createItemStack(Material.IRON_HELMET, "Gamemode Spectator"));
-			inventory.setItem(2, createItemStack(Material.CLOCK, "Time Morning"));
-			inventory.setItem(11, createItemStack(Material.CLOCK, "Time Day"));
-			inventory.setItem(20, createItemStack(Material.CLOCK, "Time Night"));
-			inventory.setItem(29, createItemStack(Material.CLOCK, "Time Midnight"));
-			inventory.setItem(4, createItemStack(PotionType.SPEED, "Effect Speed", Color.BLUE, PotionEffectType.SPEED));
-			inventory.setItem(13, createItemStack(PotionType.JUMP, "Effect Jump Boost", Color.GREEN, PotionEffectType.JUMP));
-			inventory.setItem(22, createItemStack(PotionType.INVISIBILITY, "Effect Invisibilitiy", Color.PURPLE, PotionEffectType.INVISIBILITY));
-			inventory.setItem(31, createItemStack(Material.GLASS_BOTTLE, "Effect Clear"));
-			player.openInventory(inventory);
+			new AdminMenu(player);
 		}
 		return true;
 	}
@@ -109,24 +91,24 @@ public class AdminCommand implements CommandExecutor, Listener{
 			event.setCancelled(true);
 			return;
 		}
-	}
-	
-	public ItemStack createItemStack(Material material, String name) {
-		ItemStack itemstack = new ItemStack(material);
-		ItemMeta itemmeta = itemstack.getItemMeta();
-		itemmeta.setDisplayName(name);
-		itemstack.setItemMeta(itemmeta);
-		return itemstack;
-	}
-	
-	public ItemStack createItemStack(PotionType potiontype, String name, Color color, PotionEffectType effect) {
-		ItemStack itemstack = new ItemStack(Material.POTION);
-		PotionMeta potionmeta = (PotionMeta) itemstack.getItemMeta();
-		potionmeta.setDisplayName(name);
-		potionmeta.setColor(color);
-		potionmeta.addCustomEffect(new PotionEffect(effect, 3600, 2), true);
-		itemstack.setItemMeta(potionmeta);
-		return itemstack;
+		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Weather Clear")) {
+			event.getWhoClicked().getWorld().setStorm(false);
+			event.setCancelled(true);
+			return;
+		}
+		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Weather Rain")) {
+			event.getWhoClicked().getWorld().setStorm(true);
+			event.getWhoClicked().getWorld().setThundering(false);
+			event.setCancelled(true);
+			return;
+		}
+		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Weather Thunderstorm")) {
+			event.getWhoClicked().getWorld().setStorm(true);
+			event.getWhoClicked().getWorld().setThundering(true);
+			event.setCancelled(true);
+			return;
+		}
+		event.setCancelled(true);
 	}
 
 }

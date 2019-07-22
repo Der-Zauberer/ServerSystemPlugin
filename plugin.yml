@@ -1,6 +1,6 @@
 main: system.main.System
 name: DZSystem
-version: 1.1
+version: 1.0
 author: Der_Zauberer
 api-version: 1.14
  
@@ -11,7 +11,7 @@ commands:
     permission: system.admin
   build:
     desciption: Allow the player to build
-    usage: /<command> [player]
+    usage: /<command>
     permission: system.build
     
 permissions:

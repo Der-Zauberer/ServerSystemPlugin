@@ -6,7 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import system.commands.AdminCommand;
 import system.commands.BuildCommand;
 import system.commands.LobbyCommand;
-import system.commands.LobbySetupCommand;
 import system.events.SystemEvents;
 
 public class System extends JavaPlugin{
@@ -32,6 +31,5 @@ public class System extends JavaPlugin{
 		getCommand("admin").setExecutor(new AdminCommand());
 		getCommand("build").setExecutor(new BuildCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());
-		getCommand("lobbysetup").setExecutor(new LobbySetupCommand());
 	}
 }

@@ -11,10 +11,6 @@ public class SystemEvents implements Listener{
 
 	@EventHandler
 	public void onJoinEvent(PlayerJoinEvent event) {
-		if(!Config.playerExists(event.getPlayer().getName())) {
-			Config.registerPlayer(event.getPlayer().getName());
-		}
-		Config.setPlayerOnline(event.getPlayer().getName(), true);
 		if(!Config.worldExists(event.getPlayer().getWorld().getName())) {
 			Config.registerWorld(event.getPlayer().getWorld().getName());
 		}
@@ -23,7 +19,6 @@ public class SystemEvents implements Listener{
 	
 	@EventHandler
 	public void onQuitEvent(PlayerQuitEvent event) {
-		Config.setPlayerOnline(event.getPlayer().getName(), false);
 		event.setQuitMessage("");
 	}
 	
