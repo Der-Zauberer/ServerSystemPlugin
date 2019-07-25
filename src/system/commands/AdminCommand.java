@@ -6,16 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
 import system.menus.AdminMenu;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class AdminCommand implements CommandExecutor, Listener{
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player) {
@@ -31,81 +28,82 @@ public class AdminCommand implements CommandExecutor, Listener{
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Gamemode Survival")) {
-			event.getWhoClicked().setGameMode(GameMode.SURVIVAL);
 			event.setCancelled(true);
+			event.setCancelled(true);
+			event.getWhoClicked().setGameMode(GameMode.SURVIVAL);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Gamemode Creative")) {
-			event.getWhoClicked().setGameMode(GameMode.CREATIVE);
 			event.setCancelled(true);
+			event.getWhoClicked().setGameMode(GameMode.CREATIVE);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Gamemode Adventure")) {
-			event.getWhoClicked().setGameMode(GameMode.ADVENTURE);
 			event.setCancelled(true);
+			event.getWhoClicked().setGameMode(GameMode.ADVENTURE);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Gamemode Spectator")) {
-			event.getWhoClicked().setGameMode(GameMode.SPECTATOR);
 			event.setCancelled(true);
+			event.getWhoClicked().setGameMode(GameMode.SPECTATOR);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Time Morning")) {
-			event.getWhoClicked().getWorld().setTime(0);
 			event.setCancelled(true);
+			event.getWhoClicked().getWorld().setTime(0);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Time Day")) {
-			event.getWhoClicked().getWorld().setTime(6000);
 			event.setCancelled(true);
+			event.getWhoClicked().getWorld().setTime(6000);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Time Night")) {
-			event.getWhoClicked().getWorld().setTime(13000);
 			event.setCancelled(true);
+			event.getWhoClicked().getWorld().setTime(13000);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Time Midnight")) {
-			event.getWhoClicked().getWorld().setTime(18000);
 			event.setCancelled(true);
+			event.getWhoClicked().getWorld().setTime(18000);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Effect Speed")) {
-			event.getWhoClicked().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 3600, 2), true);
 			event.setCancelled(true);
+			event.getWhoClicked().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 3600, 2), true);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Effect Jump Boost")) {
-			event.getWhoClicked().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 3600, 2), true);
 			event.setCancelled(true);
+			event.getWhoClicked().addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 3600, 2), true);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Effect Invisibilitiy")) {
-			event.getWhoClicked().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 3600, 2), true);
 			event.setCancelled(true);
+			event.getWhoClicked().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 3600, 2), true);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Effect Clear")) {
+			event.setCancelled(true);
 			for (PotionEffect effect : event.getWhoClicked().getActivePotionEffects())
 		        event.getWhoClicked().removePotionEffect(effect.getType());
-			event.setCancelled(true);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Weather Clear")) {
-			event.getWhoClicked().getWorld().setStorm(false);
 			event.setCancelled(true);
+			event.getWhoClicked().getWorld().setStorm(false);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Weather Rain")) {
+			event.setCancelled(true);
 			event.getWhoClicked().getWorld().setStorm(true);
 			event.getWhoClicked().getWorld().setThundering(false);
-			event.setCancelled(true);
 			return;
 		}
 		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Weather Thunderstorm")) {
+			event.setCancelled(true);
 			event.getWhoClicked().getWorld().setStorm(true);
 			event.getWhoClicked().getWorld().setThundering(true);
-			event.setCancelled(true);
 			return;
 		}
 		event.setCancelled(true);

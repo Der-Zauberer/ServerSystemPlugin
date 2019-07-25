@@ -45,6 +45,10 @@ public class InventoryMenu implements Listener{
 	public void open() {
 		player.openInventory(inventory);
 	}
+	
+	public void close() {
+		player.closeInventory();
+	}
 
 	public Inventory getInventory() {
 		return inventory;

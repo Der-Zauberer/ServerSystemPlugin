@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
 	
-	private static File file = new File("plugins/DZSystem", "config.yml");
+	private static File file = new File("plugins/System", "config.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
 	public Config() {

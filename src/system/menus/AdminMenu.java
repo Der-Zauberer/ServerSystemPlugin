@@ -26,9 +26,6 @@ public class AdminMenu extends InventoryMenu{
 		addItem("Weather Clear", Material.SUNFLOWER, 6);
 		addItem("Weather Rain", Material.WATER_BUCKET, 15);
 		addItem("Weather Thunderstorm", Material.HOPPER, 24);
-		addItem("Server Settings", Material.SKELETON_SKULL, 8);
-		addItem("World Setting", Material.ZOMBIE_HEAD, 17);
-		addItem("Players", Material.CREEPER_HEAD, 35);
 		open();
 	}
 

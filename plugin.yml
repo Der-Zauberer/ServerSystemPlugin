@@ -1,6 +1,6 @@
 main: system.main.System
-name: DZSystem
-version: 1.0
+name: System
+version: 1.1
 author: Der_Zauberer
 api-version: 1.14
  
@@ -13,6 +13,10 @@ commands:
     desciption: Allow the player to build
     usage: /<command>
     permission: system.build
+  vanish:
+    desciption: Allow the player to vanish
+    usage: /<command>
+    permission: system.vanish
     
 permissions:
   system.admin:
@@ -20,4 +24,7 @@ permissions:
     default: op
   system.build:
     description: Allow the player to build
+    default: op
+  system.vanish:
+    description: Allow the player to vanish
     default: op
