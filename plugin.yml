@@ -17,6 +17,10 @@ commands:
     desciption: Allow the player to vanish
     usage: /<command>
     permission: system.vanish
+  world:
+    desciption: Teleoprt player to other world
+    usage: /<command> [<word>]
+    permission: system.word
     
 permissions:
   system.admin:
@@ -28,3 +32,12 @@ permissions:
   system.vanish:
     description: Allow the player to vanish
     default: op
+  system.world:
+    description: Teleoprt player to other world
+    default: op
+  system.rank.admin:
+    description: Display Admin Prefix
+    default: false
+  system.rank.team:
+    description: Display Team Prefix
+    default: false

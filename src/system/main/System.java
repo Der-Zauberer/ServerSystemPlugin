@@ -6,15 +6,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import system.commands.AdminCommand;
 import system.commands.BuildCommand;
 import system.commands.VanishCommand;
+import system.commands.WorldCommand;
 import system.events.SystemEvents;
 
 public class System extends JavaPlugin{
 	
 	private static ArrayList<String> vanishedPlayer = new ArrayList<>();
 	private static ArrayList<String> buildPlayers = new ArrayList<>();
+	private static Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+	private static Team team = null;
 	
 	private static System instance;
 	
@@ -45,14 +50,31 @@ public class System extends JavaPlugin{
 		getCommand("admin").setExecutor(new AdminCommand());
 		getCommand("build").setExecutor(new BuildCommand());
 		getCommand("vanish").setExecutor(new VanishCommand());
+		getCommand("world").setExecutor(new WorldCommand());
 	}
-	
+		
 	public static System getInstance() {
 		return instance;
 	}
 	
 	public static void setInstance(System instance) {
 		System.instance = instance;
+	}
+	
+	public static void setPlayerPrefix(Player player, String prefix, ChatColor color) {
+		if(scoreboard.getTeam(player.getName()) == null) {
+			team = scoreboard.registerNewTeam(player.getName());
+		} else {
+			team = scoreboard.getTeam(player.getName());
+		}
+		team.setPrefix("[Admin]");
+		team.addEntry(player.getName());
+		team.setColor(color);
+	}
+	
+	public static String getPlayerPrefix(Player player) {
+		team = scoreboard.getTeam(player.getName());
+		return team.getColor() + team.getPrefix();
 	}
 	
 	public static void vanishPlayer(Player player) {
