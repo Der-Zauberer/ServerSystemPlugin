@@ -1,13 +1,11 @@
 package system.main;
 
 import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 import system.commands.AdminCommand;
 import system.commands.BuildCommand;
 import system.commands.VanishCommand;
@@ -19,7 +17,6 @@ public class System extends JavaPlugin{
 	private static ArrayList<String> vanishedPlayer = new ArrayList<>();
 	private static ArrayList<String> buildPlayers = new ArrayList<>();
 	private static Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-	private static Team team = null;
 	
 	private static System instance;
 	
@@ -29,6 +26,7 @@ public class System extends JavaPlugin{
 		registerEvents();
 		registerCommands();
 		setInstance(this);
+		registerTeams();
 	}
 
 	@Override
@@ -52,6 +50,11 @@ public class System extends JavaPlugin{
 		getCommand("vanish").setExecutor(new VanishCommand());
 		getCommand("world").setExecutor(new WorldCommand());
 	}
+	
+	private void registerTeams() {
+		createTeam("RankAdmin", "[Admin] ", ChatColor.RED);
+		createTeam("RankTeam", "[Team] ", ChatColor.BLUE);
+	}
 		
 	public static System getInstance() {
 		return instance;
@@ -61,24 +64,35 @@ public class System extends JavaPlugin{
 		System.instance = instance;
 	}
 	
-	public static void setPlayerPrefix(Player player, String prefix, ChatColor color) {
-		if(scoreboard.getTeam(player.getName()) == null) {
-			team = scoreboard.registerNewTeam(player.getName());
-		} else {
-			team = scoreboard.getTeam(player.getName());
-		}
-		team.setPrefix("[Admin]");
-		team.addEntry(player.getName());
-		team.setColor(color);
-	}
-	
-	public static String getPlayerPrefix(Player player) {
-		team = scoreboard.getTeam(player.getName());
-		return team.getColor() + team.getPrefix();
-	}
-	
 	public static void vanishPlayer(Player player) {
 		vanishPlayer(player, player);
+	}
+	
+	public static void createTeam(String name, String prefix, ChatColor color) {
+		if (scoreboard.getTeam(name) == null) {
+			scoreboard.registerNewTeam(name).setPrefix(prefix);
+			scoreboard.getTeam(name).setColor(color);
+		}
+	}
+	
+	public static void removeTeam(String name) {
+		scoreboard.getTeam(name).unregister();
+	}
+	
+	public static void addPlayerToTeam(String name, String player) {
+		scoreboard.getTeam(name).addEntry(player);
+	}
+	
+	public static void removePlayerFromTeam(String name, String player) {
+		scoreboard.getTeam(name).removeEntry(player);
+	}
+	
+	public static ChatColor getPlayerNameColor(Player player) {
+		try {
+			return player.getScoreboard().getEntryTeam(player.getName()).getColor();
+		} catch (NullPointerException exception) {
+			return ChatColor.WHITE;
+		}
 	}
 	
 	public static void vanishPlayer(Player player, Player sender) {

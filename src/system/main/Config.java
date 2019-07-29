@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -20,10 +21,20 @@ public class Config {
 			config.set("Server.leavemessage", true);
 			config.set("Server.defaultgamemode", false);
 			config.set("Server.gamemode", 0);
-			config.set("Server.achivements", true);
+			config.set("Server.title.text", "");
+			config.set("Server.title.color", "");
+			config.set("Server.subtitle.color", "");
+			config.set("Server.title.text", "");
 			config.set("Lobby.exist", false);
 		}
 		saveConfig();
+		for(World world : Bukkit.getWorlds()) {
+			if(!worldExists(world.getName())) {
+				registerWorld(world.getName());
+				saveConfig();
+			}
+			Bukkit.getWorld(world.getName()).setPVP(hasWorldPVP(world.getName()));
+		}
 	}
 	
 	public static void registerWorld(String world) {
@@ -52,7 +63,7 @@ public class Config {
 		saveConfig();
 	}
 	
-	public static boolean isWorldPVP(String world) {
+	public static boolean hasWorldPVP(String world) {
 		return config.getBoolean("Worlds." + world + ".pvp");
 	}
 	
@@ -78,12 +89,32 @@ public class Config {
 		return GameMode.SURVIVAL;
 	}
 	
-	public static void setAchivements(boolean achivements) {
-		config.set("Server.achivements", achivements);
+	public static void getTitle(String title, String color) {
+		config.set("Server.title.text", title);
+		config.set("Server.title.color", color);
+		saveConfig();
+	}
+
+	public static String getTitle() {
+		return config.getString("Server.title.text");
 	}
 	
-	public static boolean hasAchivements() {
-		return config.getBoolean("Server.achivements");
+	public static String getTitleColor() {
+		return config.getString("Server.title.color");
+	}
+	
+	public static void setSubtitle(String title, String color) {
+		config.set("Server.title.text", title);
+		config.set("Server.title.color", color);
+		saveConfig();
+	}
+
+	public static String getSubtitle() {
+		return config.getString("Server.subtitle.text");
+	}
+	
+	public static String getSubtitleColor() {
+		return config.getString("Server.subtitle.color");
 	}
 	
 	public static void setLobby(Player player) {
