@@ -10,16 +10,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import system.main.Config;
-import system.main.System;
+import system.utilities.PlayerBuildMode;
 
 public class BuildCommand implements Listener, CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(args.length == 0) {
-			System.buildmodePlayer((Player) sender);
+			PlayerBuildMode.buildmodePlayer((Player) sender);
 		}else if(Bukkit.getServer().getPlayer(args[0]) != null) {
-			System.buildmodePlayer(Bukkit.getServer().getPlayer(args[0]), (Player) sender);
+			PlayerBuildMode.buildmodePlayer(Bukkit.getServer().getPlayer(args[0]), (Player) sender);
 		}
 		return true;
 	}
@@ -27,7 +27,7 @@ public class BuildCommand implements Listener, CommandExecutor {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(Config.isWorldProtected(event.getPlayer().getWorld().getName())) {
-			if(System.isPlayerBuildmode(event.getPlayer())) {
+			if(PlayerBuildMode.isPlayerBuildmode(event.getPlayer())) {
 				return;
 			}
 			event.setCancelled(true);
@@ -37,7 +37,7 @@ public class BuildCommand implements Listener, CommandExecutor {
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if(Config.isWorldProtected(event.getPlayer().getWorld().getName())) {
-			if(System.isPlayerBuildmode(event.getPlayer())) {
+			if(PlayerBuildMode.isPlayerBuildmode(event.getPlayer())) {
 				return;
 			}
 			event.setCancelled(true);

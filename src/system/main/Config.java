@@ -41,6 +41,8 @@ public class Config {
 		config.set("Worlds." + world + ".exists", true);
 		config.set("Worlds." + world + ".protect", false);
 		config.set("Worlds." + world + ".pvp", true);
+		config.set("Worlds." + world + ".damage", true);
+		config.set("Worlds." + world + ".huger", true);
 		saveConfig();
 	}
 	
@@ -65,6 +67,24 @@ public class Config {
 	
 	public static boolean hasWorldPVP(String world) {
 		return config.getBoolean("Worlds." + world + ".pvp");
+	}
+	
+	public static void setWorldDamage(String world, boolean damage) {
+		config.set("Worlds." + world + ".damage", damage);
+		saveConfig();
+	}
+	
+	public static boolean hasWorldDamage(String world) {
+		return config.getBoolean("Worlds." + world + ".damage");
+	}
+	
+	public static void setWorldHunger(String world, boolean hunger) {
+		config.set("Worlds." + world + ".hunger", hunger);
+		saveConfig();
+	}
+	
+	public static boolean hasWorldHunger(String world) {
+		return config.getBoolean("Worlds." + world + ".hunger");
 	}
 	
 	public static boolean isJoinMessageActiv() {
