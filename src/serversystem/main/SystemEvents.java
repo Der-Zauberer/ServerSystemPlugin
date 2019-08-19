@@ -1,4 +1,4 @@
-package system.events;
+package serversystem.main;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,15 +11,18 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
-import system.main.Config;
-import system.utilities.PlayerPacket;
-import system.utilities.PlayerTeam;
-import system.utilities.PlayerVanish;
+import serversystem.utilities.PlayerPacket;
+import serversystem.utilities.PlayerPermission;
+import serversystem.utilities.PlayerTeam;
+import serversystem.utilities.PlayerVanish;
 
 public class SystemEvents implements Listener{
 
 	@EventHandler
 	public void onJoinEvent(PlayerJoinEvent event) {
+		Config.addPlayer(event.getPlayer());
+		PlayerPermission.addConfigPermissions(event.getPlayer());
+		PlayerTeam.addRankTeam(event.getPlayer());
 		if(!Config.isJoinMessageActiv()) {
 			event.setJoinMessage("");
 		}
@@ -29,7 +32,6 @@ public class SystemEvents implements Listener{
 		if(Config.hasDefaultGamemode()) {
 			event.getPlayer().setGameMode(Config.getDefaultGamemode());
 		}
-		PlayerTeam.addRankTeam(event.getPlayer());
 		PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.TITLE, Config.getTitle(), Config.getTitleColor(), 20, 40);
 		PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.SUBTITLE, Config.getSubtitle(), Config.getSubtitleColor(), 20, 40);
 	}

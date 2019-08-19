@@ -1,4 +1,4 @@
-package system.commands;
+package serversystem.commands;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -6,7 +6,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import system.menus.AdminMenu;
+
+import serversystem.menus.AdminMenu;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

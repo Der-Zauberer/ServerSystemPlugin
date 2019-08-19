@@ -1,7 +1,9 @@
-package system.main;
+package serversystem.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -29,25 +31,72 @@ public class Config {
 		}
 		saveConfig();
 		for(World world : Bukkit.getWorlds()) {
-			if(!worldExists(world.getName())) {
-				registerWorld(world.getName());
-				saveConfig();
-			}
+			addWorld(world.getName());
 			Bukkit.getWorld(world.getName()).setPVP(hasWorldPVP(world.getName()));
 		}
-	}
-	
-	public static void registerWorld(String world) {
-		config.set("Worlds." + world + ".exists", true);
-		config.set("Worlds." + world + ".protect", false);
-		config.set("Worlds." + world + ".pvp", true);
-		config.set("Worlds." + world + ".damage", true);
-		config.set("Worlds." + world + ".huger", true);
 		saveConfig();
 	}
 	
-	public static boolean worldExists(String world) {
-		return config.getBoolean("Worlds." + world + ".exists");
+	public static ArrayList<String> getSection(String section) {
+		ArrayList<String> list = new ArrayList<>();
+		for (String key : config.getConfigurationSection(section).getKeys(true)) {
+			list.add(key);
+		}
+		return list;
+	}
+	
+	public static void addPlayer(Player player) {
+		if(!config.getBoolean("Players." + player.getUniqueId() + ".exists")) {
+			config.set("Players." + player.getUniqueId() + ".exists", true);
+			config.set("Players." + player.getUniqueId() + ".name", player.getName());
+			config.set("Players." + player.getUniqueId() + ".group", "player");
+			saveConfig();
+		}
+	}
+	
+	public static void setPlayerGroup(Player player, String group) {
+		config.set("Players." + player.getUniqueId() + ".group", group);
+		saveConfig();
+	}
+	
+	public static String getPlayerGroup(Player player) {
+		return config.getString("Players." + player.getUniqueId() + ".group");
+	}
+	
+	public static void addGroup(String group) {
+		config.set("Groups." + group, "");
+		saveConfig();
+	}
+	
+	public static void removeGroup(String group) {
+		config.set("Groups." + group, null);
+		saveConfig();
+	}
+	
+	public static void addGroupPermission(String group, String permission) {
+		List<String> list = getGroupPermissions(group);
+		list.add(permission);
+		config.set("Groups." + group, list);
+		saveConfig();
+	}
+	
+	public static List<String> getGroupPermissions(String group) {
+		return config.getStringList("Groups." + group);
+	}
+	
+	public static List<String> getPlayerPermissions(Player player) {
+		return getGroupPermissions(getPlayerGroup(player));
+	}
+	
+	public static void addWorld(String world) {
+		if(!config.getBoolean("Worlds." + world + ".exists")) {
+			config.set("Worlds." + world + ".exists", true);
+			config.set("Worlds." + world + ".protect", false);
+			config.set("Worlds." + world + ".pvp", true);
+			config.set("Worlds." + world + ".damage", true);
+			config.set("Worlds." + world + ".huger", true);
+			saveConfig();
+		}
 	}
 	
 	public static void setWorldProtected(String world, boolean protect) {

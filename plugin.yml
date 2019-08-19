@@ -1,5 +1,5 @@
-main: system.main.System
-name: System
+main: serversystem.main.ServerSystem
+name: ServerSystem
 version: 1.1
 author: Der_Zauberer
 api-version: 1.14
@@ -8,36 +8,64 @@ commands:
   admin:
     desciption: Open the admin inventory
     usage: /<command>
-    permission: system.admin
+    permission: serversystem.command.admin
   build:
     desciption: Allow the player to build
-    usage: /<command>
-    permission: system.build
+    usage: /<command> [<player>]
+    permission: serversystem.command.build
   vanish:
     desciption: Allow the player to vanish
-    usage: /<command>
-    permission: system.vanish
+    usage: /<command> [<player>]
+    permission: serversystem.command.vanish
   world:
-    desciption: Teleoprt player to other world
-    usage: /<command> [<word>]
-    permission: system.word
+    desciption: Teleoprt player to an other world
+    usage: /<command> [<word>] [<player>]
+    permission: serversystem.command.word
+  permission:
+    desciption: Set the permissions of players
+    usage: /<command>
+    permission: serversystem.command.permission
     
 permissions:
-  system.admin:
+  serversystem.command.admin:
     description: Open the admin inventory
     default: op
-  system.build:
+  serversystem.command.build:
     description: Allow the player to build
     default: op
-  system.vanish:
+  serversystem.command.vanish:
     description: Allow the player to vanish
     default: op
-  system.world:
+  serversystem.command.world:
     description: Teleoprt player to other world
     default: op
-  system.rank.admin:
+  serversystem.command.permission:
+    description: Teleoprt player to other world
+    default: false
+  serversystem.rank.admin:
     description: Display Admin Prefix
     default: false
-  system.rank.team:
+  serversystem.rank.moderator:
+    description: Display Moderator Prefix
+    default: false
+  serversystem.rank.developer:
+    description: Display Developer Prefix
+    default: false
+  serversystem.rank.supporter:
+    description: Display Supporter Prefix
+    default: false
+  serversystem.rank.team:
     description: Display Team Prefix
     default: false
+  serversystem.rank.operator:
+    description: Display Operator Prefix
+    default: op
+  serversystem.rank.youtuber:
+    description: Display YouTuber Prefix
+    default: false
+  serversystem.rank.premium:
+    description: Display Premium Prefix
+    default: false
+  serversystem.rank.player:
+    description: Display Player Prefix
+    default: true

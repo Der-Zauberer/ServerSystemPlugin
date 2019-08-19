@@ -1,11 +1,12 @@
-package system.commands;
+package serversystem.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import system.utilities.PlayerVanish;
+
+import serversystem.utilities.PlayerVanish;
 
 public class VanishCommand implements CommandExecutor {
 	

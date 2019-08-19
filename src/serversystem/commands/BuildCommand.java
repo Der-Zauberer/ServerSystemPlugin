@@ -1,4 +1,4 @@
-package system.commands;
+package serversystem.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -9,8 +9,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import system.main.Config;
-import system.utilities.PlayerBuildMode;
+
+import serversystem.main.Config;
+import serversystem.utilities.PlayerBuildMode;
 
 public class BuildCommand implements Listener, CommandExecutor {
 

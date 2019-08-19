@@ -1,8 +1,10 @@
-package system.utilities;
+package serversystem.utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import serversystem.main.ServerSystem;
 
 public class PlayerTeam {
 	
@@ -36,12 +38,24 @@ public class PlayerTeam {
 	}
 	
 	public static void addRankTeam(Player player) {
-		if(player.hasPermission("system.rank.admin")) {
-			addPlayerToTeam("RankAdmin", player);
-		}else if(player.hasPermission("system.rank.team")) {
-			addPlayerToTeam("RankTeam", player);
+		if(player.hasPermission("serversystem.rank.admin")) {
+			addPlayerToTeam(ServerSystem.TEAMRANKADMIN, player);
+		}else if(player.hasPermission("serversystem.rank.moderator")) {
+			addPlayerToTeam(ServerSystem.TEAMRANKMODERATOR, player);
+		}else if(player.hasPermission("serversystem.rank.developer")) {
+			addPlayerToTeam(ServerSystem.TEAMRANKDEVELOPER, player);
+		}else if(player.hasPermission("serversystem.rank.supporter")) {
+			addPlayerToTeam(ServerSystem.TEAMRANKSUPPORTER, player);
+		}else if(player.hasPermission("serversystem.rank.team")) {
+			addPlayerToTeam(ServerSystem.TEAMRANKTEAM, player);
+		}else if(player.hasPermission("serversystem.rank.operator") || player.isOp()) {
+			addPlayerToTeam(ServerSystem.TEAMRANKOPERATOR, player);
+		}else if(player.hasPermission("serversystem.rank.youtuber")) {
+			addPlayerToTeam(ServerSystem.TEAMRANKYOUTUBER, player);
+		}else if(player.hasPermission("serversystem.rank.premium")) {
+			addPlayerToTeam(ServerSystem.TEAMRANKPREMIUM, player);
 		} else {
-			removePlayerFromTeam(player);
+			addPlayerToTeam(ServerSystem.TEAMRANKPLAYER, player);
 		}
 	}
 	

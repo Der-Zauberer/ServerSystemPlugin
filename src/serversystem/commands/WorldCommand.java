@@ -1,4 +1,4 @@
-package system.commands;
+package serversystem.commands;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
-package system.menus;
+package serversystem.menus;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
-import system.utilities.InventoryMenu;
+import serversystem.utilities.InventoryMenu;
 
 public class AdminMenu extends InventoryMenu{
 
