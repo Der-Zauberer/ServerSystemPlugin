@@ -31,7 +31,7 @@ public class InventoryMenu implements Listener{
 		return itemstack;
 	}
 	
-	public ItemStack addItem(String name, Color color, PotionEffectType effect, int position) {
+	public ItemStack addPotionItem(String name, Color color, PotionEffectType effect, int position) {
 		ItemStack itemstack = new ItemStack(Material.POTION);
 		PotionMeta potionmeta = (PotionMeta) itemstack.getItemMeta();
 		potionmeta.setDisplayName(name);
@@ -48,6 +48,10 @@ public class InventoryMenu implements Listener{
 	
 	public void close() {
 		player.closeInventory();
+	}
+	
+	public void clear() {
+		inventory.clear();
 	}
 
 	public Inventory getInventory() {

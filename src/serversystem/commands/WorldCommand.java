@@ -2,19 +2,18 @@ package serversystem.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import serversystem.utilities.WorldGroupHandler;
 
 public class WorldCommand implements CommandExecutor, TabCompleter{
-
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		Player player = (Player) sender;
@@ -26,11 +25,11 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			sender.sendMessage(ChatColor.YELLOW + "[Server] Worlds: " + worlds);
 		}
 		if(args.length == 1) {
-			player.teleport(new Location(Bukkit.getWorld(args[0]), Bukkit.getWorld(args[0]).getSpawnLocation().getX(), Bukkit.getWorld(args[0]).getSpawnLocation().getY(), Bukkit.getWorld(args[0]).getSpawnLocation().getZ()));
+			WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args[0]));
 			sender.sendMessage(ChatColor.YELLOW + "[Server] You are in World " + args[0] +  "!");
 		}
-		if(args.length == 2) {
-			Bukkit.getPlayer(args[1]).teleport(new Location(Bukkit.getWorld(args[0]), Bukkit.getWorld(args[0]).getSpawnLocation().getX(), Bukkit.getWorld(args[0]).getSpawnLocation().getY(), Bukkit.getWorld(args[0]).getSpawnLocation().getZ()));
+		if(args.length == 2 && Bukkit.getPlayer(args[1]) != null) {
+			WorldGroupHandler.teleportPlayer(Bukkit.getPlayer(args[1]), Bukkit.getWorld(args[0]));
 			Bukkit.getPlayer(args[1]).sendMessage(ChatColor.YELLOW + "[Server] You are in World " + args[0] +  "!");
 			sender.sendMessage(ChatColor.YELLOW + "[Server] Player " + Bukkit.getPlayer(args[1]).getName() +  " is in World " + args[0] +  "!");
 		}
@@ -54,5 +53,5 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 		}
 		return commands;
 	}
-
+	
 }

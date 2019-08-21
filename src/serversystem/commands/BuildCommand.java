@@ -19,7 +19,7 @@ public class BuildCommand implements Listener, CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(args.length == 0) {
 			PlayerBuildMode.buildmodePlayer((Player) sender);
-		}else if(Bukkit.getServer().getPlayer(args[0]) != null) {
+		}else if(Bukkit.getPlayer(args[0]) != null) {
 			PlayerBuildMode.buildmodePlayer(Bukkit.getServer().getPlayer(args[0]), (Player) sender);
 		}
 		return true;

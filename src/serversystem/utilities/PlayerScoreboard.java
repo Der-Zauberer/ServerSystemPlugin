@@ -36,5 +36,12 @@ public class PlayerScoreboard {
 		scoreboard.getTeam("scPlayers").setSuffix("2");
 		player.setScoreboard(scoreboard);
 	}
+	
+	public static void removePlayerFromDisplaySlot(Player player) {
+		player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+		player.getScoreboard().clearSlot(DisplaySlot.BELOW_NAME);
+		player.getScoreboard().clearSlot(DisplaySlot.PLAYER_LIST);
+		
+	}
 
 }

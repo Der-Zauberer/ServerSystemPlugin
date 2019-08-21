@@ -33,7 +33,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 				}
 			}
 			if(args[0].equals("players")) {
-				if(args[1] != null && args[2] != null) {
+				if(args[1] != null && args[2] != null && Bukkit.getPlayer(args[1]) != null) {
 					Player player = Bukkit.getPlayer(args[1]);
 					PlayerPermission.removeConfigPermissions(player);
 					Config.setPlayerGroup(player, args[2]);

@@ -28,6 +28,8 @@ public class Config {
 			config.set("Server.subtitle.color", "");
 			config.set("Server.title.text", "");
 			config.set("Lobby.exist", false);
+			config.set("DisabledPermissions", "");
+			config.set("Groups.player", "");
 		}
 		saveConfig();
 		for(World world : Bukkit.getWorlds()) {
@@ -47,7 +49,6 @@ public class Config {
 	
 	public static void addPlayer(Player player) {
 		if(!config.getBoolean("Players." + player.getUniqueId() + ".exists")) {
-			config.set("Players." + player.getUniqueId() + ".exists", true);
 			config.set("Players." + player.getUniqueId() + ".name", player.getName());
 			config.set("Players." + player.getUniqueId() + ".group", "player");
 			saveConfig();
@@ -88,15 +89,43 @@ public class Config {
 		return getGroupPermissions(getPlayerGroup(player));
 	}
 	
+	public static void addDisabledPermission(String permission) {
+		List<String> list = getDisabledPermission();
+		list.add(permission);
+		config.set("DisabledPermissions", list);
+		saveConfig();
+	}
+	
+	public static void removeDisabledPermission(String permission) {
+		List<String> list = getDisabledPermission();
+		list.remove(permission);
+		config.set("DisabledPermissions", list);
+		saveConfig();
+	}
+	
+	public static List<String> getDisabledPermission() {
+		return config.getStringList("DisabledPermissions");
+	}
+	
 	public static void addWorld(String world) {
 		if(!config.getBoolean("Worlds." + world + ".exists")) {
 			config.set("Worlds." + world + ".exists", true);
+			config.set("Worlds." + world + ".group", world);
 			config.set("Worlds." + world + ".protect", false);
 			config.set("Worlds." + world + ".pvp", true);
 			config.set("Worlds." + world + ".damage", true);
 			config.set("Worlds." + world + ".huger", true);
 			saveConfig();
 		}
+	}
+	
+	public static void setWorldGroup(World world, String group) {
+		config.set("Worlds." + world + ".group", group);
+		saveConfig();
+	}
+	
+	public static String getWorldGroup(World world) {
+		return config.getString("Worlds." + world + ".group");
 	}
 	
 	public static void setWorldProtected(String world, boolean protect) {

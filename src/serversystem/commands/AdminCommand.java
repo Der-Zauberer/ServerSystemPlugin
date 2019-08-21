@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class AdminCommand implements CommandExecutor, Listener{
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player) {
@@ -107,6 +108,11 @@ public class AdminCommand implements CommandExecutor, Listener{
 			event.getWhoClicked().getWorld().setStorm(true);
 			event.getWhoClicked().getWorld().setThundering(true);
 			return;
+		}
+		if(event.getCurrentItem().getItemMeta().getDisplayName().equals("Server Settings")) {
+			event.getWhoClicked().getInventory().clear();
+			 AdminMenu adminmenu = new AdminMenu((Player) event.getWhoClicked());
+			 adminmenu.openServerSettings();
 		}
 		event.setCancelled(true);
 	}

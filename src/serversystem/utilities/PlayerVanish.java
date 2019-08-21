@@ -26,11 +26,16 @@ public class PlayerVanish {
 				}
 				player.sendMessage(ChatColor.YELLOW + "[Server] You are no longer vanished!");
 			} else {
-				vanishedPlayers.add(player.getUniqueId().toString());
 				for(Player everyPlayer : Bukkit.getOnlinePlayers()) {
 					PlayerTeam.addPlayerToTeam(ServerSystem.TEAMVANISH, player.getName());
 					everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 				}
+				if (!vanishedPlayers.isEmpty()) {
+					for(String vansihedplayer : vanishedPlayers) {
+						Bukkit.getPlayer(vansihedplayer).showPlayer(ServerSystem.getInstance(), player);
+					}
+				}
+				vanishedPlayers.add(player.getUniqueId().toString());
 				player.sendMessage(ChatColor.YELLOW + "[Server] You are now vanished!");
 			}
 		} else {
@@ -43,11 +48,16 @@ public class PlayerVanish {
 				player.sendMessage(ChatColor.YELLOW + "You are no longer vanished!");
 				sender.sendMessage(ChatColor.YELLOW + "[Server] " + player.getName() + " is no longer vanished!");
 			} else {
-				vanishedPlayers.add(player.getUniqueId().toString());
 				for(Player everyPlayer : Bukkit.getOnlinePlayers()) {
 					PlayerTeam.addPlayerToTeam(ServerSystem.TEAMVANISH, player.getName());
 					everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 				}
+				if (!vanishedPlayers.isEmpty()) {
+					for(String vansihedplayer : vanishedPlayers) {
+						Bukkit.getPlayer(vansihedplayer).showPlayer(ServerSystem.getInstance(), player);
+					}
+				}
+				vanishedPlayers.add(player.getUniqueId().toString());
 				player.sendMessage(ChatColor.YELLOW + "You are now vanished!");
 				sender.sendMessage(ChatColor.YELLOW + "[Server] " + player.getName() + " is now vanished!");
 			}

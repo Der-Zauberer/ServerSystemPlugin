@@ -2,8 +2,9 @@ package serversystem.main;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.PermissionCommand;
@@ -11,6 +12,8 @@ import serversystem.commands.VanishCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.PlayerVanish;
+import serversystem.utilities.WorldGroup;
+import serversystem.utilities.WorldGroupHandler;
 
 public class ServerSystem extends JavaPlugin{
 	
@@ -31,10 +34,15 @@ public class ServerSystem extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		new Config();
+		new SaveConfig();
 		registerEvents();
 		registerCommands();
 		setInstance(this);
 		registerTeams();
+		registerWorldGroups();
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			PlayerTeam.addRankTeam(player);
+		}
 	}
 
 	@Override
@@ -42,6 +50,8 @@ public class ServerSystem extends JavaPlugin{
 		for(String player : PlayerVanish.getVanishedPlayers()) {
 			PlayerVanish.vanishPlayer(Bukkit.getPlayer(player));
 		}
+		Config.saveConfig();
+		SaveConfig.saveConfig();
 	}
 
 	private void registerEvents() {
@@ -69,7 +79,12 @@ public class ServerSystem extends JavaPlugin{
 		PlayerTeam.createTeam(TEAMRANKPREMIUM, "[Premium] ", ChatColor.GOLD);
 		PlayerTeam.createTeam(TEAMRANKPLAYER, "", ChatColor.WHITE);
 		PlayerTeam.createTeam(TEAMSPECTATOR, "[SPECTATOR] ", ChatColor.GRAY);
-		
+	}
+	
+	private void registerWorldGroups() {
+		for (World world : Bukkit.getWorlds()) {
+			WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
+		}
 	}
 		
 	public static ServerSystem getInstance() {

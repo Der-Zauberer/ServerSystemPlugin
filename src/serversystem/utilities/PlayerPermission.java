@@ -19,7 +19,13 @@ public class PlayerPermission {
 	
 	public static void removeConfigPermissions(Player player) {
 		for(String permission : Config.getPlayerPermissions(player)) {
-			PlayerPermission.addPermission(player, permission);
+			PlayerPermission.removePermission(player, permission);
+		}
+	}
+	
+	public static void removeConfigDisablePermissions(Player player) {
+		for(String permission : Config.getDisabledPermission()) {
+			PlayerPermission.removePermission(player, permission);
 		}
 	}
 	
