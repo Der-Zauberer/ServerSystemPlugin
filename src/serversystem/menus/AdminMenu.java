@@ -4,7 +4,6 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
-
 import serversystem.utilities.InventoryMenu;
 
 public class AdminMenu extends InventoryMenu{
@@ -36,10 +35,8 @@ public class AdminMenu extends InventoryMenu{
 		clear();
 		addItem("JoinMessage", Material.OAK_SIGN, 0);
 		addItem("LeaveMessage", Material.OAK_SIGN, 1);
-		addItem("ShowTitle", Material.OAK_SIGN, 2);
-		addItem("ShowSubtitle", Material.OAK_SIGN, 2);
 		addItem("DefaultGamemode", Material.IRON_PICKAXE, 2);
-		addItem("Gamemode", Material.IRON_PICKAXE, 2);
+		addItem("Gamemode", Material.IRON_PICKAXE, 3);
 	}
 
 }

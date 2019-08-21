@@ -50,8 +50,6 @@ public class ServerSystem extends JavaPlugin{
 		for(String player : PlayerVanish.getVanishedPlayers()) {
 			PlayerVanish.vanishPlayer(Bukkit.getPlayer(player));
 		}
-		Config.saveConfig();
-		SaveConfig.saveConfig();
 	}
 
 	private void registerEvents() {

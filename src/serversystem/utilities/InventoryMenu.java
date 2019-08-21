@@ -42,6 +42,23 @@ public class InventoryMenu implements Listener{
 		return itemstack;
 	}
 	
+	public ItemStack addBooleanItem(boolean defaults, int position) {
+		ItemStack itemstack;
+		ItemMeta itemmeta;
+		if(defaults) {
+			itemstack = new ItemStack(Material.GREEN_DYE);
+			itemmeta = itemstack.getItemMeta();
+			itemmeta.setDisplayName("Boolean: True");
+		} else {
+			itemstack = new ItemStack(Material.RED_DYE);
+			itemmeta = itemstack.getItemMeta();
+			itemmeta.setDisplayName("Boolean: False");
+		}
+		itemstack.setItemMeta(itemmeta);
+		inventory.setItem(position, itemstack);
+		return itemstack;
+	}
+	
 	public void open() {
 		player.openInventory(inventory);
 	}

@@ -5,21 +5,19 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import serversystem.main.Config;
+import serversystem.main.SaveConfig;
+
 public class WorldGroupHandler {
 	
 	private static ArrayList<WorldGroup> worldgroups = new ArrayList<>();
 	
 	public static void teleportPlayer(Player player, World world) {
-		getWorldGroup(player).onPlayerLeave(player);
-		player.teleport(new Location(world, world.getSpawnLocation().getX(), world.getSpawnLocation().getY(), world.getSpawnLocation().getZ()));
-		getWorldGroup(player).onPlayerJoin(player);
-		
-	}
-	
-	public static void teleportPlayer(Player player, Location location) {
-		getWorldGroup(player).onPlayerLeave(player);
-		player.teleport(location);
-		getWorldGroup(player).onPlayerJoin(player);
+		if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.getLocation(player, WorldGroupHandler.getWorldGroup(world)) != null) {
+			player.teleport(SaveConfig.getLocation(player, WorldGroupHandler.getWorldGroup(world)));
+		} else {
+			player.teleport(new Location(world, world.getSpawnLocation().getX(), world.getSpawnLocation().getY(), world.getSpawnLocation().getZ()));
+		}
 	}
 	
 	public static WorldGroup getWorldGroup(Player player) {

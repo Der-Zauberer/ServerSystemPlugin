@@ -30,13 +30,12 @@ public class Config {
 			config.set("Lobby.exist", false);
 			config.set("DisabledPermissions", "");
 			config.set("Groups.player", "");
+			saveConfig();
 		}
-		saveConfig();
 		for(World world : Bukkit.getWorlds()) {
 			addWorld(world.getName());
 			Bukkit.getWorld(world.getName()).setPVP(hasWorldPVP(world.getName()));
 		}
-		saveConfig();
 	}
 	
 	public static ArrayList<String> getSection(String section) {
@@ -111,6 +110,7 @@ public class Config {
 		if(!config.getBoolean("Worlds." + world + ".exists")) {
 			config.set("Worlds." + world + ".exists", true);
 			config.set("Worlds." + world + ".group", world);
+			config.set("Worlds." + world + ".worldspawn", false);
 			config.set("Worlds." + world + ".protect", false);
 			config.set("Worlds." + world + ".pvp", true);
 			config.set("Worlds." + world + ".damage", true);
@@ -119,13 +119,17 @@ public class Config {
 		}
 	}
 	
-	public static void setWorldGroup(World world, String group) {
+	public static void setWorldGroup(String world, String group) {
 		config.set("Worlds." + world + ".group", group);
 		saveConfig();
 	}
 	
-	public static String getWorldGroup(World world) {
+	public static String getWorldGroup(String world) {
 		return config.getString("Worlds." + world + ".group");
+	}
+	
+	public static boolean hasWorldSpawn(String world) {
+		return config.getBoolean("Worlds." + world + ".worldspawn");
 	}
 	
 	public static void setWorldProtected(String world, boolean protect) {
@@ -231,8 +235,7 @@ public class Config {
 	}
 	
 	public static Location getLobby() {
-		Location location = new Location(Bukkit.getWorld(config.getString("Lobby.World")), config.getDouble("Lobby.X"), config.getDouble("Lobby.Y"), config.getDouble("Lobby.Z"), (float) config.getDouble("Lobby.Pitch"), (float) config.getDouble("Lobby.Yaw"));
-		return location;
+		return new Location(Bukkit.getWorld(config.getString("Lobby.World")), config.getDouble("Lobby.X"), config.getDouble("Lobby.Y"), config.getDouble("Lobby.Z"), (float) config.getDouble("Lobby.Pitch"), (float) config.getDouble("Lobby.Yaw"));
 	}
 	
 	public static boolean lobbyExists() {

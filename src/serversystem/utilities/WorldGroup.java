@@ -41,6 +41,7 @@ public class WorldGroup {
 		PlayerTeam.removePlayerFromTeam(player);
 		PlayerScoreboard.removePlayerFromDisplaySlot(player);
 		SaveConfig.saveInventory(player, this);
+		SaveConfig.saveLocation(player);
 	}
 	
 	public String getName() {
