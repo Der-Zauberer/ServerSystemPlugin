@@ -28,7 +28,13 @@ public class SystemEvents implements Listener{
 		Config.addPlayer(event.getPlayer());
 		PlayerPermission.removeConfigDisablePermissions(event.getPlayer());
 		PlayerPermission.addConfigPermissions(event.getPlayer());
-		event.getPlayer().recalculatePermissions();
+		if(event.getPlayer().isOp()) {
+			event.getPlayer().setOp(false);
+			event.getPlayer().setOp(true);
+		} else {
+			event.getPlayer().setOp(true);
+			event.getPlayer().setOp(false);
+		}
 		if(!Config.isJoinMessageActiv()) {
 			event.setJoinMessage("");
 		}
@@ -113,10 +119,8 @@ public class SystemEvents implements Listener{
 	public void onChat(AsyncPlayerChatEvent event) {
 		event.setFormat(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
 		event.setCancelled(true);
-		for(World world : WorldGroupHandler.getWorldGroup(event.getPlayer()).getWorlds()) {
-			for(Player player : world.getPlayers()) {
-				player.sendMessage(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
-			}
+		for(Player player : WorldGroupHandler.getWorldGroup(event.getPlayer()).getPlayers()) {
+			player.sendMessage(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
 		}
 	}
 	

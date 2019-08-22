@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
 
 import serversystem.main.SaveConfig;
 import serversystem.main.ServerSystem;
@@ -11,6 +13,9 @@ import serversystem.main.ServerSystem;
 public class WorldGroup {
 	
 	private String name;
+	private Objective belowNameObjective;
+	private Objective sidebarObjective;
+	private Objective playerListObjective;
 	private ArrayList<World> worlds;
 	
 	public WorldGroup(String name, World mainworld) {
@@ -30,6 +35,9 @@ public class WorldGroup {
 				player.showPlayer(ServerSystem.getInstance(), everyplayer);
 			}
 		}
+		if(belowNameObjective != null) {belowNameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);}
+		if(sidebarObjective != null) {sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);}
+		if(playerListObjective != null) {playerListObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);}
 		SaveConfig.getInventory(player, this);
 		PlayerTeam.addRankTeam(player);
 	}
@@ -40,8 +48,28 @@ public class WorldGroup {
 		}
 		PlayerTeam.removePlayerFromTeam(player);
 		PlayerScoreboard.removePlayerFromDisplaySlot(player);
+		if (PlayerBuildMode.isPlayerBuildmode(player)) {
+			PlayerBuildMode.buildmodePlayer(player);
+		}
 		SaveConfig.saveInventory(player, this);
 		SaveConfig.saveLocation(player);
+	}
+	
+	public void addObjective(Objective objective, DisplaySlot displayslot) {
+		switch (displayslot) {
+		case BELOW_NAME: belowNameObjective = objective; break;
+		case SIDEBAR: sidebarObjective = objective; break;
+		case PLAYER_LIST: playerListObjective = objective; break;
+		default:break;}
+	}
+	
+	public Objective getObjective(DisplaySlot displayslot) {
+		switch (displayslot) {
+		case BELOW_NAME: return belowNameObjective;
+		case SIDEBAR: return sidebarObjective;
+		case PLAYER_LIST: return playerListObjective;
+		default:break;}
+		return null;
 	}
 	
 	public String getName() {
@@ -66,6 +94,14 @@ public class WorldGroup {
 	
 	public void removeWorld(World world) {
 		worlds.remove(world);
+	}
+	
+	public ArrayList<Player> getPlayers() {
+		ArrayList<Player> players = new ArrayList<>();
+		for (World world : worlds) {
+			players.addAll(world.getPlayers());
+		}
+		return players;
 	}
 
 }

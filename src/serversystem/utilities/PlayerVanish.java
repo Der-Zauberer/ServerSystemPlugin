@@ -1,6 +1,7 @@
 package serversystem.utilities;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,9 +21,14 @@ public class PlayerVanish {
 		if(player == sender) {
 			if(vanishedPlayers.contains(player.getUniqueId().toString())) {
 				vanishedPlayers.remove(player.getUniqueId().toString());
-				for(Player everyPlayer : Bukkit.getOnlinePlayers()) {
+				for(Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
 					PlayerTeam.addRankTeam(player);
 					everyPlayer.showPlayer(ServerSystem.getInstance(), player);
+				}
+				if (!vanishedPlayers.isEmpty()) {
+					for(String vansihedplayer : vanishedPlayers) {
+						player.hidePlayer(ServerSystem.getInstance(), Bukkit.getPlayer(UUID.fromString(vansihedplayer)));
+					}
 				}
 				player.sendMessage(ChatColor.YELLOW + "[Server] You are no longer vanished!");
 			} else {
@@ -32,7 +38,8 @@ public class PlayerVanish {
 				}
 				if (!vanishedPlayers.isEmpty()) {
 					for(String vansihedplayer : vanishedPlayers) {
-						Bukkit.getPlayer(vansihedplayer).showPlayer(ServerSystem.getInstance(), player);
+						Bukkit.getPlayer(UUID.fromString(vansihedplayer)).showPlayer(ServerSystem.getInstance(), player);
+						player.showPlayer(ServerSystem.getInstance(), Bukkit.getPlayer(UUID.fromString(vansihedplayer)));
 					}
 				}
 				vanishedPlayers.add(player.getUniqueId().toString());
@@ -45,16 +52,22 @@ public class PlayerVanish {
 					PlayerTeam.addRankTeam(player);
 					everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 				}
+				if (!vanishedPlayers.isEmpty()) {
+					for(String vansihedplayer : vanishedPlayers) {
+						player.hidePlayer(ServerSystem.getInstance(), Bukkit.getPlayer(UUID.fromString(vansihedplayer)));
+					}
+				}
 				player.sendMessage(ChatColor.YELLOW + "You are no longer vanished!");
 				sender.sendMessage(ChatColor.YELLOW + "[Server] " + player.getName() + " is no longer vanished!");
 			} else {
-				for(Player everyPlayer : Bukkit.getOnlinePlayers()) {
+				for(Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
 					PlayerTeam.addPlayerToTeam(ServerSystem.TEAMVANISH, player.getName());
 					everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 				}
 				if (!vanishedPlayers.isEmpty()) {
 					for(String vansihedplayer : vanishedPlayers) {
-						Bukkit.getPlayer(vansihedplayer).showPlayer(ServerSystem.getInstance(), player);
+						Bukkit.getPlayer(UUID.fromString(vansihedplayer)).showPlayer(ServerSystem.getInstance(), player);
+						player.showPlayer(ServerSystem.getInstance(), Bukkit.getPlayer(UUID.fromString(vansihedplayer)));
 					}
 				}
 				vanishedPlayers.add(player.getUniqueId().toString());
