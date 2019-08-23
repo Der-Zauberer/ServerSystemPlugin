@@ -20,6 +20,10 @@ public class WorldGroupHandler {
 		}
 	}
 	
+	public static void teleportToWorldSpawn(Player player, WorldGroup worldgroup) {
+		player.getPlayer().teleport(worldgroup.getMainWorld().getSpawnLocation());
+	}
+	
 	public static WorldGroup getWorldGroup(Player player) {
 		for(WorldGroup worldgroup : worldgroups) {
 			if(worldgroup.getWorlds().contains(player.getWorld())) {

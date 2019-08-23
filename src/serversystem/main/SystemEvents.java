@@ -62,7 +62,7 @@ public class SystemEvents implements Listener{
 	
 	@EventHandler
 	public void onCommandPreProcess(PlayerCommandPreprocessEvent event){
-		if(event.getMessage().toLowerCase().startsWith("/say")){
+		if(event.getMessage().toLowerCase().startsWith("/say") || event.getMessage().toLowerCase().startsWith("/minecraft:say") || event.getMessage().toLowerCase().startsWith("/me") || event.getMessage().toLowerCase().startsWith("/minecraft:me")){
 			event.setCancelled(true);
 			String[] messagelist = event.getMessage().split(" ");
 			String message = "";
@@ -76,7 +76,7 @@ public class SystemEvents implements Listener{
 			}
 			return;
 		}
-		if(event.getMessage().toLowerCase().startsWith("/msg")){
+		if(event.getMessage().toLowerCase().startsWith("/msg") || event.getMessage().toLowerCase().startsWith("/minecraft:msg") || event.getMessage().toLowerCase().startsWith("/tell") || event.getMessage().toLowerCase().startsWith("/minecraft:tell")){
 			String[] messagelist = event.getMessage().split(" ");
 			String message = "";
 			if(Bukkit.getPlayer(messagelist[1]) != null) {
@@ -92,7 +92,7 @@ public class SystemEvents implements Listener{
 		}
 		if(event.getMessage().toLowerCase().startsWith("/execute")) {
 			String[] messagelist = event.getMessage().split(" ");
-			if(messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && messagelist[4].equalsIgnoreCase("say") && Bukkit.getPlayer(messagelist[2]) != null) {
+			if(messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("say") || messagelist[4].equalsIgnoreCase("minecraft:say") || messagelist[4].equalsIgnoreCase("me") || messagelist[4].equalsIgnoreCase("minecraft:me")) && Bukkit.getPlayer(messagelist[2]) != null) {
 				event.setCancelled(true);
 				String message = "";
 				for (int i = 5; i < messagelist.length; i++) {
@@ -102,7 +102,7 @@ public class SystemEvents implements Listener{
 					player.sendMessage(PlayerTeam.getPlayerNameColor(Bukkit.getPlayer(messagelist[2]))  + Bukkit.getPlayer(messagelist[2]).getName() + ChatColor.WHITE + ":" + message);
 				}
 			}
-			if(messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && messagelist[4].equalsIgnoreCase("msg") && Bukkit.getPlayer(messagelist[2]) != null && Bukkit.getPlayer(messagelist[5]) != null) {
+			if(messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("msg") || messagelist[4].equalsIgnoreCase("minecraft:say")) && Bukkit.getPlayer(messagelist[2]) != null && Bukkit.getPlayer(messagelist[5]) != null) {
 				event.setCancelled(true);
 				String message = "";
 				for (int i = 6; i < messagelist.length; i++) {
@@ -138,7 +138,7 @@ public class SystemEvents implements Listener{
 	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
-		
+		WorldGroupHandler.teleportToWorldSpawn(event.getEntity(), WorldGroupHandler.getWorldGroup(event.getEntity()));
 	}
 	
 	@EventHandler

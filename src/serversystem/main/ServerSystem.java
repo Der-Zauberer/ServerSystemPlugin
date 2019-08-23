@@ -7,9 +7,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import serversystem.citybuild.CityBuild;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.PermissionCommand;
+import serversystem.commands.PlotCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.utilities.PlayerTeam;
@@ -58,6 +61,7 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new SystemEvents(), this);
 		Bukkit.getPluginManager().registerEvents(new AdminCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
+		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
 	}
 	
 	private void registerCommands() {
@@ -66,6 +70,7 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("vanish").setExecutor(new VanishCommand());
 		getCommand("world").setExecutor(new WorldCommand());
 		getCommand("permission").setExecutor(new PermissionCommand());
+		getCommand("plot").setExecutor(new PlotCommand());
 	}
 	
 	private void registerTeams() {
