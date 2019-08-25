@@ -1,9 +1,13 @@
 package serversystem.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -14,7 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public class AdminCommand implements CommandExecutor, Listener{
+public class AdminCommand implements CommandExecutor, TabCompleter, Listener{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -23,6 +27,12 @@ public class AdminCommand implements CommandExecutor, Listener{
 			new AdminMenu(player);
 		}
 		return true;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		List<String> commands = new ArrayList<String>();
+		return commands;
 	}
 	
 	@EventHandler

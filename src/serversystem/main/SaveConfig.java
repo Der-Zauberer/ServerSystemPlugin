@@ -31,8 +31,10 @@ public class SaveConfig {
 	
 	public static ArrayList<String> getSection(String section) {
 		ArrayList<String> list = new ArrayList<>();
-		for (String key : config.getConfigurationSection(section).getKeys(true)) {
-			list.add(key);
+		if(config.getConfigurationSection(section) != null) {
+			for (String key : config.getConfigurationSection(section).getKeys(true)) {
+				list.add(key);
+			}
 		}
 		return list;
 	}

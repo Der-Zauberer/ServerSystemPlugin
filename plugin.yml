@@ -25,6 +25,10 @@ commands:
     desciption: Set the permissions of players
     usage: /<command>
     permission: serversystem.command.permission
+  plot:
+    desciption: Manage a plot
+    usage: /<command> <action> [<player>]
+    permission: serversystem.command.plot
     
 permissions:
   serversystem.command.admin:
@@ -42,6 +46,9 @@ permissions:
   serversystem.command.permission:
     description: Teleoprt player to other world
     default: false
+  serversystem.command.plot:
+    description: Manage a plot
+    fefault: true
   serversystem.rank.admin:
     description: Display Admin Prefix
     default: false

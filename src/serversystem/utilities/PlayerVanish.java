@@ -30,7 +30,6 @@ public class PlayerVanish {
 						player.hidePlayer(ServerSystem.getInstance(), Bukkit.getPlayer(UUID.fromString(vansihedplayer)));
 					}
 				}
-				player.sendMessage(ChatColor.YELLOW + "[Server] You are no longer vanished!");
 			} else {
 				for(Player everyPlayer : Bukkit.getOnlinePlayers()) {
 					PlayerTeam.addPlayerToTeam(ServerSystem.TEAMVANISH, player.getName());
@@ -43,7 +42,6 @@ public class PlayerVanish {
 					}
 				}
 				vanishedPlayers.add(player.getUniqueId().toString());
-				player.sendMessage(ChatColor.YELLOW + "[Server] You are now vanished!");
 			}
 		} else {
 			if(vanishedPlayers.contains(player.getUniqueId().toString())) {
@@ -57,8 +55,6 @@ public class PlayerVanish {
 						player.hidePlayer(ServerSystem.getInstance(), Bukkit.getPlayer(UUID.fromString(vansihedplayer)));
 					}
 				}
-				player.sendMessage(ChatColor.YELLOW + "You are no longer vanished!");
-				sender.sendMessage(ChatColor.YELLOW + "[Server] " + player.getName() + " is no longer vanished!");
 			} else {
 				for(Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
 					PlayerTeam.addPlayerToTeam(ServerSystem.TEAMVANISH, player.getName());
@@ -71,8 +67,6 @@ public class PlayerVanish {
 					}
 				}
 				vanishedPlayers.add(player.getUniqueId().toString());
-				player.sendMessage(ChatColor.YELLOW + "You are now vanished!");
-				sender.sendMessage(ChatColor.YELLOW + "[Server] " + player.getName() + " is now vanished!");
 			}
 		}
 		if(!Bukkit.getOnlinePlayers().contains(player)) {
@@ -87,8 +81,12 @@ public class PlayerVanish {
 		return false;
 	}
 	
-	public static ArrayList<String> getVanishedPlayers() {
-		return vanishedPlayers;
+	public static ArrayList<Player> getVanishedPlayers() {
+		ArrayList<Player> players = new ArrayList<>();
+		for (String player : vanishedPlayers) {
+			players.add(Bukkit.getPlayer(UUID.fromString(player)));
+		}
+		return players;
 	}
 
 }

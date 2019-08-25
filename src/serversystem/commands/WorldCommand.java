@@ -3,13 +3,14 @@ package serversystem.commands;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import serversystem.utilities.PlayerVanish;
+import serversystem.utilities.ServerMessage;
 import serversystem.utilities.WorldGroupHandler;
 
 public class WorldCommand implements CommandExecutor, TabCompleter{
@@ -22,16 +23,27 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			for(World world : Bukkit.getWorlds()) {
 				worlds = worlds + world.getName() + " ";
 			}
-			sender.sendMessage(ChatColor.YELLOW + "[Server] Worlds: " + worlds);
+			ServerMessage.sendMessage(sender, "Worlds: " + worlds);
 		}
 		if(args.length == 1) {
-			WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args[0]));
-			sender.sendMessage(ChatColor.YELLOW + "[Server] You are in World " + args[0] +  "!");
+			if(Bukkit.getWorld(args[0]) != null) {
+				WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args[0]));
+				ServerMessage.sendMessage(sender, "You are in world " + args[0] +  "!");
+			} else {
+				ServerMessage.sendErrorMessage(sender, "The world " + args[0] +  " does not exists!");
+			}	
 		}
 		if(args.length == 2 && Bukkit.getPlayer(args[1]) != null) {
-			WorldGroupHandler.teleportPlayer(Bukkit.getPlayer(args[1]), Bukkit.getWorld(args[0]));
-			Bukkit.getPlayer(args[1]).sendMessage(ChatColor.YELLOW + "[Server] You are in World " + args[0] +  "!");
-			sender.sendMessage(ChatColor.YELLOW + "[Server] Player " + Bukkit.getPlayer(args[1]).getName() +  " is in World " + args[0] +  "!");
+			if(Bukkit.getWorld(args[0]) != null) {
+				WorldGroupHandler.teleportPlayer(Bukkit.getPlayer(args[1]), Bukkit.getWorld(args[0]));
+				ServerMessage.sendMessage(Bukkit.getPlayer(args[1]), "You are in world " + args[0] +  "!");
+				ServerMessage.sendMessage(sender, "The player " + args[1] +  " is in world " + args[0] +  "!");
+			} else {
+				ServerMessage.sendErrorMessage(sender, "The world " + args[0] +  " does not exists!");
+			}	
+		}
+		if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+			ServerMessage.sendErrorMessage(sender, "The player " + args[1] + " is not online!");
 		}
 		return true;
 	}
@@ -44,11 +56,12 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			for(World world : Bukkit.getWorlds()) {
 				commands.add(world.getName());
 			}
-			return commands;
-		} else {
+		} else if(args.length == 2) {
 			commands.clear();
-			for(Player player : Bukkit.getOnlinePlayers()) {
-				commands.add(player.getName());
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				if (!PlayerVanish.isPlayerVanished(player)) {
+					commands.add(player.getName());
+				}
 			}
 		}
 		return commands;

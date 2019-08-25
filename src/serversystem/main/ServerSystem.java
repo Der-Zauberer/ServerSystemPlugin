@@ -1,13 +1,10 @@
 package serversystem.main;
 
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import serversystem.citybuild.CityBuild;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
@@ -52,8 +49,8 @@ public class ServerSystem extends JavaPlugin{
 
 	@Override
 	public void onDisable() {
-		for(String player : PlayerVanish.getVanishedPlayers()) {
-			PlayerVanish.vanishPlayer(Bukkit.getPlayer(UUID.fromString(player)));
+		for(Player player : PlayerVanish.getVanishedPlayers()) {
+			PlayerVanish.vanishPlayer(player);
 		}
 	}
 

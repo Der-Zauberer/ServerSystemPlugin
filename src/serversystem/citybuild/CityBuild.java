@@ -15,8 +15,8 @@ public class CityBuild implements Listener {
 	private static ArrayList<CityBuildPlot> plots = new ArrayList<>();
 	
 	public CityBuild() {
-		worlds = SaveConfig.getCitybuildWorlds();
-		plots = SaveConfig.getCitybuildPlots();
+		if(SaveConfig.getCitybuildWorlds() != null) {worlds = SaveConfig.getCitybuildWorlds();}
+		if(SaveConfig.getCitybuildPlots() != null) {plots = SaveConfig.getCitybuildPlots();}
 	}
 	
 	public static boolean hasWorld(World world) {
