@@ -3,14 +3,18 @@ package serversystem.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -156,6 +160,32 @@ public class SystemEvents implements Listener{
 		if(event.getEntity() instanceof Player) {
 			if(!Config.hasWorldHunger(event.getEntity().getWorld().getName())) {
 				event.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onSignChange(SignChangeEvent event) {
+		if(event.getLine(0) != null && event.getLine(3) != null) {
+			if(event.getLine(1).equals("[World]") && Bukkit.getWorld(event.getLine(2)) != null) {
+				String labelhead = event.getLine(1);
+				String labelbody = event.getLine(2);
+				event.setLine(2, "§0" + labelhead);
+				event.setLine(2, "§2" + labelbody);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event) {
+		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getState() instanceof Sign) {
+			Sign sign = (Sign) event.getClickedBlock().getState();
+			if(sign.getLine(0) != null && sign.getLine(3) != null) {
+				if(sign.getLine(1).equals("[World]") && Bukkit.getWorld(ChatColor.stripColor(sign.getLine(2))) != null) {
+					System.out.println("Test3");
+					WorldGroupHandler.teleportPlayer(event.getPlayer(), Bukkit.getWorld(ChatColor.stripColor(sign.getLine(2))));
+				}
+				
 			}
 		}
 	}

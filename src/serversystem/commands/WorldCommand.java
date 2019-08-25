@@ -44,8 +44,6 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
 				ServerMessage.sendErrorMessage(sender, "The player " + args[1] + " is not online!");
 			}
-		} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
-			ServerMessage.sendErrorMessage(sender, "The player " + args[1] + " is not online!");
 		}
 		return true;
 	}
