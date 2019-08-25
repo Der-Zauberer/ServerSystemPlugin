@@ -36,13 +36,15 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 		if(args.length == 2 && Bukkit.getPlayer(args[1]) != null) {
 			if(Bukkit.getWorld(args[0]) != null) {
 				WorldGroupHandler.teleportPlayer(Bukkit.getPlayer(args[1]), Bukkit.getWorld(args[0]));
+				if(sender != Bukkit.getServer().getPlayer(args[1])) {ServerMessage.sendMessage(sender, "The player " + args[1] +  " is in world " + args[0] +  "!");} 
 				ServerMessage.sendMessage(Bukkit.getPlayer(args[1]), "You are in world " + args[0] +  "!");
-				ServerMessage.sendMessage(sender, "The player " + args[1] +  " is in world " + args[0] +  "!");
 			} else {
 				ServerMessage.sendErrorMessage(sender, "The world " + args[0] +  " does not exists!");
-			}	
-		}
-		if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+			}
+			if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
+				ServerMessage.sendErrorMessage(sender, "The player " + args[1] + " is not online!");
+			}
+		} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
 			ServerMessage.sendErrorMessage(sender, "The player " + args[1] + " is not online!");
 		}
 		return true;

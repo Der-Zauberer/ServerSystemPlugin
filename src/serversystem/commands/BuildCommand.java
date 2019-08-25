@@ -37,8 +37,8 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 				if(sender != Bukkit.getServer().getPlayer(args[0])) {ServerMessage.sendMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " can no longer build!");} 
 				ServerMessage.sendMessage(Bukkit.getServer().getPlayer(args[0]), "You can no longer build!");
 			}
-		} 
-		if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+			
+		}else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
 			ServerMessage.sendErrorMessage(sender, "The player " + args[0] + " is not online!");
 		}
 		return true;

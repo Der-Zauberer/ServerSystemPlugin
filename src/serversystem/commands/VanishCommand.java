@@ -33,8 +33,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 				if(sender != Bukkit.getServer().getPlayer(args[0])) {ServerMessage.sendMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " is no longer vanished!");} 
 				ServerMessage.sendMessage(Bukkit.getServer().getPlayer(args[0]), "You are no longer vanished!");
 			}
-		}
-		if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+		} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
 			ServerMessage.sendErrorMessage(sender, "The player " + args[0] + " is not online!");
 		}
 		return true;

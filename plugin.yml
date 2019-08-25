@@ -48,7 +48,7 @@ permissions:
     default: false
   serversystem.command.plot:
     description: Manage a plot
-    fefault: true
+    default: true
   serversystem.rank.admin:
     description: Display Admin Prefix
     default: false

@@ -138,6 +138,7 @@ public class SystemEvents implements Listener{
 	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
+		event.getEntity().getInventory().clear();
 		WorldGroupHandler.teleportToWorldSpawn(event.getEntity(), WorldGroupHandler.getWorldGroup(event.getEntity()));
 	}
 	
