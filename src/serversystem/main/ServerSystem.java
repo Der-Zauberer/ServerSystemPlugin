@@ -3,9 +3,11 @@ package serversystem.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import serversystem.citybuild.CityBuild;
+
+import serversystem.cityadventure.CityBuild;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.PermissionCommand;
@@ -41,9 +43,13 @@ public class ServerSystem extends JavaPlugin{
 		registerCommands();
 		setInstance(this);
 		registerTeams();
-		registerWorldGroups();
-		for(Player player : Bukkit.getOnlinePlayers()) {
-			PlayerTeam.addRankTeam(player);
+		for (String world : Config.getLoadWorlds()) {
+			if(Bukkit.getWorld(world) == null) {
+				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
+			}
+		}
+		for (World world : Bukkit.getWorlds()) {
+			WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
 		}
 	}
 
@@ -81,12 +87,6 @@ public class ServerSystem extends JavaPlugin{
 		PlayerTeam.createTeam(TEAMRANKPREMIUM, "[Premium] ", ChatColor.GOLD);
 		PlayerTeam.createTeam(TEAMRANKPLAYER, "", ChatColor.WHITE);
 		PlayerTeam.createTeam(TEAMSPECTATOR, "[SPECTATOR] ", ChatColor.GRAY);
-	}
-	
-	private void registerWorldGroups() {
-		for (World world : Bukkit.getWorlds()) {
-			WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
-		}
 	}
 		
 	public static ServerSystem getInstance() {

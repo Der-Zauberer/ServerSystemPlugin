@@ -1,4 +1,4 @@
-package serversystem.citybuild;
+package serversystem.cityadventure;
 
 import java.util.ArrayList;
 import java.util.UUID;

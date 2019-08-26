@@ -18,51 +18,49 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(args[0] != null && args[1] != null) {
-			if(args[0].equals("group")) {
-				if(args[1].equals("add") && args[2] != null) {
-					if(!Config.getSection("Groups").contains(args[2])) {
-						Config.addGroup(args[2]);
-						ServerMessage.sendMessage(sender, "The group " + args[2] + " is added!");
-					} else {
-						ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " is already added!");
-					}
+		if(args[0].equals("group")) {
+			if(args[1].equals("add") && args[2] != null) {
+				if(!Config.getSection("Groups").contains(args[2])) {
+					Config.addGroup(args[2]);
+					ServerMessage.sendMessage(sender, "The group " + args[2] + " is added!");
+				} else {
+					ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " is already added!");
 				}
-				if(args[1].equals("remove") && args[2] != null) {
-					if (Config.getSection("Groups").contains(args[2])) {
-						Config.removeGroup(args[2]);
-						ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " is removed!");
+			}
+			if(args[1].equals("remove") && args[2] != null) {
+				if (Config.getSection("Groups").contains(args[2])) {
+					Config.removeGroup(args[2]);
+					ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " is removed!");
+				} else {
+					ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " does not exist!");
+				}
+				
+			}
+		}
+		if(args[0].equals("player")) {
+			if(args[1] != null && args[2] != null && Bukkit.getPlayer(args[1]) != null) {
+				if(Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
+					if(Config.getSection("Groups").contains(args[2])) {
+						Player player = Bukkit.getPlayer(args[1]);
+						PlayerPermission.removeConfigPermissions(player);
+						Config.setPlayerGroup(player, args[2]);
+						PlayerPermission.addConfigPermissions(player);
+						PlayerTeam.addRankTeam(player);
+						if(Bukkit.getPlayer(args[1]).isOp()) {
+							Bukkit.getPlayer(args[1]).setOp(false);
+							Bukkit.getPlayer(args[1]).setOp(true);
+						} else {
+							Bukkit.getPlayer(args[1]).setOp(true);
+							Bukkit.getPlayer(args[1]).setOp(false);
+						}
+						ServerMessage.sendMessage(sender, "The player " + args[1] + " is in group " + args[2] + " now!");
 					} else {
 						ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " does not exist!");
 					}
-					
+				} else {
+					ServerMessage.sendErrorMessage(sender, "The player " + args[0] + " is not online!");
 				}
-			}
-			if(args[0].equals("player")) {
-				if(args[1] != null && args[2] != null && Bukkit.getPlayer(args[1]) != null) {
-					if(Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[1]))) {
-						if(Config.getSection("Groups").contains(args[2])) {
-							Player player = Bukkit.getPlayer(args[1]);
-							PlayerPermission.removeConfigPermissions(player);
-							Config.setPlayerGroup(player, args[2]);
-							PlayerPermission.addConfigPermissions(player);
-							PlayerTeam.addRankTeam(player);
-							if(Bukkit.getPlayer(args[1]).isOp()) {
-								Bukkit.getPlayer(args[1]).setOp(false);
-								Bukkit.getPlayer(args[1]).setOp(true);
-							} else {
-								Bukkit.getPlayer(args[1]).setOp(true);
-								Bukkit.getPlayer(args[1]).setOp(false);
-							}
-							ServerMessage.sendMessage(sender, "The player " + args[1] + " is in group " + args[2] + " now!");
-						} else {
-							ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " does not exist!");
-						}
-					} else {
-						ServerMessage.sendErrorMessage(sender, "The player " + args[0] + " is not online!");
-					}
-					
-				}
+				
 			}
 		}
 		return true;
@@ -76,17 +74,17 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 			commands.add("group");
 			commands.add("player");
 			return commands;
-		} else if(args.length == 2 && args[0].equals("groups")) {
+		} else if(args.length == 2 && args[0].equals("group")) {
 			commands.clear();
 			commands.add("add");
 			commands.add("remove");
-		} else if(args.length == 3 && args[0].equals("groups") && (args[1].equals("add") || args[1].equals("remove"))) {
+		} else if(args.length == 3 && args[0].equals("group") && (args[1].equals("add") || args[1].equals("remove"))) {
 			commands.clear();
 			commands = Config.getSection("Groups");
-		} else if(args.length == 3 && args[0].equals("players")) {
+		} else if(args.length == 3 && args[0].equals("player")) {
 			commands.clear();
 			commands = Config.getSection("Groups");
-		} else if(args.length == 2 && args[0].equals("players")) {
+		} else if(args.length == 2 && args[0].equals("player")) {
 			commands.clear();
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				if (!PlayerVanish.isPlayerVanished(player)) {

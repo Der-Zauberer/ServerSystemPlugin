@@ -32,5 +32,17 @@ public class ServerMessage {
 			player.sendMessage(servername + messagecolor + " " + message);
 		}
 	}
+	
+	public static void sendWorldGroupMessage(WorldGroup worldgroup, String message) {
+		for(Player player : worldgroup.getPlayers()) {
+			player.sendMessage(servername + messagecolor + " " + message);
+		}
+	}
+	
+	public static void sendDeathMessage(Player player) {
+		for(Player players : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
+			players.sendMessage(player.getName() + " died!");
+		}
+	}
 
 }

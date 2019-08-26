@@ -76,3 +76,6 @@ permissions:
   serversystem.rank.player:
     description: Display Player Prefix
     default: true
+  serversystem.tools.signeddit:
+    description: Allow to create executable signs
+    default: op

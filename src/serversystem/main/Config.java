@@ -29,6 +29,7 @@ public class Config {
 			config.set("Server.title.text", "");
 			config.set("Lobby.exist", false);
 			config.set("DisabledPermissions", "");
+			config.set("Worldload", "");
 			config.set("Groups.player", "");
 			saveConfig();
 		}
@@ -179,6 +180,17 @@ public class Config {
 	
 	public static boolean hasDefaultGamemode() {
 		return config.getBoolean("Server.defaultgamemode");
+	}
+	
+	public static void addLoadWorld(String world) {
+		List<String> list = getDisabledPermission();
+		list.add(world);
+		config.set("Worldload", list);
+		saveConfig();
+	}
+	
+	public static List<String> getLoadWorlds() {
+		return config.getStringList("Worldload");
 	}
 	
 	public static GameMode getDefaultGamemode() {

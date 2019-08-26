@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,12 +18,16 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand;
+import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand.EnumClientCommand;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 import serversystem.utilities.PlayerPacket;
 import serversystem.utilities.PlayerPermission;
 import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.PlayerVanish;
+import serversystem.utilities.ServerMessage;
 import serversystem.utilities.WorldGroupHandler;
 
 public class SystemEvents implements Listener{
@@ -141,12 +146,6 @@ public class SystemEvents implements Listener{
 	}
 	
 	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent event) {
-		event.getEntity().getInventory().clear();
-		WorldGroupHandler.teleportToWorldSpawn(event.getEntity(), WorldGroupHandler.getWorldGroup(event.getEntity()));
-	}
-	
-	@EventHandler
 	public void onDamage(EntityDamageEvent event) {
 		if(event.getEntity() instanceof Player) {
 			if(!Config.hasWorldDamage(event.getEntity().getWorld().getName())) {
@@ -165,13 +164,36 @@ public class SystemEvents implements Listener{
 	}
 	
 	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		event.setDeathMessage("");
+		if(event.getEntity() instanceof Player) {
+			Bukkit.getScheduler().runTaskLater(ServerSystem.getInstance(), new Runnable() {
+				@Override
+				public void run() {
+					((CraftPlayer) event.getEntity()).getHandle().playerConnection.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
+					ServerMessage.sendDeathMessage((Player) event.getEntity());
+				}
+			}, 10);
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		event.setRespawnLocation(WorldGroupHandler.getWorldGroup(event.getPlayer()).getMainWorld().getSpawnLocation());
+	}
+	
+	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		if(event.getLine(0) != null && event.getLine(3) != null) {
-			if(event.getLine(1).equals("[World]") && Bukkit.getWorld(event.getLine(2)) != null) {
-				String labelhead = event.getLine(1);
+			if(event.getLine(1).equals("[World]") && Bukkit.getWorld(event.getLine(2)) != null && event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
 				String labelbody = event.getLine(2);
-				event.setLine(2, "§0" + labelhead);
 				event.setLine(2, "§2" + labelbody);
+			} else if(!event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
+				event.setLine(1, "§4Permissions");
+				event.setLine(2, "§4required!");
+			} else if(Bukkit.getWorld(event.getLine(2)) == null) {
+				String labelbody = event.getLine(2);
+				event.setLine(2, "§4" + labelbody);
 			}
 		}
 	}
