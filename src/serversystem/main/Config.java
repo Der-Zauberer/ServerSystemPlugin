@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,7 +26,8 @@ public class Config {
 			config.set("Server.title.color", "");
 			config.set("Server.subtitle.color", "");
 			config.set("Server.title.text", "");
-			config.set("Lobby.exist", false);
+			config.set("Server.lobby", false);
+			config.set("Server.lobbyworld", "world");
 			config.set("DisabledPermissions", "");
 			config.set("Worldload", "");
 			config.set("Groups.player", "");
@@ -231,27 +231,15 @@ public class Config {
 		return config.getString("Server.subtitle.color");
 	}
 	
-	public static void setLobby(Player player) {
-		setLobby(player.getLocation());
-	}
-	
-	public static void setLobby(Location location) {
-		config.set("Lobby.exist", true);
-		config.set("Lobby.World", location.getWorld().getName());
-		config.set("Lobby.X", location.getX());
-		config.set("Lobby.Y", location.getY());
-		config.set("Lobby.Z", location.getZ());
-		config.set("Lobby.Pitch", location.getPitch());
-		config.set("Lobby.Yaw", location.getYaw());
-		saveConfig();
-	}
-	
-	public static Location getLobby() {
-		return new Location(Bukkit.getWorld(config.getString("Lobby.World")), config.getDouble("Lobby.X"), config.getDouble("Lobby.Y"), config.getDouble("Lobby.Z"), (float) config.getDouble("Lobby.Pitch"), (float) config.getDouble("Lobby.Yaw"));
-	}
-	
 	public static boolean lobbyExists() {
-		return config.getBoolean("Lobby.exist");
+		return config.getBoolean("Server.lobby");
+	}
+	
+	public static World getLobbyWorld() {
+		if(Bukkit.getWorld(config.getString("Server.lobbyworld")) != null) {
+			return Bukkit.getWorld(config.getString("Server.lobbyworld"));
+		}
+		return null;
 	}
 	
 	public static void saveConfig() {

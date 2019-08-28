@@ -47,8 +47,8 @@ public class SystemEvents implements Listener{
 		if(!Config.isJoinMessageActiv()) {
 			event.setJoinMessage("");
 		}
-		if(Config.lobbyExists()) {
-			event.getPlayer().teleport(Config.getLobby());
+		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
+			event.getPlayer().teleport(Config.getLobbyWorld().getSpawnLocation());
 		}
 		if(Config.hasDefaultGamemode()) {
 			event.getPlayer().setGameMode(Config.getDefaultGamemode());
@@ -204,10 +204,8 @@ public class SystemEvents implements Listener{
 			Sign sign = (Sign) event.getClickedBlock().getState();
 			if(sign.getLine(0) != null && sign.getLine(3) != null) {
 				if(sign.getLine(1).equals("[World]") && Bukkit.getWorld(ChatColor.stripColor(sign.getLine(2))) != null) {
-					System.out.println("Test3");
 					WorldGroupHandler.teleportPlayer(event.getPlayer(), Bukkit.getWorld(ChatColor.stripColor(sign.getLine(2))));
 				}
-				
 			}
 		}
 	}

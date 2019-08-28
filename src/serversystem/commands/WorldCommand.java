@@ -48,6 +48,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			if (Bukkit.getWorld(args[1]) == null) {
 				Bukkit.getWorlds().add(new WorldCreator(args[1]).createWorld());
 				Config.addWorld(args[1]);
+				Config.addLoadWorld(args[1]);
 				WorldGroupHandler.addWorldGroup(new WorldGroup(args[1], Bukkit.getWorld(args[1])));
 				ServerMessage.sendMessage(sender, "The world " + args[1] + " is successfully created!");
 			} else {

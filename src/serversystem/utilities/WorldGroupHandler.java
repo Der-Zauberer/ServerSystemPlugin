@@ -1,10 +1,8 @@
 package serversystem.utilities;
 
 import java.util.ArrayList;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-
 import serversystem.main.Config;
 import serversystem.main.SaveConfig;
 
@@ -13,10 +11,18 @@ public class WorldGroupHandler {
 	private static ArrayList<WorldGroup> worldgroups = new ArrayList<>();
 	
 	public static void teleportPlayer(Player player, World world) {
-		if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.getLocation(player, WorldGroupHandler.getWorldGroup(world)) != null) {
-			player.teleport(SaveConfig.getLocation(player, WorldGroupHandler.getWorldGroup(world)));
+		if(WorldGroupHandler.getWorldGroup(world).isServerGame()) {
+			if(WorldGroupHandler.getWorldGroup(world).getServerGame().getLobby() != null) {
+				player.teleport(WorldGroupHandler.getWorldGroup(world).getServerGame().getLobby());
+			} else {
+				player.teleport(WorldGroupHandler.getWorldGroup(world).getMainWorld().getSpawnLocation());
+			}
 		} else {
-			player.teleport(new Location(world, world.getSpawnLocation().getX(), world.getSpawnLocation().getY(), world.getSpawnLocation().getZ()));
+			if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.getLocation(player, WorldGroupHandler.getWorldGroup(world)) != null) {
+				player.teleport(SaveConfig.getLocation(player, WorldGroupHandler.getWorldGroup(world)));
+			} else {
+				player.teleport(world.getSpawnLocation());
+			}
 		}
 	}
 	

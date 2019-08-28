@@ -13,10 +13,12 @@ import serversystem.main.ServerSystem;
 public class WorldGroup {
 	
 	private String name;
+	private int currentPlayers;
 	private Objective belowNameObjective;
 	private Objective sidebarObjective;
 	private Objective playerListObjective;
 	private ArrayList<World> worlds;
+	private ServerGame servergame;
 	
 	public WorldGroup(String name, World mainworld) {
 		this.name = name;
@@ -24,7 +26,16 @@ public class WorldGroup {
 		worlds.add(mainworld);
 	}
 	
+	public WorldGroup(String name, World mainworld, ServerGame servergame) {
+		this(name, mainworld);
+		this.servergame = servergame;
+	}
+	
 	public void onPlayerJoin(Player player) {
+		currentPlayers++;
+		if(isServerGame()) {
+			servergame.onPlayerJoin(player);
+		}
 		for (Player everyplayer : Bukkit.getOnlinePlayers()) {
 			everyplayer.hidePlayer(ServerSystem.getInstance(), player);
 			player.hidePlayer(ServerSystem.getInstance(), everyplayer);
@@ -43,6 +54,7 @@ public class WorldGroup {
 	}
 	
 	public void onPlayerLeave(Player player) {
+		currentPlayers--;
 		if(PlayerVanish.isPlayerVanished(player)) {
 			PlayerVanish.vanishPlayer(player);
 		}
@@ -52,7 +64,12 @@ public class WorldGroup {
 			PlayerBuildMode.buildmodePlayer(player);
 		}
 		SaveConfig.saveInventory(player, this);
-		SaveConfig.saveLocation(player);
+		if (!isServerGame()) {
+			SaveConfig.saveLocation(player);
+		}
+		if(isServerGame()) {
+			servergame.onPlayerLeave(player);
+		}
 	}
 	
 	public void addObjective(Objective objective, DisplaySlot displayslot) {
@@ -76,6 +93,10 @@ public class WorldGroup {
 		return name;
 	}
 	
+	public int getCurrentPlayers() {
+		return currentPlayers;
+	}
+	
 	public ArrayList<World> getWorlds() {
 		return worlds;
 	}
@@ -94,6 +115,21 @@ public class WorldGroup {
 	
 	public void removeWorld(World world) {
 		worlds.remove(world);
+	}
+	
+	public boolean isServerGame() {
+		if(servergame != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	public void setServerGame(ServerGame servergame) {
+		this.servergame = servergame;
+	}
+	
+	public ServerGame getServerGame() {
+		return servergame;
 	}
 	
 	public ArrayList<Player> getPlayers() {
