@@ -20,8 +20,6 @@ public class Config {
 		if(!file.exists()) {
 			config.set("Server.joinmessage", true);
 			config.set("Server.leavemessage", true);
-			config.set("Server.defaultgamemode", false);
-			config.set("Server.gamemode", 0);
 			config.set("Server.title.text", "");
 			config.set("Server.title.color", "");
 			config.set("Server.subtitle.color", "");
@@ -116,6 +114,8 @@ public class Config {
 			config.set("Worlds." + world + ".pvp", true);
 			config.set("Worlds." + world + ".damage", true);
 			config.set("Worlds." + world + ".huger", true);
+			config.set("Worlds." + world + ".explosion", true);
+			config.set("Worlds." + world + ".gamemode", 2);
 			saveConfig();
 		}
 	}
@@ -170,16 +170,43 @@ public class Config {
 		return config.getBoolean("Worlds." + world + ".hunger");
 	}
 	
+	public static void setWorldExplosion(String world, boolean explosion) {
+		config.set("Worlds." + world + ".explosion", explosion);
+		saveConfig();
+	}
+	
+	public static boolean hasWorldExplosion(String world) {
+		return config.getBoolean("Worlds." + world + ".explosion");
+	}
+	
+	public static void setWorldGamemode(World world, GameMode gamemode) {
+		switch (gamemode) {
+		case SURVIVAL: config.set("Worlds." + world + ".gamemode", 0); break;
+		case CREATIVE: config.set("Worlds." + world + ".gamemode", 1); break;
+		case ADVENTURE: config.set("Worlds." + world + ".gamemode", 2); break;
+		case SPECTATOR: config.set("Worlds." + world + ".gamemode", 3); break;
+		default:
+			break;
+		}
+		saveConfig();
+	}
+	
+	public static GameMode getWorldGamemode(String world) {
+		switch (config.getInt("Worlds." + world + ".gamemode")) {
+		case 0: return GameMode.SURVIVAL;
+		case 1: return GameMode.CREATIVE;
+		case 2: return GameMode.ADVENTURE;
+		case 3: return GameMode.SPECTATOR;
+		}
+		return GameMode.ADVENTURE;
+	}
+	
 	public static boolean isJoinMessageActiv() {
 		return config.getBoolean("Server.joinmessage");
 	}
 	
 	public static boolean isLeaveMessageActiv() {
 		return config.getBoolean("Server.leavemessage");
-	}
-	
-	public static boolean hasDefaultGamemode() {
-		return config.getBoolean("Server.defaultgamemode");
 	}
 	
 	public static void addLoadWorld(String world) {
@@ -191,16 +218,6 @@ public class Config {
 	
 	public static List<String> getLoadWorlds() {
 		return config.getStringList("Worldload");
-	}
-	
-	public static GameMode getDefaultGamemode() {
-		switch(config.getInt("Server.gamemode"))  {
-		case 0: return GameMode.SURVIVAL;
-		case 1: return GameMode.CREATIVE;
-		case 2: return GameMode.ADVENTURE;
-		case 3: return GameMode.SPECTATOR;
-		}
-		return GameMode.SURVIVAL;
 	}
 	
 	public static void getTitle(String title, String color) {

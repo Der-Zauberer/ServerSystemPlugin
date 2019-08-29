@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -50,10 +51,8 @@ public class SystemEvents implements Listener{
 		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			event.getPlayer().teleport(Config.getLobbyWorld().getSpawnLocation());
 		}
-		if(Config.hasDefaultGamemode()) {
-			event.getPlayer().setGameMode(Config.getDefaultGamemode());
-		}
 		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerJoin(event.getPlayer());
+		event.getPlayer().setGameMode(Config.getWorldGamemode(event.getPlayer().getWorld().getName()));
 		if(Config.getTitle() != null) {PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.TITLE, Config.getTitle(), Config.getTitleColor(), 20, 40);}
 		if(Config.getSubtitle() != null) {PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.SUBTITLE, Config.getSubtitle(), Config.getSubtitleColor(), 20, 40);}
 	}
@@ -126,10 +125,12 @@ public class SystemEvents implements Listener{
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
-		event.setFormat(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
-		event.setCancelled(true);
-		for(Player player : WorldGroupHandler.getWorldGroup(event.getPlayer()).getPlayers()) {
-			player.sendMessage(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
+		if (!WorldGroupHandler.getWorldGroup(event.getPlayer()).isServerGame()) {
+			event.setFormat(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
+			event.setCancelled(true);
+			for(Player player : WorldGroupHandler.getWorldGroup(event.getPlayer()).getPlayers()) {
+				player.sendMessage(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
+			}
 		}
 	}
 	
@@ -142,6 +143,7 @@ public class SystemEvents implements Listener{
 			if(vanished) {
 				PlayerVanish.vanishPlayer(event.getPlayer());
 			}
+			event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
 		}
 	}
 	
@@ -160,6 +162,13 @@ public class SystemEvents implements Listener{
 			if(!Config.hasWorldHunger(event.getEntity().getWorld().getName())) {
 				event.setCancelled(true);
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onExplotion(EntityExplodeEvent event) {
+		if(!Config.hasWorldExplosion(event.getEntity().getWorld().getName())) {
+			event.blockList().clear();
 		}
 	}
 	
