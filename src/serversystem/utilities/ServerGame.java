@@ -121,6 +121,10 @@ public class ServerGame {
 			player.setGameMode(GameMode.ADVENTURE);
 		}
 	}
+	
+	public WorldGroup getWorldgroup() {
+		return worldgroup;
+	}
 
 	public int getMinPlayers() {
 		return minPlayers;

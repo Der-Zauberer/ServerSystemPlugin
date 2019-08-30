@@ -25,6 +25,10 @@ commands:
     desciption: Set the permissions of players
     usage: /<command>
     permission: serversystem.command.permission
+  lobby:
+    desciption: Teleport player to lobby
+    usage: /<command>
+    permission: serversystem.command.lobby
   plot:
     desciption: Manage a plot
     usage: /<command> <action> [<player>]
@@ -46,6 +50,9 @@ permissions:
   serversystem.command.permission:
     description: Teleoprt player to other world
     default: false
+  serversystem.command.lobby:
+    description: Teleoprt player to lobby
+    default: true
   serversystem.command.plot:
     description: Manage a plot
     default: true

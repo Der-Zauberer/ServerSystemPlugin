@@ -2,6 +2,7 @@ package serversystem.main;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
@@ -175,7 +176,7 @@ public class SystemEvents implements Listener{
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		event.setDeathMessage("");
-		if(event.getEntity() instanceof Player) {
+		if(!WorldGroupHandler.getWorldGroup(event.getEntity()).isServerGame()) {
 			Bukkit.getScheduler().runTaskLater(ServerSystem.getInstance(), new Runnable() {
 				@Override
 				public void run() {
@@ -183,12 +184,18 @@ public class SystemEvents implements Listener{
 					ServerMessage.sendDeathMessage((Player) event.getEntity());
 				}
 			}, 10);
+		} else if(!WorldGroupHandler.getWorldGroup(event.getEntity()).getServerGame().getGametype().equals("Murder")) {
+			((CraftPlayer) event.getEntity()).getHandle().playerConnection.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
+			ServerMessage.sendDeathMessage((Player) event.getEntity());
+			event.getEntity().setGameMode(GameMode.SPECTATOR);
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
-		event.setRespawnLocation(WorldGroupHandler.getWorldGroup(event.getPlayer()).getMainWorld().getSpawnLocation());
+		if(!WorldGroupHandler.getWorldGroup(event.getPlayer()).isServerGame()) {
+			event.setRespawnLocation(WorldGroupHandler.getWorldGroup(event.getPlayer()).getMainWorld().getSpawnLocation());
+		}
 	}
 	
 	@EventHandler

@@ -9,11 +9,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import serversystem.cityadventure.CityBuild;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
+import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
 import serversystem.commands.PlotCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.utilities.PlayerTeam;
+import serversystem.utilities.ServerGame;
 import serversystem.utilities.WorldGroup;
 import serversystem.utilities.WorldGroupHandler;
 
@@ -55,6 +57,7 @@ public class ServerSystem extends JavaPlugin{
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
 		}
+		WorldGroupHandler.getWorldGroup("murder").setServerGame(new ServerGame(WorldGroupHandler.getWorldGroup("murder"), 2, 3, 2, 20, "Murder"));
 	}
 
 	private void registerEvents() {
@@ -70,6 +73,7 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("vanish").setExecutor(new VanishCommand());
 		getCommand("world").setExecutor(new WorldCommand());
 		getCommand("permission").setExecutor(new PermissionCommand());
+		getCommand("lobby").setExecutor(new LobbyCommand());
 		getCommand("plot").setExecutor(new PlotCommand());
 	}
 	
