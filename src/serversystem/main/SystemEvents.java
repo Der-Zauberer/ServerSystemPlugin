@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -152,6 +153,9 @@ public class SystemEvents implements Listener{
 	public void onDamage(EntityDamageEvent event) {
 		if(event.getEntity() instanceof Player) {
 			if(!Config.hasWorldDamage(event.getEntity().getWorld().getName())) {
+				if (event.getCause() == DamageCause.VOID) {
+					event.getEntity().teleport(event.getEntity().getWorld().getSpawnLocation());
+				}
 				event.setCancelled(true);
 			}
 		}
@@ -201,15 +205,21 @@ public class SystemEvents implements Listener{
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
 		if(event.getLine(0) != null && event.getLine(3) != null) {
-			if(event.getLine(1).equals("[World]") && Bukkit.getWorld(event.getLine(2)) != null && event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
+			if(event.getLine(1).equals("[World]") && event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
 				String labelbody = event.getLine(2);
 				event.setLine(2, "§2" + labelbody);
+				if(Bukkit.getWorld(labelbody) == null) {
+					event.setLine(2, "§4" + labelbody);
+				}
+			} else if (event.getLine(1).equals("[Command]") && event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
+				String labelbody = event.getLine(2);
+				event.setLine(2, "§2" + labelbody);
+				if(Bukkit.getServer().getPluginCommand(labelbody) != null) {
+					event.setLine(2, "§4" + labelbody);
+				}
 			} else if(!event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
 				event.setLine(1, "§4Permissions");
 				event.setLine(2, "§4required!");
-			} else if(Bukkit.getWorld(event.getLine(2)) == null) {
-				String labelbody = event.getLine(2);
-				event.setLine(2, "§4" + labelbody);
 			}
 		}
 	}
@@ -221,6 +231,9 @@ public class SystemEvents implements Listener{
 			if(sign.getLine(0) != null && sign.getLine(3) != null) {
 				if(sign.getLine(1).equals("[World]") && Bukkit.getWorld(ChatColor.stripColor(sign.getLine(2))) != null) {
 					WorldGroupHandler.teleportPlayer(event.getPlayer(), Bukkit.getWorld(ChatColor.stripColor(sign.getLine(2))));
+				}
+				if(sign.getLine(1).equals("[Command]") && Bukkit.getServer().getPluginCommand(ChatColor.stripColor(sign.getLine(2))) != null) {
+					Bukkit.getServer().dispatchCommand(event.getPlayer(), ChatColor.stripColor(sign.getLine(2)));
 				}
 			}
 		}

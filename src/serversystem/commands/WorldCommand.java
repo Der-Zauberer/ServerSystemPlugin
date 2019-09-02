@@ -54,6 +54,25 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			} else {
 				ServerMessage.sendMessage(sender, "The world " + args[1] + " is already loaded!");
 			}
+		} else if (args.length == 4 && args[0].equals("edit")) {
+			if (Bukkit.getWorld(args[1]) != null) {
+				boolean worldboolean = false;
+				if(args[3].equals("true")) {
+					worldboolean = true;
+				}
+				switch (args[2]) {
+				case "protect": Config.setWorldProtected(args[1], worldboolean); ServerMessage.sendMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+				case "pvp": Config.setWorldPVP(args[1], worldboolean); ServerMessage.sendMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+				case "damage": Config.setWorldDamage(args[1], worldboolean); ServerMessage.sendMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+				case "hunger": Config.setWorldHunger(args[1], worldboolean); ServerMessage.sendMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+				case "explosion": Config.setWorldExplosion(args[1], worldboolean); ServerMessage.sendMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+				default:
+					ServerMessage.sendMessage(sender, "The option " + args[2] + " does not exist!"); break;
+				}
+			} else {
+				ServerMessage.sendErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+			}
+			
 		} else {
 			ServerMessage.sendErrorMessage(sender, "Not enought arguments!");
 		}
@@ -68,7 +87,8 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			commands.add("teleport");
 			commands.add("create");
 			commands.add("list");
-		} else if(args.length == 2 && args[0].equals("teleport")) {
+			commands.add("edit");
+		} else if((args.length == 2 && args[0].equals("teleport")) ||  (args.length == 2 && args[0].equals("edit"))) {
 			commands.clear();
 			for(World world : Bukkit.getWorlds()) {
 				commands.add(world.getName());
@@ -80,6 +100,17 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 					commands.add(player.getName());
 				}
 			}
+		} else if(args.length == 3 && args[0].equals("edit")) {
+			commands.clear();
+			commands.add("protect");
+			commands.add("pvp");
+			commands.add("damage");
+			commands.add("hunger");
+			commands.add("explosion");
+		} else if(args.length == 4 && args[0].equals("edit")) {
+			commands.clear();
+			commands.add("true");
+			commands.add("false");
 		}
 		return commands;
 	}

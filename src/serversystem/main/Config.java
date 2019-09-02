@@ -210,7 +210,7 @@ public class Config {
 	}
 	
 	public static void addLoadWorld(String world) {
-		List<String> list = getDisabledPermission();
+		List<String> list = getLoadWorlds();
 		list.add(world);
 		config.set("Worldload", list);
 		saveConfig();

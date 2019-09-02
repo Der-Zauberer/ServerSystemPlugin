@@ -22,13 +22,10 @@ public class PlayerScoreboard {
 		objective.getScore(" §fPlayers: ").setScore(2);
 		objective.getScore("§2 ").setScore(1);
 		objective.getScore(" ").setScore(0);
-		
 		Team scoreRole = scoreboard.registerNewTeam("scRole");
 		Team scorePlayers = scoreboard.registerNewTeam("scPlayers"); 
-		
 		scoreRole.addEntry("§4 ");
 		scorePlayers.addEntry("§2 ");
-		
 	}
 	
 	public static void setMurderToPlayer(Player player) {
