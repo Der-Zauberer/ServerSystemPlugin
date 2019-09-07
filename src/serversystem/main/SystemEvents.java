@@ -40,13 +40,7 @@ public class SystemEvents implements Listener{
 		Config.addPlayer(event.getPlayer());
 		PlayerPermission.removeConfigDisablePermissions(event.getPlayer());
 		PlayerPermission.addConfigPermissions(event.getPlayer());
-		if(event.getPlayer().isOp()) {
-			event.getPlayer().setOp(false);
-			event.getPlayer().setOp(true);
-		} else {
-			event.getPlayer().setOp(true);
-			event.getPlayer().setOp(false);
-		}
+		PlayerPermission.reloadPlayerPermissions(event.getPlayer());
 		if(!Config.isJoinMessageActiv()) {
 			event.setJoinMessage("");
 		}
@@ -55,8 +49,8 @@ public class SystemEvents implements Listener{
 		}
 		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerJoin(event.getPlayer());
 		event.getPlayer().setGameMode(Config.getWorldGamemode(event.getPlayer().getWorld().getName()));
-		if(Config.getTitle() != null) {PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.TITLE, Config.getTitle(), Config.getTitleColor(), 20, 40);}
-		if(Config.getSubtitle() != null) {PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.SUBTITLE, Config.getSubtitle(), Config.getSubtitleColor(), 20, 40);}
+		if(Config.getTitle() != null) {PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.TITLE, Config.getTitle(), Config.getTitleColor(), 100);}
+		if(Config.getSubtitle() != null) {PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.SUBTITLE, Config.getSubtitle(), Config.getSubtitleColor(), 100);}
 	}
 	
 	@EventHandler

@@ -46,13 +46,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 						Config.setPlayerGroup(player, args[2]);
 						PlayerPermission.addConfigPermissions(player);
 						PlayerTeam.addRankTeam(player);
-						if(Bukkit.getPlayer(args[1]).isOp()) {
-							Bukkit.getPlayer(args[1]).setOp(false);
-							Bukkit.getPlayer(args[1]).setOp(true);
-						} else {
-							Bukkit.getPlayer(args[1]).setOp(true);
-							Bukkit.getPlayer(args[1]).setOp(false);
-						}
+						PlayerPermission.reloadPlayerPermissions(player);
 						ServerMessage.sendMessage(sender, "The player " + args[1] + " is in group " + args[2] + " now!");
 					} else {
 						ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " does not exist!");

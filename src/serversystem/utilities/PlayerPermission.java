@@ -53,5 +53,14 @@ public class PlayerPermission {
 		}
 		return list;
 	}
+	public static void reloadPlayerPermissions(Player player) {
+		if(player.isOp()) {
+			player.setOp(false);
+			player.setOp(true);
+		} else {
+			player.setOp(true);
+			player.setOp(false);
+		}
+	}
 
 }

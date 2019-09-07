@@ -14,9 +14,8 @@ import serversystem.utilities.WorldGroupHandler;
 public class PlotCommand implements CommandExecutor, TabCompleter{
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		
-		return false;
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {		
+		return true;
 	}
 	
 	@Override

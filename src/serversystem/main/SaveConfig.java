@@ -40,9 +40,9 @@ public class SaveConfig {
 		return list;
 	}
 	
-	public static void saveInventory(Player player, WorldGroup worldGroup) {
-		String configarmor = "WorldGroups." + worldGroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
-    	String configcontent = "WorldGroups." + worldGroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
+	public static void saveInventory(Player player, WorldGroup worldgroup) {
+		String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
+    	String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
 		for (int i = 0; i < player.getInventory().getArmorContents().length; i++) {
 			config.set(configarmor + "." + i, player.getInventory().getArmorContents()[i]);
 		}
@@ -53,9 +53,9 @@ public class SaveConfig {
 		saveConfig();
 	}
 	
-    public static void getInventory(Player player, WorldGroup worldGroup) {
-    	String configarmor = "WorldGroups." + worldGroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
-    	String configcontent = "WorldGroups." + worldGroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
+    public static void getInventory(Player player, WorldGroup worldgroup) {
+    	String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
+    	String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
     	player.getInventory().clear();
     	ItemStack[] content = new ItemStack[4];
         for (int i = 0; i < 4; i++) {
@@ -71,6 +71,19 @@ public class SaveConfig {
         player.getInventory().setContents(content);	
 	}
     
+    public static void saveXp(Player player, WorldGroup worldgroup) {
+    	config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Level", player.getLevel());
+    	config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Experience", player.getExp());
+    	player.setLevel(0);
+    	player.setExp(0);
+    	saveConfig();
+    }
+    
+    public static void getXp(Player player, WorldGroup worldgroup) {
+    	player.setLevel(config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Level"));
+    	player.setExp(config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Experience"));
+    }
+    
     public static void saveLocation(Player player) {
     	String path = "WorldGroups." + WorldGroupHandler.getWorldGroup(player).getName() + "." + player.getUniqueId() + ".Location";
 		config.set(path +".World", player.getLocation().getWorld().getName());
@@ -82,8 +95,8 @@ public class SaveConfig {
 		saveConfig();
     }
     
-    public static Location getLocation(Player player, WorldGroup worldGroup) {
-    	String path = "WorldGroups." + worldGroup.getName() + "." + player.getUniqueId() + ".Location";
+    public static Location getLocation(Player player, WorldGroup worldgroup) {
+    	String path = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Location";
     	if(config.getString(path + ".World") == "" || config.getString(path + ".World") == null) {
     		return null;
     	}

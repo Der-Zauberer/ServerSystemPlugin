@@ -9,18 +9,18 @@ import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 
 public class PlayerPacket {
 	
-	public static void sendTitle(Player player, EnumTitleAction titleAction, String jsonstring, int fade, int time) {
-		PacketPlayOutTitle packet = new PacketPlayOutTitle(titleAction, ChatSerializer.a(jsonstring), fade, time, fade);
+	public static void sendTitle(Player player, EnumTitleAction titleAction, String jsonstring, int time) {
+		PacketPlayOutTitle packet = new PacketPlayOutTitle(titleAction, ChatSerializer.a(jsonstring), 0, time, 0);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 	
-	public static void sendTitle(Player player, EnumTitleAction titleAction, String text, String color, int fade, int time) {
-		PacketPlayOutTitle packet = new PacketPlayOutTitle(titleAction, ChatSerializer.a("{\"text\":\"" + text +  "\",\"color\":\"" + color +  "\"}"), fade, time, fade);
+	public static void sendTitle(Player player, EnumTitleAction titleAction, String text, String color, int time) {
+		PacketPlayOutTitle packet = new PacketPlayOutTitle(titleAction, ChatSerializer.a("{\"text\":\"" + text +  "\",\"color\":\"" + color +  "\"}"), 0, time, 0);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 	
-	public static void sendTitle(Player player, EnumTitleAction titleAction, String text, String color, String bold, String italic, int fade, int time) {
-		PacketPlayOutTitle packet = new PacketPlayOutTitle(titleAction, ChatSerializer.a("{\"text\":\"" + text +  "\",\"color\":\"" + color + "\",\"bold\":\"" + bold +  "\",\"italic\":\"" + italic +  "\"}"), fade, time, fade);
+	public static void sendTitle(Player player, EnumTitleAction titleAction, String text, String color, String bold, String italic, int time) {
+		PacketPlayOutTitle packet = new PacketPlayOutTitle(titleAction, ChatSerializer.a("{\"text\":\"" + text +  "\",\"color\":\"" + color + "\",\"bold\":\"" + bold +  "\",\"italic\":\"" + italic +  "\"}"), 0, time, 0);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
 	}
 

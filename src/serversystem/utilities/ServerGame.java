@@ -66,8 +66,8 @@ public class ServerGame {
 							bossbar.setTitle(ChatColor.YELLOW + "Start in " + countdown + " Seconds");
 							if(countdown == 3) {
 								for(Player players : worldgroup.getPlayers()) {
-									PlayerPacket.sendTitle(players, EnumTitleAction.TITLE, gametype, "yellow", 0, 20);
-									PlayerPacket.sendTitle(players, EnumTitleAction.SUBTITLE, "Map: " + worldgroup.getName(),  "aqua", 0, 20);
+									PlayerPacket.sendTitle(players, EnumTitleAction.TITLE, gametype, "yellow", 20);
+									PlayerPacket.sendTitle(players, EnumTitleAction.SUBTITLE, "Map: " + worldgroup.getName(),  "aqua", 20);
 								}
 							}
 							countdown --;
@@ -119,6 +119,7 @@ public class ServerGame {
 		this.running = false;
 		for(Player player : worldgroup.getPlayers()) {
 			player.setGameMode(GameMode.ADVENTURE);
+			player.getInventory().clear();
 		}
 	}
 	
