@@ -3,7 +3,6 @@ package serversystem.main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -28,9 +27,8 @@ import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand.EnumClientCommand
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 import serversystem.utilities.PlayerPacket;
 import serversystem.utilities.PlayerPermission;
-import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.PlayerVanish;
-import serversystem.utilities.ServerMessage;
+import serversystem.utilities.ChatMessage;
 import serversystem.utilities.WorldGroupHandler;
 
 public class SystemEvents implements Listener{
@@ -72,12 +70,9 @@ public class SystemEvents implements Listener{
 			String message = "";
 			for (int i = 1; i < messagelist.length; i++) {
 				message = message + " " + messagelist[i];
+				message = message.substring(1);
 			}
-			for(World world : WorldGroupHandler.getWorldGroup(event.getPlayer()).getWorlds()) {
-				for(Player player : world.getPlayers()) {
-					player.sendMessage(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + message);
-				}
-			}
+			ChatMessage.sendPlayerChatMessage(event.getPlayer(), message);
 			return;
 		}
 		if(event.getMessage().toLowerCase().startsWith("/msg") || event.getMessage().toLowerCase().startsWith("/minecraft:msg") || event.getMessage().toLowerCase().startsWith("/tell") || event.getMessage().toLowerCase().startsWith("/minecraft:tell")){
@@ -88,8 +83,7 @@ public class SystemEvents implements Listener{
 				for (int i = 2; i < messagelist.length; i++) {
 					message = message + " " + messagelist[i];
 				}
-				Bukkit.getPlayer(messagelist[1]).sendMessage(PlayerTeam.getPlayerNameColor(event.getPlayer()) + event.getPlayer().getName() + ChatColor.WHITE + " -> " + PlayerTeam.getPlayerNameColor(Bukkit.getPlayer(messagelist[1])) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
-				event.getPlayer().sendMessage(PlayerTeam.getPlayerNameColor(event.getPlayer()) + event.getPlayer().getName() + ChatColor.WHITE + " -> " + PlayerTeam.getPlayerNameColor(Bukkit.getPlayer(messagelist[1])) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
+				ChatMessage.sendPlayerPrivateMessage(event.getPlayer(), Bukkit.getPlayer(messagelist[1]), message);
 				
 			}
 			return;
@@ -101,10 +95,9 @@ public class SystemEvents implements Listener{
 				String message = "";
 				for (int i = 5; i < messagelist.length; i++) {
 					message = message + " " + messagelist[i];
+					message = message.substring(1);
 				}
-				for(Player player : event.getPlayer().getWorld().getPlayers()) {
-					player.sendMessage(PlayerTeam.getPlayerNameColor(Bukkit.getPlayer(messagelist[2]))  + Bukkit.getPlayer(messagelist[2]).getName() + ChatColor.WHITE + ":" + message);
-				}
+				ChatMessage.sendPlayerChatMessage(Bukkit.getPlayer(messagelist[2]), message);
 			}
 			if(messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("msg") || messagelist[4].equalsIgnoreCase("minecraft:say")) && Bukkit.getPlayer(messagelist[2]) != null && Bukkit.getPlayer(messagelist[5]) != null) {
 				event.setCancelled(true);
@@ -112,8 +105,7 @@ public class SystemEvents implements Listener{
 				for (int i = 6; i < messagelist.length; i++) {
 					message = message + " " + messagelist[i];
 				}
-				Bukkit.getPlayer(messagelist[2]).sendMessage(PlayerTeam.getPlayerNameColor(Bukkit.getPlayer(messagelist[2])) + Bukkit.getPlayer(messagelist[2]).getName() + ChatColor.WHITE + " -> " + PlayerTeam.getPlayerNameColor(Bukkit.getPlayer(messagelist[5])) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
-				Bukkit.getPlayer(messagelist[5]).sendMessage(PlayerTeam.getPlayerNameColor(Bukkit.getPlayer(messagelist[2])) + Bukkit.getPlayer(messagelist[2]).getName() + ChatColor.WHITE + " -> " + PlayerTeam.getPlayerNameColor(Bukkit.getPlayer(messagelist[5])) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
+				ChatMessage.sendPlayerPrivateMessage(Bukkit.getPlayer(messagelist[2]), Bukkit.getPlayer(messagelist[5]), message);
 			}
 			return;
 		}
@@ -121,13 +113,8 @@ public class SystemEvents implements Listener{
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent event) {
-		if (!WorldGroupHandler.getWorldGroup(event.getPlayer()).isServerGame()) {
-			event.setFormat(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
-			event.setCancelled(true);
-			for(Player player : WorldGroupHandler.getWorldGroup(event.getPlayer()).getPlayers()) {
-				player.sendMessage(PlayerTeam.getPlayerNameColor(event.getPlayer())  + event.getPlayer().getName() + ChatColor.WHITE + ": " + event.getMessage());
-			}
-		}
+		event.setCancelled(true);
+		ChatMessage.sendPlayerChatMessage(event.getPlayer(), event.getMessage());
 	}
 	
 	@EventHandler
@@ -179,12 +166,12 @@ public class SystemEvents implements Listener{
 				@Override
 				public void run() {
 					((CraftPlayer) event.getEntity()).getHandle().playerConnection.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
-					ServerMessage.sendDeathMessage((Player) event.getEntity());
+					ChatMessage.sendPlayerDeathMessage((Player) event.getEntity());
 				}
 			}, 10);
 		} else if(!WorldGroupHandler.getWorldGroup(event.getEntity()).getServerGame().getGametype().equals("Murder")) {
 			((CraftPlayer) event.getEntity()).getHandle().playerConnection.a(new PacketPlayInClientCommand(EnumClientCommand.PERFORM_RESPAWN));
-			ServerMessage.sendDeathMessage((Player) event.getEntity());
+			ChatMessage.sendPlayerDeathMessage((Player) event.getEntity());
 			event.getEntity().setGameMode(GameMode.SPECTATOR);
 		}
 	}

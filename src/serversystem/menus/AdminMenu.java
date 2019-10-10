@@ -4,9 +4,9 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
-import serversystem.utilities.InventoryMenu;
+import serversystem.utilities.PlayerInventory;
 
-public class AdminMenu extends InventoryMenu{
+public class AdminMenu extends PlayerInventory{
 
 	public AdminMenu(Player player) {
 		super(player, 36, "Admin");

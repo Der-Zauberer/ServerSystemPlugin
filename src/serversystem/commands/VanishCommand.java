@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.utilities.PlayerVanish;
-import serversystem.utilities.ServerMessage;
+import serversystem.utilities.ChatMessage;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
 	
@@ -19,22 +19,22 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0) {
 			PlayerVanish.vanishPlayer((Player) sender);
 			if(PlayerVanish.isPlayerVanished((Player) sender)) {
-				ServerMessage.sendMessage(sender, "You are vanished now!");
+				ChatMessage.sendServerMessage(sender, "You are vanished now!");
 			} else {
-				ServerMessage.sendMessage(sender, "You are no longer vanished!");
+				ChatMessage.sendServerMessage(sender, "You are no longer vanished!");
 			}
 		}else if(Bukkit.getPlayer(args[0]) != null) {
 			PlayerVanish.vanishPlayer(Bukkit.getServer().getPlayer(args[0]), (Player) sender);
 			
 			if(PlayerVanish.isPlayerVanished(Bukkit.getPlayer(args[0]))) {
-			 	if(sender != Bukkit.getServer().getPlayer(args[0])) {ServerMessage.sendMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " is vanished now!");} 
-				ServerMessage.sendMessage(Bukkit.getServer().getPlayer(args[0]), "You are vanished now!");
+			 	if(sender != Bukkit.getServer().getPlayer(args[0])) {ChatMessage.sendServerMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " is vanished now!");} 
+				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You are vanished now!");
 			} else {
-				if(sender != Bukkit.getServer().getPlayer(args[0])) {ServerMessage.sendMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " is no longer vanished!");} 
-				ServerMessage.sendMessage(Bukkit.getServer().getPlayer(args[0]), "You are no longer vanished!");
+				if(sender != Bukkit.getServer().getPlayer(args[0])) {ChatMessage.sendServerMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " is no longer vanished!");} 
+				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You are no longer vanished!");
 			}
 		} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
-			ServerMessage.sendErrorMessage(sender, "The player " + args[0] + " is not online!");
+			ChatMessage.sendServerErrorMessage(sender, "The player " + args[0] + " is not online!");
 		}
 		return true;
 	}

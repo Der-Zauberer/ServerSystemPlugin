@@ -12,7 +12,7 @@ import serversystem.main.Config;
 import serversystem.utilities.PlayerPermission;
 import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.PlayerVanish;
-import serversystem.utilities.ServerMessage;
+import serversystem.utilities.ChatMessage;
 
 public class PermissionCommand implements CommandExecutor, TabCompleter{
 
@@ -22,17 +22,17 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 			if(args[1].equals("add") && args[2] != null) {
 				if(!Config.getSection("Groups").contains(args[2])) {
 					Config.addGroup(args[2]);
-					ServerMessage.sendMessage(sender, "The group " + args[2] + " is added!");
+					ChatMessage.sendServerMessage(sender, "The group " + args[2] + " is added!");
 				} else {
-					ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " is already added!");
+					ChatMessage.sendServerErrorMessage(sender, "The group " + args[2] + " is already added!");
 				}
 			}
 			if(args[1].equals("remove") && args[2] != null) {
 				if (Config.getSection("Groups").contains(args[2])) {
 					Config.removeGroup(args[2]);
-					ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " is removed!");
+					ChatMessage.sendServerErrorMessage(sender, "The group " + args[2] + " is removed!");
 				} else {
-					ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " does not exist!");
+					ChatMessage.sendServerErrorMessage(sender, "The group " + args[2] + " does not exist!");
 				}
 				
 			}
@@ -47,12 +47,12 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 						PlayerPermission.addConfigPermissions(player);
 						PlayerTeam.addRankTeam(player);
 						PlayerPermission.reloadPlayerPermissions(player);
-						ServerMessage.sendMessage(sender, "The player " + args[1] + " is in group " + args[2] + " now!");
+						ChatMessage.sendServerMessage(sender, "The player " + args[1] + " is in group " + args[2] + " now!");
 					} else {
-						ServerMessage.sendErrorMessage(sender, "The group " + args[2] + " does not exist!");
+						ChatMessage.sendServerErrorMessage(sender, "The group " + args[2] + " does not exist!");
 					}
 				} else {
-					ServerMessage.sendErrorMessage(sender, "The player " + args[0] + " is not online!");
+					ChatMessage.sendServerErrorMessage(sender, "The player " + args[0] + " is not online!");
 				}
 				
 			}

@@ -12,12 +12,12 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class InventoryMenu implements Listener{
+public class PlayerInventory implements Listener{
 	
 	private Inventory inventory;
 	private Player player;
 	
-	public InventoryMenu(Player player, int number,  String name) {
+	public PlayerInventory(Player player, int number,  String name) {
 		this.player = player;
 		inventory = Bukkit.createInventory(player, number, name);
 	}

@@ -15,7 +15,6 @@ import serversystem.commands.PlotCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.utilities.PlayerTeam;
-import serversystem.utilities.ServerGame;
 import serversystem.utilities.WorldGroup;
 import serversystem.utilities.WorldGroupHandler;
 
@@ -57,7 +56,7 @@ public class ServerSystem extends JavaPlugin{
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
 		}
-		WorldGroupHandler.getWorldGroup("murder").setServerGame(new ServerGame(WorldGroupHandler.getWorldGroup("murder"), 2, 3, 2, 20, "Murder"));
+		Bukkit.getWorld("world").setMonsterSpawnLimit(0);
 	}
 
 	private void registerEvents() {

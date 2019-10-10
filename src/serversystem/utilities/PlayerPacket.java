@@ -1,5 +1,7 @@
 package serversystem.utilities;
 
+import java.util.ArrayList;
+
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -22,6 +24,24 @@ public class PlayerPacket {
 	public static void sendTitle(Player player, EnumTitleAction titleAction, String text, String color, String bold, String italic, int time) {
 		PacketPlayOutTitle packet = new PacketPlayOutTitle(titleAction, ChatSerializer.a("{\"text\":\"" + text +  "\",\"color\":\"" + color + "\",\"bold\":\"" + bold +  "\",\"italic\":\"" + italic +  "\"}"), 0, time, 0);
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+	}
+	
+	public static void sendTitle(ArrayList<Player> players, EnumTitleAction titleAction, String jsonstring, int time) {
+		for (Player player : players) {
+			sendTitle(player, titleAction, jsonstring, time);
+		}
+	}
+	
+	public static void sendTitle(ArrayList<Player> players, EnumTitleAction titleAction, String text, String color, int time) {
+		for (Player player : players) {
+			sendTitle(player, titleAction, text, color, time);
+		}
+	}
+	
+	public static void sendTitle(ArrayList<Player> players, EnumTitleAction titleAction, String text, String color, String bold, String italic, int time) {
+		for (Player player : players) {
+			sendTitle(player, titleAction, text, color, bold, italic, time);
+		}
 	}
 
 }
