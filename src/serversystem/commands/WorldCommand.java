@@ -54,25 +54,40 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			} else {
 				ChatMessage.sendServerMessage(sender, "The world " + args[1] + " is already loaded!");
 			}
-		} else if (args.length == 4 && args[0].equals("edit")) {
-			if (Bukkit.getWorld(args[1]) != null) {
-				boolean worldboolean = false;
-				if(args[3].equals("true")) {
-					worldboolean = true;
-				}
-				switch (args[2]) {
-				case "protect": Config.setWorldProtected(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
-				case "pvp": Config.setWorldPVP(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
-				case "damage": Config.setWorldDamage(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
-				case "hunger": Config.setWorldHunger(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
-				case "explosion": Config.setWorldExplosion(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
-				default:
-					ChatMessage.sendServerMessage(sender, "The option " + args[2] + " does not exist!"); break;
+		} else if ((args.length == 3 || args.length == 4) && args[0].equals("edit")) {
+			if(args.length == 3) {
+				if (Bukkit.getWorld(args[1]) != null) {
+					switch (args[2]) {
+					case "protect": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.isWorldProtected(args[1]) + " for the world " + args[1] + "!"); break;
+					case "pvp": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldPVP(args[1]) + " for the world " + args[1] + "!"); break;
+					case "damage": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldDamage(args[1]) + " for the world " + args[1] + "!"); break;
+					case "hunger": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " +Config.hasWorldHunger(args[1]) + " for the world " + args[1] + "!"); break;
+					case "explosion": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldExplosion(args[1]) + " for the world " + args[1] + "!"); break;
+					default:
+						ChatMessage.sendServerMessage(sender, "The option " + args[2] + " does not exist!"); break;
+					}
+				} else {
+					ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
 				}
 			} else {
-				ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+				if (Bukkit.getWorld(args[1]) != null) {
+					boolean worldboolean = false;
+					if(args[3].equals("true")) {
+						worldboolean = true;
+					}
+					switch (args[2]) {
+					case "protect": Config.setWorldProtected(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+					case "pvp": Config.setWorldPVP(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+					case "damage": Config.setWorldDamage(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+					case "hunger": Config.setWorldHunger(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+					case "explosion": Config.setWorldExplosion(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+					default:
+						ChatMessage.sendServerMessage(sender, "The option " + args[2] + " does not exist!"); break;
+					}
+				} else {
+					ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+				}
 			}
-			
 		} else {
 			ChatMessage.sendServerErrorMessage(sender, "Not enought arguments!");
 		}

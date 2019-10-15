@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -82,6 +83,30 @@ public class SaveConfig {
     public static void getXp(Player player, WorldGroup worldgroup) {
     	player.setLevel(config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Level"));
     	player.setExp(config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Experience"));
+    }
+    
+    public static void saveGamemode(Player player, WorldGroup worldgroup) {
+    	switch (player.getGameMode()) {
+		case SURVIVAL: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 0);	break;
+		case CREATIVE: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 1);	break;
+		case ADVENTURE: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 2); break;
+		case SPECTATOR: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 3); break;
+		default: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 0); break;
+		}
+    }
+    
+    public static void getGamemode(Player player, WorldGroup worldgroup) {
+    	if (getSection("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId()).contains("Gamemode")) {
+    		switch (config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode")) {
+        	case 0: player.setGameMode(GameMode.SURVIVAL); break;
+        	case 1: player.setGameMode(GameMode.CREATIVE); break;
+        	case 2: player.setGameMode(GameMode.ADVENTURE); break;
+        	case 3: player.setGameMode(GameMode.SPECTATOR); break;
+        	default: player.setGameMode(GameMode.ADVENTURE);
+        	}
+    	} else {
+    		player.setGameMode(Config.getWorldGamemode(player.getWorld().getName()));
+    	}
     }
     
     public static void saveLocation(Player player) {

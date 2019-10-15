@@ -22,13 +22,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
 import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand;
 import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand.EnumClientCommand;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
+import serversystem.utilities.ChatMessage;
 import serversystem.utilities.PlayerPacket;
 import serversystem.utilities.PlayerPermission;
 import serversystem.utilities.PlayerVanish;
-import serversystem.utilities.ChatMessage;
 import serversystem.utilities.WorldGroupHandler;
 
 public class SystemEvents implements Listener{
@@ -67,23 +68,14 @@ public class SystemEvents implements Listener{
 		if(event.getMessage().toLowerCase().startsWith("/say") || event.getMessage().toLowerCase().startsWith("/minecraft:say") || event.getMessage().toLowerCase().startsWith("/me") || event.getMessage().toLowerCase().startsWith("/minecraft:me")){
 			event.setCancelled(true);
 			String[] messagelist = event.getMessage().split(" ");
-			String message = "";
-			for (int i = 1; i < messagelist.length; i++) {
-				message = message + " " + messagelist[i];
-				message = message.substring(1);
-			}
-			ChatMessage.sendPlayerChatMessage(event.getPlayer(), message);
+			ChatMessage.sendPlayerChatMessage(event.getPlayer(), getStringMessage(messagelist, 1));
 			return;
 		}
 		if(event.getMessage().toLowerCase().startsWith("/msg") || event.getMessage().toLowerCase().startsWith("/minecraft:msg") || event.getMessage().toLowerCase().startsWith("/tell") || event.getMessage().toLowerCase().startsWith("/minecraft:tell")){
 			String[] messagelist = event.getMessage().split(" ");
-			String message = "";
 			if(Bukkit.getPlayer(messagelist[1]) != null) {
 				event.setCancelled(true);
-				for (int i = 2; i < messagelist.length; i++) {
-					message = message + " " + messagelist[i];
-				}
-				ChatMessage.sendPlayerPrivateMessage(event.getPlayer(), Bukkit.getPlayer(messagelist[1]), message);
+				ChatMessage.sendPlayerPrivateMessage(event.getPlayer(), Bukkit.getPlayer(messagelist[1]), getStringMessage(messagelist, 2));
 				
 			}
 			return;
@@ -92,20 +84,11 @@ public class SystemEvents implements Listener{
 			String[] messagelist = event.getMessage().split(" ");
 			if(messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("say") || messagelist[4].equalsIgnoreCase("minecraft:say") || messagelist[4].equalsIgnoreCase("me") || messagelist[4].equalsIgnoreCase("minecraft:me")) && Bukkit.getPlayer(messagelist[2]) != null) {
 				event.setCancelled(true);
-				String message = "";
-				for (int i = 5; i < messagelist.length; i++) {
-					message = message + " " + messagelist[i];
-					message = message.substring(1);
-				}
-				ChatMessage.sendPlayerChatMessage(Bukkit.getPlayer(messagelist[2]), message);
+				ChatMessage.sendPlayerChatMessage(Bukkit.getPlayer(messagelist[2]), getStringMessage(messagelist, 5));
 			}
 			if(messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("msg") || messagelist[4].equalsIgnoreCase("minecraft:say")) && Bukkit.getPlayer(messagelist[2]) != null && Bukkit.getPlayer(messagelist[5]) != null) {
 				event.setCancelled(true);
-				String message = "";
-				for (int i = 6; i < messagelist.length; i++) {
-					message = message + " " + messagelist[i];
-				}
-				ChatMessage.sendPlayerPrivateMessage(Bukkit.getPlayer(messagelist[2]), Bukkit.getPlayer(messagelist[5]), message);
+				ChatMessage.sendPlayerPrivateMessage(Bukkit.getPlayer(messagelist[2]), Bukkit.getPlayer(messagelist[5]), getStringMessage(messagelist, 6));
 			}
 			return;
 		}
@@ -122,11 +105,11 @@ public class SystemEvents implements Listener{
 		if(event.getPlayer().getWorld() != event.getTo().getWorld()) {
 			boolean vanished = PlayerVanish.isPlayerVanished(event.getPlayer());
 			WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerLeave(event.getPlayer());
+			event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
 			WorldGroupHandler.getWorldGroup(event.getTo().getWorld()).onPlayerJoin(event.getPlayer());
 			if(vanished) {
 				PlayerVanish.vanishPlayer(event.getPlayer());
 			}
-			event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
 		}
 	}
 	
@@ -218,6 +201,15 @@ public class SystemEvents implements Listener{
 				}
 			}
 		}
+	}
+	
+	private String getStringMessage(String[] messagelist, int indexOfFirstMessgae) {
+		String message = "";
+		for (int i = indexOfFirstMessgae; i < messagelist.length; i++) {
+			message = message + " " + messagelist[i];
+			message = message.substring(1);
+		}
+		return message;
 	}
 	
 }

@@ -185,8 +185,7 @@ public class Config {
 		case CREATIVE: config.set("Worlds." + world + ".gamemode", 1); break;
 		case ADVENTURE: config.set("Worlds." + world + ".gamemode", 2); break;
 		case SPECTATOR: config.set("Worlds." + world + ".gamemode", 3); break;
-		default:
-			break;
+		default: break;
 		}
 		saveConfig();
 	}

@@ -50,6 +50,7 @@ public class WorldGroup {
 		if(playerListObjective != null) {playerListObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);}
 		SaveConfig.getInventory(player, this);
 		SaveConfig.getXp(player, this);
+		SaveConfig.getGamemode(player, this);
 		PlayerTeam.addRankTeam(player);
 	}
 	
@@ -65,6 +66,7 @@ public class WorldGroup {
 		}
 		SaveConfig.saveInventory(player, this);
 		SaveConfig.saveXp(player, this);
+		SaveConfig.saveGamemode(player, this);
 		if (!isServerGame()) {
 			SaveConfig.saveLocation(player);
 		}
