@@ -181,10 +181,10 @@ public class Config {
 	
 	public static void setWorldGamemode(World world, GameMode gamemode) {
 		switch (gamemode) {
-		case SURVIVAL: config.set("Worlds." + world + ".gamemode", 0); break;
-		case CREATIVE: config.set("Worlds." + world + ".gamemode", 1); break;
-		case ADVENTURE: config.set("Worlds." + world + ".gamemode", 2); break;
-		case SPECTATOR: config.set("Worlds." + world + ".gamemode", 3); break;
+		case SURVIVAL: config.set("Worlds." + world.getName() + ".gamemode", 0); break;
+		case CREATIVE: config.set("Worlds." + world.getName() + ".gamemode", 1); break;
+		case ADVENTURE: config.set("Worlds." + world.getName() + ".gamemode", 2); break;
+		case SPECTATOR: config.set("Worlds." + world.getName() + ".gamemode", 3); break;
 		default: break;
 		}
 		saveConfig();
