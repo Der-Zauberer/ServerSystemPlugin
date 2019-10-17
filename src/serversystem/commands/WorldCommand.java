@@ -89,10 +89,10 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						}
 					} else {
 						switch (args[3]) {
-						case "survival": Config.setWorldGamemode(Bukkit.getWorld(args[1]), GameMode.SURVIVAL); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to survival for the world " + args[1] + "!"); break;
-						case "creative": Config.setWorldGamemode(Bukkit.getWorld(args[1]), GameMode.CREATIVE); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to creative for the world " + args[1] + "!"); break;
-						case "adventure": Config.setWorldGamemode(Bukkit.getWorld(args[1]), GameMode.ADVENTURE); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to adventure for the world " + args[1] + "!"); break;
-						case "spectator": Config.setWorldGamemode(Bukkit.getWorld(args[1]), GameMode.SPECTATOR); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to spectator for the world " + args[1] + "!"); break;
+						case "survival": Config.setWorldGamemode(args[1], GameMode.SURVIVAL); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to survival for the world " + args[1] + "!"); break;
+						case "creative": Config.setWorldGamemode(args[1], GameMode.CREATIVE); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to creative for the world " + args[1] + "!"); break;
+						case "adventure": Config.setWorldGamemode(args[1], GameMode.ADVENTURE); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to adventure for the world " + args[1] + "!"); break;
+						case "spectator": Config.setWorldGamemode(args[1], GameMode.SPECTATOR); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to spectator for the world " + args[1] + "!"); break;
 						default:
 							ChatMessage.sendServerMessage(sender, "The gamemode " + args[2] + " does not exist!"); break;
 						}

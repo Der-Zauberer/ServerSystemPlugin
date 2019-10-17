@@ -14,7 +14,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import serversystem.cityadventure.CityBuildPlot;
 import serversystem.utilities.WorldGroup;
 import serversystem.utilities.WorldGroupHandler;
@@ -54,7 +53,7 @@ public class SaveConfig {
 		saveConfig();
 	}
 	
-    public static void getInventory(Player player, WorldGroup worldgroup) {
+    public static void loadInventory(Player player, WorldGroup worldgroup) {
     	String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
     	String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
     	player.getInventory().clear();
@@ -80,7 +79,7 @@ public class SaveConfig {
     	saveConfig();
     }
     
-    public static void getXp(Player player, WorldGroup worldgroup) {
+    public static void loadXp(Player player, WorldGroup worldgroup) {
     	player.setLevel(config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Level"));
     	player.setExp(config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Experience"));
     }
@@ -95,7 +94,7 @@ public class SaveConfig {
 		}
     }
     
-    public static void getGamemode(Player player, WorldGroup worldgroup) {
+    public static void loadGamemode(Player player, WorldGroup worldgroup) {
     	if (getSection("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId()).contains("Gamemode")) {
     		switch (config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode")) {
         	case 0: player.setGameMode(GameMode.SURVIVAL); break;
@@ -120,7 +119,7 @@ public class SaveConfig {
 		saveConfig();
     }
     
-    public static Location getLocation(Player player, WorldGroup worldgroup) {
+    public static Location loadLocation(Player player, WorldGroup worldgroup) {
     	String path = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Location";
     	if(config.getString(path + ".World") == "" || config.getString(path + ".World") == null) {
     		return null;

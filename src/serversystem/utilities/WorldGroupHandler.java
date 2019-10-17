@@ -18,8 +18,8 @@ public class WorldGroupHandler {
 				player.teleport(WorldGroupHandler.getWorldGroup(world).getMainWorld().getSpawnLocation());
 			}
 		} else {
-			if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.getLocation(player, WorldGroupHandler.getWorldGroup(world)) != null) {
-				player.teleport(SaveConfig.getLocation(player, WorldGroupHandler.getWorldGroup(world)));
+			if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.loadLocation(player, WorldGroupHandler.getWorldGroup(world)) != null) {
+				player.teleport(SaveConfig.loadLocation(player, WorldGroupHandler.getWorldGroup(world)));
 			} else {
 				player.teleport(world.getSpawnLocation());
 			}

@@ -48,9 +48,9 @@ public class WorldGroup {
 		if(belowNameObjective != null) {belowNameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);}
 		if(sidebarObjective != null) {sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);}
 		if(playerListObjective != null) {playerListObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);}
-		SaveConfig.getInventory(player, this);
-		SaveConfig.getXp(player, this);
-		SaveConfig.getGamemode(player, this);
+		SaveConfig.loadInventory(player, this);
+		SaveConfig.loadXp(player, this);
+		SaveConfig.loadGamemode(player, this);
 		PlayerTeam.addRankTeam(player);
 	}
 	

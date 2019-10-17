@@ -33,10 +33,10 @@ public class AdminMenu extends PlayerInventory{
 	
 	public void openServerSettings() {
 		clear();
-		addItem("JoinMessage", Material.OAK_SIGN, 0);
-		addItem("LeaveMessage", Material.OAK_SIGN, 1);
-		addItem("DefaultGamemode", Material.IRON_PICKAXE, 2);
-		addItem("Gamemode", Material.IRON_PICKAXE, 3);
+		addItem("JoinMessage", Material.OAK_SIGN, 10);
+		addItem("LeaveMessage", Material.OAK_SIGN, 12);
+		addItem("DefaultGamemode", Material.IRON_PICKAXE, 14);
+		addItem("Gamemode", Material.IRON_PICKAXE, 16);
 	}
 
 }
