@@ -6,11 +6,11 @@ api-version: 1.14
  
 commands:
   admin:
-    desciption: Open the admin inventory
+    desciption: Open the admin menu
     usage: /<command>
     permission: serversystem.command.admin
   build:
-    desciption: Allow the player to build
+    desciption: Allow the player to build in protected worlds
     usage: /<command> [<player>]
     permission: serversystem.command.build
   vanish:
@@ -18,12 +18,12 @@ commands:
     usage: /<command> [<player>]
     permission: serversystem.command.vanish
   world:
-    desciption: Teleoprt player to an other world
+    desciption: Teleoprt player to an other world or edit an other world
     usage: /<command> [<word>] [<player>]
-    permission: serversystem.command.word
+    permission: serversystem.command.world
   permission:
-    desciption: Set the permissions of players
-    usage: /<command>
+    desciption: Set the permissions of a player
+    usage: /<command> <player> [<player>] <group> [<permissiongroup>]
     permission: serversystem.command.permission
   lobby:
     desciption: Teleport player to lobby
@@ -39,19 +39,19 @@ permissions:
     description: Open the admin inventory
     default: op
   serversystem.command.build:
-    description: Allow the player to build
+    description: Allow the player to build in protected worlds
     default: op
   serversystem.command.vanish:
     description: Allow the player to vanish
     default: op
   serversystem.command.world:
-    description: Teleoprt player to other world
+    description: Teleoprt player to other teleoprt player to an other world or edit an other world
     default: op
   serversystem.command.permission:
-    description: Teleoprt player to other world
+    description: Set the permissions of a player
     default: false
   serversystem.command.lobby:
-    description: Teleoprt player to lobby
+    description: Teleport player to lobby
     default: true
   serversystem.command.plot:
     description: Manage a plot
@@ -68,7 +68,7 @@ permissions:
   serversystem.rank.supporter:
     description: Display Supporter Prefix
     default: false
-  serversystem.rank.team:
+  serversystem.rank.:
     description: Display Team Prefix
     default: false
   serversystem.rank.operator:
