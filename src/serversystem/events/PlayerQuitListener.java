@@ -3,9 +3,10 @@ package serversystem.events;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import serversystem.handler.WorldGroupHandler;
 import serversystem.main.Config;
 import serversystem.utilities.PlayerVanish;
-import serversystem.utilities.WorldGroupHandler;
 
 public class PlayerQuitListener implements Listener {
 	

@@ -4,10 +4,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
+import serversystem.handler.WorldGroupHandler;
 import serversystem.main.Config;
 import serversystem.utilities.PlayerPacket;
 import serversystem.utilities.PlayerPermission;
-import serversystem.utilities.WorldGroupHandler;
 
 public class PlayerJoinListener implements Listener {
 	

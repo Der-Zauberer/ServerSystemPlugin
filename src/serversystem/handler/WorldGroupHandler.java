@@ -1,10 +1,11 @@
-package serversystem.utilities;
+package serversystem.handler;
 
 import java.util.ArrayList;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import serversystem.main.Config;
 import serversystem.main.SaveConfig;
+import serversystem.utilities.WorldGroup;
 
 public class WorldGroupHandler {
 	

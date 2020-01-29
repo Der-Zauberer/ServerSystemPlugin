@@ -11,6 +11,7 @@ public class ServerArea {
 	
 	public ServerArea(Location location1, Location location2) {
 		id = numberOfAreas;
+		numberOfAreas++;
 		location = new Location[2];
 		location[0] = location1;
 		location[1] = location2;

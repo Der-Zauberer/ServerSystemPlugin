@@ -9,9 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand;
 import net.minecraft.server.v1_14_R1.PacketPlayInClientCommand.EnumClientCommand;
+import serversystem.handler.WorldGroupHandler;
 import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatMessage;
-import serversystem.utilities.WorldGroupHandler;
 
 public class PlayerDeathListener implements Listener {
 	

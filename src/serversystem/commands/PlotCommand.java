@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import serversystem.utilities.WorldGroupHandler;
+import serversystem.handler.WorldGroupHandler;
 
 public class PlotCommand implements CommandExecutor, TabCompleter{
 

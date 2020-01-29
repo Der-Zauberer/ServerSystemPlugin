@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import serversystem.handler.WorldGroupHandler;
+
 public class ChatMessage {
 	
 	private static ChatColor messagecolor = ChatColor.YELLOW;

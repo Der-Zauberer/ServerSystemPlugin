@@ -26,9 +26,9 @@ import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
 import serversystem.events.SignChangeListener;
+import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.WorldGroup;
-import serversystem.utilities.WorldGroupHandler;
 
 public class ServerSystem extends JavaPlugin{
 	
