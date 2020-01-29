@@ -14,6 +14,18 @@ import serversystem.commands.PermissionCommand;
 import serversystem.commands.PlotCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WorldCommand;
+import serversystem.events.ChatListener;
+import serversystem.events.CommandPreprocessListener;
+import serversystem.events.EntityDamageListener;
+import serversystem.events.ExplotionListener;
+import serversystem.events.HungerListener;
+import serversystem.events.PlayerDeathListener;
+import serversystem.events.PlayerInteractListener;
+import serversystem.events.PlayerJoinListener;
+import serversystem.events.PlayerQuitListener;
+import serversystem.events.PlayerRespawnListener;
+import serversystem.events.PlayerTeleportListener;
+import serversystem.events.SignChangeListener;
 import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.WorldGroup;
 import serversystem.utilities.WorldGroupHandler;
@@ -60,7 +72,19 @@ public class ServerSystem extends JavaPlugin{
 	}
 
 	private void registerEvents() {
-		Bukkit.getPluginManager().registerEvents(new SystemEvents(), this);
+		Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
+		Bukkit.getPluginManager().registerEvents(new CommandPreprocessListener(), this);
+		Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
+		Bukkit.getPluginManager().registerEvents(new ExplotionListener(), this);
+		Bukkit.getPluginManager().registerEvents(new HungerListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
+		Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
+	
 		Bukkit.getPluginManager().registerEvents(new AdminCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);

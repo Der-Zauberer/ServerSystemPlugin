@@ -12,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import serversystem.main.Config;
 import serversystem.utilities.PlayerBuildMode;
 import serversystem.utilities.PlayerVanish;
@@ -77,4 +79,31 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 			}
 		}
 	}
+	
+	@EventHandler
+	public void onHangingBreak(HangingBreakByEntityEvent event) {
+		if(event.getEntity() instanceof Player) {
+			if(Config.isWorldProtected(event.getEntity().getWorld().getName())) {
+				if(!PlayerBuildMode.isPlayerBuildmode(((Player) event.getEntity()))) {
+					event.setCancelled(true);
+				}
+			}
+		} else {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+    public void onThrow(ProjectileLaunchEvent event) {
+		if(event.getEntity() instanceof Player) {
+			if(Config.isWorldProtected(event.getEntity().getWorld().getName())) {
+				if(!PlayerBuildMode.isPlayerBuildmode(((Player) event.getEntity()))) {
+					event.setCancelled(true);
+				}
+			}
+		} else {
+			event.setCancelled(true);
+		}
+    }
+	
 }
