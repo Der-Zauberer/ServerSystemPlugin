@@ -84,8 +84,7 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
 		Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
-	
-		Bukkit.getPluginManager().registerEvents(new AdminCommand(), this);
+		
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
 	}

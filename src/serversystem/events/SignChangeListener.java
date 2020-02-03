@@ -25,23 +25,6 @@ public class SignChangeListener implements Listener {
 				}
 				
 			}	
-			
-//			if(event.getLine(1).equals("[World]") && event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
-//				String labelbody = event.getLine(2);
-//				event.setLine(2, "§2" + labelbody);
-//				if(Bukkit.getWorld(labelbody) == null) {
-//					event.setLine(2, "§4" + labelbody);
-//				}
-//			} else if (event.getLine(1).equals("[Command]") && event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
-//				String labelbody = event.getLine(2);
-//				event.setLine(2, "§2" + labelbody);
-//				if(Bukkit.getServer().getPluginCommand(labelbody) != null) {
-//					event.setLine(2, "§4" + labelbody);
-//				}
-//			} else if(!event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
-//				event.setLine(1, "§4Permissions");
-//				event.setLine(2, "§4required!");
-//			}
 		}
 	}
 
