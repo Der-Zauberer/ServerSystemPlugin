@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import serversystem.main.Config;
 import serversystem.utilities.PlayerInventory;
 
 public class AdminMenu extends PlayerInventory{
@@ -40,6 +42,8 @@ public class AdminMenu extends PlayerInventory{
 		setItem(createItem("LeaveMessage", Material.OAK_SIGN), 12);
 		setItem(createItem("DefaultGamemode", Material.IRON_PICKAXE), 14);
 		setItem(createItem("Gamemode", Material.IRON_PICKAXE), 16);
+		setItem(createBooleanItem("JoinMessage", Config.isJoinMessageActiv()), 20);
+		setItem(createBooleanItem("LeaveMessage", Config.isLeaveMessageActiv()), 20);
 	}
 	
 	@Override

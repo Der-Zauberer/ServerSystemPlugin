@@ -11,6 +11,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.utilities.PlayerVanish;
 import serversystem.utilities.ChatMessage;
+import serversystem.utilities.ChatMessage.ErrorMessage;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
 	
@@ -34,7 +35,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You are no longer vanished!");
 			}
 		} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
-			ChatMessage.sendServerErrorMessage(sender, "The player " + args[0] + " is not online!");
+			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
 		return true;
 	}

@@ -1,6 +1,6 @@
 main: serversystem.main.ServerSystem
 name: ServerSystem
-version: 1.1
+version: 1.2
 author: Der_Zauberer
 api-version: 1.14
  
@@ -33,6 +33,14 @@ commands:
     desciption: Manage a plot
     usage: /<command> <action> [<player>]
     permission: serversystem.command.plot
+  enderchest:
+    desciption: Open the enderchest of a player
+    usage: /<command> [<player>]
+    permission: serversystem.command.enderchest
+  inventory:
+    desciption: Open the inventory of a player
+    usage: /<command> [<player>]
+    permission: serversystem.command.inventory
     
 permissions:
   serversystem.command.admin:
@@ -56,6 +64,12 @@ permissions:
   serversystem.command.plot:
     description: Manage a plot
     default: true
+  serversystem.command.enderchest:
+    desciption: Open the enderchest of a player
+    default: op
+  serversystem.command.inventory:
+    desciption: Open the inventory of a player
+    default: op
   serversystem.rank.admin:
     description: Display Admin Prefix
     default: false

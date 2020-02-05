@@ -9,6 +9,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import serversystem.cityadventure.CityBuild;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
+import serversystem.commands.EnderchestCommand;
+import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
 import serversystem.commands.PlotCommand;
@@ -97,6 +99,8 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("permission").setExecutor(new PermissionCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());
 		getCommand("plot").setExecutor(new PlotCommand());
+		getCommand("enderchest").setExecutor(new EnderchestCommand());
+		getCommand("inventory").setExecutor(new InventoryCommand());
 	}
 	
 	private void registerTeams() {

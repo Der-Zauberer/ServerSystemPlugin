@@ -39,17 +39,17 @@ public class PlayerInventory {
 		return itemstack;
 	}
 	
-	public ItemStack createBooleanItem(boolean defaults) {
+	public ItemStack createBooleanItem(String name, boolean defaults) {
 		ItemStack itemstack;
 		ItemMeta itemmeta;
 		if(defaults) {
 			itemstack = new ItemStack(Material.GREEN_DYE);
 			itemmeta = itemstack.getItemMeta();
-			itemmeta.setDisplayName("Boolean: True");
+			itemmeta.setDisplayName(name + ": True");
 		} else {
 			itemstack = new ItemStack(Material.RED_DYE);
 			itemmeta = itemstack.getItemMeta();
-			itemmeta.setDisplayName("Boolean: False");
+			itemmeta.setDisplayName(name + ": False");
 		}
 		itemstack.setItemMeta(itemmeta);
 		return itemstack;

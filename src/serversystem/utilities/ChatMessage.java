@@ -13,6 +13,8 @@ public class ChatMessage {
 	private static ChatColor errorcolor = ChatColor.RED;
 	private static String servername = ChatColor.YELLOW + "[Server]";
 	
+	public static enum ErrorMessage{ONLYCONSOLE, ONLYPLAYER, NOPERMISSION, PLAYERNOTONLINE}
+	
 	public static void sendServerMessage(Player player, String message) {
 		player.sendMessage(servername + messagecolor + " " + message);
 	}
@@ -27,6 +29,26 @@ public class ChatMessage {
 	
 	public static void sendServerErrorMessage(CommandSender sender, String message) {
 		((Player) sender).sendMessage(servername + errorcolor + " " + message);
+	}
+	
+	public static void sendServerErrorMessage(Player player, ErrorMessage errormessage) {
+		switch (errormessage) {
+		case ONLYCONSOLE: player.sendMessage(servername + errorcolor + " " + "This command can only be used by the console!"); break;
+		case ONLYPLAYER: player.sendMessage(servername + errorcolor + " " + "This command can only be used by players!"); break;
+		case NOPERMISSION: player.sendMessage(servername + errorcolor + " " + "You have no permission to do this!"); break;
+		case PLAYERNOTONLINE: player.sendMessage("The player ist not online!"); break;
+		default: break;
+		}
+	}
+	
+	public static void sendServerErrorMessage(CommandSender sender, ErrorMessage errormessage) {
+		switch (errormessage) {
+		case ONLYCONSOLE: sender.sendMessage(servername + errorcolor + " " + "This command can only be used by the console!"); break;
+		case ONLYPLAYER: sender.sendMessage(servername + errorcolor + " " + "This command can only be used by players!"); break;
+		case NOPERMISSION: sender.sendMessage(servername + errorcolor + " " + "You have no permission to do this!"); break;
+		case PLAYERNOTONLINE: sender.sendMessage("The player ist not online!"); break;
+		default: break;
+		}
 	}
 	
 	public static void sendServerBroadcastMessage(String message) {

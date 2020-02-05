@@ -18,6 +18,7 @@ import serversystem.main.Config;
 import serversystem.utilities.PlayerBuildMode;
 import serversystem.utilities.PlayerVanish;
 import serversystem.utilities.ChatMessage;
+import serversystem.utilities.ChatMessage.ErrorMessage;
 
 public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 
@@ -41,7 +42,7 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 			}
 			
 		}else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
-			ChatMessage.sendServerErrorMessage(sender, "The player " + args[0] + " is not online!");
+			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
 		return true;
 	}
@@ -49,16 +50,16 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		List<String> commands = new ArrayList<>();
-			if(args.length == 1) {
-				commands.clear();
-				for (Player player : Bukkit.getOnlinePlayers()) {
-					if (!PlayerVanish.isPlayerVanished(player)) {
-						commands.add(player.getName());
-					}
+		if(args.length == 1) {
+			commands.clear();
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				if (!PlayerVanish.isPlayerVanished(player)) {
+					commands.add(player.getName());
 				}
-			} else {
-				commands.clear();
 			}
+		} else {
+			commands.clear();
+		}
 		return commands;
 	}
 	

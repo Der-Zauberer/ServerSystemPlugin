@@ -7,6 +7,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import serversystem.menus.AdminMenu;
+import serversystem.utilities.ChatMessage;
+import serversystem.utilities.ChatMessage.ErrorMessage;
+
 import org.bukkit.entity.Player;
 
 public class AdminCommand implements CommandExecutor, TabCompleter{
@@ -16,6 +19,8 @@ public class AdminCommand implements CommandExecutor, TabCompleter{
 		if(sender instanceof Player) {
 			Player player = (Player) sender;
 			new AdminMenu(player);
+		} else {
+			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
 		}
 		return true;
 	}
