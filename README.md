@@ -20,10 +20,10 @@ This is a Bukkit/Spigot plugin for permisssions, multiworld features and other a
 
 |Permission|Default|Description|
 |---|---|---|
-|`serversystem.command.admin`|op|Command: Open the admin inventory|
-|`serversystem.command.build`|op|Permission: Allow the player to build in protected worlds|
-|`serversystem.command.vanish`|op|Permission: Allow the player to vanish|
-|`serversystem.command.world`|op|Permission: Teleoprt player to other teleoprt player to an other world or edit an other world|
+|`serversystem.command.admin`|op|Open the admin inventory|
+|`serversystem.command.build`|op|Allow the player to build in protected worlds|
+|`serversystem.command.vanish`|op|Allow the player to vanish|
+|`serversystem.command.world`|op|Teleoprt player to other teleoprt player to an other world or edit an other world|
 |`serversystem.command.permission`|false|Set the permissions of a player|
 |`serversystem.command.lobby`|true|Teleport player to lobby|
 |`serversystem.command.enderchest`|op|Open the enderchest of a player|
