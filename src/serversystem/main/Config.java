@@ -48,6 +48,7 @@ public class Config {
 	public static void addPlayer(Player player) {
 		if(!config.getBoolean("Players." + player.getUniqueId() + ".exists")) {
 			config.set("Players." + player.getUniqueId() + ".name", player.getName());
+			config.set("Players." + player.getUniqueId() + ".exists", true);
 			config.set("Players." + player.getUniqueId() + ".group", "player");
 			saveConfig();
 		}

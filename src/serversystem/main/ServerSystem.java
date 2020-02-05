@@ -28,7 +28,9 @@ import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
 import serversystem.events.SignChangeListener;
+import serversystem.handler.ServerSignHandler;
 import serversystem.handler.WorldGroupHandler;
+import serversystem.signs.WorldSign;
 import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.WorldGroup;
 
@@ -54,6 +56,7 @@ public class ServerSystem extends JavaPlugin{
 		new SaveConfig();
 		registerEvents();
 		registerCommands();
+		registerWorldSigns();
 		setInstance(this);
 		registerTeams();
 		for (String world : Config.getLoadWorlds()) {
@@ -109,11 +112,16 @@ public class ServerSystem extends JavaPlugin{
 		PlayerTeam.createTeam(TEAMRANKMODERATOR, "[Moderator] ", ChatColor.DARK_BLUE);
 		PlayerTeam.createTeam(TEAMRANKDEVELOPER, "[Developer] ", ChatColor.AQUA);
 		PlayerTeam.createTeam(TEAMRANKSUPPORTER, "[Supporter] ", ChatColor.BLUE);
+		PlayerTeam.createTeam(TEAMRANKTEAM, "[Team] " , ChatColor.RED);
 		PlayerTeam.createTeam(TEAMRANKOPERATOR, "[OP] ", ChatColor.RED);
 		PlayerTeam.createTeam(TEAMRANKYOUTUBER, "[YouTube] ", ChatColor.DARK_PURPLE);
 		PlayerTeam.createTeam(TEAMRANKPREMIUM, "[Premium] ", ChatColor.GOLD);
 		PlayerTeam.createTeam(TEAMRANKPLAYER, "", ChatColor.WHITE);
 		PlayerTeam.createTeam(TEAMSPECTATOR, "[SPECTATOR] ", ChatColor.GRAY);
+	}
+	
+	private void registerWorldSigns() {
+		ServerSignHandler.registerServerSign(new WorldSign());
 	}
 		
 	public static ServerSystem getInstance() {

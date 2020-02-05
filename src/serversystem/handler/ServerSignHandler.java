@@ -1,10 +1,9 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
-
+import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-
 import serversystem.utilities.ServerSign;
 
 public class ServerSignHandler {
@@ -16,6 +15,7 @@ public class ServerSignHandler {
 	}
 	
 	public static void executeServerSign(Player player, Sign sign, String label, String args) {
+		System.out.println(player + " " + args + " " + Bukkit.getWorld(args));
 		for (ServerSign serversign : serversign) {
 			if(serversign.getLabel().equalsIgnoreCase(label)) {
 				serversign.onAction(player, sign, args);

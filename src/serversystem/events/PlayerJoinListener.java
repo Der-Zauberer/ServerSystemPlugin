@@ -13,13 +13,13 @@ public class PlayerJoinListener implements Listener {
 	
 	@EventHandler
 	public void onJoinEvent(PlayerJoinEvent event) {
+		if(!Config.isJoinMessageActiv()) {
+			event.setJoinMessage("");
+		}
 		Config.addPlayer(event.getPlayer());
 		PlayerPermission.removeConfigDisablePermissions(event.getPlayer());
 		PlayerPermission.addConfigPermissions(event.getPlayer());
 		PlayerPermission.reloadPlayerPermissions(event.getPlayer());
-		if(!Config.isJoinMessageActiv()) {
-			event.setJoinMessage("");
-		}
 		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			event.getPlayer().teleport(Config.getLobbyWorld().getSpawnLocation());
 		}

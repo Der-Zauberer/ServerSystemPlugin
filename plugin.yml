@@ -82,7 +82,7 @@ permissions:
   serversystem.rank.supporter:
     description: Display Supporter Prefix
     default: false
-  serversystem.rank.:
+  serversystem.rank.team:
     description: Display Team Prefix
     default: false
   serversystem.rank.operator:

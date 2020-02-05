@@ -1,11 +1,9 @@
 package serversystem.utilities;
 
 import java.util.ArrayList;
-
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
-
 import serversystem.main.Config;
 import serversystem.main.ServerSystem;
 

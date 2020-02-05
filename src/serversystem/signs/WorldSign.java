@@ -20,6 +20,7 @@ public class WorldSign implements ServerSign{
 
 	@Override
 	public boolean onPlace(Player player, String args) {
+		System.out.println(player + " " + args + " " + Bukkit.getWorld(args));
 		if(Bukkit.getWorld(args) != null) {
 			return true;
 		}
