@@ -25,7 +25,6 @@ public class PlayerInteractListener implements Listener {
 			if(event.getItem().getType() == Material.CARROT_ON_A_STICK) {
 				event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 2), true);
 			}
-			
 		}
 	}
 
