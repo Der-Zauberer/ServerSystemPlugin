@@ -29,9 +29,11 @@ import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
 import serversystem.events.SignChangeListener;
+import serversystem.extraitems.UltraSwoardItem;
+import serversystem.handler.ExtraItemHandler;
 import serversystem.handler.ServerSignHandler;
 import serversystem.handler.WorldGroupHandler;
-import serversystem.signs.ExtraitemSign;
+import serversystem.signs.ExtraItemSign;
 import serversystem.signs.WorldSign;
 import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.WorldGroup;
@@ -59,6 +61,7 @@ public class ServerSystem extends JavaPlugin{
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
+		registerExtaItems();
 		setInstance(this);
 		registerTeams();
 		for (String world : Config.getLoadWorlds()) {
@@ -95,6 +98,7 @@ public class ServerSystem extends JavaPlugin{
 		
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
+		Bukkit.getPluginManager().registerEvents(new ExtraItemHandler(), this);
 	}
 	
 	private void registerCommands() {
@@ -125,7 +129,12 @@ public class ServerSystem extends JavaPlugin{
 	
 	private void registerWorldSigns() {
 		ServerSignHandler.registerServerSign(new WorldSign());
-		ServerSignHandler.registerServerSign(new ExtraitemSign());
+		ServerSignHandler.registerServerSign(new ExtraItemSign());
+	}
+	
+
+	private void registerExtaItems() {
+		ExtraItemHandler.registerExtraItem(new UltraSwoardItem());	
 	}
 		
 	public static ServerSystem getInstance() {
