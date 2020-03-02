@@ -44,8 +44,8 @@ public class AdminMenu extends PlayerInventory{
 		setItem(createItem("LeaveMessage", Material.OAK_SIGN), 12);
 		setItem(createItem("DefaultGamemode", Material.IRON_PICKAXE), 14);
 		setItem(createItem("Gamemode", Material.IRON_PICKAXE), 16);
-		setItem(createBooleanItem("JoinMessage", Config.isJoinMessageActiv()), 20);
-		setItem(createBooleanItem("LeaveMessage", Config.isLeaveMessageActiv()), 20);
+		setItem(createBooleanItem("JoinMessage", Config.isJoinMessageActiv()), 19);
+		setItem(createBooleanItem("LeaveMessage", Config.isLeaveMessageActiv()), 21);
 	}
 	
 	@Override

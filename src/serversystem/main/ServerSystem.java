@@ -21,7 +21,6 @@ import serversystem.events.CommandPreprocessListener;
 import serversystem.events.EntityDamageListener;
 import serversystem.events.ExplotionListener;
 import serversystem.events.HungerListener;
-import serversystem.events.InventoryClickListener;
 import serversystem.events.PlayerDeathListener;
 import serversystem.events.PlayerInteractListener;
 import serversystem.events.PlayerJoinListener;
@@ -31,6 +30,7 @@ import serversystem.events.PlayerTeleportListener;
 import serversystem.events.SignChangeListener;
 import serversystem.extraitems.UltraSwoardItem;
 import serversystem.handler.ExtraItemHandler;
+import serversystem.handler.MenuHandler;
 import serversystem.handler.ServerSignHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.ExtraItemSign;
@@ -87,7 +87,6 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
 		Bukkit.getPluginManager().registerEvents(new ExplotionListener(), this);
 		Bukkit.getPluginManager().registerEvents(new HungerListener(), this);
-		Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
@@ -99,7 +98,7 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
 		Bukkit.getPluginManager().registerEvents(new ExtraItemHandler(), this);
-		Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
+		Bukkit.getPluginManager().registerEvents(new MenuHandler(), this);
 	}
 	
 	private void registerCommands() {
