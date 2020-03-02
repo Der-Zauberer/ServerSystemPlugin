@@ -2,13 +2,13 @@ package serversystem.handler;
 
 import java.util.ArrayList;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import serversystem.utilities.PlayerInventory;
 
-public class MenuHandler {
+public class MenuHandler implements Listener {
 	
 	private static ArrayList<PlayerInventory> inventorymenus = new ArrayList<>();
 	
@@ -20,13 +20,15 @@ public class MenuHandler {
 		inventorymenus.remove(inventory);
 	}
 	
-	public static void executeClicked(InventoryClickEvent event, Inventory inventory, ItemStack item, Player player) {
+	@EventHandler
+	public void onInventoryClicked(InventoryClickEvent event) {
 		for(PlayerInventory playerinventory : inventorymenus) {
-			if(playerinventory.getInventory() == inventory) {
-				playerinventory.onItemClicked(item, player);
+			if(playerinventory.getInventory() == event.getClickedInventory()) {
+				playerinventory.onItemClicked(event.getCurrentItem(), (Player) event.getWhoClicked(), event.getSlot());
 				event.setCancelled(true);
 			}
 		}
+		
 	}
 
 }

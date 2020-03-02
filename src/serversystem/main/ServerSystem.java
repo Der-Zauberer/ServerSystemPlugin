@@ -99,6 +99,7 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
 		Bukkit.getPluginManager().registerEvents(new ExtraItemHandler(), this);
+		Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
 	}
 	
 	private void registerCommands() {

@@ -49,7 +49,7 @@ public class AdminMenu extends PlayerInventory{
 	}
 	
 	@Override
-	public void onItemClicked(ItemStack item, Player player) {
+	public void onItemClicked(ItemStack item, Player player, int slot) {
 		if(item.equals(createItem("Gamemode Survival", Material.IRON_SHOVEL))) {
 			player.setGameMode(GameMode.SURVIVAL);
 		} else if(item.equals(createItem("Gamemode Creative", Material.IRON_PICKAXE))) {

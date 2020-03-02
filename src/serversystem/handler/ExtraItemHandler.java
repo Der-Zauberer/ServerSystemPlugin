@@ -37,10 +37,14 @@ public class ExtraItemHandler implements Listener {
 	
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event) {
-		if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_AIR) {
+		if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) {
 			String itemname = ChatColor.stripColor(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName());
 			if(getExtraItemByName(itemname) != null) {
-				getExtraItemByName(itemname).onItemInteract(event, event.getPlayer());
+				if(event.getAction() ==  Action.LEFT_CLICK_AIR) {
+					getExtraItemByName(itemname).onLeftClick(event, event.getPlayer(), getExtraItemByName(itemname));
+				} else {
+					getExtraItemByName(itemname).onRightClick(event, event.getPlayer(), getExtraItemByName(itemname));
+				}
 			}
 		}
 	}

@@ -50,6 +50,8 @@ public abstract class ExtraItem extends ItemStack {
 		return description;
 	}
 	
-	public abstract void onItemInteract(PlayerInteractEvent event, Player player);
+	public abstract void onRightClick(PlayerInteractEvent event, Player player, ExtraItem extraitem);
+	
+	public abstract void onLeftClick(PlayerInteractEvent event, Player player, ExtraItem extraitem);
 
 }

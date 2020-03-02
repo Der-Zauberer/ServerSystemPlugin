@@ -18,10 +18,16 @@ public class UltraSwoardItem extends ExtraItem{
 		setDisplayName(ChatColor.RESET + "Ultra Sword");
 		setDescription(Arrays.asList("Type: Weapon"));
 	}
+	
+	@Override
+	public void onRightClick(PlayerInteractEvent event, Player player, ExtraItem extraitem) {
+		player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 2), true);
+		
+	}
 
 	@Override
-	public void onItemInteract(PlayerInteractEvent event, Player player) {
-		event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 2), true);
+	public void onLeftClick(PlayerInteractEvent event, Player player, ExtraItem extraitem) {
+		
 	}
 
 }

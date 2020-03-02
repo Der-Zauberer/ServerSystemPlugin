@@ -78,8 +78,8 @@ public class PlayerInventory {
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
-	
-	public void onItemClicked(ItemStack item, Player player) {
+
+	public void onItemClicked(ItemStack item, Player player, int slot) {
 		
 	}
 
