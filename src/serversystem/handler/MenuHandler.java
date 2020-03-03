@@ -24,7 +24,7 @@ public class MenuHandler implements Listener {
 	public void onInventoryClicked(InventoryClickEvent event) {
 		for(PlayerInventory playerinventory : inventorymenus) {
 			if(playerinventory.getInventory() == event.getClickedInventory()) {
-				playerinventory.onItemClicked(event.getCurrentItem(), (Player) event.getWhoClicked(), event.getSlot());
+				playerinventory.onItemClicked(event.getClickedInventory(), event.getCurrentItem(), (Player) event.getWhoClicked(), event.getSlot());
 				event.setCancelled(true);
 			}
 		}

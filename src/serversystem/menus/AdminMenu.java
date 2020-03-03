@@ -1,9 +1,11 @@
 package serversystem.menus;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -18,6 +20,11 @@ public class AdminMenu extends PlayerInventory{
 		super(player, 36, "Admin");
 		open();
 		MenuHandler.addInventory(this);
+		openMainInventory();
+	}
+	
+	public void openMainInventory() {
+		clear();
 		setItem(createItem("Gamemode Survival", Material.IRON_SHOVEL), 0);
 		setItem(createItem("Gamemode Creative", Material.IRON_PICKAXE), 9);
 		setItem(createItem("Gamemode Adventure", Material.IRON_SWORD), 18);
@@ -40,16 +47,41 @@ public class AdminMenu extends PlayerInventory{
 	
 	public void openServerSettings() {
 		clear();
-		setItem(createItem("JoinMessage", Material.OAK_SIGN), 10);
-		setItem(createItem("LeaveMessage", Material.OAK_SIGN), 12);
-		setItem(createItem("DefaultGamemode", Material.IRON_PICKAXE), 14);
-		setItem(createItem("Gamemode", Material.IRON_PICKAXE), 16);
-		setItem(createBooleanItem("JoinMessage", Config.isJoinMessageActiv()), 19);
-		setItem(createBooleanItem("LeaveMessage", Config.isLeaveMessageActiv()), 21);
+		setItem(createItem("JoinMessage", Material.OAK_SIGN), 1);
+		setItem(createItem("LeaveMessage", Material.OAK_SIGN), 3);
+		setItem(createItem("DefaultGamemode", Material.IRON_PICKAXE), 5);
+		setItem(createItem("Gamemode", Material.IRON_PICKAXE), 7);
+		setItem(createBooleanItem("JoinMessage", Config.isJoinMessageActiv()), 10);
+		setItem(createBooleanItem("LeaveMessage", Config.isLeaveMessageActiv()), 12);
+		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
+	}
+
+	public void openWorlds() {
+		clear();
+		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
+		for(int i = 0; i < Bukkit.getWorlds().size() && i < 26; i++) {
+			setItem(createItem("World: " + Bukkit.getWorlds().get(i).getName(), Material.ZOMBIE_HEAD) ,i);
+		}
+	}
+	
+	public void openWorldSettings(String world) {
+		clear();
+		setItem(createItem("Damage", Material.SHIELD), 0);
+		setItem(createItem("Explosion", Material.TNT), 2);
+		setItem(createItem("Hunger", Material.COOKED_BEEF), 4);
+		setItem(createItem("Protect", Material.GOLDEN_PICKAXE), 6);
+		setItem(createItem("PVP", Material.IRON_SWORD), 8);
+		setItem(createBooleanItem("Damage", Config.hasWorldDamage(world)), 9);
+		setItem(createBooleanItem("Explosion", Config.hasWorldExplosion(world)), 11);
+		setItem(createBooleanItem("Hunger", Config.hasWorldHunger(world)), 13);
+		setItem(createBooleanItem("Protect", Config.hasWorldProtect(world)), 15);
+		setItem(createBooleanItem("PVP", Config.hasWorldPVP(world)), 17);
+		setItem(createItem("World: " + world, Material.ZOMBIE_HEAD), 27);
+		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
 	}
 	
 	@Override
-	public void onItemClicked(ItemStack item, Player player, int slot) {
+	public void onItemClicked(Inventory inventory, ItemStack item, Player player, int slot) {
 		if(item.equals(createItem("Gamemode Survival", Material.IRON_SHOVEL))) {
 			player.setGameMode(GameMode.SURVIVAL);
 		} else if(item.equals(createItem("Gamemode Creative", Material.IRON_PICKAXE))) {
@@ -85,6 +117,36 @@ public class AdminMenu extends PlayerInventory{
 			player.getWorld().setThundering(true);
 		} else if(item.equals(createItem("Server Settings", Material.SKELETON_SKULL))) {
 			openServerSettings();
+		} else if(item.equals(createItem("World Settings", Material.ZOMBIE_HEAD))) {
+			openWorlds();
+		} else if(item.equals(createItem("Back", Material.SPECTRAL_ARROW))) {
+			openMainInventory();
+		} else if(item.equals(createBooleanItem("JoinMessage", true)) || item.equals(createBooleanItem("JoinMessage", false))) {
+			setItem(createBooleanItem("JoinMessage", !Config.isJoinMessageActiv()), 10);
+			Config.setJoinMessageActive(!Config.isJoinMessageActiv());
+		} else if(item.equals(createBooleanItem("LeaveMessage", true)) || item.equals(createBooleanItem("LeaveMessage", false))) {
+			setItem(createBooleanItem("LeaveMessage", !Config.isLeaveMessageActiv()), 12);
+			Config.setJoinMessageActive(!Config.isLeaveMessageActiv());
+		} else if(item.getItemMeta().getDisplayName().startsWith("World: ") && item.getType() == Material.ZOMBIE_HEAD) {
+			String worldname[] = item.getItemMeta().getDisplayName().split(" ");
+			if(worldname.length == 2 && Bukkit.getWorld(worldname[1]) != null) {
+				openWorldSettings(worldname[1]);
+			}
+		} else if(item.equals(createBooleanItem("Damage", true)) || item.equals(createBooleanItem("Damage", false))) {
+			setItem(createBooleanItem("Damage", !Config.hasWorldDamage(player.getWorld().getName())), 9);
+			Config.setWorldDamage(player.getWorld().getName(), !Config.hasWorldDamage(player.getWorld().getName()));
+		} else if(item.equals(createBooleanItem("Explosion", true)) || item.equals(createBooleanItem("Explosion", false))) {
+			setItem(createBooleanItem("Explosion", !Config.hasWorldExplosion(player.getWorld().getName())), 11);
+			Config.setWorldExplosion(player.getWorld().getName(), !Config.hasWorldExplosion(player.getWorld().getName()));
+		} else if(item.equals(createBooleanItem("Hunger", true)) || item.equals(createBooleanItem("Hunger", false))) {
+			setItem(createBooleanItem("Hunger", !Config.hasWorldHunger(player.getWorld().getName())), 13);
+			Config.setWorldHunger(player.getWorld().getName(), !Config.hasWorldHunger(player.getWorld().getName()));
+		} else if(item.equals(createBooleanItem("Protect", true)) || item.equals(createBooleanItem("Protect", false))) {
+			setItem(createBooleanItem("Protect", !Config.hasWorldProtect(player.getWorld().getName())), 15);
+			Config.setWorldProtect(player.getWorld().getName(), !Config.hasWorldProtect(player.getWorld().getName()));
+		} else if(item.equals(createBooleanItem("PVP", true)) || item.equals(createBooleanItem("PVP", false))) {
+			setItem(createBooleanItem("PVP", !Config.hasWorldPVP(player.getWorld().getName())), 17);
+			Config.setWorldPVP(player.getWorld().getName(), !Config.hasWorldPVP(player.getWorld().getName()));
 		}
 	}
 

@@ -79,7 +79,7 @@ public class PlayerInventory {
 		this.inventory = inventory;
 	}
 
-	public void onItemClicked(ItemStack item, Player player, int slot) {
+	public void onItemClicked(Inventory inventory, ItemStack item, Player player, int slot) {
 		
 	}
 

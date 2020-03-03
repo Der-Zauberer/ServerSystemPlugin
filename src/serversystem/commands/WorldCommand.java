@@ -60,7 +60,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			if(args.length == 3) {
 				if (Bukkit.getWorld(args[1]) != null) {
 					switch (args[2]) {
-					case "protect": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.isWorldProtected(args[1]) + " for the world " + args[1] + "!"); break;
+					case "protect": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldProtect(args[1]) + " for the world " + args[1] + "!"); break;
 					case "pvp": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldPVP(args[1]) + " for the world " + args[1] + "!"); break;
 					case "damage": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldDamage(args[1]) + " for the world " + args[1] + "!"); break;
 					case "hunger": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " +Config.hasWorldHunger(args[1]) + " for the world " + args[1] + "!"); break;
@@ -80,7 +80,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 							worldboolean = true;
 						}
 						switch (args[2]) {
-						case "protect": Config.setWorldProtected(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+						case "protect": Config.setWorldProtect(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
 						case "pvp": Config.setWorldPVP(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
 						case "damage": Config.setWorldDamage(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
 						case "hunger": Config.setWorldHunger(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
@@ -150,7 +150,5 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 		}
 		return commands;
 	}
-	
-	//world edit hogwarts gamemode 0
 	
 }

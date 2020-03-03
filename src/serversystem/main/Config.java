@@ -134,12 +134,12 @@ public class Config {
 		return config.getBoolean("Worlds." + world + ".worldspawn");
 	}
 	
-	public static void setWorldProtected(String world, boolean protect) {
+	public static void setWorldProtect(String world, boolean protect) {
 		config.set("Worlds." + world + ".protect", protect);
 		saveConfig();
 	}
 	
-	public static boolean isWorldProtected(String world) {
+	public static boolean hasWorldProtect(String world) {
 		return config.getBoolean("Worlds." + world + ".protect");
 	}
 	
@@ -201,8 +201,16 @@ public class Config {
 		return GameMode.ADVENTURE;
 	}
 	
+	public static void setJoinMessageActive(boolean joinmessage) {
+		config.set("Server.joinmessage", joinmessage);
+	}
+	
 	public static boolean isJoinMessageActiv() {
 		return config.getBoolean("Server.joinmessage");
+	}
+	
+	public static void setJoinLeaveMessageActive(boolean leavemessage) {
+		config.set("Server.leavemessage", leavemessage);
 	}
 	
 	public static boolean isLeaveMessageActiv() {
