@@ -5,30 +5,30 @@ import org.bukkit.entity.Player;
 
 public class PlayerBuildMode {
 	
-	private static ArrayList<String> buildPlayers = new ArrayList<>();
+	private static ArrayList<Player> buildPlayers = new ArrayList<>();
 	
 	public static void buildmodePlayer(Player player) {
 		buildmodePlayer(player, player);
 	}
 	
 	public static void buildmodePlayer(Player player, Player sender) {
-		if(player == sender) {
-			if(buildPlayers.contains(player.getUniqueId().toString())) {
-				buildPlayers.remove(player.getUniqueId().toString());
-			} else {
-				buildPlayers.add(player.getUniqueId().toString());
+		if(buildPlayers.contains(player)) {
+			buildPlayers.remove(player);
+			ChatMessage.sendServerMessage(sender, "You can no longer build!");
+			if(player != sender) {
+				ChatMessage.sendServerMessage(sender, player.getName() + " can no longer build!");
 			}
 		} else {
-			if(buildPlayers.contains(player.getUniqueId().toString())) {
-				buildPlayers.remove(player.getUniqueId().toString());
-			} else {
-				buildPlayers.add(player.getUniqueId().toString());
+			buildPlayers.add(player);
+			ChatMessage.sendServerMessage(sender, "You can build now!");
+			if(player != sender) {
+				ChatMessage.sendServerMessage(sender, player.getName() + " can build now!");
 			}
 		}
 	}
 	
 	public static boolean isPlayerBuildmode(Player player) {
-		if(buildPlayers.contains(player.getUniqueId().toString())) {
+		if(buildPlayers.contains(player)) {
 			return true;
 		}
 		return false;

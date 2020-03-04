@@ -25,24 +25,12 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		Player player = Bukkit.getPlayer(args[0]);
 		if(args.length == 0) {
 			PlayerBuildMode.buildmodePlayer((Player) sender);
-			if(PlayerBuildMode.isPlayerBuildmode((Player) sender)) {
-				ChatMessage.sendServerMessage(sender, "You can build now!");
-			} else {
-				ChatMessage.sendServerMessage(sender, "You can no longer build!");
-			}
-		}else if(Bukkit.getPlayer(args[0]) != null) {
-			PlayerBuildMode.buildmodePlayer(Bukkit.getServer().getPlayer(args[0]), (Player) sender);
-			if(PlayerBuildMode.isPlayerBuildmode(Bukkit.getPlayer(args[0]))) {
-			 	if(sender != Bukkit.getServer().getPlayer(args[0])) {ChatMessage.sendServerMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " can build now!");} 
-				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You can build now!");
-			} else {
-				if(sender != Bukkit.getServer().getPlayer(args[0])) {ChatMessage.sendServerMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " can no longer build!");} 
-				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You can no longer build!");
-			}
-			
-		}else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+		}else if(player != null) {
+			PlayerBuildMode.buildmodePlayer(player, (Player) sender);
+		}else if(!Bukkit.getOnlinePlayers().contains(player)) {
 			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
 		return true;
