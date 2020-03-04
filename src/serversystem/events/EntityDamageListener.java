@@ -5,7 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import serversystem.main.Config;
+
+import serversystem.config.Config;
 
 public class EntityDamageListener implements Listener {
 	

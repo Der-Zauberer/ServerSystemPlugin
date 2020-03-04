@@ -10,8 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import serversystem.config.Config;
 import serversystem.handler.MenuHandler;
-import serversystem.main.Config;
 import serversystem.utilities.PlayerInventory;
 
 public class AdminMenu extends PlayerInventory{

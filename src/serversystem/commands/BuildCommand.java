@@ -14,9 +14,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import serversystem.main.Config;
+
 import serversystem.utilities.PlayerBuildMode;
 import serversystem.utilities.PlayerVanish;
+import serversystem.config.Config;
 import serversystem.utilities.ChatMessage;
 import serversystem.utilities.ChatMessage.ErrorMessage;
 
