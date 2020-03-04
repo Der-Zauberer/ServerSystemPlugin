@@ -55,14 +55,6 @@ public class AdminMenu extends PlayerInventory{
 		setItem(createBooleanItem("LeaveMessage", Config.isLeaveMessageActiv()), 12);
 		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
 	}
-
-	public void openWorlds() {
-		clear();
-		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
-		for(int i = 0; i < Bukkit.getWorlds().size() && i < 26; i++) {
-			setItem(createItem("World: " + Bukkit.getWorlds().get(i).getName(), Material.ZOMBIE_HEAD) ,i);
-		}
-	}
 	
 	public void openWorldSettings(String world) {
 		clear();
@@ -78,6 +70,36 @@ public class AdminMenu extends PlayerInventory{
 		setItem(createBooleanItem("PVP", Config.hasWorldPVP(world)), 17);
 		setItem(createItem("World: " + world, Material.ZOMBIE_HEAD), 27);
 		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
+	}
+	
+	public void openPlayerSettings(String player) {
+		clear();
+		setItem(createItem("Teleport to Player", Material.ENDER_PEARL), 9);
+		setItem(createItem("Kick", Material.BARRIER), 16);
+		setItem(createItem("Bann", Material.BARRIER), 17);
+		setItem(createItem("Player: " + player, Material.PLAYER_HEAD), 27);
+		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
+	}
+
+	public void openWorlds() {
+		clear();
+		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
+		for(int i = 0; i < Bukkit.getWorlds().size() && i < 26; i++) {
+			setItem(createItem("World: " + Bukkit.getWorlds().get(i).getName(), Material.ZOMBIE_HEAD) ,i);
+		}
+	}
+	
+	public void openPlayers() {
+		clear();
+		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
+		int i = 0;
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			if(i < 26) {
+				setItem(createItem("Player: " + player.getName(), Material.PLAYER_HEAD) ,i);
+			} else {
+				return;
+			}
+		}
 	}
 	
 	@Override
@@ -119,6 +141,8 @@ public class AdminMenu extends PlayerInventory{
 			openServerSettings();
 		} else if(item.equals(createItem("World Settings", Material.ZOMBIE_HEAD))) {
 			openWorlds();
+		} else if(item.equals(createItem("Player", Material.PLAYER_HEAD))) {
+			openPlayers();
 		} else if(item.equals(createItem("Back", Material.SPECTRAL_ARROW))) {
 			openMainInventory();
 		} else if(item.equals(createBooleanItem("JoinMessage", true)) || item.equals(createBooleanItem("JoinMessage", false))) {
@@ -147,6 +171,11 @@ public class AdminMenu extends PlayerInventory{
 		} else if(item.equals(createBooleanItem("PVP", true)) || item.equals(createBooleanItem("PVP", false))) {
 			setItem(createBooleanItem("PVP", !Config.hasWorldPVP(player.getWorld().getName())), 17);
 			Config.setWorldPVP(player.getWorld().getName(), !Config.hasWorldPVP(player.getWorld().getName()));
+		} else if(item.getItemMeta().getDisplayName().startsWith("Player: ") && item.getType() == Material.PLAYER_HEAD) {
+			String playername[] = item.getItemMeta().getDisplayName().split(" ");
+			if(playername.length == 2 && Bukkit.getPlayer(playername[1]) != null) {
+				openPlayerSettings(playername[1]);
+			}
 		}
 	}
 
