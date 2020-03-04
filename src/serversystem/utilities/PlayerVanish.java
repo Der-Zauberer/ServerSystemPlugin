@@ -22,7 +22,7 @@ public class PlayerVanish {
 			if(vanishedPlayers.contains(player.getUniqueId().toString())) {
 				vanishedPlayers.remove(player.getUniqueId().toString());
 				for(Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
-					TeamHandler.addRankTeam(player);
+					TeamHandler.addPlayerToRole(player);
 					everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 				}
 				if (!vanishedPlayers.isEmpty()) {
@@ -47,7 +47,7 @@ public class PlayerVanish {
 			if(vanishedPlayers.contains(player.getUniqueId().toString())) {
 				vanishedPlayers.remove(player.getUniqueId().toString());
 				for(Player everyPlayer : Bukkit.getOnlinePlayers()) {
-					TeamHandler.addRankTeam(player);
+					TeamHandler.addPlayerToRole(player);
 					everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 				}
 				if (!vanishedPlayers.isEmpty()) {

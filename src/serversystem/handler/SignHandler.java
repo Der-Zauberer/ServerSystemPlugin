@@ -5,12 +5,12 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import serversystem.utilities.ServerSign;
 
-public class ServerSignHandler {
+public class SignHandler {
 	
 	private static ArrayList<ServerSign> serversign = new ArrayList<>();
 	
 	public static void registerServerSign(ServerSign serversign) {
-		ServerSignHandler.serversign.add(serversign);
+		SignHandler.serversign.add(serversign);
 	}
 	
 	public static void executeServerSign(Player player, Sign sign, String label, String args) {

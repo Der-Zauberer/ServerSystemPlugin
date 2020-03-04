@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 public class TeamHandler {
 	
@@ -58,11 +59,19 @@ public class TeamHandler {
 	
 	public static void removePlayerFromTeam(Player player) {
 		try {
-			getMainScoreboard().getTeam(Bukkit.getPlayer(player.getName()).getScoreboard().getEntryTeam(player.getName()).getName()).removeEntry(player.getName());
+			getMainScoreboard().getTeam(getPlayersTeamName(player)).removeEntry(player.getName());
 		} catch (Exception exception) {}
 	}
 	
-	public static void addRankTeam(Player player) {
+	public static Team getPlayersTeam(Player player) {
+		return player.getScoreboard().getEntryTeam(player.getName());
+	}
+	
+	public static String getPlayersTeamName(Player player) {
+		return player.getScoreboard().getEntryTeam(player.getName()).getName();
+	}
+	
+	public static void addPlayerToRole(Player player) {
 		if(player.hasPermission("serversystem.rank.admin")) {
 			addPlayerToTeam(TEAMRANKADMIN, player);
 		}else if(player.hasPermission("serversystem.rank.moderator")) {

@@ -12,22 +12,23 @@ public class WorldGroupHandler {
 	private static ArrayList<WorldGroup> worldgroups = new ArrayList<>();
 	
 	public static void teleportPlayer(Player player, World world) {
-		if(WorldGroupHandler.getWorldGroup(world).isServerGame()) {
-			if(WorldGroupHandler.getWorldGroup(world).getServerGame().getLobby() != null) {
-				player.teleport(WorldGroupHandler.getWorldGroup(world).getServerGame().getLobby());
+		WorldGroup worldgroup = getWorldGroup(world);
+		if(worldgroup.isServerGame()) {
+			if(worldgroup.getServerGame().getLobby() != null) {
+				player.teleport(worldgroup.getServerGame().getLobby());
 			} else {
-				player.teleport(WorldGroupHandler.getWorldGroup(world).getMainWorld().getSpawnLocation());
+				player.teleport(worldgroup.getMainWorld().getSpawnLocation());
 			}
 		} else {
-			if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.loadLocation(player, WorldGroupHandler.getWorldGroup(world)) != null) {
-				player.teleport(SaveConfig.loadLocation(player, WorldGroupHandler.getWorldGroup(world)));
+			if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.loadLocation(player, worldgroup) != null) {
+				player.teleport(SaveConfig.loadLocation(player, worldgroup));
 			} else {
 				player.teleport(world.getSpawnLocation());
 			}
 		}
 	}
 	
-	public static void teleportToWorldSpawn(Player player, WorldGroup worldgroup) {
+	public static void teleportToWorldGroupSpawn(Player player, WorldGroup worldgroup) {
 		player.getPlayer().teleport(worldgroup.getMainWorld().getSpawnLocation());
 	}
 	
@@ -65,4 +66,5 @@ public class WorldGroupHandler {
 	public static void removeWorldGroup(WorldGroup worldgroup) {
 		worldgroups.remove(worldgroup);
 	}
+	
 }

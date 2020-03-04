@@ -52,7 +52,7 @@ public class WorldGroup {
 		SaveConfig.loadInventory(player, this);
 		SaveConfig.loadXp(player, this);
 		SaveConfig.loadGamemode(player, this);
-		TeamHandler.addRankTeam(player);
+		TeamHandler.addPlayerToRole(player);
 	}
 	
 	public void onPlayerLeave(Player player) {

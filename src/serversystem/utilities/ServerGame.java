@@ -100,7 +100,7 @@ public class ServerGame {
 			onGameRestart();
 		}
 		player.setGameMode(GameMode.ADVENTURE);
-		TeamHandler.addRankTeam(player);
+		TeamHandler.addPlayerToRole(player);
 	}
 	
 	public void onGameStart() {

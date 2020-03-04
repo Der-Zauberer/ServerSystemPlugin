@@ -30,7 +30,7 @@ import serversystem.events.SignChangeListener;
 import serversystem.extraitems.UltraSwoardItem;
 import serversystem.handler.ExtraItemHandler;
 import serversystem.handler.MenuHandler;
-import serversystem.handler.ServerSignHandler;
+import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.ExtraItemSign;
@@ -40,6 +40,11 @@ import serversystem.utilities.WorldGroup;
 public class ServerSystem extends JavaPlugin{
 	
 	private static ServerSystem instance;
+	private static ExtraItemHandler extraitemhandler = new ExtraItemHandler();
+	private static MenuHandler menuhandler = new MenuHandler();
+	private static SignHandler signhandler = new SignHandler();
+	private static TeamHandler teamhanler = new TeamHandler();
+	private static WorldGroupHandler worldgrouphandler = new WorldGroupHandler();
 	
 	@Override
 	public void onEnable() {
@@ -60,7 +65,7 @@ public class ServerSystem extends JavaPlugin{
 			WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			TeamHandler.addRankTeam(player);
+			TeamHandler.addPlayerToRole(player);
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
@@ -101,11 +106,10 @@ public class ServerSystem extends JavaPlugin{
 	}
 	
 	private void registerWorldSigns() {
-		ServerSignHandler.registerServerSign(new WorldSign());
-		ServerSignHandler.registerServerSign(new ExtraItemSign());
+		SignHandler.registerServerSign(new WorldSign());
+		SignHandler.registerServerSign(new ExtraItemSign());
 	}
 	
-
 	private void registerExtaItems() {
 		ExtraItemHandler.registerExtraItem(new UltraSwoardItem());	
 	}
@@ -116,6 +120,26 @@ public class ServerSystem extends JavaPlugin{
 	
 	public static void setInstance(ServerSystem instance) {
 		ServerSystem.instance = instance;
+	}
+	
+	public static ExtraItemHandler getExtraItemHandler() {
+		return extraitemhandler;
+	}
+	
+	public static MenuHandler getMenuHandler() {
+		return menuhandler;
+	}
+	
+	public static SignHandler getSignHandler() {
+		return signhandler;
+	}
+	
+	public static TeamHandler getTeamHandler() {
+		return teamhanler;
+	}
+	
+	public static WorldGroupHandler getWorldGroupHandler() {
+		return worldgrouphandler;
 	}
 	
 }
