@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
 
 public class ChatMessage {
@@ -74,24 +75,24 @@ public class ChatMessage {
 	
 	public static void sendPlayerChatMessage(Player player, String message) {
 		for (Player players : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
-			players.sendMessage(PlayerTeam.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+			players.sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 		}
-		Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] " + PlayerTeam.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+		Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] " + TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 	}
 	
 	public static void sendPlayerPrivateMessage(Player sender, Player receiver, String message) {		
-		sender.sendMessage(PlayerTeam.getPlayerNameColor(sender) + sender.getName() + ChatColor.WHITE + " -> " + PlayerTeam.getPlayerNameColor(receiver) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
-		receiver.sendMessage(PlayerTeam.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + PlayerTeam.getPlayerNameColor(receiver) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
-		Bukkit.getConsoleSender().sendMessage("[Private] " + PlayerTeam.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + PlayerTeam.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
+		sender.sendMessage(TeamHandler.getPlayerNameColor(sender) + sender.getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
+		receiver.sendMessage(TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
+		Bukkit.getConsoleSender().sendMessage("[Private] " + TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
 	}
 	
 	public static void sendPlayerTeamMessage(Player player, String message) {
 		for (String players : player.getScoreboard().getEntryTeam(player.getName()).getEntries()) {
 			if(Bukkit.getPlayer(players) != null) {
-				Bukkit.getPlayer(players).sendMessage(PlayerTeam.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+				Bukkit.getPlayer(players).sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
 		}
-		Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] [" + player.getScoreboard().getEntryTeam(player.getName()).getName() + "] " + PlayerTeam.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+		Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] [" + player.getScoreboard().getEntryTeam(player.getName()).getName() + "] " + TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 	}
 
 

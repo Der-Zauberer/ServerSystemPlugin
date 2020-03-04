@@ -4,7 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import serversystem.handler.ServerSignHandler;
+import serversystem.handler.SignHandler;
 
 public class SignChangeListener implements Listener {
 	
@@ -14,7 +14,7 @@ public class SignChangeListener implements Listener {
 			if(event.getLine(1).contains("[") || event.getLine(1).contains("]")) {	
 				if(event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
 					String label = event.getLine(1).substring(1, event.getLine(1).length() -1);
-					if(ServerSignHandler.placeServerSign(event.getPlayer(), label, event.getLine(2))) {
+					if(SignHandler.placeServerSign(event.getPlayer(), label, event.getLine(2))) {
 						event.setLine(2, "§2" + event.getLine(2));
 					} else {
 						event.setLine(2, "§4" + event.getLine(2));

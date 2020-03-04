@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import serversystem.handler.ServerSignHandler;
+import serversystem.handler.SignHandler;
 
 public class PlayerInteractListener implements Listener {
 	
@@ -16,7 +16,7 @@ public class PlayerInteractListener implements Listener {
 			Sign sign = (Sign) event.getClickedBlock().getState();
 			if(sign.getLine(0) != null && sign.getLine(3) != null) {
 				String label = ChatColor.stripColor(sign.getLine(1)).substring(1, sign.getLine(1).length() -1);
-				ServerSignHandler.executeServerSign(event.getPlayer(), sign, label, ChatColor.stripColor(sign.getLine(2)));
+				SignHandler.executeServerSign(event.getPlayer(), sign, label, ChatColor.stripColor(sign.getLine(2)));
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package serversystem.main;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -31,39 +30,32 @@ import serversystem.events.SignChangeListener;
 import serversystem.extraitems.UltraSwoardItem;
 import serversystem.handler.ExtraItemHandler;
 import serversystem.handler.MenuHandler;
-import serversystem.handler.ServerSignHandler;
+import serversystem.handler.SignHandler;
+import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.ExtraItemSign;
 import serversystem.signs.WorldSign;
-import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.WorldGroup;
 
 public class ServerSystem extends JavaPlugin{
 	
 	private static ServerSystem instance;
-	
-	public static final String TEAMVANISH = "00Vanish";
-	public static final String TEAMRANKADMIN = "01RankAdmin";
-	public static final String TEAMRANKMODERATOR = "02RankModerator";
-	public static final String TEAMRANKDEVELOPER = "03RankDeveloper";
-	public static final String TEAMRANKSUPPORTER = "04RankSupporter";
-	public static final String TEAMRANKTEAM = "05RankTeam";
-	public static final String TEAMRANKOPERATOR = "06RankOperator";
-	public static final String TEAMRANKYOUTUBER = "07RankYouTuber";
-	public static final String TEAMRANKPREMIUM = "08RankPremium";
-	public static final String TEAMRANKPLAYER = "09RankPlayer";
-	public static final String TEAMSPECTATOR = "100Spectator";
+	private static ExtraItemHandler extraitemhandler = new ExtraItemHandler();
+	private static MenuHandler menuhandler = new MenuHandler();
+	private static SignHandler signhandler = new SignHandler();
+	private static TeamHandler teamhanler = new TeamHandler();
+	private static WorldGroupHandler worldgrouphandler = new WorldGroupHandler();
 	
 	@Override
 	public void onEnable() {
 		new Config();
 		new SaveConfig();
+		TeamHandler.initializeTeams();
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
 		registerExtaItems();
 		setInstance(this);
-		registerTeams();
 		for (String world : Config.getLoadWorlds()) {
 			if(Bukkit.getWorld(world) == null) {
 				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
@@ -73,7 +65,7 @@ public class ServerSystem extends JavaPlugin{
 			WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			PlayerTeam.addRankTeam(player);
+			TeamHandler.addPlayerToRole(player);
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
@@ -113,26 +105,11 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("inventory").setExecutor(new InventoryCommand());
 	}
 	
-	private void registerTeams() {
-		PlayerTeam.createTeam(TEAMVANISH, "[VANISH] ", ChatColor.GRAY);
-		PlayerTeam.createTeam(TEAMRANKADMIN, "[Admin] ", ChatColor.DARK_RED);
-		PlayerTeam.createTeam(TEAMRANKMODERATOR, "[Moderator] ", ChatColor.DARK_BLUE);
-		PlayerTeam.createTeam(TEAMRANKDEVELOPER, "[Developer] ", ChatColor.AQUA);
-		PlayerTeam.createTeam(TEAMRANKSUPPORTER, "[Supporter] ", ChatColor.BLUE);
-		PlayerTeam.createTeam(TEAMRANKTEAM, "[Team] " , ChatColor.RED);
-		PlayerTeam.createTeam(TEAMRANKOPERATOR, "[OP] ", ChatColor.RED);
-		PlayerTeam.createTeam(TEAMRANKYOUTUBER, "[YouTube] ", ChatColor.DARK_PURPLE);
-		PlayerTeam.createTeam(TEAMRANKPREMIUM, "[Premium] ", ChatColor.GOLD);
-		PlayerTeam.createTeam(TEAMRANKPLAYER, "", ChatColor.WHITE);
-		PlayerTeam.createTeam(TEAMSPECTATOR, "[SPECTATOR] ", ChatColor.GRAY);
-	}
-	
 	private void registerWorldSigns() {
-		ServerSignHandler.registerServerSign(new WorldSign());
-		ServerSignHandler.registerServerSign(new ExtraItemSign());
+		SignHandler.registerServerSign(new WorldSign());
+		SignHandler.registerServerSign(new ExtraItemSign());
 	}
 	
-
 	private void registerExtaItems() {
 		ExtraItemHandler.registerExtraItem(new UltraSwoardItem());	
 	}
@@ -143,6 +120,26 @@ public class ServerSystem extends JavaPlugin{
 	
 	public static void setInstance(ServerSystem instance) {
 		ServerSystem.instance = instance;
+	}
+	
+	public static ExtraItemHandler getExtraItemHandler() {
+		return extraitemhandler;
+	}
+	
+	public static MenuHandler getMenuHandler() {
+		return menuhandler;
+	}
+	
+	public static SignHandler getSignHandler() {
+		return signhandler;
+	}
+	
+	public static TeamHandler getTeamHandler() {
+		return teamhanler;
+	}
+	
+	public static WorldGroupHandler getWorldGroupHandler() {
+		return worldgrouphandler;
 	}
 	
 }

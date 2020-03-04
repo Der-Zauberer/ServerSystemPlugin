@@ -2,11 +2,10 @@ package serversystem.utilities;
 
 import java.util.ArrayList;
 import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-
+import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.main.ServerSystem;
 
@@ -23,7 +22,7 @@ public class PlayerVanish {
 			if(vanishedPlayers.contains(player.getUniqueId().toString())) {
 				vanishedPlayers.remove(player.getUniqueId().toString());
 				for(Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
-					PlayerTeam.addRankTeam(player);
+					TeamHandler.addPlayerToRole(player);
 					everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 				}
 				if (!vanishedPlayers.isEmpty()) {
@@ -33,7 +32,7 @@ public class PlayerVanish {
 				}
 			} else {
 				for(Player everyPlayer : Bukkit.getOnlinePlayers()) {
-					PlayerTeam.addPlayerToTeam(ServerSystem.TEAMVANISH, player.getName());
+					TeamHandler.addPlayerToTeam(TeamHandler.TEAMVANISH, player.getName());
 					everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 				}
 				if (!vanishedPlayers.isEmpty()) {
@@ -48,7 +47,7 @@ public class PlayerVanish {
 			if(vanishedPlayers.contains(player.getUniqueId().toString())) {
 				vanishedPlayers.remove(player.getUniqueId().toString());
 				for(Player everyPlayer : Bukkit.getOnlinePlayers()) {
-					PlayerTeam.addRankTeam(player);
+					TeamHandler.addPlayerToRole(player);
 					everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 				}
 				if (!vanishedPlayers.isEmpty()) {
@@ -58,7 +57,7 @@ public class PlayerVanish {
 				}
 			} else {
 				for(Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
-					PlayerTeam.addPlayerToTeam(ServerSystem.TEAMVANISH, player.getName());
+					TeamHandler.addPlayerToTeam(TeamHandler.TEAMVANISH, player.getName());
 					everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 				}
 				if (!vanishedPlayers.isEmpty()) {
