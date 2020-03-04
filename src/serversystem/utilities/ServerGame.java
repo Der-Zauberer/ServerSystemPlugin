@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
+import serversystem.handler.TeamHandler;
 import serversystem.main.ServerSystem;
 
 public class ServerGame {
@@ -84,7 +85,7 @@ public class ServerGame {
 			}
 		} else {
 			player.setGameMode(GameMode.SPECTATOR);
-			PlayerTeam.addPlayerToTeam(ServerSystem.TEAMSPECTATOR, player);
+			TeamHandler.addPlayerToTeam(TeamHandler.TEAMSPECTATOR, player);
 		}
 	}
 	
@@ -99,7 +100,7 @@ public class ServerGame {
 			onGameRestart();
 		}
 		player.setGameMode(GameMode.ADVENTURE);
-		PlayerTeam.addRankTeam(player);
+		TeamHandler.addRankTeam(player);
 	}
 	
 	public void onGameStart() {

@@ -8,9 +8,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import serversystem.handler.TeamHandler;
 import serversystem.main.Config;
 import serversystem.utilities.PlayerPermission;
-import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.PlayerVanish;
 import serversystem.utilities.ChatMessage;
 
@@ -46,7 +46,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 						Config.setPlayerGroup(player, args[2]);
 						PlayerPermission.addConfigPermissions(player);
 						PlayerPermission.reloadPlayerPermissions(player);
-						PlayerTeam.addRankTeam(player);
+						TeamHandler.addRankTeam(player);
 						ChatMessage.sendServerMessage(sender, "The player " + args[1] + " is in group " + args[2] + " now!");
 					} else {
 						ChatMessage.sendServerErrorMessage(sender, "The group " + args[2] + " does not exist!");

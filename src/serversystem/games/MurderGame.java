@@ -8,9 +8,9 @@ import org.bukkit.GameMode;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
+import serversystem.handler.TeamHandler;
 import serversystem.main.ServerSystem;
 import serversystem.utilities.PlayerPacket;
-import serversystem.utilities.PlayerTeam;
 import serversystem.utilities.ServerGame;
 import serversystem.utilities.WorldGroup;
 
@@ -23,9 +23,9 @@ public class MurderGame extends ServerGame{
 	
 	public MurderGame(WorldGroup worldgroup, int minPlayers, int maxPlayers, int startPlayers, int startTime) {
 		super(worldgroup, minPlayers, maxPlayers, startPlayers, startTime, "Murder");
-		PlayerTeam.createTeam(worldgroup.getName() + "Murder", "", ChatColor.WHITE);
-		PlayerTeam.createTeam(worldgroup.getName() + "Detective", "", ChatColor.WHITE);
-		PlayerTeam.createTeam(worldgroup.getName() + "Innocent", "", ChatColor.WHITE);
+		TeamHandler.createTeam(worldgroup.getName() + "Murder", "", ChatColor.WHITE);
+		TeamHandler.createTeam(worldgroup.getName() + "Detective", "", ChatColor.WHITE);
+		TeamHandler.createTeam(worldgroup.getName() + "Innocent", "", ChatColor.WHITE);
 	}
 	
 	@Override
@@ -36,8 +36,8 @@ public class MurderGame extends ServerGame{
 		do {
 			detective = getWorldgroup().getPlayers().get(random.nextInt());
 		} while (murderer == detective);
-		PlayerTeam.addPlayerToTeam(getWorldgroup() + "Murderer", murderer);
-		PlayerTeam.addPlayerToTeam(getWorldgroup() + "Detective", detective);
+		TeamHandler.addPlayerToTeam(getWorldgroup() + "Murderer", murderer);
+		TeamHandler.addPlayerToTeam(getWorldgroup() + "Detective", detective);
 		getBossbar().setColor(BarColor.GREEN);
 		getBossbar().setTitle(ChatColor.GREEN + "Players alive " + getWorldgroup().getCurrentPlayers() + "/" + getWorldgroup().getCurrentPlayers());
 		getBossbar().setVisible(true);
@@ -45,7 +45,7 @@ public class MurderGame extends ServerGame{
 		for (Player player : getWorldgroup().getPlayers()) {
 			getBossbar().addPlayer(player);
 			if (player != murderer && player != detective) {
-				PlayerTeam.addPlayerToTeam(getWorldgroup() + "Innocent", player);
+				TeamHandler.addPlayerToTeam(getWorldgroup() + "Innocent", player);
 			}
 		}
 		gameTime = 185;
@@ -150,9 +150,9 @@ public class MurderGame extends ServerGame{
 	
 	@Override
 	protected void finalize() throws Throwable {
-		PlayerTeam.removeTeam(getWorldgroup().getName() + "Murder");
-		PlayerTeam.removeTeam(getWorldgroup().getName() + "Murder");
-		PlayerTeam.removeTeam(getWorldgroup().getName() + "Murder");
+		TeamHandler.removeTeam(getWorldgroup().getName() + "Murder");
+		TeamHandler.removeTeam(getWorldgroup().getName() + "Murder");
+		TeamHandler.removeTeam(getWorldgroup().getName() + "Murder");
 		super.finalize();
 	}
 

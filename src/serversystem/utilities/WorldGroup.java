@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import serversystem.handler.TeamHandler;
 import serversystem.main.SaveConfig;
 import serversystem.main.ServerSystem;
 
@@ -51,7 +52,7 @@ public class WorldGroup {
 		SaveConfig.loadInventory(player, this);
 		SaveConfig.loadXp(player, this);
 		SaveConfig.loadGamemode(player, this);
-		PlayerTeam.addRankTeam(player);
+		TeamHandler.addRankTeam(player);
 	}
 	
 	public void onPlayerLeave(Player player) {
@@ -59,7 +60,7 @@ public class WorldGroup {
 		if(PlayerVanish.isPlayerVanished(player)) {
 			PlayerVanish.vanishPlayer(player);
 		}
-		PlayerTeam.removePlayerFromTeam(player);
+		TeamHandler.removePlayerFromTeam(player);
 		PlayerScoreboard.removePlayerFromDisplaySlot(player);
 		if (PlayerBuildMode.isPlayerBuildmode(player)) {
 			PlayerBuildMode.buildmodePlayer(player);
