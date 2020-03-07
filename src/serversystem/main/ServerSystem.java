@@ -56,7 +56,7 @@ public class ServerSystem extends JavaPlugin{
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
-		registerExtaItems();
+		registerExtraItems();
 		setInstance(this);
 		for (String world : Config.getLoadWorlds()) {
 			if(Bukkit.getWorld(world) == null) {
@@ -112,7 +112,7 @@ public class ServerSystem extends JavaPlugin{
 		SignHandler.registerServerSign(new ExtraItemSign());
 	}
 	
-	private void registerExtaItems() {
+	private void registerExtraItems() {
 		ExtraItemHandler.registerExtraItem(new UltraSwoardItem());	
 	}
 		
