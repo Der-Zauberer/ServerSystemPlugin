@@ -25,12 +25,11 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		Player player = Bukkit.getPlayer(args[0]);
 		if(args.length == 0) {
 			PlayerBuildMode.buildmodePlayer((Player) sender);
-		}else if(player != null) {
-			PlayerBuildMode.buildmodePlayer(player, (Player) sender);
-		}else if(!Bukkit.getOnlinePlayers().contains(player)) {
+		}else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
+			PlayerBuildMode.buildmodePlayer(Bukkit.getPlayer(args[0]), (Player) sender);
+		}else if(args.length == 1 && !Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
 			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
 		return true;
