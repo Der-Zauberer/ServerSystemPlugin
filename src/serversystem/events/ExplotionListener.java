@@ -4,7 +4,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import serversystem.main.Config;
+import serversystem.config.Config;
 
 public class ExplotionListener implements Listener {
 	

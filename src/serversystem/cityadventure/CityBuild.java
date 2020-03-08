@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.Listener;
 
-import serversystem.main.SaveConfig;
+import serversystem.config.SaveConfig;
 import serversystem.utilities.ServerArea;
 
 public class CityBuild implements Listener {

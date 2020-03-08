@@ -6,8 +6,9 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+
+import serversystem.config.SaveConfig;
 import serversystem.handler.TeamHandler;
-import serversystem.main.SaveConfig;
 import serversystem.main.ServerSystem;
 
 public class WorldGroup {

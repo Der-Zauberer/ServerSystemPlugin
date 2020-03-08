@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import serversystem.main.Config;
+import serversystem.config.Config;
 import serversystem.utilities.ChatMessage;
 
 public class LobbyCommand implements CommandExecutor, TabCompleter {

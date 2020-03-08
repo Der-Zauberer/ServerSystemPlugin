@@ -12,8 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import serversystem.config.Config;
 import serversystem.handler.WorldGroupHandler;
-import serversystem.main.Config;
 import serversystem.utilities.PlayerVanish;
 import serversystem.utilities.ChatMessage;
 import serversystem.utilities.WorldGroup;

@@ -4,8 +4,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import serversystem.config.Config;
 import serversystem.handler.WorldGroupHandler;
-import serversystem.main.Config;
 import serversystem.utilities.PlayerVanish;
 
 public class PlayerTeleportListener implements Listener {

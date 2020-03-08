@@ -17,10 +17,11 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(sender instanceof Player) {
+			Player player = (Player) sender;
 			if(args.length == 0) {
-				((Player) sender).openInventory(((Player) sender).getEnderChest());
+				player.openInventory(((Player) sender).getEnderChest());
 			} else if(Bukkit.getPlayer(args[0]) != null) {
-				((Player) sender).openInventory(Bukkit.getPlayer(args[0]).getEnderChest());
+				player.openInventory(Bukkit.getPlayer(args[0]).getEnderChest());
 			} else {
 				ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 			}

@@ -14,9 +14,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import serversystem.main.Config;
+
 import serversystem.utilities.PlayerBuildMode;
 import serversystem.utilities.PlayerVanish;
+import serversystem.config.Config;
 import serversystem.utilities.ChatMessage;
 import serversystem.utilities.ChatMessage.ErrorMessage;
 
@@ -26,22 +27,9 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(args.length == 0) {
 			PlayerBuildMode.buildmodePlayer((Player) sender);
-			if(PlayerBuildMode.isPlayerBuildmode((Player) sender)) {
-				ChatMessage.sendServerMessage(sender, "You can build now!");
-			} else {
-				ChatMessage.sendServerMessage(sender, "You can no longer build!");
-			}
-		}else if(Bukkit.getPlayer(args[0]) != null) {
-			PlayerBuildMode.buildmodePlayer(Bukkit.getServer().getPlayer(args[0]), (Player) sender);
-			if(PlayerBuildMode.isPlayerBuildmode(Bukkit.getPlayer(args[0]))) {
-			 	if(sender != Bukkit.getServer().getPlayer(args[0])) {ChatMessage.sendServerMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " can build now!");} 
-				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You can build now!");
-			} else {
-				if(sender != Bukkit.getServer().getPlayer(args[0])) {ChatMessage.sendServerMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " can no longer build!");} 
-				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You can no longer build!");
-			}
-			
-		}else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+		}else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
+			PlayerBuildMode.buildmodePlayer(Bukkit.getPlayer(args[0]), (Player) sender);
+		}else if(args.length == 1 && !Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
 			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
 		return true;
