@@ -5,6 +5,10 @@ author: Der_Zauberer
 api-version: 1.14
  
 commands:
+  wallet:
+    desciption: open the wallet
+    usage: /<command>
+    permission: serversystem.command.wallet
   admin:
     desciption: Open the admin menu
     usage: /<command>
@@ -43,6 +47,9 @@ commands:
     permission: serversystem.command.inventory
     
 permissions:
+  serversystem.command.wallet:
+    description: open the wallet
+    default: true
   serversystem.command.admin:
     description: Open the admin inventory
     default: op
