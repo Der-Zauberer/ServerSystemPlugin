@@ -23,29 +23,23 @@ import serversystem.events.EntityDamageListener;
 import serversystem.events.ExplotionListener;
 import serversystem.events.HungerListener;
 import serversystem.events.PlayerDeathListener;
-import serversystem.events.PlayerInteractListener;
 import serversystem.events.PlayerJoinListener;
 import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
-import serversystem.events.SignChangeListener;
-import serversystem.handler.ExtraItemHandler;
+import serversystem.handler.ItemHandler;
 import serversystem.handler.MenuHandler;
 import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
-import serversystem.signs.ExtraItemSign;
+import serversystem.items.UltraSwoardItem;
+import serversystem.signs.ItemSign;
 import serversystem.signs.WorldSign;
 import serversystem.utilities.WorldGroup;
 
 public class ServerSystem extends JavaPlugin{
 	
 	private static ServerSystem instance;
-	private static ExtraItemHandler extraitemhandler = new ExtraItemHandler();
-	private static MenuHandler menuhandler = new MenuHandler();
-	private static SignHandler signhandler = new SignHandler();
-	private static TeamHandler teamhanler = new TeamHandler();
-	private static WorldGroupHandler worldgrouphandler = new WorldGroupHandler();
 	
 	@Override
 	public void onEnable() {
@@ -55,6 +49,7 @@ public class ServerSystem extends JavaPlugin{
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
+		registerItemFunctions();
 		setInstance(this);
 		for (String world : Config.getLoadWorlds()) {
 			if(Bukkit.getWorld(world) == null) {
@@ -80,17 +75,16 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new ExplotionListener(), this);
 		Bukkit.getPluginManager().registerEvents(new HungerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
-		Bukkit.getPluginManager().registerEvents(new SignChangeListener(), this);
 		
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
-		Bukkit.getPluginManager().registerEvents(new ExtraItemHandler(), this);
+		Bukkit.getPluginManager().registerEvents(new ItemHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new MenuHandler(), this);
+		Bukkit.getPluginManager().registerEvents(new SignHandler(), this);
 	}
 	
 	private void registerCommands() {
@@ -107,7 +101,13 @@ public class ServerSystem extends JavaPlugin{
 	
 	private void registerWorldSigns() {
 		SignHandler.registerServerSign(new WorldSign());
-		SignHandler.registerServerSign(new ExtraItemSign());
+		SignHandler.registerServerSign(new ItemSign());
+	}
+	
+
+	private void registerItemFunctions() {
+		ItemHandler.registerItem(new UltraSwoardItem().getItem());
+		ItemHandler.registerItemFunction(new UltraSwoardItem());
 	}
 		
 	public static ServerSystem getInstance() {
@@ -116,26 +116,6 @@ public class ServerSystem extends JavaPlugin{
 	
 	public static void setInstance(ServerSystem instance) {
 		ServerSystem.instance = instance;
-	}
-	
-	public static ExtraItemHandler getExtraItemHandler() {
-		return extraitemhandler;
-	}
-	
-	public static MenuHandler getMenuHandler() {
-		return menuhandler;
-	}
-	
-	public static SignHandler getSignHandler() {
-		return signhandler;
-	}
-	
-	public static TeamHandler getTeamHandler() {
-		return teamhanler;
-	}
-	
-	public static WorldGroupHandler getWorldGroupHandler() {
-		return worldgrouphandler;
 	}
 	
 }
