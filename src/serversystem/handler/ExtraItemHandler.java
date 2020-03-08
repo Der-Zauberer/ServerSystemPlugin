@@ -1,52 +1,39 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
-
-import org.bukkit.ChatColor;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import serversystem.utilities.ExtraItem;
+import org.bukkit.inventory.ItemStack;
+import serversystem.utilities.ItemFunction;
 
 public class ExtraItemHandler implements Listener {
 	
-	private static ArrayList<ExtraItem> extraitems = new ArrayList<>();
+	private static ArrayList<ItemFunction> itemfunctions = new ArrayList<>();
 	
-	public static void registerExtraItem(ExtraItem extraitem) {
-		extraitems.add(extraitem);
+	public static void registerItemFunction(ItemFunction itemfunction) {
+		itemfunctions.add(itemfunction);
 	}
 	
-	public static ExtraItem getExtraItemById(String id) {
-		for (ExtraItem extraitem : extraitems) {
-			if(extraitem.getId().equalsIgnoreCase(id)) {
-				return extraitem;
-			}
-		}
-		return null;
-	}
-	
-	public static ExtraItem getExtraItemByName(String name) {
-		for (ExtraItem extraitem : extraitems) {
-			if(extraitem.getDisplayName().equals(name)) {
-				return extraitem;
-			}
-		}
-		return null;
-	}
-	
-	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
-		if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) {
-			String itemname = ChatColor.stripColor(event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName());
-			if(getExtraItemByName(itemname) != null) {
-				if(event.getAction() ==  Action.LEFT_CLICK_AIR) {
-					getExtraItemByName(itemname).onLeftClick(event, event.getPlayer(), getExtraItemByName(itemname));
-				} else {
-					getExtraItemByName(itemname).onRightClick(event, event.getPlayer(), getExtraItemByName(itemname));
+	public static ItemFunction getItemFunction(ItemStack itemstack) {
+		for (ItemFunction itemfunction : itemfunctions) {
+			if(itemfunction.getType().equals(itemstack.getType())) {
+				if(itemfunction.getCustomModelData() == itemstack.getItemMeta().getCustomModelData()) {
+					return itemfunction;
 				}
 			}
 		}
+		return null;
+	}
+	
+	public static boolean hasItemFunction(ItemStack itemstack) {
+		if(getItemFunction(itemstack) != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static void executeItemFunction(PlayerInteractEvent event) {
+
 	}
 	
 }

@@ -1,33 +1,18 @@
 package serversystem.extraitems;
 
-import java.util.Arrays;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.inventory.ItemStack;
+import serversystem.utilities.ItemBuilder;
 
-import serversystem.utilities.ExtraItem;
-
-public class UltraSwoardItem extends ExtraItem{
+public class UltraSwoardItem {
 	
-	public UltraSwoardItem() {
-		super("ultra_sword", Material.WOODEN_SWORD);
-		setDisplayName(ChatColor.RESET + "Ultra Sword");
-		setDescription(Arrays.asList("Type: Weapon"));
-	}
-	
-	@Override
-	public void onRightClick(PlayerInteractEvent event, Player player, ExtraItem extraitem) {
-		player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 2), true);
-		
-	}
-
-	@Override
-	public void onLeftClick(PlayerInteractEvent event, Player player, ExtraItem extraitem) {
-		
+	public ItemStack getItem() {
+		ItemBuilder itembuilder = new ItemBuilder();
+		itembuilder.setDisplayName(ChatColor.RESET + "UltraSwoard");
+		itembuilder.setMaterial(Material.WOODEN_SWORD);
+		itembuilder.setCustomModelData(1);
+		return itembuilder.buildItem();
 	}
 
 }

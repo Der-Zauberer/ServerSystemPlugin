@@ -29,7 +29,6 @@ import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
 import serversystem.events.SignChangeListener;
-import serversystem.extraitems.UltraSwoardItem;
 import serversystem.handler.ExtraItemHandler;
 import serversystem.handler.MenuHandler;
 import serversystem.handler.SignHandler;
@@ -56,7 +55,6 @@ public class ServerSystem extends JavaPlugin{
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
-		registerExtraItems();
 		setInstance(this);
 		for (String world : Config.getLoadWorlds()) {
 			if(Bukkit.getWorld(world) == null) {
@@ -110,10 +108,6 @@ public class ServerSystem extends JavaPlugin{
 	private void registerWorldSigns() {
 		SignHandler.registerServerSign(new WorldSign());
 		SignHandler.registerServerSign(new ExtraItemSign());
-	}
-	
-	private void registerExtraItems() {
-		ExtraItemHandler.registerExtraItem(new UltraSwoardItem());	
 	}
 		
 	public static ServerSystem getInstance() {

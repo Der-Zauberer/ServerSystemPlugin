@@ -72,7 +72,7 @@ public class ItemBuilder {
 		ItemStack itemstack = new ItemStack(material);
 		ItemMeta itemmeta = itemstack.getItemMeta();
 		itemmeta.setDisplayName(displayname);
-		if(!lore.isEmpty()) {
+		if(lore != null) {
 			itemmeta.setLore(lore);
 		}
 		itemmeta.setCustomModelData(custommodeldata);
