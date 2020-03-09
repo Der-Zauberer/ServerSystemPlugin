@@ -209,7 +209,7 @@ public class Config {
 		return config.getBoolean("Server.joinmessage");
 	}
 	
-	public static void setJoinLeaveMessageActive(boolean leavemessage) {
+	public static void setLeaveMessageActive(boolean leavemessage) {
 		config.set("Server.leavemessage", leavemessage);
 	}
 	

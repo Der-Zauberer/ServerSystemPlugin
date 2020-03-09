@@ -9,7 +9,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
 import serversystem.config.Config;
 import serversystem.handler.MenuHandler;
 import serversystem.utilities.PlayerInventory;
@@ -150,7 +149,7 @@ public class AdminMenu extends PlayerInventory{
 			Config.setJoinMessageActive(!Config.isJoinMessageActiv());
 		} else if(item.equals(createBooleanItem("LeaveMessage", true)) || item.equals(createBooleanItem("LeaveMessage", false))) {
 			setItem(createBooleanItem("LeaveMessage", !Config.isLeaveMessageActiv()), 12);
-			Config.setJoinMessageActive(!Config.isLeaveMessageActiv());
+			Config.setLeaveMessageActive(!Config.isLeaveMessageActiv());
 		} else if(item.getItemMeta().getDisplayName().startsWith("World: ") && item.getType() == Material.ZOMBIE_HEAD) {
 			String worldname[] = item.getItemMeta().getDisplayName().split(" ");
 			if(worldname.length == 2 && Bukkit.getWorld(worldname[1]) != null) {

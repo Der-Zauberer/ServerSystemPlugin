@@ -6,8 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -22,37 +20,24 @@ public class PlayerInventory {
 	}
 	
 	public ItemStack createItem(String name, Material material) {
-		ItemStack itemstack = new ItemStack(material);
-		ItemMeta itemmeta = itemstack.getItemMeta();
-		itemmeta.setDisplayName(name);
-		itemstack.setItemMeta(itemmeta);
-		return itemstack;
+		return new ItemBuilder(name, material).buildItem();
 	}
 	
-	public ItemStack createPotionItem(String name, Color color, PotionEffectType effect) {
-		ItemStack itemstack = new ItemStack(Material.POTION);
-		PotionMeta potionmeta = (PotionMeta) itemstack.getItemMeta();
-		potionmeta.setDisplayName(name);
-		potionmeta.setColor(color);
-		potionmeta.addCustomEffect(new PotionEffect(effect, 3600, 2), true);
-		itemstack.setItemMeta(potionmeta);
-		return itemstack;
+	public ItemStack createPotionItem(String name, Color color, PotionEffectType potioneffect) {
+		ItemBuilder itembuilder = new ItemBuilder(name, Material.POTION);
+		itembuilder.buildItem();
+		itembuilder.addPotionMeta(color, new PotionEffect(potioneffect, 3600, 2));
+		return itembuilder.getItemStack();
 	}
 	
 	public ItemStack createBooleanItem(String name, boolean defaults) {
-		ItemStack itemstack;
-		ItemMeta itemmeta;
+		ItemBuilder itembuilder;
 		if(defaults) {
-			itemstack = new ItemStack(Material.GREEN_DYE);
-			itemmeta = itemstack.getItemMeta();
-			itemmeta.setDisplayName(name + ": True");
+			itembuilder = new ItemBuilder(name + ": True", Material.GREEN_DYE);
 		} else {
-			itemstack = new ItemStack(Material.RED_DYE);
-			itemmeta = itemstack.getItemMeta();
-			itemmeta.setDisplayName(name + ": False");
+			itembuilder = new ItemBuilder(name + ": False", Material.RED_DYE);
 		}
-		itemstack.setItemMeta(itemmeta);
-		return itemstack;
+		return itembuilder.buildItem();
 	}
 	
 	public void setItem(ItemStack item, int position) {
@@ -79,8 +64,6 @@ public class PlayerInventory {
 		this.inventory = inventory;
 	}
 
-	public void onItemClicked(Inventory inventory, ItemStack item, Player player, int slot) {
-		
-	}
+	public void onItemClicked(Inventory inventory, ItemStack item, Player player, int slot) {}
 
 }
