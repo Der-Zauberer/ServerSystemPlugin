@@ -5,21 +5,21 @@ import org.bukkit.entity.Player;
 
 public class PlayerBuildMode {
 	
-	private static ArrayList<Player> buildPlayers = new ArrayList<>();
+	private static ArrayList<Player> buildplayers = new ArrayList<>();
 	
 	public static void buildmodePlayer(Player player) {
 		buildmodePlayer(player, player);
 	}
 	
 	public static void buildmodePlayer(Player player, Player sender) {
-		if(buildPlayers.contains(player)) {
-			buildPlayers.remove(player);
+		if(buildplayers.contains(player)) {
+			buildplayers.remove(player);
 			ChatMessage.sendServerMessage(sender, "You can no longer build!");
 			if(player != sender) {
 				ChatMessage.sendServerMessage(sender, player.getName() + " can no longer build!");
 			}
 		} else {
-			buildPlayers.add(player);
+			buildplayers.add(player);
 			ChatMessage.sendServerMessage(sender, "You can build now!");
 			if(player != sender) {
 				ChatMessage.sendServerMessage(sender, player.getName() + " can build now!");
@@ -27,8 +27,8 @@ public class PlayerBuildMode {
 		}
 	}
 	
-	public static boolean isPlayerBuildmode(Player player) {
-		if(buildPlayers.contains(player)) {
+	public static boolean isPlayerInBuildmode(Player player) {
+		if(buildplayers.contains(player)) {
 			return true;
 		}
 		return false;
