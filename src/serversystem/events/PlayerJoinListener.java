@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 import serversystem.config.Config;
+import serversystem.config.EconomyConfig;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.PlayerPacket;
 import serversystem.utilities.PlayerPermission;
@@ -17,6 +18,7 @@ public class PlayerJoinListener implements Listener {
 			event.setJoinMessage("");
 		}
 		Config.addPlayer(event.getPlayer());
+		new EconomyConfig(event.getPlayer());
 		PlayerPermission.removeConfigDisablePermissions(event.getPlayer());
 		PlayerPermission.addConfigPermissions(event.getPlayer());
 		PlayerPermission.reloadPlayerPermissions(event.getPlayer());
@@ -28,5 +30,7 @@ public class PlayerJoinListener implements Listener {
 		if(Config.getTitle() != null) {PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.TITLE, Config.getTitle(), Config.getTitleColor(), 100);}
 		if(Config.getSubtitle() != null) {PlayerPacket.sendTitle(event.getPlayer(), EnumTitleAction.SUBTITLE, Config.getSubtitle(), Config.getSubtitleColor(), 100);}
 	}
+
+
 
 }
