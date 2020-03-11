@@ -53,7 +53,7 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		if(Config.hasWorldProtect(event.getPlayer().getWorld().getName())) {
+		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
 			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
 				event.setCancelled(true);
 			}
@@ -62,7 +62,7 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if(Config.hasWorldProtect(event.getPlayer().getWorld().getName())) {
+		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
 			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
 				event.setCancelled(true);
 			}
@@ -72,7 +72,7 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 	@EventHandler
 	public void onHangingBreak(HangingBreakByEntityEvent event) {
 		if(event.getEntity() instanceof Player) {
-			if(Config.hasWorldProtect(event.getEntity().getWorld().getName())) {
+			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
 				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getEntity()))) {
 					event.setCancelled(true);
 				}
@@ -85,7 +85,7 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 	@EventHandler
     public void onThrow(ProjectileLaunchEvent event) {
 		if(event.getEntity() instanceof Player) {
-			if(Config.hasWorldProtect(event.getEntity().getWorld().getName())) {
+			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
 				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getEntity()))) {
 					event.setCancelled(true);
 				}
