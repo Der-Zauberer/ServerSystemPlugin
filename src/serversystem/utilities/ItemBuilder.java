@@ -2,9 +2,12 @@ package serversystem.utilities;
 
 import java.util.List;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 
 public class ItemBuilder {
 	
@@ -12,26 +15,27 @@ public class ItemBuilder {
 	private Material material;
 	private List<String> lore;
 	private int custommodeldata;
+	private ItemStack itemstack;
 	
-	public void Material() {
+	public ItemBuilder() {
 		displayname = ChatColor.RESET + "Example Soward";
 		material = Material.WOODEN_SWORD;
 		custommodeldata = 0;
 	}
 	
-	public void Material(Material material) {
+	public ItemBuilder(Material material) {
 		displayname = ChatColor.RESET + "Example Soward";
 		this.material = material;
 		custommodeldata = 0;
 	}
 	
-	public void Material(String displayname) {
+	public ItemBuilder(String displayname) {
 		this.displayname = displayname;
 		material = Material.WOODEN_SWORD;
 		custommodeldata = 0;
 	}
 	
-	public void Material(String displayname, Material material) {
+	public ItemBuilder(String displayname, Material material) {
 		this.displayname = displayname;
 		this.material = material;
 	}
@@ -68,6 +72,15 @@ public class ItemBuilder {
 		return custommodeldata;
 	}
 	
+	public void addPotionMeta(Color color, PotionEffect potioneffect) {
+		if(itemstack != null && material == Material.POTION) {
+			PotionMeta potionmeta = (PotionMeta) itemstack.getItemMeta();
+			potionmeta.setColor(color);
+			potionmeta.addCustomEffect(potioneffect, true);
+			itemstack.setItemMeta(potionmeta);
+		}
+	}
+	
 	public ItemStack buildItem() {
 		ItemStack itemstack = new ItemStack(material);
 		ItemMeta itemmeta = itemstack.getItemMeta();
@@ -77,6 +90,21 @@ public class ItemBuilder {
 		}
 		itemmeta.setCustomModelData(custommodeldata);
 		itemstack.setItemMeta(itemmeta);
+		this.itemstack = itemstack;
+		return itemstack;
+	}
+	
+	public ItemMeta getItemMeta() {
+		if(itemstack == null) {
+			return buildItem().getItemMeta();
+		}
+		return itemstack.getItemMeta();
+	}
+	
+	public ItemStack getItemStack() {
+		if(itemstack == null) {
+			return buildItem();
+		}
 		return itemstack;
 	}
 

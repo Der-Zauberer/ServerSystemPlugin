@@ -9,7 +9,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-
 import serversystem.config.Config;
 import serversystem.handler.MenuHandler;
 import serversystem.utilities.PlayerInventory;
@@ -66,7 +65,7 @@ public class AdminMenu extends PlayerInventory{
 		setItem(createBooleanItem("Damage", Config.hasWorldDamage(world)), 9);
 		setItem(createBooleanItem("Explosion", Config.hasWorldExplosion(world)), 11);
 		setItem(createBooleanItem("Hunger", Config.hasWorldHunger(world)), 13);
-		setItem(createBooleanItem("Protect", Config.hasWorldProtect(world)), 15);
+		setItem(createBooleanItem("Protect", Config.hasWorldProtection(world)), 15);
 		setItem(createBooleanItem("PVP", Config.hasWorldPVP(world)), 17);
 		setItem(createItem("World: " + world, Material.ZOMBIE_HEAD), 27);
 		setItem(createItem("Back", Material.SPECTRAL_ARROW), 31);
@@ -150,7 +149,7 @@ public class AdminMenu extends PlayerInventory{
 			Config.setJoinMessageActive(!Config.isJoinMessageActiv());
 		} else if(item.equals(createBooleanItem("LeaveMessage", true)) || item.equals(createBooleanItem("LeaveMessage", false))) {
 			setItem(createBooleanItem("LeaveMessage", !Config.isLeaveMessageActiv()), 12);
-			Config.setJoinMessageActive(!Config.isLeaveMessageActiv());
+			Config.setLeaveMessageActive(!Config.isLeaveMessageActiv());
 		} else if(item.getItemMeta().getDisplayName().startsWith("World: ") && item.getType() == Material.ZOMBIE_HEAD) {
 			String worldname[] = item.getItemMeta().getDisplayName().split(" ");
 			if(worldname.length == 2 && Bukkit.getWorld(worldname[1]) != null) {
@@ -166,8 +165,8 @@ public class AdminMenu extends PlayerInventory{
 			setItem(createBooleanItem("Hunger", !Config.hasWorldHunger(player.getWorld().getName())), 13);
 			Config.setWorldHunger(player.getWorld().getName(), !Config.hasWorldHunger(player.getWorld().getName()));
 		} else if(item.equals(createBooleanItem("Protect", true)) || item.equals(createBooleanItem("Protect", false))) {
-			setItem(createBooleanItem("Protect", !Config.hasWorldProtect(player.getWorld().getName())), 15);
-			Config.setWorldProtect(player.getWorld().getName(), !Config.hasWorldProtect(player.getWorld().getName()));
+			setItem(createBooleanItem("Protect", !Config.hasWorldProtection(player.getWorld().getName())), 15);
+			Config.setWorldProtection(player.getWorld().getName(), !Config.hasWorldProtection(player.getWorld().getName()));
 		} else if(item.equals(createBooleanItem("PVP", true)) || item.equals(createBooleanItem("PVP", false))) {
 			setItem(createBooleanItem("PVP", !Config.hasWorldPVP(player.getWorld().getName())), 17);
 			Config.setWorldPVP(player.getWorld().getName(), !Config.hasWorldPVP(player.getWorld().getName()));

@@ -21,7 +21,7 @@ public class ChatMessage {
 	}
 	
 	public static void sendServerMessage(CommandSender sender, String message) {
-		((Player) sender).sendMessage(servername + messagecolor + " " + message);
+		sender.sendMessage(servername + messagecolor + " " + message);
 	}
 	
 	public static void sendServerErrorMessage(Player player, String message) {
@@ -29,7 +29,7 @@ public class ChatMessage {
 	}
 	
 	public static void sendServerErrorMessage(CommandSender sender, String message) {
-		((Player) sender).sendMessage(servername + errorcolor + " " + message);
+		sender.sendMessage(servername + errorcolor + " " + message);
 	}
 	
 	public static void sendServerErrorMessage(Player player, ErrorMessage errormessage) {

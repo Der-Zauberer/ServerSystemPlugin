@@ -17,24 +17,13 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(args.length == 0) {
+		if(args.length == 0 && sender instanceof Player) {
 			PlayerVanish.vanishPlayer((Player) sender);
-			if(PlayerVanish.isPlayerVanished((Player) sender)) {
-				ChatMessage.sendServerMessage(sender, "You are vanished now!");
-			} else {
-				ChatMessage.sendServerMessage(sender, "You are no longer vanished!");
-			}
-		}else if(Bukkit.getPlayer(args[0]) != null) {
-			PlayerVanish.vanishPlayer(Bukkit.getServer().getPlayer(args[0]), (Player) sender);
-			
-			if(PlayerVanish.isPlayerVanished(Bukkit.getPlayer(args[0]))) {
-			 	if(sender != Bukkit.getServer().getPlayer(args[0])) {ChatMessage.sendServerMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " is vanished now!");} 
-				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You are vanished now!");
-			} else {
-				if(sender != Bukkit.getServer().getPlayer(args[0])) {ChatMessage.sendServerMessage(sender, Bukkit.getServer().getPlayer(args[0]).getName() + " is no longer vanished!");} 
-				ChatMessage.sendServerMessage(Bukkit.getServer().getPlayer(args[0]), "You are no longer vanished!");
-			}
-		} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+		} else if(args.length == 0 && !(sender instanceof Player)) {
+			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
+		} else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
+			PlayerVanish.vanishPlayer(Bukkit.getPlayer(args[0]), sender);
+		} else if(Bukkit.getPlayer(args[0]) == null) {
 			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
 		return true;

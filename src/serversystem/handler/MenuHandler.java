@@ -22,13 +22,14 @@ public class MenuHandler implements Listener {
 	
 	@EventHandler
 	public void onInventoryClicked(InventoryClickEvent event) {
-		for(PlayerInventory playerinventory : inventorymenus) {
-			if(playerinventory.getInventory() == event.getClickedInventory()) {
-				playerinventory.onItemClicked(event.getClickedInventory(), event.getCurrentItem(), (Player) event.getWhoClicked(), event.getSlot());
-				event.setCancelled(true);
+		if(event.getCurrentItem() != null) {
+			for(PlayerInventory playerinventory : inventorymenus) {
+				if(playerinventory.getInventory() == event.getClickedInventory()) {
+					playerinventory.onItemClicked(event.getClickedInventory(), event.getCurrentItem(), (Player) event.getWhoClicked(), event.getSlot());
+					event.setCancelled(true);
+				}
 			}
 		}
-		
 	}
 
 }

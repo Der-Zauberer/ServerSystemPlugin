@@ -63,7 +63,7 @@ public class WorldGroup {
 		}
 		TeamHandler.removePlayerFromTeam(player);
 		PlayerScoreboard.removePlayerFromDisplaySlot(player);
-		if (PlayerBuildMode.isPlayerBuildmode(player)) {
+		if (PlayerBuildMode.isPlayerInBuildmode(player)) {
 			PlayerBuildMode.buildmodePlayer(player);
 		}
 		SaveConfig.saveInventory(player, this);

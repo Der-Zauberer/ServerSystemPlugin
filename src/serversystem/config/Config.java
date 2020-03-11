@@ -134,12 +134,12 @@ public class Config {
 		return config.getBoolean("Worlds." + world + ".worldspawn");
 	}
 	
-	public static void setWorldProtect(String world, boolean protect) {
+	public static void setWorldProtection(String world, boolean protect) {
 		config.set("Worlds." + world + ".protect", protect);
 		saveConfig();
 	}
 	
-	public static boolean hasWorldProtect(String world) {
+	public static boolean hasWorldProtection(String world) {
 		return config.getBoolean("Worlds." + world + ".protect");
 	}
 	
@@ -209,7 +209,7 @@ public class Config {
 		return config.getBoolean("Server.joinmessage");
 	}
 	
-	public static void setJoinLeaveMessageActive(boolean leavemessage) {
+	public static void setLeaveMessageActive(boolean leavemessage) {
 		config.set("Server.leavemessage", leavemessage);
 	}
 	
@@ -220,6 +220,13 @@ public class Config {
 	public static void addLoadWorld(String world) {
 		List<String> list = getLoadWorlds();
 		list.add(world);
+		config.set("Worldload", list);
+		saveConfig();
+	}
+	
+	public static void removeLoadWorld(String string) {
+		List<String> list = getLoadWorlds();
+		list.remove(string);
 		config.set("Worldload", list);
 		saveConfig();
 	}
