@@ -22,43 +22,49 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		Player player = (Player) sender;
 		if(args.length == 1 && args[0].equals("list")) {
 			String worlds = "";
 			for(World world : Bukkit.getWorlds()) {
-				worlds = worlds + world.getName() + " ";
+				worlds += world.getName() + " ";
 			}
 			ChatMessage.sendServerMessage(sender, "Worlds: " + worlds);
 		} else if(args.length == 2 && args[0].equals("teleport")) {
 			if(Bukkit.getWorld(args[1]) != null) {
-				WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args[1]));
+				WorldGroupHandler.teleportPlayer((Player) sender, Bukkit.getWorld(args[1]));
 				ChatMessage.sendServerMessage(sender, "You are in world " + args[1] +  "!");
 			} else {
 				ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
 			}	
 		} else if(args.length == 3 && args[0].equals("teleport")) {
-			if(Bukkit.getWorld(args[1]) != null && Bukkit.getPlayer(args[2]) != null) {
-				WorldGroupHandler.teleportPlayer(Bukkit.getPlayer(args[2]), Bukkit.getWorld(args[1]));
-				if(sender != Bukkit.getServer().getPlayer(args[2])) {ChatMessage.sendServerMessage(sender, "The player " + args[2] +  " is in world " + args[1] +  "!");} 
-				ChatMessage.sendServerMessage(Bukkit.getPlayer(args[2]), "You are in world " + args[1] +  "!");
-			} else if(Bukkit.getWorld(args[1]) == null) {
+			Player player = Bukkit.getPlayer(args[2]);
+			World world = Bukkit.getWorld(args[1]);
+			if(world != null && player != null) {
+				WorldGroupHandler.teleportPlayer(player, world);
+				if(sender != player) {
+					ChatMessage.sendServerMessage(sender, "The player " + player.getName() +  " is in world " + world.getName() +  "!");
+				} 
+				ChatMessage.sendServerMessage(player, "You are in world " + world +  "!");
+			} else if(world == null) {
 				ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
-			} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[2]))) {
+			} else if(player == null) {
 				ChatMessage.sendServerErrorMessage(sender, "The player " + args[2] + " is not online!");
 			}
 		} else if (args.length == 2 && args[0].equals("create")) {
-			if (Bukkit.getWorld(args[1]) == null) {
+			World world = Bukkit.getWorld(args[1]);
+			if(Bukkit.getWorld(args[1]) == null) {
 				Bukkit.getWorlds().add(new WorldCreator(args[1]).createWorld());
-				Config.addWorld(args[1]);
-				Config.addLoadWorld(args[1]);
-				WorldGroupHandler.addWorldGroup(new WorldGroup(args[1], Bukkit.getWorld(args[1])));
-				ChatMessage.sendServerMessage(sender, "The world " + args[1] + " is successfully created!");
+				world = Bukkit.getWorld(args[1]);
+				Config.addWorld(world.getName());
+				Config.addLoadWorld(world.getName());
+				WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
+				ChatMessage.sendServerMessage(sender, "The world " + world.getName() + " is successfully created!");
 			} else {
-				ChatMessage.sendServerMessage(sender, "The world " + args[1] + " is already loaded!");
+				ChatMessage.sendServerMessage(sender, "The world " + world.getName() + " is already loaded!");
 			}
 		} else if ((args.length == 3 || args.length == 4) && args[0].equals("edit")) {
+			World world = Bukkit.getWorld(args[1]);
 			if(args.length == 3) {
-				if (Bukkit.getWorld(args[1]) != null) {
+				if (world != null) {
 					switch (args[2]) {
 					case "protect": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldProtect(args[1]) + " for the world " + args[1] + "!"); break;
 					case "pvp": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldPVP(args[1]) + " for the world " + args[1] + "!"); break;
@@ -73,7 +79,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 					ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
 				}
 			} else {
-				if (Bukkit.getWorld(args[1]) != null) {
+				if (world != null) {
 					if(!args[2].equals("gamemode")) {
 						boolean worldboolean = false;
 						if(args[3].equals("true")) {
