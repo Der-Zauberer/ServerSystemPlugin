@@ -87,7 +87,11 @@ public class WorldGroupHandler {
 		worldgroup.addWorld(world);
 	}
 	
-	public static void deactivateWorld(World world) {
+	public static void removeWorld(String world) {
+		Config.removeLoadWorld(world);
+	}
+	
+	public static void removeWorld(World world) {
 		Config.removeLoadWorld(world.getName());
 	}
 	
@@ -128,11 +132,11 @@ public class WorldGroupHandler {
 		Config.setWorldGamemode(world, gamemode);
 	}
 	
-	public static GameMode getWorldGamemode(World world, GameMode gamemode) {
-		return getWorldGamemode(world.getName(), gamemode);
+	public static GameMode getWorldGamemode(World world) {
+		return getWorldGamemode(world.getName());
 	}
 	
-	public static GameMode getWorldGamemode(String world, GameMode gamemode) {
+	public static GameMode getWorldGamemode(String world) {
 		return Config.getWorldGamemode(world);
 	}
 	

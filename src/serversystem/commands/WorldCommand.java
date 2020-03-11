@@ -10,8 +10,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import serversystem.config.Config;
 import serversystem.handler.WorldGroupHandler;
-import serversystem.handler.WorldGroupHandler.WorldSetting;
 import serversystem.utilities.PlayerVanish;
 import serversystem.utilities.ChatMessage;
 
@@ -19,69 +19,84 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		Player player = (Player) sender;
 		if(args.length == 1 && args[0].equals("list")) {
 			String worlds = "";
 			for(World world : Bukkit.getWorlds()) {
-				worlds += world.getName() + " ";
+				worlds = worlds + world.getName() + " ";
 			}
 			ChatMessage.sendServerMessage(sender, "Worlds: " + worlds);
 		} else if(args.length == 2 && args[0].equals("teleport")) {
 			if(Bukkit.getWorld(args[1]) != null) {
-				WorldGroupHandler.teleportPlayer((Player) sender, Bukkit.getWorld(args[1]));
+				WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args[1]));
 				ChatMessage.sendServerMessage(sender, "You are in world " + args[1] +  "!");
 			} else {
 				ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
 			}	
 		} else if(args.length == 3 && args[0].equals("teleport")) {
-			Player player = Bukkit.getPlayer(args[2]);
-			World world = Bukkit.getWorld(args[1]);
-			if(world != null && player != null) {
-				WorldGroupHandler.teleportPlayer(player, world);
-				if(sender != player) {
-					ChatMessage.sendServerMessage(sender, "The player " + player.getName() +  " is in world " + world.getName() +  "!");
-				} 
-				ChatMessage.sendServerMessage(player, "You are in world " + world +  "!");
-			} else if(world == null) {
+			if(Bukkit.getWorld(args[1]) != null && Bukkit.getPlayer(args[2]) != null) {
+				WorldGroupHandler.teleportPlayer(Bukkit.getPlayer(args[2]), Bukkit.getWorld(args[1]));
+				if(sender != Bukkit.getServer().getPlayer(args[2])) {ChatMessage.sendServerMessage(sender, "The player " + args[2] +  " is in world " + args[1] +  "!");} 
+				ChatMessage.sendServerMessage(Bukkit.getPlayer(args[2]), "You are in world " + args[1] +  "!");
+			} else if(Bukkit.getWorld(args[1]) == null) {
 				ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
-			} else if(player == null) {
+			} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[2]))) {
 				ChatMessage.sendServerErrorMessage(sender, "The player " + args[2] + " is not online!");
 			}
 		} else if (args.length == 2 && args[0].equals("create")) {
-			if(Bukkit.getWorld(args[1]) == null) {
+			if (Bukkit.getWorld(args[1]) == null) {
 				WorldGroupHandler.createWorld(args[1]);
 				ChatMessage.sendServerMessage(sender, "The world " + args[1] + " is successfully created!");
 			} else {
 				ChatMessage.sendServerMessage(sender, "The world " + args[1] + " is already loaded!");
 			}
+		} else if(args.length == 2 && args[0].equals("remove")) {
+			if(Bukkit.getWorld(args[1]) != null) {
+				WorldGroupHandler.removeWorld(args[1]);
+			} else {
+				ChatMessage.sendServerMessage(sender, "The world " + args[1] + " will be removed after a restart!");
+				ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+			}
 		} else if ((args.length == 3 || args.length == 4) && args[0].equals("edit")) {
-			World world = Bukkit.getWorld(args[1]);
 			if(args.length == 3) {
-				if (world != null) {
-					if(getWorldSettingFromString(args[2]) != null) {
-						if(args[2].equals("gamemode")) {
-							WorldGroupHandler.setWorldGamemode(world, getGamemodeFromString(args[3]));
-						} else {
-							WorldGroupHandler.setWorldSettings(world, getWorldSettingFromString(args[2]), getBooleanFromString(args[3]));
-						}
-						ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!");
-					} else {
-						ChatMessage.sendServerMessage(sender, "The option " + args[2] + " does not exist or" + args[3] + " is not allowed!");
+				if (Bukkit.getWorld(args[1]) != null) {
+					switch (args[2]) {
+					case "protection": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldProtection(args[1]) + " for the world " + args[1] + "!"); break;
+					case "pvp": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldPVP(args[1]) + " for the world " + args[1] + "!"); break;
+					case "damage": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldDamage(args[1]) + " for the world " + args[1] + "!"); break;
+					case "hunger": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " +Config.hasWorldHunger(args[1]) + " for the world " + args[1] + "!"); break;
+					case "explosion": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldExplosion(args[1]) + " for the world " + args[1] + "!"); break;
+					case "gamemode": ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.getWorldGamemode(args[1]).toString().toLowerCase() + " for the world " + args[1] + "!"); break;
+					default:
+						ChatMessage.sendServerMessage(sender, "The option " + args[2] + " does not exist!"); break;
 					}
 				} else {
 					ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
 				}
 			} else {
-				if (world != null) {
+				if (Bukkit.getWorld(args[1]) != null) {
 					if(!args[2].equals("gamemode")) {
-						if(getWorldSettingFromString(args[2]) != null) {
-							if(args[2].equals("gamemode")) {
-								WorldGroupHandler.getWorldGamemode(world, getGamemodeFromString(args[3]));
-							} else {
-								WorldGroupHandler.getWorldSettings(world, getWorldSettingFromString(args[2]));
-							}
-							ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!");
-						} else {
-							ChatMessage.sendServerMessage(sender, "The option " + args[2] + " does not exist or" + args[3] + " is not allowed!");
+						boolean worldboolean = false;
+						if(args[3].equals("true")) {
+							worldboolean = true;
+						}
+						switch (args[2]) {
+						case "protection": Config.setWorldProtection(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+						case "pvp": Config.setWorldPVP(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+						case "damage": Config.setWorldDamage(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+						case "hunger": Config.setWorldHunger(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+						case "explosion": Config.setWorldExplosion(args[1], worldboolean); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
+						default:
+							ChatMessage.sendServerMessage(sender, "The option " + args[2] + " does not exist!"); break;
+						}
+					} else {
+						switch (args[3]) {
+						case "survival": Config.setWorldGamemode(args[1], GameMode.SURVIVAL); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to survival for the world " + args[1] + "!"); break;
+						case "creative": Config.setWorldGamemode(args[1], GameMode.CREATIVE); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to creative for the world " + args[1] + "!"); break;
+						case "adventure": Config.setWorldGamemode(args[1], GameMode.ADVENTURE); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to adventure for the world " + args[1] + "!"); break;
+						case "spectator": Config.setWorldGamemode(args[1], GameMode.SPECTATOR); ChatMessage.sendServerMessage(sender, "The option " + args[2] + " is set to spectator for the world " + args[1] + "!"); break;
+						default:
+							ChatMessage.sendServerMessage(sender, "The gamemode " + args[2] + " does not exist!"); break;
 						}
 					}			
 				} else {
@@ -103,6 +118,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			commands.add("create");
 			commands.add("list");
 			commands.add("edit");
+			commands.add("remove");
 		} else if((args.length == 2 && args[0].equals("teleport")) ||  (args.length == 2 && args[0].equals("edit"))) {
 			commands.clear();
 			for(World world : Bukkit.getWorlds()) {
@@ -135,37 +151,6 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			commands.add("spectator");
 		}
 		return commands;
-	}
-	
-	private static WorldSetting getWorldSettingFromString(String string) {
-		switch (string) {
-		case "protection": return WorldSetting.PROTECTION;
-		case "pvp": return WorldSetting.PROTECTION;
-		case "damage": return WorldSetting.PROTECTION;
-		case "hunger": return WorldSetting.PROTECTION;
-		case "explosion": return WorldSetting.PROTECTION;
-		case "gamemode": return WorldSetting.PROTECTION;
-		default:
-			return null;
-		}
-	}
-	
-	private static GameMode getGamemodeFromString(String string) {
-		switch (string) {
-		case "survival": return GameMode.SURVIVAL;
-		case "creative": return GameMode.CREATIVE;
-		case "adventure": return GameMode.ADVENTURE;
-		case "spectator": return GameMode.SPECTATOR;
-		default:
-			return null;
-		}
-	}
-	
-	private static boolean getBooleanFromString(String string) {
-		if(string.equals("true")) {
-			return true;
-		}
-		return false;
 	}
 	
 }
