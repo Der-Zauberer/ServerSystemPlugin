@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import serversystem.cityadventure.CityBuild;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
+import serversystem.commands.CasinoCommand;
 import serversystem.commands.EnderchestCommand;
 import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
@@ -99,6 +100,7 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("enderchest").setExecutor(new EnderchestCommand());
 		getCommand("inventory").setExecutor(new InventoryCommand());
 		getCommand("wallet").setExecutor(new WalletCommand());
+		getCommand("casino").setExecutor(new CasinoCommand());
 	}
 	
 	private void registerWorldSigns() {
