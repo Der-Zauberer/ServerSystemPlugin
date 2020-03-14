@@ -11,8 +11,12 @@ import org.bukkit.potion.PotionEffectType;
 
 public class PlayerInventory {
 	
+	public enum ItemOption{DRAGABLE, GETABLE, FIXED};
+	
 	private Inventory inventory;
+	private ItemOption itemoption;
 	private Player player;
+	private InventoryMenu lastinventorymenu;
 	
 	public PlayerInventory(Player player, int number, String name) {
 		this.player = player;
@@ -44,6 +48,13 @@ public class PlayerInventory {
 		inventory.setItem(position, item);
 	}
 	
+	public void setInventoryMenu(InventoryMenu inventorymenu) {
+		lastinventorymenu = inventorymenu;
+		for(ItemStack itemstack : inventorymenu.getItems().keySet()) {
+			setItem(itemstack, inventorymenu.getItems().get(itemstack));
+		}
+	}
+	
 	public void open() {
 		player.openInventory(inventory);
 	}
@@ -55,13 +66,21 @@ public class PlayerInventory {
 	public void clear() {
 		inventory.clear();
 	}
-
+	
+	public void setItemOption(ItemOption itemoption) {
+		this.itemoption = itemoption;
+	}
+	
+	public ItemOption getItemOption() {
+		return itemoption;
+	}
+	
 	public Inventory getInventory() {
 		return inventory;
 	}
-
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
+	
+	public void onItemClicked(ItemStack itemstack, Player player) {
+		lastinventorymenu.onItemClick(itemstack, player);
 	}
 
 	public void onItemClicked(Inventory inventory, ItemStack item, Player player, int slot) {}

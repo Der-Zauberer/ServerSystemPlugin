@@ -5,10 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-
 import serversystem.utilities.PlayerInventory;
+import serversystem.utilities.PlayerInventory.ItemOption;
 
-public class MenuHandler implements Listener {
+public class InventoryHandler implements Listener {
 	
 	private static ArrayList<PlayerInventory> inventorymenus = new ArrayList<>();
 	
@@ -24,7 +24,7 @@ public class MenuHandler implements Listener {
 	public void onInventoryClicked(InventoryClickEvent event) {
 		if(event.getCurrentItem() != null) {
 			for(PlayerInventory playerinventory : inventorymenus) {
-				if(playerinventory.getInventory() == event.getClickedInventory()) {
+				if(playerinventory.getInventory() == event.getClickedInventory() && playerinventory.getItemOption() == ItemOption.FIXED) {
 					playerinventory.onItemClicked(event.getClickedInventory(), event.getCurrentItem(), (Player) event.getWhoClicked(), event.getSlot());
 					event.setCancelled(true);
 				}

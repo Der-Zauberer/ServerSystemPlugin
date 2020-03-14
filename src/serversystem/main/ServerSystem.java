@@ -28,7 +28,7 @@ import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
 import serversystem.handler.ItemHandler;
-import serversystem.handler.MenuHandler;
+import serversystem.handler.InventoryHandler;
 import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
@@ -83,7 +83,7 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
 		Bukkit.getPluginManager().registerEvents(new ItemHandler(), this);
-		Bukkit.getPluginManager().registerEvents(new MenuHandler(), this);
+		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new SignHandler(), this);
 	}
 	

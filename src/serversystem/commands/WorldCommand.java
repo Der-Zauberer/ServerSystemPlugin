@@ -53,8 +53,8 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 		} else if(args.length == 2 && args[0].equals("remove")) {
 			if(Bukkit.getWorld(args[1]) != null) {
 				WorldGroupHandler.removeWorld(args[1]);
-			} else {
 				ChatMessage.sendServerMessage(sender, "The world " + args[1] + " will be removed after a restart!");
+			} else {
 				ChatMessage.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
 			}
 		} else if ((args.length == 3 || args.length == 4) && args[0].equals("edit")) {
@@ -119,7 +119,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			commands.add("list");
 			commands.add("edit");
 			commands.add("remove");
-		} else if((args.length == 2 && args[0].equals("teleport")) ||  (args.length == 2 && args[0].equals("edit"))) {
+		} else if((args.length == 2 && args[0].equals("teleport")) ||  (args.length == 2 && args[0].equals("edit")) ||  (args.length == 2 && args[0].equals("remove"))) {
 			commands.clear();
 			for(World world : Bukkit.getWorlds()) {
 				commands.add(world.getName());
