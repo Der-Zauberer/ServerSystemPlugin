@@ -11,8 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
+import serversystem.handler.PlayerVanish;
 import serversystem.handler.WorldGroupHandler;
-import serversystem.utilities.PlayerVanish;
 import serversystem.utilities.ChatMessage;
 
 public class WorldCommand implements CommandExecutor, TabCompleter{

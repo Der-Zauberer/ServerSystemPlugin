@@ -25,7 +25,7 @@ public class InventoryHandler implements Listener {
 		if(event.getCurrentItem() != null) {
 			for(PlayerInventory playerinventory : inventorymenus) {
 				if(playerinventory.getInventory() == event.getClickedInventory() && playerinventory.getItemOption() == ItemOption.FIXED) {
-					playerinventory.onItemClicked(event.getClickedInventory(), event.getCurrentItem(), (Player) event.getWhoClicked(), event.getSlot());
+					playerinventory.onItemClicked(event.getCurrentItem(), (Player) event.getWhoClicked());
 					event.setCancelled(true);
 				}
 			}

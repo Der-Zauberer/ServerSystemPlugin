@@ -1,7 +1,9 @@
-package serversystem.utilities;
+package serversystem.handler;
 
 import java.util.ArrayList;
 import org.bukkit.entity.Player;
+
+import serversystem.utilities.ChatMessage;
 
 public class PlayerBuildMode {
 	

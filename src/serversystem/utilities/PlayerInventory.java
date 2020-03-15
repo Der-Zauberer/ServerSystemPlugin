@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import serversystem.handler.InventoryHandler;
+
 public class PlayerInventory {
 	
 	public enum ItemOption{DRAGABLE, GETABLE, FIXED};
@@ -16,25 +18,26 @@ public class PlayerInventory {
 	private Inventory inventory;
 	private ItemOption itemoption;
 	private Player player;
-	private InventoryMenu lastinventorymenu;
+	private InventoryMenu inventorymenu;
 	
 	public PlayerInventory(Player player, int number, String name) {
 		this.player = player;
 		inventory = Bukkit.createInventory(player, number, name);
+		InventoryHandler.addInventory(this);
 	}
 	
-	public ItemStack createItem(String name, Material material) {
+	public static ItemStack createItem(String name, Material material) {
 		return new ItemBuilder(name, material).buildItem();
 	}
 	
-	public ItemStack createPotionItem(String name, Color color, PotionEffectType potioneffect) {
+	public static ItemStack createPotionItem(String name, Color color, PotionEffectType potioneffect) {
 		ItemBuilder itembuilder = new ItemBuilder(name, Material.POTION);
 		itembuilder.buildItem();
 		itembuilder.addPotionMeta(color, new PotionEffect(potioneffect, 3600, 2));
 		return itembuilder.getItemStack();
 	}
 	
-	public ItemStack createBooleanItem(String name, boolean defaults) {
+	public static ItemStack createBooleanItem(String name, boolean defaults) {
 		ItemBuilder itembuilder;
 		if(defaults) {
 			itembuilder = new ItemBuilder(name + ": True", Material.GREEN_DYE);
@@ -49,7 +52,9 @@ public class PlayerInventory {
 	}
 	
 	public void setInventoryMenu(InventoryMenu inventorymenu) {
-		lastinventorymenu = inventorymenu;
+		inventory.clear();
+		this.inventorymenu = inventorymenu;
+		inventorymenu.setPlayerInventory(this);
 		for(ItemStack itemstack : inventorymenu.getItems().keySet()) {
 			setItem(itemstack, inventorymenu.getItems().get(itemstack));
 		}
@@ -67,6 +72,10 @@ public class PlayerInventory {
 		inventory.clear();
 	}
 	
+	public void onItemClicked(ItemStack itemstack, Player player) {
+		inventorymenu.onItemClick(itemstack, player);
+	}
+
 	public void setItemOption(ItemOption itemoption) {
 		this.itemoption = itemoption;
 	}
@@ -78,11 +87,4 @@ public class PlayerInventory {
 	public Inventory getInventory() {
 		return inventory;
 	}
-	
-	public void onItemClicked(ItemStack itemstack, Player player) {
-		lastinventorymenu.onItemClick(itemstack, player);
-	}
-
-	public void onItemClicked(Inventory inventory, ItemStack item, Player player, int slot) {}
-
 }

@@ -5,9 +5,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 import serversystem.config.Config;
+import serversystem.handler.PlayerPacket;
+import serversystem.handler.PlayerPermission;
 import serversystem.handler.WorldGroupHandler;
-import serversystem.utilities.PlayerPacket;
-import serversystem.utilities.PlayerPermission;
 
 public class PlayerJoinListener implements Listener {
 	

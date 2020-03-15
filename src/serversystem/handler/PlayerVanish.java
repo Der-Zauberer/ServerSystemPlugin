@@ -1,12 +1,12 @@
-package serversystem.utilities;
+package serversystem.handler;
 
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import serversystem.handler.TeamHandler;
-import serversystem.handler.WorldGroupHandler;
+
 import serversystem.main.ServerSystem;
+import serversystem.utilities.ChatMessage;
 
 public class PlayerVanish {
 	

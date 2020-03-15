@@ -8,9 +8,9 @@ import org.bukkit.GameMode;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
+import serversystem.handler.PlayerPacket;
 import serversystem.handler.TeamHandler;
 import serversystem.main.ServerSystem;
-import serversystem.utilities.PlayerPacket;
 import serversystem.utilities.ServerGame;
 import serversystem.utilities.WorldGroup;
 

@@ -8,8 +8,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
+import serversystem.handler.PlayerVanish;
 import serversystem.utilities.ChatMessage;
-import serversystem.utilities.PlayerVanish;
 import serversystem.utilities.ChatMessage.ErrorMessage;
 
 public class EnderchestCommand implements CommandExecutor, TabCompleter {
