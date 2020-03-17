@@ -32,6 +32,7 @@ import serversystem.handler.InventoryHandler;
 import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
+import serversystem.items.FlyingWand;
 import serversystem.items.UltraSwoardItem;
 import serversystem.signs.ItemSign;
 import serversystem.signs.WorldSign;
@@ -108,6 +109,8 @@ public class ServerSystem extends JavaPlugin{
 	private void registerItemFunctions() {
 		ItemHandler.registerItem(new UltraSwoardItem().getItem());
 		ItemHandler.registerItemFunction(new UltraSwoardItem());
+		ItemHandler.registerItem(new FlyingWand().getItem());
+		ItemHandler.registerItemFunction(new FlyingWand());
 	}
 		
 	public static ServerSystem getInstance() {
