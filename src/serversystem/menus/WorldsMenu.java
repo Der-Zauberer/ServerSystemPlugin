@@ -3,21 +3,21 @@ package serversystem.menus;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import serversystem.utilities.InventoryMenu;
+import serversystem.utilities.ItemMenu;
 
-public class WorldsMenu extends InventoryMenu {
+public class WorldsMenu extends ItemMenu {
 	
 	public WorldsMenu() {
 		for(int i = 0; i < Bukkit.getWorlds().size() && i < 26; i++) {
-			addItem(i, createItem("World: " + Bukkit.getWorlds().get(i).getName(), Material.ZOMBIE_HEAD), (itemstack, player) -> {setWorld(itemstack);});
+			addItem(i, createItem(Bukkit.getWorlds().get(i).getName(), Material.ZOMBIE_HEAD), (itemstack, player) -> {setWorld(itemstack);});
 		}
-		addItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack, player) -> {getPlayerInventory().setInventoryMenu(new AdminMenu());});
+		addItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack, player) -> {getPlayerInventory().setItemMenu(new AdminMenu());});
 	}
 	
 	private void setWorld(ItemStack itemstack) {
-		String worldname[] = itemstack.getItemMeta().getDisplayName().split(" ");
-		if(worldname.length == 2 && Bukkit.getWorld(worldname[1]) != null) {
-			getPlayerInventory().setInventoryMenu(new WorldMenu(Bukkit.getWorld(worldname[1])));
+		String name = itemstack.getItemMeta().getDisplayName();
+		if(Bukkit.getWorld(name) != null) {
+			getPlayerInventory().setItemMenu(new WorldMenu(Bukkit.getWorld(name)));
 		}
 	}
 

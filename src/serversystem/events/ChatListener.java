@@ -3,7 +3,8 @@ package serversystem.events;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import serversystem.utilities.ChatMessage;
+
+import serversystem.handler.ChatMessage;
 
 public class ChatListener implements Listener {
 	

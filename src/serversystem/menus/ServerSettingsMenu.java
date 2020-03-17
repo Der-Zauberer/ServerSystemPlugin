@@ -2,9 +2,9 @@ package serversystem.menus;
 
 import org.bukkit.Material;
 import serversystem.config.Config;
-import serversystem.utilities.InventoryMenu;
+import serversystem.utilities.ItemMenu;
 
-public class ServerSettingsMenu extends InventoryMenu {
+public class ServerSettingsMenu extends ItemMenu {
 
 	public ServerSettingsMenu() {
 		addItem(1, createItem("JoinMessage", Material.OAK_SIGN), (itemstack, player) -> {});
@@ -13,7 +13,7 @@ public class ServerSettingsMenu extends InventoryMenu {
 		addItem(7, createItem("Gamemode", Material.IRON_PICKAXE), (itemstack, player) -> {});
 		addItem(10, createBooleanItem("JoinMessage", Config.isJoinMessageActiv()), (itemstack, player) -> {setJoinMessage();});
 		addItem(12, createBooleanItem("LeaveMessage", Config.isLeaveMessageActiv()), (itemstack, player) -> {setLeaveMessage();});
-		addItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack, player) -> {getPlayerInventory().setInventoryMenu(new AdminMenu());});
+		addItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack, player) -> {getPlayerInventory().setItemMenu(new AdminMenu());});
 	}
 	
 	private void setJoinMessage() {

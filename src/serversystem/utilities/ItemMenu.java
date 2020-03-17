@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-public class InventoryMenu {
+public class ItemMenu {
 	
 	private PlayerInventory playerinventory;
 	private HashMap<ItemStack, Integer> slots = new HashMap<>();
@@ -19,6 +19,10 @@ public class InventoryMenu {
 	
 	public static ItemStack createPotionItem(String name, Color color, PotionEffectType potioneffect) {
 		return PlayerInventory.createPotionItem(name, color, potioneffect);
+	}
+	
+	public static ItemStack createPlayerSkullItem(String name, Player player) {
+		return PlayerInventory.createPlayerSkullItem(name, player);
 	}
 	
 	public static ItemStack createBooleanItem(String name, boolean defaults) {

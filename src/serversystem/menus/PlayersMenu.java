@@ -4,16 +4,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import serversystem.utilities.InventoryMenu;
+import serversystem.utilities.ItemMenu;
 
-public class PlayersMenu extends InventoryMenu {
+public class PlayersMenu extends ItemMenu {
 	
 	public PlayersMenu() {
 		int i = 0;
-		addItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack, player) -> {getPlayerInventory().setInventoryMenu(new AdminMenu());});
-		for (Player players : Bukkit.getOnlinePlayers()) {
+		addItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack, player) -> {getPlayerInventory().setItemMenu(new AdminMenu());});
+		for (Player player : Bukkit.getOnlinePlayers()) {
 			if(i < 26) {
-				addItem(i, createItem("Player: " + players.getName(), Material.PLAYER_HEAD), (itemstack, player) -> {setPlayer(itemstack, player);});
+				addItem(i, createPlayerSkullItem(player.getName(), player), (itemstack, player1) -> {setPlayer(itemstack, player);});
 				i++;
 			} else {
 				return;
@@ -22,9 +22,9 @@ public class PlayersMenu extends InventoryMenu {
 	}
 	
 	private void setPlayer(ItemStack itemstack, Player player) {
-		String playername[] = itemstack.getItemMeta().getDisplayName().split(" ");
-		if(playername.length == 2 && Bukkit.getPlayer(playername[1]) != null) {
-			getPlayerInventory().setInventoryMenu(new PlayerMenu(Bukkit.getPlayer(playername[1])));
+		String name = itemstack.getItemMeta().getDisplayName();
+		if(Bukkit.getPlayer(name) != null) {
+			getPlayerInventory().setItemMenu(new PlayerMenu(Bukkit.getPlayer(name)));
 		}
 	}
 

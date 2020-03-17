@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import serversystem.main.ServerSystem;
-import serversystem.utilities.ChatMessage;
 
 public class PlayerVanish {
 	

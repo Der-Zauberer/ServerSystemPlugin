@@ -18,7 +18,7 @@ public class PlayerInventory {
 	private Inventory inventory;
 	private ItemOption itemoption;
 	private Player player;
-	private InventoryMenu inventorymenu;
+	private ItemMenu itemymenu;
 	
 	public PlayerInventory(Player player, int number, String name) {
 		this.player = player;
@@ -37,12 +37,19 @@ public class PlayerInventory {
 		return itembuilder.getItemStack();
 	}
 	
+	public static ItemStack createPlayerSkullItem(String name, Player player) {
+		ItemBuilder itembuilder = new ItemBuilder(name, Material.PLAYER_HEAD);
+		itembuilder.buildItem();
+		itembuilder.addPlayerSkullMeta(player);
+		return itembuilder.getItemStack();
+	}
+	
 	public static ItemStack createBooleanItem(String name, boolean defaults) {
 		ItemBuilder itembuilder;
 		if(defaults) {
-			itembuilder = new ItemBuilder(name + ": True", Material.GREEN_DYE);
+			itembuilder = new ItemBuilder(name + " true", Material.GREEN_DYE);
 		} else {
-			itembuilder = new ItemBuilder(name + ": False", Material.RED_DYE);
+			itembuilder = new ItemBuilder(name + " false", Material.RED_DYE);
 		}
 		return itembuilder.buildItem();
 	}
@@ -51,9 +58,9 @@ public class PlayerInventory {
 		inventory.setItem(position, item);
 	}
 	
-	public void setInventoryMenu(InventoryMenu inventorymenu) {
+	public void setItemMenu(ItemMenu inventorymenu) {
 		inventory.clear();
-		this.inventorymenu = inventorymenu;
+		this.itemymenu = inventorymenu;
 		inventorymenu.setPlayerInventory(this);
 		for(ItemStack itemstack : inventorymenu.getItems().keySet()) {
 			setItem(itemstack, inventorymenu.getItems().get(itemstack));
@@ -73,7 +80,7 @@ public class PlayerInventory {
 	}
 	
 	public void onItemClicked(ItemStack itemstack, Player player) {
-		inventorymenu.onItemClick(itemstack, player);
+		itemymenu.onItemClick(itemstack, player);
 	}
 
 	public void setItemOption(ItemOption itemoption) {

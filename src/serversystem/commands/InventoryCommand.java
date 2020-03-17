@@ -10,9 +10,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import serversystem.handler.ChatMessage;
 import serversystem.handler.PlayerVanish;
-import serversystem.utilities.ChatMessage;
-import serversystem.utilities.ChatMessage.ErrorMessage;
+import serversystem.handler.ChatMessage.ErrorMessage;
 
 public class InventoryCommand implements CommandExecutor, TabCompleter {
 

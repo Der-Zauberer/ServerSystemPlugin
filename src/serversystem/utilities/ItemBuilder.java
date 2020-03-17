@@ -4,9 +4,11 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 
 public class ItemBuilder {
@@ -78,6 +80,14 @@ public class ItemBuilder {
 			potionmeta.setColor(color);
 			potionmeta.addCustomEffect(potioneffect, true);
 			itemstack.setItemMeta(potionmeta);
+		}
+	}
+	
+	public void addPlayerSkullMeta(Player player) {
+		if(itemstack != null && material == Material.PLAYER_HEAD) {
+			SkullMeta skullmeta = (SkullMeta) itemstack.getItemMeta();
+			skullmeta.setOwningPlayer(player);
+			itemstack.setItemMeta(skullmeta);
 		}
 	}
 	

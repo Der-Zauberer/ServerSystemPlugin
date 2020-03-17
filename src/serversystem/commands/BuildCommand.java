@@ -16,10 +16,10 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
 import serversystem.config.Config;
+import serversystem.handler.ChatMessage;
 import serversystem.handler.PlayerBuildMode;
 import serversystem.handler.PlayerVanish;
-import serversystem.utilities.ChatMessage;
-import serversystem.utilities.ChatMessage.ErrorMessage;
+import serversystem.handler.ChatMessage.ErrorMessage;
 
 public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 

@@ -1,12 +1,11 @@
-package serversystem.utilities;
+package serversystem.handler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import serversystem.handler.TeamHandler;
-import serversystem.handler.WorldGroupHandler;
+import serversystem.utilities.WorldGroup;
 
 public class ChatMessage {
 	

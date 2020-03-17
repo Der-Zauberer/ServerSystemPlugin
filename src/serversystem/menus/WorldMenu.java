@@ -6,9 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import serversystem.config.Config;
-import serversystem.utilities.InventoryMenu;
+import serversystem.handler.WorldGroupHandler;
+import serversystem.utilities.ItemMenu;
 
-public class WorldMenu extends InventoryMenu {
+public class WorldMenu extends ItemMenu {
 	
 	public WorldMenu(World world) {
 		addItem(0, createItem("Damage", Material.SHIELD));
@@ -21,8 +22,9 @@ public class WorldMenu extends InventoryMenu {
 		addItem(13, createBooleanItem("Hunger", Config.hasWorldHunger(world.getName())), (itemstack, player) -> {setWorldHunger(itemstack, player);});
 		addItem(15, createBooleanItem("Protection", Config.hasWorldProtection(world.getName())), (itemstack, player) -> {setWorldProtection(itemstack, player);});
 		addItem(17, createBooleanItem("PVP", Config.hasWorldPVP(world.getName())), (itemstack, player) -> {setWorldPVP(itemstack, player);});
-		addItem(27, createItem("World: " + world.getName(), Material.ZOMBIE_HEAD));
-		addItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack, player) -> {getPlayerInventory().setInventoryMenu(new WorldsMenu());});
+		addItem(27, createItem(world.getName(), Material.ZOMBIE_HEAD));
+		addItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack, player) -> {getPlayerInventory().setItemMenu(new WorldsMenu());});
+		addItem(35, createItem("Teleport to " + world.getName(), Material.ENDER_PEARL), (itemstack, player) -> {WorldGroupHandler.teleportPlayer(player, world);});
 	}
 	
 	private void setWorldDamage(ItemStack itemstack, Player player) {

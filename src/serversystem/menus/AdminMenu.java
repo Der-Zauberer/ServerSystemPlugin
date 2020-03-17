@@ -6,9 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import serversystem.utilities.InventoryMenu;
+import serversystem.utilities.ItemMenu;
 
-public class AdminMenu extends InventoryMenu {
+public class AdminMenu extends ItemMenu {
 
 	public AdminMenu() {
 		addItem(0, createItem("Gamemode Survival", Material.IRON_SHOVEL), (itemstack, player) -> {player.setGameMode(GameMode.SURVIVAL);});
@@ -26,13 +26,13 @@ public class AdminMenu extends InventoryMenu {
 		addItem(6, createItem("Weather Clear", Material.SUNFLOWER), (itemstack, player) -> {player.getWorld().setStorm(false);});
 		addItem(15, createItem("Weather Rain", Material.WATER_BUCKET), (itemstack, player) -> {player.getWorld().setStorm(true); player.getWorld().setThundering(false);});
 		addItem(24, createItem("Weather Thunderstorm", Material.HOPPER), (itemstack, player) -> {player.getWorld().setStorm(true); player.getWorld().setThundering(true);});
-		addItem(8, createItem("Server Settings", Material.SKELETON_SKULL), (itemstack, player) -> {getPlayerInventory().setInventoryMenu(new ServerSettingsMenu());});
-		addItem(17, createItem("World Settings", Material.ZOMBIE_HEAD), (itemstack, player) -> {getPlayerInventory().setInventoryMenu(new WorldsMenu());});
-		addItem(35, createItem("Player", Material.PLAYER_HEAD), (itemstack, player) -> {getPlayerInventory().setInventoryMenu(new PlayersMenu());});
+		addItem(8, createItem("Server Settings", Material.SKELETON_SKULL), (itemstack, player) -> {getPlayerInventory().setItemMenu(new ServerSettingsMenu());});
+		addItem(17, createItem("World Settings", Material.ZOMBIE_HEAD), (itemstack, player) -> {getPlayerInventory().setItemMenu(new WorldsMenu());});
+		addItem(35, createItem("Players", Material.PLAYER_HEAD), (itemstack, player) -> {getPlayerInventory().setItemMenu(new PlayersMenu());});
 	}
 	
 	private void addPtionEffect(Player player, PotionEffectType effect) {
-		player.addPotionEffect(new PotionEffect(effect, 3600, 2), true);
+		player.addPotionEffect(new PotionEffect(effect, 12000, 2), true);
 	}
 	
 	private void removeEffects(Player player) {

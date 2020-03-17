@@ -4,7 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import serversystem.utilities.ChatMessage;
+
+import serversystem.handler.ChatMessage;
 
 public class CommandPreprocessListener implements Listener {
 	

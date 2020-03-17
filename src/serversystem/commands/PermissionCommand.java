@@ -10,10 +10,10 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import serversystem.config.Config;
+import serversystem.handler.ChatMessage;
 import serversystem.handler.PlayerPermission;
 import serversystem.handler.PlayerVanish;
 import serversystem.handler.TeamHandler;
-import serversystem.utilities.ChatMessage;
 
 public class PermissionCommand implements CommandExecutor, TabCompleter{
 
