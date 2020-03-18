@@ -5,6 +5,10 @@ author: Der_Zauberer
 api-version: 1.14
  
 commands:
+  casino:
+    desciption: open the casino menu
+    usage: /<command>
+    permission: serversystem.command.casino
   wallet:
     desciption: Open the wallet menu
     usage: /<command>
@@ -47,6 +51,9 @@ commands:
     permission: serversystem.command.inventory
     
 permissions:
+  serversystem.command.casino:
+    description: open the casino menu
+    default: true
   serversystem.command.wallet:
     description: Open the wallet menu
     default: true

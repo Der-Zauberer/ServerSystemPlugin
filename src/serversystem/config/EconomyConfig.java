@@ -11,6 +11,7 @@ public class EconomyConfig {
 	
 	private static int bankAccount = 1000;
 	private static int creditValue = 0;
+	private static boolean casinoMembership = false;
 	private static boolean healthInsurance = false;
 	private static boolean discountCard = false;
 	private static File file = new File("plugins/System", "economyConfig.yml");
@@ -31,6 +32,7 @@ public class EconomyConfig {
 			config.set("Players." + player.getUniqueId() + ".creditAmount", creditValue);
 			config.set("Players." + player.getUniqueId() + ".healthInsurance", healthInsurance);
 			config.set("Players." + player.getUniqueId() + ".discountCard", discountCard);
+			config.set("Players." + player.getUniqueId() + ".casinoMembership", casinoMembership);
 			saveConfig();
 		}
 	}
@@ -51,6 +53,10 @@ public class EconomyConfig {
 		return (boolean) config.get("Players." + player.getUniqueId() + ".discountCard");
 	}
 	
+	public static boolean loadCasinoMembership(Player player) {
+		return (boolean) config.get("Players." + player.getUniqueId() + ".casinoMembership");
+	}
+	
 	public static void saveBankAccount(Player player, int money) {
 		config.set("Players." + player.getUniqueId() + ".bankAccount",loadBankAccount(player)+money);
 		saveConfig();
@@ -68,6 +74,11 @@ public class EconomyConfig {
 	
 	public static void saveDiscountCard(Player player, boolean value) {
 		config.set("Players." + player.getUniqueId() + ".discountCard", value);
+		saveConfig();
+	}
+	
+	public static void saveCasinoMembership(Player player, boolean value) {
+		config.set("Players." + player.getUniqueId() + ".casinoMembership", value);
 		saveConfig();
 	}
 	
