@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import serversystem.config.Config;
-import serversystem.handler.ChatMessage;
+import serversystem.handler.ChatHandler;
 
 public class LobbyCommand implements CommandExecutor, TabCompleter {
 	
@@ -19,7 +19,7 @@ public class LobbyCommand implements CommandExecutor, TabCompleter {
 		if(sender instanceof Player && Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			((Player)sender).teleport(Config.getLobbyWorld().getSpawnLocation());
 		} else {
-			ChatMessage.sendServerErrorMessage(sender, "Lobby does not exist!");
+			ChatHandler.sendServerErrorMessage(sender, "Lobby does not exist!");
 		}
 		return true;
 	}

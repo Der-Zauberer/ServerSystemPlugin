@@ -10,9 +10,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import serversystem.handler.ChatMessage;
+import serversystem.handler.ChatHandler;
 import serversystem.handler.PlayerVanish;
-import serversystem.handler.ChatMessage.ErrorMessage;
+import serversystem.handler.ChatHandler.ErrorMessage;
 
 public class InventoryCommand implements CommandExecutor, TabCompleter {
 
@@ -20,14 +20,14 @@ public class InventoryCommand implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
 		if(sender instanceof Player) {
 			if(args.length == 0) {
-				ChatMessage.sendServerErrorMessage(sender, "Not enought arguments!");
+				ChatHandler.sendServerErrorMessage(sender, "Not enought arguments!");
 			} else if (Bukkit.getPlayer(args[0]) != null) {
 				((Player) sender).openInventory(Bukkit.getPlayer(args[0]).getInventory());
 			} else {
-				ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 			}
 		} else {
-			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
 		}
 		return true;
 	}

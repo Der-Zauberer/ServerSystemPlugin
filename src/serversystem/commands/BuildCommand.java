@@ -16,10 +16,10 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
 import serversystem.config.Config;
-import serversystem.handler.ChatMessage;
+import serversystem.handler.ChatHandler;
 import serversystem.handler.PlayerBuildMode;
 import serversystem.handler.PlayerVanish;
-import serversystem.handler.ChatMessage.ErrorMessage;
+import serversystem.handler.ChatHandler.ErrorMessage;
 
 public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 
@@ -30,7 +30,7 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 		}else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
 			PlayerBuildMode.buildmodePlayer(Bukkit.getPlayer(args[0]), (Player) sender);
 		}else if(args.length == 1 && !Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
-			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
 		return true;
 	}

@@ -7,8 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import serversystem.handler.ChatMessage;
-import serversystem.handler.ChatMessage.ErrorMessage;
+import serversystem.handler.ChatHandler;
+import serversystem.handler.ChatHandler.ErrorMessage;
 import serversystem.menus.AdminMenu;
 import serversystem.utilities.PlayerInventory;
 import serversystem.utilities.PlayerInventory.ItemOption;
@@ -25,7 +25,7 @@ public class AdminCommand implements CommandExecutor, TabCompleter{
 			playerinventory.setItemMenu(new AdminMenu());
 			playerinventory.open();
 		} else {
-			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
 		}
 		return true;
 	}

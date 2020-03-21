@@ -2,7 +2,6 @@ package serversystem.handler;
 
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -17,18 +16,10 @@ public class WorldGroupHandler {
 	
 	public static void teleportPlayer(Player player, World world) {
 		WorldGroup worldgroup = getWorldGroup(world);
-		if(worldgroup.isServerGame()) {
-			if(worldgroup.getServerGame().getLobby() != null) {
-				player.teleport(worldgroup.getServerGame().getLobby());
-			} else {
-				player.teleport(worldgroup.getMainWorld().getSpawnLocation());
-			}
+		if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.loadLocation(player, worldgroup) != null) {
+			player.teleport(SaveConfig.loadLocation(player, worldgroup));
 		} else {
-			if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.loadLocation(player, worldgroup) != null) {
-				player.teleport(SaveConfig.loadLocation(player, worldgroup));
-			} else {
-				player.teleport(world.getSpawnLocation());
-			}
+			player.teleport(world.getSpawnLocation());
 		}
 	}
 	
@@ -93,51 +84,6 @@ public class WorldGroupHandler {
 	
 	public static void removeWorld(World world) {
 		Config.removeLoadWorld(world.getName());
-	}
-	
-	public static void setWorldSettings(World world, WorldSetting worldsetting, boolean value) {
-		setWorldSettings(world.getName(), worldsetting, value);
-	}
-	
-	public static void setWorldSettings(String world, WorldSetting worldsetting, boolean value) {
-		switch (worldsetting) {
-		case DAMAGE: Config.setWorldDamage(world, value); break;
-		case EXPLOSION: Config.setWorldExplosion(world, value); break;
-		case HUNGER: Config.setWorldHunger(world, value); break;
-		case PROTECTION: Config.setWorldProtection(world, value); break;
-		case PVP: Config.setWorldPVP(world, value); break;
-		}
-	}
-	
-	public static boolean getWorldSettings(World world, WorldSetting worldsetting) {
-		return getWorldSettings(world.getName(), worldsetting);
-	}
-	
-	public static boolean getWorldSettings(String world, WorldSetting worldsetting) {
-		switch (worldsetting) {
-		case DAMAGE: return Config.hasWorldDamage(world);
-		case EXPLOSION: return Config.hasWorldExplosion(world);
-		case HUNGER: return Config.hasWorldHunger(world);
-		case PROTECTION: return Config.hasWorldProtection(world);
-		case PVP: return Config.hasWorldPVP(world);
-		}
-		return false;
-	}
-	
-	public static void setWorldGamemode(World world, GameMode gamemode) {
-		setWorldGamemode(world.getName(), gamemode);
-	}
-	
-	public static void setWorldGamemode(String world, GameMode gamemode) {
-		Config.setWorldGamemode(world, gamemode);
-	}
-	
-	public static GameMode getWorldGamemode(World world) {
-		return getWorldGamemode(world.getName());
-	}
-	
-	public static GameMode getWorldGamemode(String world) {
-		return Config.getWorldGamemode(world);
 	}
 	
 }

@@ -24,6 +24,10 @@ public class Config {
 			config.set("Server.title.color", "");
 			config.set("Server.subtitle.color", "");
 			config.set("Server.title.text", "");
+			config.set("Server.message.prefix", "[Server]");
+			config.set("Server.message.prefixcolor", "yellow");
+			config.set("Server.message.color", "yellow");
+			config.set("Server.message.errorcolor", "red");
 			config.set("Server.lobby", false);
 			config.set("Server.lobbyworld", "world");
 			config.set("DisabledPermissions", "");
@@ -261,6 +265,38 @@ public class Config {
 	
 	public static String getSubtitleColor() {
 		return config.getString("Server.subtitle.color");
+	}
+	
+	public static void setMessagePrefix(String prefix) {
+		config.set("Server.message.prefix", prefix);
+	}
+	
+	public static String getMessagePrefix() {
+		return config.getString("Server.message.prefix");
+	}
+	
+	public static void setMessagePrefixColor(String color) {
+		config.set("Server.message.prefixcolor", color);
+	}
+	
+	public static String getMessagePrefixColor() {
+		return config.getString("Server.message.prefixcolor");
+	}
+	
+	public static void setMessageColor(String color) {
+		config.set("Server.message.color", color);
+	}
+	
+	public static String getMessageColor() {
+		return config.getString("Server.message.color");
+	}
+	
+	public static void setErrorMessageColor(String color) {
+		config.set("Server.message.errorcolor", color);
+	}
+	
+	public static String getErrorMessageColor() {
+		return config.getString("Server.message.errorcolor");
 	}
 	
 	public static boolean lobbyExists() {

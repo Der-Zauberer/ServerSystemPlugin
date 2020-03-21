@@ -14,15 +14,15 @@ public class PlayerBuildMode {
 	public static void buildmodePlayer(Player player, Player sender) {
 		if(buildplayers.contains(player)) {
 			buildplayers.remove(player);
-			ChatMessage.sendServerMessage(sender, "You can no longer build!");
+			ChatHandler.sendServerMessage(sender, "You can no longer build!");
 			if(player != sender) {
-				ChatMessage.sendServerMessage(sender, player.getName() + " can no longer build!");
+				ChatHandler.sendServerMessage(sender, player.getName() + " can no longer build!");
 			}
 		} else {
 			buildplayers.add(player);
-			ChatMessage.sendServerMessage(sender, "You can build now!");
+			ChatHandler.sendServerMessage(sender, "You can build now!");
 			if(player != sender) {
-				ChatMessage.sendServerMessage(sender, player.getName() + " can build now!");
+				ChatHandler.sendServerMessage(sender, player.getName() + " can build now!");
 			}
 		}
 	}

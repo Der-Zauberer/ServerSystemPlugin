@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-
 import serversystem.config.SaveConfig;
 import serversystem.handler.PlayerBuildMode;
 import serversystem.handler.PlayerVanish;
@@ -17,11 +14,7 @@ public class WorldGroup {
 	
 	private String name;
 	private int currentPlayers;
-	private Objective belowNameObjective;
-	private Objective sidebarObjective;
-	private Objective playerListObjective;
 	private ArrayList<World> worlds;
-	private ServerGame servergame;
 	
 	public WorldGroup(String name, World mainworld) {
 		this.name = name;
@@ -29,16 +22,8 @@ public class WorldGroup {
 		worlds.add(mainworld);
 	}
 	
-	public WorldGroup(String name, World mainworld, ServerGame servergame) {
-		this(name, mainworld);
-		this.servergame = servergame;
-	}
-	
 	public void onPlayerJoin(Player player) {
 		currentPlayers++;
-		if(isServerGame()) {
-			servergame.onPlayerJoin(player);
-		}
 		for (Player everyplayer : Bukkit.getOnlinePlayers()) {
 			everyplayer.hidePlayer(ServerSystem.getInstance(), player);
 			player.hidePlayer(ServerSystem.getInstance(), everyplayer);
@@ -49,9 +34,6 @@ public class WorldGroup {
 				player.showPlayer(ServerSystem.getInstance(), everyplayer);
 			}
 		}
-		if(belowNameObjective != null) {belowNameObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);}
-		if(sidebarObjective != null) {sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);}
-		if(playerListObjective != null) {playerListObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);}
 		SaveConfig.loadInventory(player, this);
 		SaveConfig.loadXp(player, this);
 		SaveConfig.loadGamemode(player, this);
@@ -64,36 +46,12 @@ public class WorldGroup {
 			PlayerVanish.vanishPlayer(player);
 		}
 		TeamHandler.removePlayerFromTeam(player);
-		PlayerScoreboard.removePlayerFromDisplaySlot(player);
 		if (PlayerBuildMode.isPlayerInBuildmode(player)) {
 			PlayerBuildMode.buildmodePlayer(player);
 		}
 		SaveConfig.saveInventory(player, this);
 		SaveConfig.saveXp(player, this);
 		SaveConfig.saveGamemode(player, this);
-		if (!isServerGame()) {
-			SaveConfig.saveLocation(player);
-		}
-		if(isServerGame()) {
-			servergame.onPlayerLeave(player);
-		}
-	}
-	
-	public void addObjective(Objective objective, DisplaySlot displayslot) {
-		switch (displayslot) {
-		case BELOW_NAME: belowNameObjective = objective; break;
-		case SIDEBAR: sidebarObjective = objective; break;
-		case PLAYER_LIST: playerListObjective = objective; break;
-		default:break;}
-	}
-	
-	public Objective getObjective(DisplaySlot displayslot) {
-		switch (displayslot) {
-		case BELOW_NAME: return belowNameObjective;
-		case SIDEBAR: return sidebarObjective;
-		case PLAYER_LIST: return playerListObjective;
-		default:break;}
-		return null;
 	}
 	
 	public String getName() {
@@ -122,21 +80,6 @@ public class WorldGroup {
 	
 	public void removeWorld(World world) {
 		worlds.remove(world);
-	}
-	
-	public boolean isServerGame() {
-		if(servergame != null) {
-			return true;
-		}
-		return false;
-	}
-	
-	public void setServerGame(ServerGame servergame) {
-		this.servergame = servergame;
-	}
-	
-	public ServerGame getServerGame() {
-		return servergame;
 	}
 	
 	public ArrayList<Player> getPlayers() {

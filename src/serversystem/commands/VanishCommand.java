@@ -10,9 +10,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import serversystem.handler.ChatMessage;
+import serversystem.handler.ChatHandler;
 import serversystem.handler.PlayerVanish;
-import serversystem.handler.ChatMessage.ErrorMessage;
+import serversystem.handler.ChatHandler.ErrorMessage;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
 	
@@ -21,11 +21,11 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0 && sender instanceof Player) {
 			PlayerVanish.vanishPlayer((Player) sender);
 		} else if(args.length == 0 && !(sender instanceof Player)) {
-			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
 		} else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
 			PlayerVanish.vanishPlayer(Bukkit.getPlayer(args[0]), sender);
 		} else if(Bukkit.getPlayer(args[0]) == null) {
-			ChatMessage.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
 		return true;
 	}

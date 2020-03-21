@@ -18,15 +18,15 @@ public class PlayerVanish {
 	public static void vanishPlayer(Player player, CommandSender sender) {
 		if(vanishedplayers.contains(player)) {
 			showPlayer(player);
-			ChatMessage.sendServerMessage(player, "You are no longer vanished!");
+			ChatHandler.sendServerMessage(player, "You are no longer vanished!");
 			if(player != sender) {
-				ChatMessage.sendServerMessage(sender, player.getName() + " is no longer vanished!");
+				ChatHandler.sendServerMessage(sender, player.getName() + " is no longer vanished!");
 			}
 		} else {
 			hidePlayer(player);
-			ChatMessage.sendServerMessage(player, "You are vanished now!");
+			ChatHandler.sendServerMessage(player, "You are vanished now!");
 			if(player != sender) {
-				ChatMessage.sendServerMessage(sender, player.getName() + " is vanished now!");
+				ChatHandler.sendServerMessage(sender, player.getName() + " is vanished now!");
 			}
 		}
 	}

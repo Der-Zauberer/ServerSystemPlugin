@@ -9,7 +9,7 @@ import net.minecraft.server.v1_14_R1.PacketPlayOutTitle;
 import net.minecraft.server.v1_14_R1.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 
-public class PlayerPacket {
+public class PlayerPacketHandler {
 	
 	public static void sendTitle(Player player, EnumTitleAction titleAction, String jsonstring, int time) {
 		PacketPlayOutTitle packet = new PacketPlayOutTitle(titleAction, ChatSerializer.a(jsonstring), 0, time, 0);

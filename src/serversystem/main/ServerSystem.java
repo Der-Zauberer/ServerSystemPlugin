@@ -17,7 +17,6 @@ import serversystem.commands.VanishCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
 import serversystem.config.SaveConfig;
-import serversystem.events.ChatListener;
 import serversystem.events.CommandPreprocessListener;
 import serversystem.events.EntityDamageListener;
 import serversystem.events.ExplotionListener;
@@ -25,15 +24,14 @@ import serversystem.events.HungerListener;
 import serversystem.events.PlayerDeathListener;
 import serversystem.events.PlayerJoinListener;
 import serversystem.events.PlayerQuitListener;
-import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
 import serversystem.handler.ItemHandler;
+import serversystem.handler.ChatHandler;
 import serversystem.handler.InventoryHandler;
 import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.items.FlyingWand;
-import serversystem.items.UltraSwoardItem;
 import serversystem.signs.ItemSign;
 import serversystem.signs.WorldSign;
 import serversystem.utilities.WorldGroup;
@@ -70,7 +68,6 @@ public class ServerSystem extends JavaPlugin{
 	}
 
 	private void registerEvents() {
-		Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
 		Bukkit.getPluginManager().registerEvents(new CommandPreprocessListener(), this);
 		Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
 		Bukkit.getPluginManager().registerEvents(new ExplotionListener(), this);
@@ -78,9 +75,9 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
 		
+		Bukkit.getPluginManager().registerEvents(new ChatHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
 		Bukkit.getPluginManager().registerEvents(new ItemHandler(), this);
@@ -107,8 +104,6 @@ public class ServerSystem extends JavaPlugin{
 	
 
 	private void registerItemFunctions() {
-		ItemHandler.registerItem(new UltraSwoardItem().getItem());
-		ItemHandler.registerItemFunction(new UltraSwoardItem());
 		ItemHandler.registerItem(new FlyingWand().getItem());
 		ItemHandler.registerItemFunction(new FlyingWand());
 	}
