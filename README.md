@@ -39,3 +39,85 @@ This is a Bukkit/Spigot plugin for permisssions, multiworld features and other a
 |`serversystem.rank.premium`|false|Display premium prefix|
 |`serversystem.rank.player`|true|Display player prefix|
 |`serversystem.tools.signeddit`|op|Allow to create executable signs|
+
+## Example config
+
+```json
+Server:
+  joinmessage: false
+  leavemessage: false
+  title:
+    text: 'Welcome'
+    color: 'dark_blue'
+  subtitle:
+    text: 'to this server!'
+    color: 'dark_green'
+  message:
+    prefix: '[Server]'
+    prefixcolor: yellow
+    color: yellow
+    errorcolor: red
+  lobby: true
+  lobbyworld: world
+DisabledPermissions:
+- bukkit.command.version
+- bukkit.command.plugins
+- bukkit.command.help
+Worldload:
+- hogwarts
+Groups:
+  player: ''
+  moderator:
+  - serversystem.rank.moderator
+  - serversystem.command.permission
+  admin:
+  - serversystem.command.permission
+  - serversystem.rank.admin
+Worlds:
+  world:
+    exists: true
+    group: world
+    worldspawn: false
+    protect: true
+    pvp: false
+    damage: false
+    huger: true
+    explosion: false
+    gamemode: 2
+    hunger: false
+  world_nether:
+    exists: true
+    group: world_nether
+    worldspawn: false
+    protect: false
+    pvp: true
+    damage: true
+    huger: true
+    explosion: true
+    gamemode: 2
+  world_the_end:
+    exists: true
+    group: world_the_end
+    worldspawn: false
+    protect: false
+    pvp: true
+    damage: true
+    huger: true
+    explosion: true
+    gamemode: 2
+  hogwarts:
+    exists: true
+    group: hogwarts
+    worldspawn: false
+    protect: true
+    pvp: false
+    damage: true
+    huger: true
+    explosion: false
+    gamemode: 2
+Players:
+  8e1f0a29-7279-412d-a6a6-4266164d6a87:
+    name: Der_Zauberer
+    exists: true
+    group: admin
+```
