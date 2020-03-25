@@ -7,6 +7,7 @@ import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 import serversystem.config.Config;
 import serversystem.handler.PlayerPacketHandler;
 import serversystem.handler.PlayerPermission;
+import serversystem.config.EconomyConfig;
 import serversystem.handler.WorldGroupHandler;
 
 public class PlayerJoinListener implements Listener {
@@ -17,6 +18,7 @@ public class PlayerJoinListener implements Listener {
 			event.setJoinMessage("");
 		}
 		Config.addPlayer(event.getPlayer());
+		EconomyConfig.addPlayer(event.getPlayer());
 		PlayerPermission.removeConfigDisablePermissions(event.getPlayer());
 		PlayerPermission.addConfigPermissions(event.getPlayer());
 		PlayerPermission.reloadPlayerPermissions(event.getPlayer());
@@ -28,5 +30,7 @@ public class PlayerJoinListener implements Listener {
 		if(Config.getTitle() != null) {PlayerPacketHandler.sendTitle(event.getPlayer(), EnumTitleAction.TITLE, Config.getTitle(), Config.getTitleColor(), 100);}
 		if(Config.getSubtitle() != null) {PlayerPacketHandler.sendTitle(event.getPlayer(), EnumTitleAction.SUBTITLE, Config.getSubtitle(), Config.getSubtitleColor(), 100);}
 	}
+
+
 
 }

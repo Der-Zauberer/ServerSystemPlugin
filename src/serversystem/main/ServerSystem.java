@@ -14,8 +14,10 @@ import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
 import serversystem.commands.PlotCommand;
 import serversystem.commands.VanishCommand;
+import serversystem.commands.WalletCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
+import serversystem.config.EconomyConfig;
 import serversystem.config.SaveConfig;
 import serversystem.events.CommandPreprocessListener;
 import serversystem.events.EntityDamageListener;
@@ -44,6 +46,7 @@ public class ServerSystem extends JavaPlugin{
 	public void onEnable() {
 		new Config();
 		new SaveConfig();
+		new EconomyConfig();
 		TeamHandler.initializeTeams();
 		registerEvents();
 		registerCommands();
@@ -95,6 +98,7 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("plot").setExecutor(new PlotCommand());
 		getCommand("enderchest").setExecutor(new EnderchestCommand());
 		getCommand("inventory").setExecutor(new InventoryCommand());
+		getCommand("wallet").setExecutor(new WalletCommand());
 	}
 	
 	private void registerWorldSigns() {
