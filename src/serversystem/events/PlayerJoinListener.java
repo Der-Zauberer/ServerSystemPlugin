@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 import serversystem.config.Config;
+import serversystem.handler.ChatHandler;
 import serversystem.handler.PlayerPacketHandler;
 import serversystem.handler.PlayerPermission;
 import serversystem.config.EconomyConfig;
@@ -29,8 +30,7 @@ public class PlayerJoinListener implements Listener {
 		event.getPlayer().setGameMode(Config.getWorldGamemode(event.getPlayer().getWorld().getName()));
 		if(Config.getTitle() != null) {PlayerPacketHandler.sendTitle(event.getPlayer(), EnumTitleAction.TITLE, Config.getTitle(), Config.getTitleColor(), 100);}
 		if(Config.getSubtitle() != null) {PlayerPacketHandler.sendTitle(event.getPlayer(), EnumTitleAction.SUBTITLE, Config.getSubtitle(), Config.getSubtitleColor(), 100);}
+		event.getPlayer().setPlayerListHeader(ChatHandler.parseColor(Config.getTablistTitleColor()) + Config.getTablistTitle());
+		event.getPlayer().setPlayerListFooter(ChatHandler.parseColor(Config.getTablistSubtitleColor()) + Config.getTablistSubtitle());
 	}
-
-
-
 }

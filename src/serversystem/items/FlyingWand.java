@@ -16,7 +16,7 @@ public class FlyingWand implements ItemFunction {
 	public ItemStack getItem() {
 		ItemBuilder itembuilder = new ItemBuilder();
 		itembuilder.setDisplayName(ChatColor.RESET + "Flying Wand");
-		itembuilder.setMaterial(Material.STICK);
+		itembuilder.setMaterial(Material.CARROT_ON_A_STICK);
 		itembuilder.setCustomModelData(4);
 		return itembuilder.buildItem();
 	}

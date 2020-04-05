@@ -59,6 +59,13 @@ Server:
     prefixcolor: yellow
     color: yellow
     errorcolor: red
+  tablist:
+    title:
+      text: Welcome
+      color: blue
+    subtitle:
+      text: to this server!
+      color: dark_green
   lobby: true
   lobbyworld: world
 DisabledPermissions:

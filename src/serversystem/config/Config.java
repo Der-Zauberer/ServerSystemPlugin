@@ -24,6 +24,10 @@ public class Config {
 			config.set("Server.title.color", "");
 			config.set("Server.subtitle.color", "");
 			config.set("Server.title.text", "");
+			config.set("Server.tablist.title.text", "");
+			config.set("Server.tablist.title.color", "");
+			config.set("Server.tablist.subtitle.color", "");
+			config.set("Server.tablist.title.text", "");
 			config.set("Server.message.prefix", "[Server]");
 			config.set("Server.message.prefixcolor", "yellow");
 			config.set("Server.message.color", "yellow");
@@ -265,6 +269,34 @@ public class Config {
 	
 	public static String getSubtitleColor() {
 		return config.getString("Server.subtitle.color");
+	}
+	
+	public static void setTablistTitle(String title, String color) {
+		config.set("Server.tablist.title.text", title);
+		config.set("Server.tablist.title.color", color);
+		saveConfig();
+	}
+
+	public static String getTablistTitle() {
+		return config.getString("Server.tablist.title.text");
+	}
+	
+	public static String getTablistTitleColor() {
+		return config.getString("Server.tablist.title.color");
+	}
+	
+	public static void setTablistSubtitle(String title, String color) {
+		config.set("Server.tablist.title.text", title);
+		config.set("Server.tablist.title.color", color);
+		saveConfig();
+	}
+
+	public static String getTablistSubtitle() {
+		return config.getString("Server.tablist.subtitle.text");
+	}
+	
+	public static String getTablistSubtitleColor() {
+		return config.getString("Server.tablist.subtitle.color");
 	}
 	
 	public static void setMessagePrefix(String prefix) {
