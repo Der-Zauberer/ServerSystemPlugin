@@ -58,7 +58,7 @@ public class PlayerVanish {
 	}
 	
 	private static void showPlayer(Player player) {
-		TeamHandler.addPlayerToRole(player);
+		TeamHandler.addRoleToPlayer(player);
 		for(Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 		}

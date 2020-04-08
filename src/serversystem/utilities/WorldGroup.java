@@ -37,7 +37,7 @@ public class WorldGroup {
 		SaveConfig.loadInventory(player, this);
 		SaveConfig.loadXp(player, this);
 		SaveConfig.loadGamemode(player, this);
-		TeamHandler.addPlayerToRole(player);
+		TeamHandler.addRoleToPlayer(player);
 	}
 	
 	public void onPlayerLeave(Player player) {

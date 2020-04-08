@@ -71,7 +71,7 @@ public class TeamHandler {
 		return player.getScoreboard().getEntryTeam(player.getName()).getName();
 	}
 	
-	public static void addPlayerToRole(Player player) {
+	public static void addRoleToPlayer(Player player) {
 		if(player.hasPermission("serversystem.rank.admin")) {
 			addPlayerToTeam(TEAMRANKADMIN, player);
 		}else if(player.hasPermission("serversystem.rank.moderator")) {

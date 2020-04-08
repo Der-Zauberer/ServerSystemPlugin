@@ -62,7 +62,7 @@ public class ServerSystem extends JavaPlugin{
 			WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			TeamHandler.addPlayerToRole(player);
+			TeamHandler.addRoleToPlayer(player);
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}

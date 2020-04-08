@@ -47,7 +47,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 						Config.setPlayerGroup(player, args[2]);
 						PlayerPermission.addConfigPermissions(player);
 						PlayerPermission.reloadPlayerPermissions(player);
-						TeamHandler.addPlayerToRole(player);
+						TeamHandler.addRoleToPlayer(player);
 						ChatHandler.sendServerMessage(sender, "The player " + args[1] + " is in group " + args[2] + " now!");
 					} else {
 						ChatHandler.sendServerErrorMessage(sender, "The group " + args[2] + " does not exist!");

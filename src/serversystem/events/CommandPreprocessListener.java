@@ -4,13 +4,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import serversystem.handler.ChatHandler;
+import serversystem.handler.TeamHandler;
+import serversystem.main.ServerSystem;
 
 public class CommandPreprocessListener implements Listener {
 	
 	@EventHandler
-	public void onCommandPreProcess(PlayerCommandPreprocessEvent event){
+	public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
 		if(event.getMessage().toLowerCase().startsWith("/say") || event.getMessage().toLowerCase().startsWith("/minecraft:say") || event.getMessage().toLowerCase().startsWith("/me") || event.getMessage().toLowerCase().startsWith("/minecraft:me")){
 			event.setCancelled(true);
 			String[] messagelist = event.getMessage().split(" ");
@@ -37,6 +40,21 @@ public class CommandPreprocessListener implements Listener {
 				ChatHandler.sendPlayerPrivateMessage(Bukkit.getPlayer(messagelist[2]), Bukkit.getPlayer(messagelist[5]), getStringMessage(messagelist, 6));
 			}
 			return;
+		}
+		if((event.getMessage().toLowerCase().startsWith("/op") && (event.getPlayer().hasPermission("minecraft.command.op") || event.getPlayer().isOp())) || event.getMessage().toLowerCase().startsWith("/deop") && (event.getPlayer().hasPermission("minecraft.command.op") || event.getPlayer().isOp())) {
+			System.out.println("Run");
+			String[] messagelist = event.getMessage().split(" ");
+			if(Bukkit.getPlayer(messagelist[1]) != null) {
+				System.out.println("True");
+				new BukkitRunnable() {
+		            @Override
+		            public void run() {
+		                TeamHandler.addRoleToPlayer(Bukkit.getPlayer(messagelist[1]));
+		                System.out.println("Set");
+		            }
+		            
+		        }.runTaskLater(ServerSystem.getInstance(), 20);
+			}
 		}
 	}
 	
