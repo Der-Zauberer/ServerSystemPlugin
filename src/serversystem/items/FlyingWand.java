@@ -23,9 +23,7 @@ public class FlyingWand implements ItemFunction {
 	
 	@Override
 	public void onItemUse(Player player, ItemStack itemstack, Action action) {
-		System.out.println("Run");
 		if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-			System.out.println("True");
 			player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5, 2), true);
 		}
 	}

@@ -106,7 +106,6 @@ public class ServerSystem extends JavaPlugin{
 		SignHandler.registerServerSign(new ItemSign());
 	}
 	
-
 	private void registerItemFunctions() {
 		ItemHandler.registerItem(new FlyingWand().getItem());
 		ItemHandler.registerItemFunction(new FlyingWand());

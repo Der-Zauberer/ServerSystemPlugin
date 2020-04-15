@@ -30,6 +30,10 @@ public class ItemHandler implements Listener {
 		return null;
 	}
 	
+	public static ArrayList<ItemStack> getItems() {
+		return items;
+	}
+	
 	public static void registerItemFunction(ItemFunction itemfunction) {
 		itemfunctions.add(itemfunction);
 	}
