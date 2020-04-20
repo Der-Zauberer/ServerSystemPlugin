@@ -1,7 +1,6 @@
 package serversystem.main;
 
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,7 +35,6 @@ import serversystem.handler.WorldGroupHandler;
 import serversystem.items.FlyingWand;
 import serversystem.signs.ItemSign;
 import serversystem.signs.WorldSign;
-import serversystem.utilities.WorldGroup;
 
 public class ServerSystem extends JavaPlugin{
 	
@@ -48,6 +46,7 @@ public class ServerSystem extends JavaPlugin{
 		new SaveConfig();
 		new EconomyConfig();
 		TeamHandler.initializeTeams();
+		WorldGroupHandler.initializeWorldGroups();
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
@@ -58,16 +57,15 @@ public class ServerSystem extends JavaPlugin{
 				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
 			}
 		}
-		for (World world : Bukkit.getWorlds()) {
-			WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
-		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			TeamHandler.addRoleToPlayer(player);
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
 		}
-		Bukkit.getWorld("world").setMonsterSpawnLimit(0);
+		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
+			Config.getLobbyWorld().setMonsterSpawnLimit(0);
+		}
 	}
 
 	private void registerEvents() {

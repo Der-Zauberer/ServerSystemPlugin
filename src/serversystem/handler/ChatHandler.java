@@ -63,10 +63,18 @@ public class ChatHandler implements Listener {
 	}
 	
 	public static void sendServerWorldGroupMessage(WorldGroup worldgroup, String message) {
-		for(Player player : worldgroup.getPlayers()) {
-			player.sendMessage(servername + messagecolor + " " + message);
+		if(Config.isWorldGroupSystemEnabled()) {
+			for(Player player : worldgroup.getPlayers()) {
+				player.sendMessage(servername + messagecolor + " " + message);
+			}
+			Bukkit.getConsoleSender().sendMessage("[" + worldgroup.getName() + "] " + servername + messagecolor + " " + message);
+		} else {
+			for(Player player : Bukkit.getOnlinePlayers()) {
+				player.sendMessage(servername + messagecolor + " " + message);
+			}
+			Bukkit.getConsoleSender().sendMessage(servername + messagecolor + " " + message);
 		}
-		Bukkit.getConsoleSender().sendMessage("[" + worldgroup.getName() + "] " + servername + messagecolor + " " + message);
+		
 	}
 	
 	public static void sendPlayerDeathMessage(Player player) {

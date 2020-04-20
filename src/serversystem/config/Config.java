@@ -34,6 +34,7 @@ public class Config {
 			config.set("Server.message.errorcolor", "red");
 			config.set("Server.lobby", false);
 			config.set("Server.lobbyworld", "world");
+			config.set("Server.enableworldgroups", false);
 			config.set("DisabledPermissions", "");
 			config.set("Worldload", "");
 			config.set("Groups.player", "");
@@ -340,6 +341,14 @@ public class Config {
 			return Bukkit.getWorld(config.getString("Server.lobbyworld"));
 		}
 		return null;
+	}
+	
+	public static void setWorldGroupsSystemEnabled(boolean worldgroup) {
+		config.set("Server.enableworldgroups", worldgroup);
+	}
+	
+	public static boolean isWorldGroupSystemEnabled() {
+		return config.getBoolean("Server.enableworldgroups");
 	}
 	
 	public static void saveConfig() {

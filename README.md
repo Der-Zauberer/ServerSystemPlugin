@@ -68,6 +68,7 @@ Server:
       color: dark_green
   lobby: true
   lobbyworld: world
+  enableworldgroups: false
 DisabledPermissions:
 - bukkit.command.version
 - bukkit.command.plugins

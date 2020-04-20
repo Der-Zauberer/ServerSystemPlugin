@@ -14,9 +14,13 @@ public class PlayerTeleportListener implements Listener {
 	public void onTeleport(PlayerTeleportEvent event) {
 		if(event.getPlayer().getWorld() != event.getTo().getWorld()) {
 			boolean vanished = PlayerVanish.isPlayerVanished(event.getPlayer());
-			WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerLeave(event.getPlayer());
-			event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
-			WorldGroupHandler.getWorldGroup(event.getTo().getWorld()).onPlayerJoin(event.getPlayer());
+			if(Config.isWorldGroupSystemEnabled()) {
+				WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerLeave(event.getPlayer());
+				event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
+				WorldGroupHandler.getWorldGroup(event.getTo().getWorld()).onPlayerJoin(event.getPlayer());
+			} else {
+				event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
+			}
 			if(vanished) {
 				PlayerVanish.vanishPlayer(event.getPlayer());
 			}

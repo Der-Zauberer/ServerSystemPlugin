@@ -13,18 +13,31 @@ public class WorldGroupHandler {
 	
 	public enum WorldSetting{DAMAGE, EXPLOSION, HUNGER, PROTECTION, PVP}
 	private static ArrayList<WorldGroup> worldgroups = new ArrayList<>();
+	private static boolean enabled = Config.isWorldGroupSystemEnabled();
+	
+	public static void initializeWorldGroups() {
+		if(enabled) {
+			for (World world : Bukkit.getWorlds()) {
+				WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
+			}
+		}
+	}
 	
 	public static void teleportPlayer(Player player, World world) {
-		WorldGroup worldgroup = getWorldGroup(world);
-		if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.loadLocation(player, worldgroup) != null) {
-			player.teleport(SaveConfig.loadLocation(player, worldgroup));
+		if(enabled) {
+			WorldGroup worldgroup = getWorldGroup(world);
+			if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.loadLocation(player, worldgroup) != null) {
+				player.teleport(SaveConfig.loadLocation(player, worldgroup));
+			} else {
+				player.teleport(world.getSpawnLocation());
+			}
 		} else {
 			player.teleport(world.getSpawnLocation());
 		}
 	}
 	
 	public static void teleportToWorldGroupSpawn(Player player, WorldGroup worldgroup) {
-		player.getPlayer().teleport(worldgroup.getMainWorld().getSpawnLocation());
+			player.getPlayer().teleport(worldgroup.getMainWorld().getSpawnLocation());
 	}
 	
 	public static WorldGroup getWorldGroup(Player player) {
