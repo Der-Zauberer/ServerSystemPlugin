@@ -20,13 +20,13 @@ public class ItemBuilder {
 	private ItemStack itemstack;
 	
 	public ItemBuilder() {
-		displayname = ChatColor.RESET + "Example Soward";
+		displayname = "Example Soward";
 		material = Material.WOODEN_SWORD;
 		custommodeldata = 0;
 	}
 	
 	public ItemBuilder(Material material) {
-		displayname = ChatColor.RESET + "Example Soward";
+		displayname = "Example Soward";
 		this.material = material;
 		custommodeldata = 0;
 	}
@@ -94,7 +94,7 @@ public class ItemBuilder {
 	public ItemStack buildItem() {
 		ItemStack itemstack = new ItemStack(material);
 		ItemMeta itemmeta = itemstack.getItemMeta();
-		itemmeta.setDisplayName(displayname);
+		itemmeta.setDisplayName(ChatColor.RESET + displayname);
 		if(lore != null) {
 			itemmeta.setLore(lore);
 		}
