@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class Config {
 	
-	private static File file = new File("plugins/System", "config.yml");
+	private static File file = new File("plugins/ServerSystem", "config.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
 	public Config() {

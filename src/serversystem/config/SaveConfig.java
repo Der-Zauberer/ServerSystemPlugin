@@ -14,13 +14,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import serversystem.cityadventure.CityBuildPlot;
+
+import serversystem.citybuild.CityBuildPlot;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.WorldGroup;
 
 public class SaveConfig {
 	
-	private static File file = new File("plugins/System", "saveconfig.yml");
+	private static File file = new File("plugins/ServerSystem", "saveconfig.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	public static enum LogTypes{WARNING, REPORT, BAN, KICK};
 	

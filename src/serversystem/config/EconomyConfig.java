@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 public class EconomyConfig {
 	
-	private static File file = new File("plugins/System", "economyConfig.yml");
+	private static File file = new File("plugins/ServerSystem", "economyConfig.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
 	public EconomyConfig() {

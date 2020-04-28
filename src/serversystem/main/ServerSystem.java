@@ -4,7 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import serversystem.cityadventure.CityBuild;
+
+import serversystem.citybuild.CityBuild;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.EnderchestCommand;
@@ -26,14 +27,11 @@ import serversystem.events.PlayerDeathListener;
 import serversystem.events.PlayerJoinListener;
 import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerTeleportListener;
-import serversystem.handler.ItemHandler;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.InventoryHandler;
 import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
-import serversystem.items.FlyingWand;
-import serversystem.signs.ItemSign;
 import serversystem.signs.WorldSign;
 
 public class ServerSystem extends JavaPlugin{
@@ -50,7 +48,6 @@ public class ServerSystem extends JavaPlugin{
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
-		registerItemFunctions();
 		setInstance(this);
 		for (String world : Config.getLoadWorlds()) {
 			if(Bukkit.getWorld(world) == null) {
@@ -81,7 +78,6 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new ChatHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
-		Bukkit.getPluginManager().registerEvents(new ItemHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new SignHandler(), this);
 	}
@@ -101,12 +97,6 @@ public class ServerSystem extends JavaPlugin{
 	
 	private void registerWorldSigns() {
 		SignHandler.registerServerSign(new WorldSign());
-		SignHandler.registerServerSign(new ItemSign());
-	}
-	
-	private void registerItemFunctions() {
-		ItemHandler.registerItem(new FlyingWand().getItem());
-		ItemHandler.registerItemFunction(new FlyingWand());
 	}
 		
 	public static ServerSystem getInstance() {
