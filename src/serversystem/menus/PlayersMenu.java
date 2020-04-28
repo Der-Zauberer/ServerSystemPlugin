@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import net.md_5.bungee.api.ChatColor;
 import serversystem.utilities.ItemMenu;
 
 public class PlayersMenu extends ItemMenu {
@@ -22,7 +24,7 @@ public class PlayersMenu extends ItemMenu {
 	}
 	
 	private void setPlayer(ItemStack itemstack, Player player) {
-		String name = itemstack.getItemMeta().getDisplayName();
+		String name = ChatColor.stripColor(itemstack.getItemMeta().getDisplayName());
 		if(Bukkit.getPlayer(name) != null) {
 			getPlayerInventory().setItemMenu(new PlayerMenu(Bukkit.getPlayer(name)));
 		}
