@@ -48,6 +48,7 @@ This is a Bukkit/Spigot plugin for permisssions, multiworld features and other a
 Server:
   joinmessage: false
   leavemessage: false
+  enableworldgroups: false
   title:
     text: 'Welcome'
     color: 'dark_blue'
