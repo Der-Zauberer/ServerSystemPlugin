@@ -34,7 +34,7 @@ public class Config {
 			config.set("Server.message.errorcolor", "red");
 			config.set("Server.lobby", false);
 			config.set("Server.lobbyworld", "world");
-			config.set("Server.enableworldgroups", false);
+			config.set("Server.enableworldgroups", true);
 			config.set("DisabledPermissions", "");
 			config.set("Worldload", "");
 			config.set("Groups.player", "");
