@@ -29,10 +29,6 @@ commands:
     desciption: Teleport player to lobby
     usage: /<command>
     permission: serversystem.command.lobby
-  plot:
-    desciption: Manage a plot
-    usage: /<command> <action> [<player>]
-    permission: serversystem.command.plot
   enderchest:
     desciption: Open the enderchest of a player
     usage: /<command> [<player>]
@@ -41,11 +37,7 @@ commands:
     desciption: Open the inventory of a player
     usage: /<command> [<player>]
     permission: serversystem.command.inventory
-  wallet:
-    desciption: Open the wallet menu
-    usage: /<command>
-    permission: serversystem.command.wallet
-    
+   
 permissions:
   serversystem.command.admin:
     description: Open the admin inventory
@@ -65,18 +57,12 @@ permissions:
   serversystem.command.lobby:
     description: Teleport player to lobby
     default: true
-  serversystem.command.plot:
-    description: Manage a plot
-    default: true
   serversystem.command.enderchest:
     desciption: Open the enderchest of a player
     default: op
   serversystem.command.inventory:
     desciption: Open the inventory of a player
     default: op
-  serversystem.command.wallet:
-    description: Open the wallet menu
-    default: true
   serversystem.rank.admin:
     description: Display Admin Prefix
     default: false

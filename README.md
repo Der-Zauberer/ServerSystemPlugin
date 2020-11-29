@@ -14,9 +14,6 @@ This is a Bukkit/Spigot plugin for permisssions, multiworld features and other a
 |lobby|`/lobby`|`serversystem.command.lobby`|true|Teleport player to lobby|
 |enderchest|`/enderchest [<player>]`|`serversystem.command.enderchest`|false|Open the enderchest of a player|
 |inventory|`/inventory [<player>]`|`serversystem.command.inventory`|false|Open the inventory of a player|
-|wallet|`/wallet`|`serversystem.command.wallet`|false|Open the wallet menu|
-|plot|Work in progress|
-
 ## Permissions
 
 |Permission|Default|Description|
@@ -29,8 +26,6 @@ This is a Bukkit/Spigot plugin for permisssions, multiworld features and other a
 |`serversystem.command.lobby`|true|Teleport player to lobby|
 |`serversystem.command.enderchest`|op|Open the enderchest of a player|
 |`serversystem.command.inventory`|op|Open the inventory of a player|
-|`serversystem.command.wallet`|op|Open the wallet menu|
-|`serversystem.command.plot`|op|Work in progress|
 |`serversystem.rank.admin`|false|Display admin prefix|
 |`serversystem.rank.moderator`|false|Display admin prefix|
 |`serversystem.rank.developer`|false|Display developer prefix|
