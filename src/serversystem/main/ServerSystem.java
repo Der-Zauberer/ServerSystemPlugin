@@ -4,17 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import serversystem.citybuild.CityBuild;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.EnderchestCommand;
 import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
-import serversystem.commands.PlotCommand;
 import serversystem.commands.VanishCommand;
-import serversystem.commands.WalletCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
 import serversystem.config.EconomyConfig;
@@ -77,7 +73,6 @@ public class ServerSystem extends JavaPlugin{
 		
 		Bukkit.getPluginManager().registerEvents(new ChatHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
-		Bukkit.getPluginManager().registerEvents(new CityBuild(), this);
 		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new SignHandler(), this);
 	}
@@ -89,10 +84,8 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("world").setExecutor(new WorldCommand());
 		getCommand("permission").setExecutor(new PermissionCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());
-		getCommand("plot").setExecutor(new PlotCommand());
 		getCommand("enderchest").setExecutor(new EnderchestCommand());
 		getCommand("inventory").setExecutor(new InventoryCommand());
-		getCommand("wallet").setExecutor(new WalletCommand());
 	}
 	
 	private void registerWorldSigns() {

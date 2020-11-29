@@ -5,17 +5,13 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import serversystem.citybuild.CityBuildPlot;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.WorldGroup;
 
@@ -172,75 +168,6 @@ public class SaveConfig {
 		}
 		return list;
 	}
-	
-	public static void addCitybuildWorld(World world) {
-		List<String> list = config.getStringList("Citybuild.Worlds");
-		list.add(world.getName());
-		config.set("Citybuild.Worlds", list);
-		saveConfig();
-	}
-	
-	public static void removeCitybuildWorld(World world) {
-		List<String> list = config.getStringList("Citybuild.Worlds");
-		list.remove(world.getName());
-		config.set("Citybuild.Worlds", list);
-		saveConfig();
-	}
-	
-	public static ArrayList<World> getCitybuildWorlds() {
-		List<String> list = config.getStringList("Citybuild.Worlds");
-		ArrayList<World> worlds = new ArrayList<>();
-		for (String string : list) {
-			worlds.add(Bukkit.getWorld(string));
-		}
-		return worlds;
-	}
-	
-	public static void addCitybuildPlot(CityBuildPlot plot) {
-		config.set("Citybuild.Plots." + plot.getId() + ".Position1.Word", plot.getPosition1().getWorld());
-		config.set("Citybuild.Plots." + plot.getId() + ".Position1.X", plot.getPosition1().getX());
-		config.set("Citybuild.Plots." + plot.getId() + ".Position1.Y", plot.getPosition1().getY());
-		config.set("Citybuild.Plots." + plot.getId() + ".Position1.Z", plot.getPosition1().getZ());
-		config.set("Citybuild.Plots." + plot.getId() + ".Position2.Word", plot.getPosition2().getWorld());
-		config.set("Citybuild.Plots." + plot.getId() + ".Position2.X", plot.getPosition2().getX());
-		config.set("Citybuild.Plots." + plot.getId() + ".Position2.Y", plot.getPosition2().getY());
-		config.set("Citybuild.Plots." + plot.getId() + ".Position2.Z", plot.getPosition2().getZ());
-		config.set("Citybuild.Plots." + plot.getId() + ".Owner", plot.getOwner().getUniqueId());
-		List<String> trustedPlayers = new ArrayList<String>();
-		for (Player player : plot.getTrustedPlayers()) {
-			trustedPlayers.add(player.getUniqueId().toString());
-		}
-		List<String> bannedPlayers = new ArrayList<String>();
-		for (Player player : plot.getBannedPlayers()) {
-			bannedPlayers.add(player.getUniqueId().toString());
-		}
-		config.set("Citybuild.Plots." + plot.getId() + ".Trusted", trustedPlayers);
-		config.set("Citybuild.Plots." + plot.getId() + ".Banned", bannedPlayers);
-		saveConfig();
-	}
-	
-	public static ArrayList<CityBuildPlot> getCitybuildPlots() {
-		ArrayList<CityBuildPlot> plots = new ArrayList<>();
-		for (String plotId : getSection("Citybuild.Plots.")) {
-			Location location1 = new Location(Bukkit.getWorld(config.getString("Citybuild.Plots." + plotId + ".Position1.Word")), config.getDouble("Citybuild.Plots." + plotId + ".Position1.X"), config.getDouble("Citybuild.Plots." + plotId + ".Position1.Y"), config.getDouble("Citybuild.Plots." + plotId + ".Position1.Z"));
-			Location location2 = new Location(Bukkit.getWorld(config.getString("Citybuild.Plots." + plotId + ".Position2.Word")), config.getDouble("Citybuild.Plots." + plotId + ".Position2.X"), config.getDouble("Citybuild.Plots." + plotId + ".Position2.Y"), config.getDouble("Citybuild.Plots." + plotId + ".Position2.Z"));
-			CityBuildPlot plot = new CityBuildPlot(location1, location2);
-			plot.setOwner(Bukkit.getPlayer(UUID.fromString(config.getString("Citybuild.Plots." + plotId + ".Owner"))));
-			ArrayList<Player> trustedPlayers = new ArrayList<Player>();
-			for (String player : config.getStringList("Citybuild.Plots." + plotId + ".Trusted")) {
-				trustedPlayers.add(Bukkit.getPlayer(UUID.fromString(player)));
-			}
-			plot.getTrustedPlayers().addAll(trustedPlayers);
-			ArrayList<Player> bannedPlayers = new ArrayList<Player>();
-			for (String player : config.getStringList("Citybuild.Plots." + plotId + ".Banned")) {
-				bannedPlayers.add(Bukkit.getPlayer(UUID.fromString(player)));
-			}
-			plot.getTrustedPlayers().addAll(bannedPlayers);
-			plots.add(plot);
-		}
-		return plots;
-	}
-	
 	
 	public static void saveConfig() {
 		try {
