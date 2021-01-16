@@ -105,6 +105,15 @@ public class SaveConfig {
     	}
     }
     
+    public static void saveFlying(Player player, WorldGroup worldgroup) {
+    	config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Flying", player.isFlying());
+    	saveConfig();
+    }
+    
+    public static void loadFlying(Player player, WorldGroup worldgroup) {
+    	player.setFlying(config.getBoolean("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Flying"));
+    }
+    
     public static void saveLocation(Player player) {
     	String path = "WorldGroups." + WorldGroupHandler.getWorldGroup(player).getName() + "." + player.getUniqueId() + ".Location";
 		config.set(path +".World", player.getLocation().getWorld().getName());
