@@ -14,8 +14,8 @@ This is a Bukkit/Spigot plugin for permisssions, multiworld features and other a
 |lobby|`/lobby`|`serversystem.command.lobby`|true|Teleport player to lobby|
 |enderchest|`/enderchest [<player>]`|`serversystem.command.enderchest`|false|Open the enderchest of a player|
 |inventory|`/inventory [<player>]`|`serversystem.command.inventory`|false|Open the inventory of a player|
-## Permissions
 
+## Permissions
 |Permission|Default|Description|
 |---|---|---|
 |`serversystem.command.admin`|op|Open the admin inventory|
@@ -37,8 +37,47 @@ This is a Bukkit/Spigot plugin for permisssions, multiworld features and other a
 |`serversystem.rank.player`|true|Display player prefix|
 |`serversystem.tools.signeddit`|op|Allow to create executable signs|
 
-## Example config
+## Config
+The config can be found at `/plugins/serversystem/plugin.yml` in your server folder.
 
+### Disable join- and leavemessage
+You have the oportunity to disable the join- and leavemessage if you don't want to have minecrafts default join- and leavemessage.
+```json
+Server:
+  joinmessage: false
+  leavemessage: false
+```
+
+### Tablist text
+You can add text above and below the names of the players in the tablist.
+```json
+Server:
+  tablist:
+    title:
+      text: Welcome
+      color: blue
+    subtitle:
+      text: to this server!
+      color: dark_green
+```
+You can use the colors codes listet in the [Minecraft Wiki](https://minecraft.gamepedia.com/Formatting_codes#Color_codes "Color Codes")
+
+### Lobby
+You can set the lobby as main world of teh server. You can go back by `/lobby` if you have this enabled and if a user is connecting to the server, he will be spawn at the lobby world.
+```json
+Server:
+  lobby: true
+  lobbyworld: world
+```
+
+### Enable WorldGroups
+If you want to use multible worlds with different inventories and spawn locations, you can use the WorldGroup-System. It works simular to the plugin MultiWorld. You can enable this feature in the here:
+```json
+Server:
+  enableworldgroups: true
+```
+
+### Example
 ```json
 Server:
   joinmessage: false
