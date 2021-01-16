@@ -26,10 +26,10 @@ public class WorldGroupHandler {
 	public static void teleportPlayer(Player player, World world) {
 		if(enabled) {
 			WorldGroup worldgroup = getWorldGroup(world);
-			if(!Config.hasWorldSpawn(world.getName()) && SaveConfig.loadLocation(player, worldgroup) != null && SaveConfig.loadLocation(player, worldgroup) != null) {
-				player.teleport(SaveConfig.loadLocation(player, worldgroup));
-			} else {
+			if(Config.hasWorldSpawn(world.getName()) || SaveConfig.loadLocation(player, worldgroup) == null) {
 				player.teleport(world.getSpawnLocation());
+			} else {
+				player.teleport(SaveConfig.loadLocation(player, worldgroup));
 			}
 		} else {
 			player.teleport(world.getSpawnLocation());
