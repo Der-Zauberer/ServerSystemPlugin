@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import serversystem.config.Config;
 import serversystem.utilities.WorldGroup;
@@ -75,6 +77,14 @@ public class ChatHandler implements Listener {
 			Bukkit.getConsoleSender().sendMessage(servername + messagecolor + " " + message);
 		}
 		
+	}
+	
+	public static String getPlayerJoinMessage(PlayerJoinEvent event) {
+		return servername + messagecolor + " " + event.getPlayer().getName() + " joined the game!";
+	}
+	
+	public static String getPlayerQuitMessage(PlayerQuitEvent event) {
+		return servername + messagecolor + " " + event.getPlayer().getName() + " left the game!";
 	}
 	
 	public static void sendPlayerDeathMessage(Player player) {

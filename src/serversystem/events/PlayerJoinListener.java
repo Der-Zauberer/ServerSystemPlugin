@@ -15,7 +15,9 @@ public class PlayerJoinListener implements Listener {
 	
 	@EventHandler
 	public void onJoinEvent(PlayerJoinEvent event) {
-		if(!Config.isJoinMessageActiv()) {
+		if(Config.isJoinMessageActiv()) {
+			event.setJoinMessage(ChatHandler.getPlayerJoinMessage(event));
+		} else {
 			event.setJoinMessage("");
 		}
 		Config.addPlayer(event.getPlayer());
