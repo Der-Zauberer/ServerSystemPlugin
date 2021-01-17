@@ -1,9 +1,9 @@
 main: serversystem.main.ServerSystem
 name: ServerSystem
-version: 1.0
+version: 1.1
 author: Der_Zauberer
 api-version: 1.14
- 
+
 commands:
   admin:
     desciption: Open the admin menu
@@ -13,22 +13,6 @@ commands:
     desciption: Allow the player to build in protected worlds
     usage: /<command> [<player>]
     permission: serversystem.command.build
-  vanish:
-    desciption: Allow the player to vanish
-    usage: /<command> [<player>]
-    permission: serversystem.command.vanish
-  world:
-    desciption: Teleoprt player to an other world or edit an other world
-    usage: /<command> [<word>] [<player>]
-    permission: serversystem.command.world
-  permission:
-    desciption: Set the permissions of a player
-    usage: /<command> <player> [<player>] <group> [<permissiongroup>]
-    permission: serversystem.command.permission
-  lobby:
-    desciption: Teleport player to lobby
-    usage: /<command>
-    permission: serversystem.command.lobby
   enderchest:
     desciption: Open the enderchest of a player
     usage: /<command> [<player>]
@@ -37,7 +21,23 @@ commands:
     desciption: Open the inventory of a player
     usage: /<command> [<player>]
     permission: serversystem.command.inventory
-   
+  lobby:
+    desciption: Teleport player to lobby
+    usage: /<command>
+    permission: serversystem.command.lobby
+  permission:
+    desciption: Set the permissions of a player
+    usage: /<command> <option> [<player>] [<permissiongroup>]
+    permission: serversystem.command.permission
+  vanish:
+    desciption: Allow the player to vanish
+    usage: /<command> [<player>]
+    permission: serversystem.command.vanish
+  world:
+    desciption: Teleoprt player to an other world or edit an other world
+    usage: /<command> [<word>] [<player>]
+    permission: serversystem.command.world
+  
 permissions:
   serversystem.command.admin:
     description: Open the admin inventory
@@ -45,23 +45,23 @@ permissions:
   serversystem.command.build:
     description: Allow the player to build in protected worlds
     default: op
-  serversystem.command.vanish:
-    description: Allow the player to vanish
-    default: op
-  serversystem.command.world:
-    description: Teleoprt player to other teleoprt player to an other world or edit an other world
-    default: op
-  serversystem.command.permission:
-    description: Set the permissions of a player
-    default: false
-  serversystem.command.lobby:
-    description: Teleport player to lobby
-    default: true
   serversystem.command.enderchest:
     desciption: Open the enderchest of a player
     default: op
   serversystem.command.inventory:
     desciption: Open the inventory of a player
+    default: op
+  serversystem.command.lobby:
+    description: Teleport player to lobby
+    default: true
+  serversystem.command.permission:
+    description: Set the permissions of a player
+    default: false
+  serversystem.command.vanish:
+    description: Allow the player to vanish
+    default: op
+  serversystem.command.world:
+    description: Teleoprt player to other teleoprt player to an other world or edit an other world
     default: op
   serversystem.rank.admin:
     description: Display Admin Prefix
