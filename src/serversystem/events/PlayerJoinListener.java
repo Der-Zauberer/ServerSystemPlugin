@@ -8,7 +8,6 @@ import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.PlayerPacketHandler;
 import serversystem.handler.PlayerPermission;
-import serversystem.config.EconomyConfig;
 import serversystem.handler.WorldGroupHandler;
 
 public class PlayerJoinListener implements Listener {
@@ -21,7 +20,6 @@ public class PlayerJoinListener implements Listener {
 			event.setJoinMessage("");
 		}
 		Config.addPlayer(event.getPlayer());
-		EconomyConfig.addPlayer(event.getPlayer());
 		PlayerPermission.removeConfigDisablePermissions(event.getPlayer());
 		PlayerPermission.addConfigPermissions(event.getPlayer());
 		PlayerPermission.reloadPlayerPermissions(event.getPlayer());

@@ -13,7 +13,6 @@ import serversystem.commands.PermissionCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
-import serversystem.config.EconomyConfig;
 import serversystem.config.SaveConfig;
 import serversystem.events.CommandPreprocessListener;
 import serversystem.events.EntityDamageListener;
@@ -38,7 +37,6 @@ public class ServerSystem extends JavaPlugin{
 	public void onEnable() {
 		new Config();
 		new SaveConfig();
-		new EconomyConfig();
 		TeamHandler.initializeTeams();
 		WorldGroupHandler.initializeWorldGroups();
 		registerEvents();
@@ -59,6 +57,11 @@ public class ServerSystem extends JavaPlugin{
 		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			Config.getLobbyWorld().setMonsterSpawnLimit(0);
 		}
+	}
+	
+	@Override
+	public void onDisable() {
+		TeamHandler.resetTeams();
 	}
 
 	private void registerEvents() {

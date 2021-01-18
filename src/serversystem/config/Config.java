@@ -125,6 +125,7 @@ public class Config {
 			config.set("Worlds." + world + ".damage", true);
 			config.set("Worlds." + world + ".huger", true);
 			config.set("Worlds." + world + ".explosion", true);
+			config.set("Worlds." + world + ".deathmessage", true);
 			config.set("Worlds." + world + ".gamemode", 2);
 			saveConfig();
 		}
@@ -187,6 +188,14 @@ public class Config {
 	
 	public static boolean hasWorldExplosion(String world) {
 		return config.getBoolean("Worlds." + world + ".explosion");
+	}
+	
+	public static void setDeathMessgae(String world, boolean deathmessage) {
+		config.set("Worlds." + world + ".deathmessage", deathmessage);
+	}
+	
+	public static boolean hasDeathMessage(String world) {
+		return config.getBoolean("Worlds." + world + ".deathmessage");
 	}
 	
 	public static void setWorldGamemode(String world, GameMode gamemode) {

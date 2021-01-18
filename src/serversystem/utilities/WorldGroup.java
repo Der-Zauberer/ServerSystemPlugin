@@ -16,10 +16,15 @@ public class WorldGroup {
 	private int currentPlayers;
 	private ArrayList<World> worlds;
 	
-	public WorldGroup(String name, World mainworld) {
+	public WorldGroup(String name, World world) {
 		this.name = name;
 		worlds = new ArrayList<>();
-		worlds.add(mainworld);
+		worlds.add(world);
+	}
+	
+	public WorldGroup(String name, ArrayList<World> worlds) {
+		this.name = name;
+		this.worlds = worlds;
 	}
 	
 	public void onPlayerJoin(Player player) {
@@ -67,10 +72,6 @@ public class WorldGroup {
 	
 	public ArrayList<World> getWorlds() {
 		return worlds;
-	}
-	
-	public World getMainWorld(){
-		return worlds.get(0);
 	}
 	
 	public void setName(String name) {

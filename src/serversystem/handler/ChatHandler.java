@@ -87,21 +87,6 @@ public class ChatHandler implements Listener {
 		return servername + messagecolor + " " + event.getPlayer().getName() + " left the game!";
 	}
 	
-	public static void sendPlayerDeathMessage(Player player) {
-		if(Config.isWorldGroupSystemEnabled()) {
-			for(Player players : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
-				players.sendMessage(player.getName() + " died!");
-			}
-			Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] " + player.getName() + " died!");
-		} else {
-			for(Player players : Bukkit.getOnlinePlayers()) {
-				players.sendMessage(player.getName() + " died!");
-			}
-			Bukkit.getConsoleSender().sendMessage(player.getName() + " died!");
-		}
-		
-	}
-	
 	public static void sendPlayerChatMessage(Player player, String message) {
 		if(Config.isWorldGroupSystemEnabled()) {
 			for (Player players : WorldGroupHandler.getWorldGroup(player).getPlayers()) {

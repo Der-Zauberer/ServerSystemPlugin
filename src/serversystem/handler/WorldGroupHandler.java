@@ -36,10 +36,6 @@ public class WorldGroupHandler {
 		}
 	}
 	
-	public static void teleportToWorldGroupSpawn(Player player, WorldGroup worldgroup) {
-			player.getPlayer().teleport(worldgroup.getMainWorld().getSpawnLocation());
-	}
-	
 	public static WorldGroup getWorldGroup(Player player) {
 		for(WorldGroup worldgroup : worldgroups) {
 			if(worldgroup.getWorlds().contains(player.getWorld())) {
@@ -97,6 +93,10 @@ public class WorldGroupHandler {
 	
 	public static void removeWorld(World world) {
 		Config.removeLoadWorld(world.getName());
+	}
+	
+	public static boolean isEnabled() {
+		return enabled;
 	}
 	
 }

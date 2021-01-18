@@ -149,6 +149,7 @@ All loaded worlds have own settings. <br>
 `damage` players cant take damage from any source, if this is false<br>
 `hunger` if this is false, player do not have to eat<br>
 `explotion` explotions can not make damage to blocks, if this is false<br>
+`deathmessage` no chat message about a player death will appear, if you disable the deathmessage<br> 
 `gamemode` the player will set in this gamemode, if the join to the world for the first time<br>
 
 ```json
@@ -162,6 +163,7 @@ Worlds:
     damage: false
     huger: true
     explosion: false
+    deathmessage: true
     gamemode: 2
 ```
 
@@ -227,6 +229,7 @@ Worlds:
     damage: false
     huger: true
     explosion: false
+    deathmessage: true
     gamemode: 2
   world_nether:
     exists: true
@@ -237,6 +240,7 @@ Worlds:
     damage: true
     huger: true
     explosion: true
+    deathmessage: true
     gamemode: 2
   world_the_end:
     exists: true
@@ -247,6 +251,7 @@ Worlds:
     damage: true
     huger: true
     explosion: true
+    deathmessage: true
     gamemode: 2
   hogwarts:
     exists: true
@@ -257,6 +262,7 @@ Worlds:
     damage: true
     huger: true
     explosion: false
+    deathmessage: true
     gamemode: 2
 Players:
   8e1f0a29-7279-412d-a6a6-4266164d6a87:

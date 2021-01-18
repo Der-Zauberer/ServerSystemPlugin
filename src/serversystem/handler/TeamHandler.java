@@ -34,6 +34,20 @@ public class TeamHandler {
 		createTeam(TEAMSPECTATOR, "[SPECTATOR] ", ChatColor.GRAY);
 	}
 	
+	public static void resetTeams() {
+		removeTeam(TEAMVANISH);
+		removeTeam(TEAMRANKADMIN);
+		removeTeam(TEAMRANKMODERATOR);
+		removeTeam(TEAMRANKDEVELOPER);
+		removeTeam(TEAMRANKSUPPORTER);
+		removeTeam(TEAMRANKTEAM);
+		removeTeam(TEAMRANKOPERATOR);
+		removeTeam(TEAMRANKYOUTUBER);
+		removeTeam(TEAMRANKPREMIUM);
+		removeTeam(TEAMRANKPLAYER);
+		removeTeam(TEAMSPECTATOR);
+	}
+	
 	public static void createTeam(String name, String prefix, ChatColor color) {
 		if (getMainScoreboard().getTeam(name) == null) {
 			getMainScoreboard().registerNewTeam(name).setPrefix(prefix);
