@@ -192,6 +192,7 @@ public class Config {
 	
 	public static void setDeathMessgae(String world, boolean deathmessage) {
 		config.set("Worlds." + world + ".deathmessage", deathmessage);
+		saveConfig();
 	}
 	
 	public static boolean hasDeathMessage(String world) {
