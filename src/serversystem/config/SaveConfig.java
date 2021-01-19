@@ -5,14 +5,13 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.WorldGroup;
 
 public class SaveConfig {
@@ -105,35 +104,31 @@ public class SaveConfig {
     	}
     }
     
-    public static void saveFlying(Player player, WorldGroup worldgroup) {
-    	config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Flying", player.isFlying());
-    	saveConfig();
-    }
-    
-    public static void loadFlying(Player player, WorldGroup worldgroup) {
-    	player.setFlying(config.getBoolean("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Flying"));
-    }
-    
     public static void saveLocation(Player player) {
-    	String path = "WorldGroups." + WorldGroupHandler.getWorldGroup(player).getName() + "." + player.getUniqueId() + ".Location";
-		config.set(path +".World", player.getLocation().getWorld().getName());
+    	String path = "Worlds." + player.getWorld().getName() + "." + player.getUniqueId();
 		config.set(path +".X", player.getLocation().getX());
 		config.set(path +".Y", player.getLocation().getY());
 		config.set(path +".Z", player.getLocation().getZ());
 		config.set(path +".Pitch", player.getLocation().getPitch());
 		config.set(path +".Yaw", player.getLocation().getYaw());
+		config.set(path +".Fly", player.isFlying());
 		saveConfig();
     }
     
-    public static Location loadLocation(Player player, WorldGroup worldgroup) {
-    	String path = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Location";
-    	if(config.getString(path + ".World") == "" || config.getString(path + ".World") == null) {
+    public static Location loadLocation(Player player, World world) {
+    	String path = "Worlds." + world.getName() + "." + player.getUniqueId();
+    	if(config.getString(path + ".X") == "" || config.getString(path + ".X") == null) {
     		return null;
     	}
-    	Location location = new Location(Bukkit.getWorld(config.getString(path +".World")), config.getDouble(path +".X"), config.getDouble(path +".Y"), config.getDouble(path +".Z"), (float) config.getDouble(path +".Pitch"), (float) config.getDouble(path +".Yaw"));
+    	Location location = new Location(world, config.getDouble(path +".X"), config.getDouble(path +".Y"), config.getDouble(path +".Z"), (float) config.getDouble(path +".Pitch"), (float) config.getDouble(path +".Yaw"));
     	return location;
     }
     
+    public static boolean loadFlying(Player player, World world) {
+    	String path = "Worlds." + world.getName() + "." + player.getUniqueId();
+    	return config.getBoolean(path + ".Fly");
+    }
+
     public static void saveLog(Player player, LogTypes logtypes, String message) {
 		String logtype = "";
 		switch (logtypes) {

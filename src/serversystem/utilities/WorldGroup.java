@@ -42,7 +42,6 @@ public class WorldGroup {
 		SaveConfig.loadInventory(player, this);
 		SaveConfig.loadXp(player, this);
 		SaveConfig.loadGamemode(player, this);
-		SaveConfig.loadFlying(player, this);
 		TeamHandler.addRoleToPlayer(player);
 	}
 	
@@ -58,8 +57,6 @@ public class WorldGroup {
 		SaveConfig.saveInventory(player, this);
 		SaveConfig.saveXp(player, this);
 		SaveConfig.saveGamemode(player, this);
-		SaveConfig.saveFlying(player, this);
-		SaveConfig.saveLocation(player);
 	}
 	
 	public String getName() {
