@@ -2,6 +2,13 @@
 
 This is a Bukkit/Spigot plugin for permisssions, multiworld features and other admin features.
 
+## Develpement and Version
+
+API Version: *1.14.x*<br>
+Spigot Version: *1.14.4-R0.1-SNAPSHOT*<br>
+Plugin Version: *v1.1-beta*<br>
+Java Class Version: *52 (Java8)*<br>
+
 ## Commands
 
 |Command|Usage|Permission|Default Permission|Description|
@@ -36,6 +43,8 @@ This is a Bukkit/Spigot plugin for permisssions, multiworld features and other a
 |`serversystem.rank.premium`|false|Display premium prefix|
 |`serversystem.rank.player`|true|Display player prefix|
 |`serversystem.tools.signeddit`|op|Allow to create executable signs|
+
+The rank permissions give the player a colored name and prefix (more information at "Groups").
 
 ## Config
 The config can be found at `/plugins/serversystem/plugin.yml` in your server folder.
@@ -223,7 +232,7 @@ Worlds:
   world:
     exists: true
     group: world
-    worldspawn: false
+    worldspawn: true
     protect: true
     pvp: false
     damage: false
