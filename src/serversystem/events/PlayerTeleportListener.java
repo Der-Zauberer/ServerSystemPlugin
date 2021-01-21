@@ -3,7 +3,6 @@ package serversystem.events;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
-
 import serversystem.config.Config;
 import serversystem.config.SaveConfig;
 import serversystem.handler.PlayerVanish;

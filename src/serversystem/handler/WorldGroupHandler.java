@@ -28,7 +28,9 @@ public class WorldGroupHandler {
 			player.teleport(world.getSpawnLocation());
 		} else {
 			player.teleport(SaveConfig.loadLocation(player, world));
-			player.setFlying(SaveConfig.loadFlying(player, world));
+			if(player.getAllowFlight()) {
+				player.setFlying(SaveConfig.loadFlying(player, world));
+			}
 		}
 	}
 	
