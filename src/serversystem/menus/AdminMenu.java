@@ -28,9 +28,8 @@ public class AdminMenu extends PlayerInventory {
 		setItem(6, createItem("Weather Clear", Material.SUNFLOWER), (itemstack) -> {player.getWorld().setStorm(false);});
 		setItem(15, createItem("Weather Rain", Material.WATER_BUCKET), (itemstack) -> {player.getWorld().setStorm(true); player.getWorld().setThundering(false);});
 		setItem(24, createItem("Weather Thunderstorm", Material.HOPPER), (itemstack) -> {player.getWorld().setStorm(true); player.getWorld().setThundering(true);});
-		setItem(8, createItem("Server Settings", Material.SKELETON_SKULL), (itemstack) -> {new SettingsMenu(player).open();});
-		setItem(17, createItem("World Settings", Material.ZOMBIE_HEAD), (itemstack) -> {new WorldsMenu(player).open();});
-		setItem(35, createItem("Players", Material.PLAYER_HEAD), (itemstack) -> {new PlayersMenu(player).open();});
+		setItem(8, createItem("World Settings", Material.ZOMBIE_HEAD), (itemstack) -> {new WorldsMenu(player).open();});
+		setItem(17, createItem("Players", Material.PLAYER_HEAD), (itemstack) -> {new PlayersMenu(player).open();});
 	}
 	
 	private void addPtionEffect(Player player, PotionEffectType effect) {

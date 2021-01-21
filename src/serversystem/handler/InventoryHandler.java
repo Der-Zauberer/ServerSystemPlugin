@@ -1,6 +1,8 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,11 +24,14 @@ private static ArrayList<PlayerInventory> playerinventory = new ArrayList<>();
 	@EventHandler
 	public void onInventoryClicked(InventoryClickEvent event) {
 		if(event.getCurrentItem() != null) {
-			for(PlayerInventory inventory : playerinventory) {
-				if(inventory.getInventory() == event.getClickedInventory() && inventory.getItemOption() == ItemOption.FIXED) {
-					inventory.onItemClicked(event.getCurrentItem());
-					event.setCancelled(true);
+			try {
+				for(PlayerInventory inventory : playerinventory) {
+					if(inventory.getInventory() == event.getClickedInventory() && inventory.getItemOption() == ItemOption.FIXED) {
+						inventory.onItemClicked(event.getCurrentItem());
+						event.setCancelled(true);
+					}
 				}
+			} catch (ConcurrentModificationException exception) {
 			}
 		}
 	}

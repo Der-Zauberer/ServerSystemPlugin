@@ -10,10 +10,10 @@ import serversystem.utilities.PlayerInventory;
 public class WorldsMenu extends PlayerInventory {
 	
 	public WorldsMenu(Player player) {
-		super(player, 36, "Worlds");
+		super(player, calculateSize(), "Worlds");
 		setItemOption(ItemOption.FIXED);
-		setItem(31, createItem("Back", Material.SPECTRAL_ARROW), (itemstack) -> {new AdminMenu(player).open();});
-		for(int i = 0; i < Bukkit.getWorlds().size() && i < 26; i++) {
+		setItem(calculateSize() - 5, createItem("Back", Material.SPECTRAL_ARROW), (itemstack) -> {new AdminMenu(player).open();});
+		for(int i = 0; i < Bukkit.getWorlds().size() && i < 45; i++) {
 			setItem(i, createItem(Bukkit.getWorlds().get(i).getName(), Material.ZOMBIE_HEAD), (itemstack) -> {setWorld(itemstack, player);});
 		}
 	}
@@ -23,6 +23,16 @@ public class WorldsMenu extends PlayerInventory {
 		if(Bukkit.getWorld(name) != null) {
 			new WorldMenu(player, Bukkit.getWorld(name)).open();
 		}
+	}
+	
+	private static int calculateSize() {
+		int worlds = Bukkit.getWorlds().size();
+		int difference = 9 - (worlds % 9);
+		int size = worlds + difference + 9;
+		if(size > 54) {
+			size = 54;
+		}
+		return size;
 	}
 
 }
