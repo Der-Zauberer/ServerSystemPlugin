@@ -38,7 +38,6 @@ public class ServerSystem extends JavaPlugin{
 		new Config();
 		new SaveConfig();
 		TeamHandler.initializeTeams();
-		WorldGroupHandler.initializeWorldGroups();
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
@@ -48,12 +47,14 @@ public class ServerSystem extends JavaPlugin{
 				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
 			}
 		}
+		WorldGroupHandler.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			TeamHandler.addRoleToPlayer(player);
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
 		}
+		WorldGroupHandler.autoRemoveWorldGroups();
 		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			Config.getLobbyWorld().setMonsterSpawnLimit(0);
 		}

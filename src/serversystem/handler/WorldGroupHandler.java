@@ -15,10 +15,32 @@ public class WorldGroupHandler {
 	private static ArrayList<WorldGroup> worldgroups = new ArrayList<>();
 	private static boolean enabled = Config.isWorldGroupSystemEnabled();
 	
-	public static void initializeWorldGroups() {
-		if(enabled) {
-			for (World world : Bukkit.getWorlds()) {
-				WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
+	public static void autoCreateWorldGroups() {
+		for (World world : Bukkit.getWorlds()) {
+			String worldgroup = Config.getWorldGroup(world.getName());
+			if(getWorldGroup(worldgroup) == null) {
+				addWorldGroup(new WorldGroup(worldgroup, world));
+			} else {
+				if(!getWorldGroup(worldgroup).getWorlds().contains(world)) {
+					getWorldGroup(worldgroup).addWorld(world);
+				}
+			}
+		}
+	}
+	
+	public static void autoRemoveWorldGroups() {
+		ArrayList<String> worldgroups = new ArrayList<>();
+		for (World world : Bukkit.getWorlds()) {
+			String worldgroup = Config.getWorldGroup(world.getName());
+			if(!worldgroups.contains(worldgroup)) {
+				worldgroups.add(worldgroup);
+			}
+		}
+		for (int i = 0; i < worldgroups.size(); i++) {
+			WorldGroup worldgroup = WorldGroupHandler.worldgroups.get(i);
+			if(!worldgroups.contains(worldgroup.getName())) {
+				removeWorldGroup(worldgroup);
+				worldgroup = null;
 			}
 		}
 	}
@@ -91,6 +113,10 @@ public class WorldGroupHandler {
 	
 	public static void removeWorld(World world) {
 		Config.removeLoadWorld(world.getName());
+	}
+	
+	public static ArrayList<WorldGroup> getWorldgroups() {
+		return worldgroups;
 	}
 	
 	public static boolean isEnabled() {
