@@ -1,5 +1,6 @@
 package serversystem.utilities;
 
+import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -18,12 +19,11 @@ public class PlayerInventory {
 	private Inventory inventory;
 	private ItemOption itemoption;
 	private Player player;
-	private ItemMenu itemymenu;
-	
+	private HashMap<ItemStack, ActionEvent> events = new HashMap<>();
+
 	public PlayerInventory(Player player, int number, String name) {
 		this.player = player;
 		inventory = Bukkit.createInventory(player, number, name);
-		InventoryHandler.addInventory(this);
 	}
 	
 	public static ItemStack createItem(String name, Material material) {
@@ -54,35 +54,39 @@ public class PlayerInventory {
 		return itembuilder.buildItem();
 	}
 	
-	public void setItem(ItemStack item, int position) {
-		inventory.setItem(position, item);
+	public void setItem(int slot, ItemStack itemstack, ActionEvent event) {
+		inventory.setItem(slot, itemstack);
+		events.put(itemstack, event);
 	}
 	
-	public void setItemMenu(ItemMenu inventorymenu) {
-		inventory.clear();
-		this.itemymenu = inventorymenu;
-		inventorymenu.setPlayerInventory(this);
-		for(ItemStack itemstack : inventorymenu.getItems().keySet()) {
-			setItem(itemstack, inventorymenu.getItems().get(itemstack));
+	public void setItem(int slot, ItemStack itemstack) {
+		inventory.setItem(slot, itemstack);
+	}
+	
+	public void setEvent(ItemStack itemstack, ActionEvent event) {
+		events.put(itemstack, event);
+	}
+	
+	public void onItemClicked(ItemStack itemstack) {
+		if(events.containsKey(itemstack)) {
+			events.get(itemstack).executeOnAction(itemstack);
 		}
 	}
 	
 	public void open() {
 		player.openInventory(inventory);
+		InventoryHandler.addInventory(this);
 	}
 	
 	public void close() {
 		player.closeInventory();
+		InventoryHandler.removeInventory(this);
 	}
 	
 	public void clear() {
 		inventory.clear();
 	}
 	
-	public void onItemClicked(ItemStack itemstack, Player player) {
-		itemymenu.onItemClick(itemstack, player);
-	}
-
 	public void setItemOption(ItemOption itemoption) {
 		this.itemoption = itemoption;
 	}
@@ -94,4 +98,5 @@ public class PlayerInventory {
 	public Inventory getInventory() {
 		return inventory;
 	}
+	
 }

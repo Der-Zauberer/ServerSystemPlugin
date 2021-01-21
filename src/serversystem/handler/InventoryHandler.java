@@ -1,7 +1,6 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -10,22 +9,22 @@ import serversystem.utilities.PlayerInventory.ItemOption;
 
 public class InventoryHandler implements Listener {
 	
-	private static ArrayList<PlayerInventory> inventorymenus = new ArrayList<>();
+private static ArrayList<PlayerInventory> playerinventory = new ArrayList<>();
 	
 	public static void addInventory(PlayerInventory inventory) {
-		inventorymenus.add(inventory);
+		playerinventory.add(inventory);
 	}
 	
 	public static void removeInventory(PlayerInventory inventory) {
-		inventorymenus.remove(inventory);
+		playerinventory.remove(inventory);
 	}
 	
 	@EventHandler
 	public void onInventoryClicked(InventoryClickEvent event) {
 		if(event.getCurrentItem() != null) {
-			for(PlayerInventory playerinventory : inventorymenus) {
-				if(playerinventory.getInventory() == event.getClickedInventory() && playerinventory.getItemOption() == ItemOption.FIXED) {
-					playerinventory.onItemClicked(event.getCurrentItem(), (Player) event.getWhoClicked());
+			for(PlayerInventory inventory : playerinventory) {
+				if(inventory.getInventory() == event.getClickedInventory() && inventory.getItemOption() == ItemOption.FIXED) {
+					inventory.onItemClicked(event.getCurrentItem());
 					event.setCancelled(true);
 				}
 			}
