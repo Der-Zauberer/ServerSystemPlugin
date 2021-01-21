@@ -1,40 +1,40 @@
 main: serversystem.main.ServerSystem
 name: ServerSystem
-version: 1.1
+version: 1.2
 author: Der_Zauberer
 api-version: 1.14
 
 commands:
   admin:
-    desciption: Open the admin menu
+    description: Open the admin menu
     usage: /<command>
     permission: serversystem.command.admin
   build:
-    desciption: Allow the player to build in protected worlds
+    description: Allow the player to build in protected worlds
     usage: /<command> [<player>]
     permission: serversystem.command.build
   enderchest:
-    desciption: Open the enderchest of a player
+    description: Open the enderchest of a player
     usage: /<command> [<player>]
     permission: serversystem.command.enderchest
   inventory:
-    desciption: Open the inventory of a player
+    description: Open the inventory of a player
     usage: /<command> [<player>]
     permission: serversystem.command.inventory
   lobby:
-    desciption: Teleport player to lobby
+    description: Teleport player to lobby
     usage: /<command>
     permission: serversystem.command.lobby
   permission:
-    desciption: Set the permissions of a player
+    description: Set the permissions of a player
     usage: /<command> <option> [<player>] [<permissiongroup>]
     permission: serversystem.command.permission
   vanish:
-    desciption: Allow the player to vanish
+    description: Allow the player to vanish
     usage: /<command> [<player>]
     permission: serversystem.command.vanish
   world:
-    desciption: Teleoprt player to an other world or edit an other world
+    description: Teleoprt player to an other world or edit an other world
     usage: /<command> [<word>] [<player>]
     permission: serversystem.command.world
   
