@@ -11,6 +11,7 @@ import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
 import serversystem.commands.VanishCommand;
+import serversystem.commands.WTPCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
 import serversystem.config.SaveConfig;
@@ -84,12 +85,13 @@ public class ServerSystem extends JavaPlugin{
 	private void registerCommands() {
 		getCommand("admin").setExecutor(new AdminCommand());
 		getCommand("build").setExecutor(new BuildCommand());
-		getCommand("vanish").setExecutor(new VanishCommand());
-		getCommand("world").setExecutor(new WorldCommand());
-		getCommand("permission").setExecutor(new PermissionCommand());
-		getCommand("lobby").setExecutor(new LobbyCommand());
 		getCommand("enderchest").setExecutor(new EnderchestCommand());
 		getCommand("inventory").setExecutor(new InventoryCommand());
+		getCommand("lobby").setExecutor(new LobbyCommand());
+		getCommand("permission").setExecutor(new PermissionCommand());
+		getCommand("vanish").setExecutor(new VanishCommand());
+		getCommand("world").setExecutor(new WorldCommand());
+		getCommand("wtp").setExecutor(new WTPCommand());
 	}
 	
 	private void registerWorldSigns() {

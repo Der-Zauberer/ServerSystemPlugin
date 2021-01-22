@@ -37,6 +37,10 @@ commands:
     description: Teleoprt player to an other world or edit an other world
     usage: /<command> [<word>] [<player>]
     permission: serversystem.command.world
+  wtp:
+    description: Teleoprt player to an other world
+    usage: /<command> [<word>]
+    permission: serversystem.command.world
   
 permissions:
   serversystem.command.admin:
