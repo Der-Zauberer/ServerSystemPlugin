@@ -27,7 +27,7 @@ commands:
     permission: serversystem.command.lobby
   permission:
     description: Set the permissions of a player
-    usage: /<command> <option> [<player>] [<permissiongroup>]
+    usage: /<command> [<player>] [<group>]
     permission: serversystem.command.permission
   vanish:
     description: Allow the player to vanish

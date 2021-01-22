@@ -18,7 +18,7 @@ Java Class Version: *52 (Java8)*<br>
 |enderchest|`/enderchest [<player>]`|`serversystem.command.enderchest`|false|Open the enderchest of a player|
 |inventory|`/inventory [<player>]`|`serversystem.command.inventory`|false|Open the inventory of a player|
 |lobby|`/lobby`|`serversystem.command.lobby`|true|Teleport player to lobby|
-|permission|`/permission`|`serversystem.command.permission`|false|Set the permissions of a player|
+|permission|`/permission [<player>] [<group>]`|`serversystem.command.permission`|false|Set the permissions of a player|
 |vanish|`/vanish [<player>]`|`serversystem.command.vanish`|false|Allow the player to vanish|
 |world|`/world [action] [<world>] [<player] /world [action] [<world>] [action] [boolean]`|`serversystem.command.world`|false|Teleoprt player to an other world or edit an other world|
 
