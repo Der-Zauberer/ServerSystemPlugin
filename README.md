@@ -42,6 +42,7 @@ Java Class Version: *52 (Java8)*<br>
 |`serversystem.rank.youtuber`|false|Display youtuber prefix|
 |`serversystem.rank.premium`|false|Display premium prefix|
 |`serversystem.rank.player`|true|Display player prefix|
+|`serversystem.tools.commandblock`|false|Allow to use commandblocks|
 |`serversystem.tools.signeddit`|op|Allow to create executable signs|
 
 The rank permissions give the player a colored name and prefix (more information at "Groups").
@@ -227,6 +228,7 @@ Groups:
   - serversystem.command.permission
   admin:
   - serversystem.command.permission
+  - serversystem.tools.commandblock
   - serversystem.rank.admin
 Worlds:
   world:

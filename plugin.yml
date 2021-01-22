@@ -94,6 +94,9 @@ permissions:
   serversystem.rank.player:
     description: Display Player Prefix
     default: true
+  serversystem.tools.commandblock:
+    description: Allow to use commandblocks
+    default: false
   serversystem.tools.signeddit:
     description: Allow to create executable signs
     default: op

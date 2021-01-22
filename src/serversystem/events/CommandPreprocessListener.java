@@ -42,15 +42,12 @@ public class CommandPreprocessListener implements Listener {
 			return;
 		}
 		if((event.getMessage().toLowerCase().startsWith("/op") && (event.getPlayer().hasPermission("minecraft.command.op") || event.getPlayer().isOp())) || event.getMessage().toLowerCase().startsWith("/deop") && (event.getPlayer().hasPermission("minecraft.command.op") || event.getPlayer().isOp())) {
-			System.out.println("Run");
 			String[] messagelist = event.getMessage().split(" ");
 			if(Bukkit.getPlayer(messagelist[1]) != null) {
-				System.out.println("True");
 				new BukkitRunnable() {
 		            @Override
 		            public void run() {
 		                TeamHandler.addRoleToPlayer(Bukkit.getPlayer(messagelist[1]));
-		                System.out.println("Set");
 		            }
 		            
 		        }.runTaskLater(ServerSystem.getInstance(), 20);

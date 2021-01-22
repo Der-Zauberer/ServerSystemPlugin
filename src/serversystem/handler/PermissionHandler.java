@@ -1,30 +1,36 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
-
 import serversystem.config.Config;
 import serversystem.main.ServerSystem;
 
-public class PlayerPermission {
+public class PermissionHandler implements Listener {
 	
 	public static void addConfigPermissions(Player player) {
 		for(String permission : Config.getPlayerPermissions(player)) {
-			PlayerPermission.addPermission(player, permission);
+			PermissionHandler.addPermission(player, permission);
 		}
 	}
 	
 	public static void removeConfigPermissions(Player player) {
 		for(String permission : Config.getPlayerPermissions(player)) {
-			PlayerPermission.removePermission(player, permission);
+			PermissionHandler.removePermission(player, permission);
 		}
 	}
 	
 	public static void removeConfigDisablePermissions(Player player) {
 		for(String permission : Config.getDisabledPermission()) {
-			PlayerPermission.removePermission(player, permission);
+			PermissionHandler.removePermission(player, permission);
 		}
 	}
 	
@@ -59,6 +65,36 @@ public class PlayerPermission {
 		} else {
 			player.setOp(true);
 			player.setOp(false);
+		}
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		if(event.getBlock().getType() == Material.COMMAND_BLOCK || event.getBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
+			System.out.println(event.getPlayer().hasPermission("serversystem.tools.commandblock"));
+			if(!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
+				event.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		if(event.getBlock().getType() == Material.COMMAND_BLOCK || event.getBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
+			if(!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
+				event.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onBlockPlace(PlayerInteractEvent event) {
+		if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if(event.getClickedBlock().getType() == Material.COMMAND_BLOCK || event.getClickedBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
+				if(!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
+					event.getPlayer().closeInventory();
+				}
+			}
 		}
 	}
 

@@ -25,6 +25,7 @@ import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerTeleportListener;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.InventoryHandler;
+import serversystem.handler.PermissionHandler;
 import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
@@ -77,6 +78,7 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
 		
 		Bukkit.getPluginManager().registerEvents(new ChatHandler(), this);
+		Bukkit.getPluginManager().registerEvents(new PermissionHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), this);
 		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new SignHandler(), this);

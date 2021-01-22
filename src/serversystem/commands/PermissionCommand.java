@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
-import serversystem.handler.PlayerPermission;
+import serversystem.handler.PermissionHandler;
 import serversystem.handler.PlayerVanish;
 import serversystem.handler.TeamHandler;
 
@@ -22,10 +22,10 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 			if(Bukkit.getPlayer(args[0]) != null && Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
 				if(Config.getSection("Groups").contains(args[1])) {
 					Player player = Bukkit.getPlayer(args[0]);
-					PlayerPermission.removeConfigPermissions(player);
+					PermissionHandler.removeConfigPermissions(player);
 					Config.setPlayerGroup(player, args[1]);
-					PlayerPermission.addConfigPermissions(player);
-					PlayerPermission.reloadPlayerPermissions(player);
+					PermissionHandler.addConfigPermissions(player);
+					PermissionHandler.reloadPlayerPermissions(player);
 					TeamHandler.addRoleToPlayer(player);
 					ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
 				} else {

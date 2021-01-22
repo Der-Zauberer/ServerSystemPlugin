@@ -7,7 +7,7 @@ import net.minecraft.server.v1_14_R1.PacketPlayOutTitle.EnumTitleAction;
 import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.PlayerPacketHandler;
-import serversystem.handler.PlayerPermission;
+import serversystem.handler.PermissionHandler;
 import serversystem.handler.WorldGroupHandler;
 
 public class PlayerJoinListener implements Listener {
@@ -20,9 +20,9 @@ public class PlayerJoinListener implements Listener {
 			event.setJoinMessage("");
 		}
 		Config.addPlayer(event.getPlayer());
-		PlayerPermission.removeConfigDisablePermissions(event.getPlayer());
-		PlayerPermission.addConfigPermissions(event.getPlayer());
-		PlayerPermission.reloadPlayerPermissions(event.getPlayer());
+		PermissionHandler.removeConfigDisablePermissions(event.getPlayer());
+		PermissionHandler.addConfigPermissions(event.getPlayer());
+		PermissionHandler.reloadPlayerPermissions(event.getPlayer());
 		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerJoin(event.getPlayer());
 		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			event.getPlayer().teleport(Config.getLobbyWorld().getSpawnLocation());
