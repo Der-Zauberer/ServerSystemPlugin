@@ -51,6 +51,9 @@ public class ServerSystem extends JavaPlugin{
 		}
 		WorldGroupHandler.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
+			PermissionHandler.removeConfigPermissions(player);
+			PermissionHandler.addConfigPermissions(player);
+			PermissionHandler.reloadPlayerPermissions(player);
 			TeamHandler.addRoleToPlayer(player);
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
