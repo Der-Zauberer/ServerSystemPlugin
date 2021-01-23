@@ -8,20 +8,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-
-import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.PlayerBuildMode;
 import serversystem.handler.PlayerVanish;
 import serversystem.handler.ChatHandler.ErrorMessage;
 
-public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
+public class BuildCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -50,49 +42,5 @@ public class BuildCommand implements Listener, CommandExecutor, TabCompleter {
 		}
 		return commands;
 	}
-	
-	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event) {
-		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
-				event.setCancelled(true);
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
-		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
-				event.setCancelled(true);
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onHangingBreak(HangingBreakByEntityEvent event) {
-		if(event.getEntity() instanceof Player) {
-			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getEntity()))) {
-					event.setCancelled(true);
-				}
-			}
-		} else {
-			event.setCancelled(true);
-		}
-	}
-	
-	@EventHandler
-    public void onThrow(ProjectileLaunchEvent event) {
-		if(event.getEntity() instanceof Player) {
-			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getEntity()))) {
-					event.setCancelled(true);
-				}
-			}
-		} else {
-			event.setCancelled(true);
-		}
-    }
 	
 }

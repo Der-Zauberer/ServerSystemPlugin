@@ -2,8 +2,16 @@ package serversystem.handler;
 
 import java.util.ArrayList;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
-public class PlayerBuildMode {
+import serversystem.config.Config;
+
+public class PlayerBuildMode implements Listener {
 	
 	private static ArrayList<Player> buildplayers = new ArrayList<>();
 	
@@ -33,5 +41,49 @@ public class PlayerBuildMode {
 		}
 		return false;
 	}
+	
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
+			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
+				event.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
+			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
+				event.setCancelled(true);
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onHangingBreak(HangingBreakByEntityEvent event) {
+		if(event.getEntity() instanceof Player) {
+			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
+				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getEntity()))) {
+					event.setCancelled(true);
+				}
+			}
+		} else {
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+    public void onThrow(ProjectileLaunchEvent event) {
+		if(event.getEntity() instanceof Player) {
+			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
+				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getEntity()))) {
+					event.setCancelled(true);
+				}
+			}
+		} else {
+			event.setCancelled(true);
+		}
+    }
 
 }
