@@ -67,6 +67,14 @@ public class ServerSystem extends JavaPlugin{
 	
 	@Override
 	public void onDisable() {
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			if(WorldGroupHandler.isEnabled()) {
+				SaveConfig.saveGamemode(player, WorldGroupHandler.getWorldGroup(player));
+				SaveConfig.saveInventory(player, WorldGroupHandler.getWorldGroup(player));
+				SaveConfig.saveXp(player, WorldGroupHandler.getWorldGroup(player));
+			}
+			SaveConfig.saveLocation(player);
+		}
 		TeamHandler.resetTeams();
 	}
 
