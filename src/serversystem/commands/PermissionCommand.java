@@ -10,6 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
+import serversystem.handler.ChatHandler.ErrorMessage;
 import serversystem.handler.PermissionHandler;
 import serversystem.handler.PlayerVanish;
 import serversystem.handler.TeamHandler;
@@ -29,13 +30,13 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 					TeamHandler.addRoleToPlayer(player);
 					ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
 				} else {
-					ChatHandler.sendServerErrorMessage(sender, "The group " + args[1] + " does not exist!");
+					ChatHandler.sendServerErrorMessage(sender, "The group does not exist!");
 				}
 			} else {
-				ChatHandler.sendServerErrorMessage(sender, "The player " + args[0] + " is not online!");
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 			}
 		} else {
-			ChatHandler.sendServerErrorMessage(sender, "Not enought arguments!");
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
 		}
 		return true;
 	}

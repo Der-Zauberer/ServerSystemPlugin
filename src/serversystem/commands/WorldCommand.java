@@ -12,6 +12,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
+import serversystem.handler.ChatHandler.ErrorMessage;
 import serversystem.handler.PlayerVanish;
 import serversystem.handler.WorldGroupHandler;
 
@@ -31,7 +32,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args[1]));
 				ChatHandler.sendServerMessage(sender, "You are in world " + args[1] +  "!");
 			} else {
-				ChatHandler.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.WORLDDOESNOTEXIST);
 			}	
 		} else if(args.length == 3 && args[0].equals("teleport")) {
 			if(Bukkit.getWorld(args[1]) != null && Bukkit.getPlayer(args[2]) != null) {
@@ -39,9 +40,9 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				if(sender != Bukkit.getServer().getPlayer(args[2])) {ChatHandler.sendServerMessage(sender, "The player " + args[2] +  " is in world " + args[1] +  "!");} 
 				ChatHandler.sendServerMessage(Bukkit.getPlayer(args[2]), "You are in world " + args[1] +  "!");
 			} else if(Bukkit.getWorld(args[1]) == null) {
-				ChatHandler.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.WORLDDOESNOTEXIST);
 			} else if(!Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[2]))) {
-				ChatHandler.sendServerErrorMessage(sender, "The player " + args[2] + " is not online!");
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 			}
 		} else if (args.length == 2 && args[0].equals("create")) {
 			if (Bukkit.getWorld(args[1]) == null) {
@@ -55,7 +56,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				WorldGroupHandler.removeWorld(args[1]);
 				ChatHandler.sendServerMessage(sender, "The world " + args[1] + " will be removed after a restart!");
 			} else {
-				ChatHandler.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.WORLDDOESNOTEXIST);
 			}
 		} else if ((args.length == 3 || args.length == 4) && args[0].equals("edit")) {
 			if(args.length == 3) {
@@ -68,10 +69,10 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 					case "explosion": ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldExplosion(args[1]) + " for the world " + args[1] + "!"); break;
 					case "gamemode": ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.getWorldGamemode(args[1]).toString().toLowerCase() + " for the world " + args[1] + "!"); break;
 					default:
-						ChatHandler.sendServerMessage(sender, "The option " + args[2] + " does not exist!"); break;
+						ChatHandler.sendServerMessage(sender, "The option does not exist!"); break;
 					}
 				} else {
-					ChatHandler.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.WORLDDOESNOTEXIST);
 				}
 			} else {
 				if (Bukkit.getWorld(args[1]) != null) {
@@ -87,7 +88,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						case "hunger": Config.setWorldHunger(args[1], worldboolean); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
 						case "explosion": Config.setWorldExplosion(args[1], worldboolean); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
 						default:
-							ChatHandler.sendServerMessage(sender, "The option " + args[2] + " does not exist!"); break;
+							ChatHandler.sendServerMessage(sender, "The option does not exist!"); break;
 						}
 					} else {
 						switch (args[3]) {
@@ -96,15 +97,15 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						case "adventure": Config.setWorldGamemode(args[1], GameMode.ADVENTURE); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to adventure for the world " + args[1] + "!"); break;
 						case "spectator": Config.setWorldGamemode(args[1], GameMode.SPECTATOR); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to spectator for the world " + args[1] + "!"); break;
 						default:
-							ChatHandler.sendServerMessage(sender, "The gamemode " + args[2] + " does not exist!"); break;
+							ChatHandler.sendServerMessage(sender, "The gamemode does not exist!"); break;
 						}
 					}			
 				} else {
-					ChatHandler.sendServerErrorMessage(sender, "The world " + args[1] +  " does not exist!");
+					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.WORLDDOESNOTEXIST);
 				}
 			}
 		} else {
-			ChatHandler.sendServerErrorMessage(sender, "Not enought arguments!");
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
 		}
 		return true;
 	}
