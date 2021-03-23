@@ -1,12 +1,12 @@
 # ServerSystemPlugin
 
-This is a Bukkit/Spigot plugin for permisssions, multiworld features and other admin features.
+This is a Bukkit/Spigot plugin for permissions, multiworld features and other admin features.
 
 ## Develpement and Version
 
 API Version: *1.14.x*<br>
 Spigot Version: *1.14.4-R0.1-SNAPSHOT*<br>
-Plugin Version: *v1.1-beta*<br>
+Plugin Version: *v1.4*<br>
 Java Class Version: *52 (Java8)*<br>
 
 ## Commands
@@ -51,7 +51,7 @@ The rank permissions give the player a colored name and prefix (more information
 The config can be found at `/plugins/serversystem/plugin.yml` in your server folder.
 
 ### Disable join- and leavemessage
-You have the oportunity to disable the join- and leavemessage if you don't want to have minecrafts default join- and leavemessage.
+You have the oportunity to disable the join- and leavemessage if you don't want to have minecraft's default join- and leavemessage.
 ```json
 Server:
   joinmessage: false
@@ -70,7 +70,7 @@ Server:
       text: to this server!
       color: dark_green
 ```
-You can use the colors codes listet in the [Minecraft Wiki](https://minecraft.gamepedia.com/Formatting_codes#Color_codes "Color Codes").
+You can use the colors codes listed in the [Minecraft Wiki](https://minecraft.gamepedia.com/Formatting_codes#Color_codes "Color Codes").
 
 ### Lobby
 You can set the lobby as main world of teh server. You can go back by `/lobby` if you have this enabled and if a user is connecting to the server, he will be spawn at the lobby world.
@@ -86,7 +86,7 @@ If you want to use multible worlds with different inventories and spawn location
 Server:
   enableworldgroups: true
 ```
-Every world, which is loaded has a configuration section. There can the option `group` be found. Worlds are in one worldgroup if they have the same group name. When a player swith to a world in the same worldgroup, he will keep his inventory and levels. If the world have a groupname, which no other world have, then the world is alone in a worldgroup and have a seperated inventory and experience level.
+Every world, which is loaded has a configuration section. There can the option `group` be found. Worlds are in one worldgroup if they have the same group name. When a player switch to a world in the same worldgroup, he will keep his inventory and levels. If the world have a groupname, which no other world have, then the world is alone in a worldgroup and have a separated inventory and experience level.
 ```json
 world:
     group: world
@@ -95,7 +95,7 @@ world:
   hogwarts:
     group: hogwarts
 ```
-In this exampe world and world_nether are in the same worldgroup while the world hogwarts has his own seperated worldgroup.
+In this example world and world_nether are in the same worldgroup while the world hogwarts has his own separated worldgroup.
 
 ### Disable commands and default permissions
 You can disable permissions simply by adding the permission to the list. For example, you can disable minecraft default commands by adding its permission.
@@ -105,7 +105,7 @@ DisabledPermissions:
 - bukkit.command.plugins
 - bukkit.command.help
 ```
-You can find minecraft standart commands in the [Bukkit Wiki](https://bukkit.gamepedia.com/CraftBukkit_Commands "Commands").
+You can find minecraft standard commands in the [Bukkit Wiki](https://bukkit.gamepedia.com/CraftBukkit_Commands "Commands").
 
 ### Load worlds
 You can load other worlds to your server, if there in your server directory. You can add a new world just by adding the world to the list. The world 'world' and the subworlds 'world_nether' and 'world_the_end' are loaded by default. You can change the default world in the file 'server.properties'.
@@ -224,12 +224,14 @@ Worldload:
 Groups:
   player: ''
   moderator:
-  - serversystem.rank.moderator
-  - serversystem.command.permission
+    permissions:
+    - serversystem.rank.moderator
+    - serversystem.command.permission
   admin:
-  - serversystem.command.permission
-  - serversystem.tools.commandblock
-  - serversystem.rank.admin
+    permissions:
+    - serversystem.command.permission
+    - serversystem.tools.commandblock
+    - serversystem.rank.admin
 Worlds:
   world:
     exists: true
