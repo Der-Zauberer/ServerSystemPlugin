@@ -82,33 +82,22 @@ public class Config {
 		saveConfig();
 	}
 	
-	public static void addGroupPermission(String group, String permission) {
-		List<String> list = getGroupPermissions(group);
-		list.add(permission);
-		config.set("Groups." + group, list);
-		saveConfig();
+	public static String getGroupParent(String group) {
+		return config.getString("Groups." + group + ".parent");
 	}
 	
 	public static List<String> getGroupPermissions(String group) {
-		return config.getStringList("Groups." + group);
+		ArrayList<String> permissions = new ArrayList<>();
+		permissions.addAll(config.getStringList("Groups." + group + ".permissions"));
+		while (getGroupParent(group) != null) {
+			group = getGroupParent(group);
+			permissions.addAll(config.getStringList("Groups." + group + ".permissions"));	
+		}
+		return permissions;
 	}
 	
 	public static List<String> getPlayerPermissions(Player player) {
 		return getGroupPermissions(getPlayerGroup(player));
-	}
-	
-	public static void addDisabledPermission(String permission) {
-		List<String> list = getDisabledPermission();
-		list.add(permission);
-		config.set("DisabledPermissions", list);
-		saveConfig();
-	}
-	
-	public static void removeDisabledPermission(String permission) {
-		List<String> list = getDisabledPermission();
-		list.remove(permission);
-		config.set("DisabledPermissions", list);
-		saveConfig();
 	}
 	
 	public static List<String> getDisabledPermission() {
