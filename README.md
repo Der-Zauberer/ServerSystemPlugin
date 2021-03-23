@@ -120,11 +120,13 @@ The plugin have a permission system. A group have a name and permissions as a li
 Groups:
   player: ''
   moderator:
-  - serversystem.rank.moderator
-  - serversystem.command.permission
+    permissions:
+    - serversystem.rank.moderator
+    - serversystem.command.permission
   admin:
-  - serversystem.command.permission
-  - serversystem.rank.admin
+    permissions:
+    - serversystem.command.permission
+    - serversystem.rank.admin
 ```
 You use colored names with prefix for different groups. You can use this 9 types:
 |Permission|Prefix|Color|
