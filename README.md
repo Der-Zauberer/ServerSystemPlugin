@@ -128,7 +128,7 @@ Ranks:
     permission: serversystem.rank.admin
 ```
 
-Make sure you have an empty space after the prefix, otherwise the prefix will be displayed directly in front of the player's name. You can choose any name for the permission as long it is the same as the permission in the groups section. We choose `serversystem.rank.admin`.
+Make sure you have an empty space after the prefix, otherwise the prefix will be displayed directly in front of the player's name. You can choose any name for the permission as long it is the same as the permission in the groups section. We choose `serversystem.rank.admin`. The name of the rank itself is also unimportant except for the number in front of the name. The number defines the order of the player in the tabbar. The Rank `04RankSupporter` will be displayd below the `01RankAdmin` but above the `06RankPremium` for example.
 
 You can use the colors codes listed in the [Minecraft Wiki](https://minecraft.gamepedia.com/Formatting_codes#Color_codes "Color Codes").
 
