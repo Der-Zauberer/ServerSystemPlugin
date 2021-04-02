@@ -67,33 +67,6 @@ permissions:
   serversystem.command.world:
     description: Teleoprt player to other teleoprt player to an other world or edit an other world
     default: op
-  serversystem.rank.admin:
-    description: Display Admin Prefix
-    default: false
-  serversystem.rank.moderator:
-    description: Display Moderator Prefix
-    default: false
-  serversystem.rank.developer:
-    description: Display Developer Prefix
-    default: false
-  serversystem.rank.supporter:
-    description: Display Supporter Prefix
-    default: false
-  serversystem.rank.team:
-    description: Display Team Prefix
-    default: false
-  serversystem.rank.operator:
-    description: Display Operator Prefix
-    default: op
-  serversystem.rank.youtuber:
-    description: Display YouTuber Prefix
-    default: false
-  serversystem.rank.premium:
-    description: Display Premium Prefix
-    default: false
-  serversystem.rank.player:
-    description: Display Player Prefix
-    default: true
   serversystem.tools.commandblock:
     description: Allow to use commandblocks
     default: false
