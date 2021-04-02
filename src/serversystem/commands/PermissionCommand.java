@@ -21,7 +21,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(args.length == 2) {
 			if(Bukkit.getPlayer(args[0]) != null && Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
-				if(Config.getSection("Groups").contains(args[1])) {
+				if(Config.getSection("Groups", false) != null && Config.getSection("Groups", false).contains(args[1])) {
 					Player player = Bukkit.getPlayer(args[0]);
 					PermissionHandler.removeConfigPermissions(player);
 					Config.setPlayerGroup(player, args[1]);
@@ -54,13 +54,8 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 			return commands;
 		} else if(args.length == 2) {
 			commands.clear();
-			commands = Config.getSection("Groups");
-			ArrayList<String> groups = new ArrayList<>();
-			groups.addAll(commands);
-			for (String group : groups) {
-				if(group.endsWith(".permissions")) {
-					commands.remove(group);
-				}
+			if(Config.getSection("Groups", false) != null) {
+				commands = Config.getSection("Groups", false);
 			}
 		}
 		return commands;

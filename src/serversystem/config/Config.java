@@ -46,12 +46,16 @@ public class Config {
 		}
 	}
 	
-	public static ArrayList<String> getSection(String section) {
-		ArrayList<String> list = new ArrayList<>();
-		for (String key : config.getConfigurationSection(section).getKeys(true)) {
-			list.add(key);
+	public static ArrayList<String> getSection(String section, boolean keys) {
+		try {
+			ArrayList<String> list = new ArrayList<>();
+			for (String key : config.getConfigurationSection(section).getKeys(keys)) {
+				list.add(key);
+			}
+			return list;
+		} catch (NullPointerException exception) {
+			return null;
 		}
-		return list;
 	}
 	
 	public static void addPlayer(Player player) {
@@ -102,6 +106,14 @@ public class Config {
 	
 	public static List<String> getDisabledPermission() {
 		return config.getStringList("DisabledPermissions");
+	}
+	
+	public static String[] getRank(String name) {
+		String string[] = new String[3];
+		string[0] = config.getString("Ranks." + name + ".color");
+		string[1] = config.getString("Ranks." + name + ".prefix");
+		string[2] = config.getString("Ranks." + name + ".permission");
+		return string;
 	}
 	
 	public static void addWorld(String world) {
