@@ -55,6 +55,13 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 		} else if(args.length == 2) {
 			commands.clear();
 			commands = Config.getSection("Groups");
+			ArrayList<String> groups = new ArrayList<>();
+			groups.addAll(commands);
+			for (String group : groups) {
+				if(group.endsWith(".permissions")) {
+					commands.remove(group);
+				}
+			}
 		}
 		return commands;
 	}
