@@ -71,8 +71,11 @@ public class ServerSystem extends JavaPlugin{
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			if(WorldGroupHandler.isEnabled()) {
 				SaveConfig.saveGamemode(player, WorldGroupHandler.getWorldGroup(player));
+				SaveConfig.loadGamemode(player, WorldGroupHandler.getWorldGroup(player));
 				SaveConfig.saveInventory(player, WorldGroupHandler.getWorldGroup(player));
+				SaveConfig.loadInventory(player, WorldGroupHandler.getWorldGroup(player));
 				SaveConfig.saveXp(player, WorldGroupHandler.getWorldGroup(player));
+				SaveConfig.loadXp(player, WorldGroupHandler.getWorldGroup(player));
 			}
 			SaveConfig.saveLocation(player);
 		}
