@@ -107,7 +107,7 @@ public class ServerSystem extends JavaPlugin{
 	}
 	
 	private void repeatAutoSave() {
-	    Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin("Your plugin"), new Runnable() {  
+	    Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {  
 	        @Override
 	        public void run() {
 	        	WorldGroupHandler.autoSavePlayerStats();
