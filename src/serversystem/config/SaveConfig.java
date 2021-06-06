@@ -45,7 +45,6 @@ public class SaveConfig {
 		for (int i = 0; i < player.getInventory().getContents().length; i++) {
 			config.set(configcontent + "." + i, player.getInventory().getContents()[i]);
 		}
-		player.getInventory().clear();
 		saveConfig();
 	}
 	
@@ -70,8 +69,6 @@ public class SaveConfig {
     public static void saveXp(Player player, WorldGroup worldgroup) {
     	config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Level", player.getLevel());
     	config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Experience", player.getExp());
-    	player.setLevel(0);
-    	player.setExp(0);
     	saveConfig();
     }
     

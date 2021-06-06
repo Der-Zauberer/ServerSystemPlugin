@@ -57,6 +57,9 @@ public class WorldGroup {
 		SaveConfig.saveInventory(player, this);
 		SaveConfig.saveXp(player, this);
 		SaveConfig.saveGamemode(player, this);
+		player.getInventory().clear();
+		player.setLevel(0);
+		player.setExp(0);
 	}
 	
 	public String getName() {

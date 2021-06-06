@@ -44,6 +44,7 @@ public class ServerSystem extends JavaPlugin{
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
+		repeatAutoSave();
 		setInstance(this);
 		for (String world : Config.getLoadWorlds()) {
 			if(Bukkit.getWorld(world) == null) {
@@ -68,17 +69,7 @@ public class ServerSystem extends JavaPlugin{
 	
 	@Override
 	public void onDisable() {
-		for(Player player : Bukkit.getOnlinePlayers()) {
-			if(WorldGroupHandler.isEnabled()) {
-				SaveConfig.saveGamemode(player, WorldGroupHandler.getWorldGroup(player));
-				SaveConfig.loadGamemode(player, WorldGroupHandler.getWorldGroup(player));
-				SaveConfig.saveInventory(player, WorldGroupHandler.getWorldGroup(player));
-				SaveConfig.loadInventory(player, WorldGroupHandler.getWorldGroup(player));
-				SaveConfig.saveXp(player, WorldGroupHandler.getWorldGroup(player));
-				SaveConfig.loadXp(player, WorldGroupHandler.getWorldGroup(player));
-			}
-			SaveConfig.saveLocation(player);
-		}
+		WorldGroupHandler.autoSavePlayerStats();
 		TeamHandler.resetTeams();
 	}
 
@@ -113,6 +104,15 @@ public class ServerSystem extends JavaPlugin{
 	
 	private void registerWorldSigns() {
 		SignHandler.registerServerSign(new WorldSign());
+	}
+	
+	private void repeatAutoSave() {
+	    Bukkit.getScheduler().scheduleSyncRepeatingTask(Bukkit.getPluginManager().getPlugin("Your plugin"), new Runnable() {  
+	        @Override
+	        public void run() {
+	        	WorldGroupHandler.autoSavePlayerStats();
+	        }
+	    }, 1L , (long) 120 * 20);
 	}
 		
 	public static ServerSystem getInstance() {

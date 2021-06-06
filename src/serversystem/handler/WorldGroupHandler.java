@@ -56,6 +56,17 @@ public class WorldGroupHandler {
 		}
 	}
 	
+	public static void autoSavePlayerStats() {
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			if(enabled) {
+				SaveConfig.saveGamemode(player, WorldGroupHandler.getWorldGroup(player));
+				SaveConfig.saveInventory(player, WorldGroupHandler.getWorldGroup(player));
+				SaveConfig.saveXp(player, WorldGroupHandler.getWorldGroup(player));
+			}
+			SaveConfig.saveLocation(player);
+		}
+	}
+	
 	public static WorldGroup getWorldGroup(Player player) {
 		for(WorldGroup worldgroup : worldgroups) {
 			if(worldgroup.getWorlds().contains(player.getWorld())) {
