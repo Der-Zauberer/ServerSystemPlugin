@@ -92,7 +92,12 @@ public class ItemBuilder {
 	}
 	
 	public ItemStack buildItem() {
-		ItemStack itemstack = new ItemStack(material);
+		itemstack = new ItemStack(material);
+		buildItem(itemstack);
+		return itemstack;
+	}
+	
+	public void buildItem(ItemStack itemstack) {
 		ItemMeta itemmeta = itemstack.getItemMeta();
 		itemmeta.setDisplayName(ChatColor.RESET + displayname);
 		if(lore != null) {
@@ -100,8 +105,6 @@ public class ItemBuilder {
 		}
 		itemmeta.setCustomModelData(custommodeldata);
 		itemstack.setItemMeta(itemmeta);
-		this.itemstack = itemstack;
-		return itemstack;
 	}
 	
 	public ItemMeta getItemMeta() {

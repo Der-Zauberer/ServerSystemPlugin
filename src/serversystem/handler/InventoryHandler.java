@@ -26,9 +26,14 @@ private static ArrayList<PlayerInventory> playerinventory = new ArrayList<>();
 		if(event.getCurrentItem() != null) {
 			try {
 				for(PlayerInventory inventory : playerinventory) {
-					if(inventory.getInventory() == event.getClickedInventory() && inventory.getItemOption() == ItemOption.FIXED) {
-						inventory.onItemClicked(event.getCurrentItem());
-						event.setCancelled(true);
+					if(inventory.getInventory() == event.getClickedInventory() || (event.getWhoClicked().getOpenInventory().getTopInventory() == inventory.getInventory() && event.getClickedInventory() == event.getWhoClicked().getInventory() && inventory.getItemOption() == ItemOption.FIXED)) {
+						if(inventory.getItemOption() == ItemOption.FIXED) {
+							inventory.onItemClicked(event.getCurrentItem());
+							event.setCancelled(true);
+						} else if(inventory.getItemOption() == ItemOption.GETABLE) {
+							event.getWhoClicked().getInventory().addItem(event.getCurrentItem());
+							event.setCancelled(true);
+						}
 					}
 				}
 			} catch (ConcurrentModificationException exception) {
