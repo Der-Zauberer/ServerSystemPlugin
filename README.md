@@ -2,6 +2,24 @@
 
 This is a Bukkit/Spigot plugin for permissions, multiworld features and other admin features.
 
+## Features
+
+- /admin command for sever and player settings
+- /inventory command for seeing others inventories
+- /enderchest command for seeing others enderchest
+- Protect worlds from grieving
+- Set a position as lobby
+- Vanish 
+- Player groups with permissions (like PermissinsEx)
+- Colored names in tablist and chat
+- Different inventories in each world with the WorldGroupSystem or same inventories for specific worlds
+
+![image](images/AdminMenu.jpg)
+![image](images/WorldMenu.jpg)
+![image](images/PlayerMenu.jpg)
+![image](images/Tablist.jpg)
+![image](images/Chat.jpg)
+
 ## Develpement and Version
 
 API Version: *1.14.x*<br>
@@ -41,6 +59,7 @@ The config can be found at `/plugins/serversystem/plugin.yml` in your server fol
 
 ### Disable join- and leavemessage
 You have the oportunity to disable the join- and leavemessage if you don't want to have minecraft's default join- and leavemessage.
+
 ```json
 Server:
   joinmessage: false
@@ -49,6 +68,7 @@ Server:
 
 ### Tablist text
 You can add text above and below the names of the players in the tablist.
+
 ```json
 Server:
   tablist:
@@ -59,10 +79,12 @@ Server:
       text: to this server!
       color: dark_green
 ```
+
 You can use the colors codes listed in the [Minecraft Wiki](https://minecraft.gamepedia.com/Formatting_codes#Color_codes "Color Codes").
 
 ### Lobby
 You can set the lobby as main world of teh server. You can go back by `/lobby` if you have this enabled and if a user is connecting to the server, he will be spawn at the lobby world.
+
 ```json
 Server:
   lobby: true
@@ -71,11 +93,14 @@ Server:
 
 ### Enable WorldGroups
 If you want to use multible worlds with different inventories and spawn locations, you can use the WorldGroup-System. It works simular to the plugin MultiWorld. You can enable this feature in the here:
+
 ```json
 Server:
   enableworldgroups: true
 ```
+
 Every world, which is loaded has a configuration section. There can the option `group` be found. Worlds are in one worldgroup if they have the same group name. When a player switch to a world in the same worldgroup, he will keep his inventory and levels. If the world have a groupname, which no other world have, then the world is alone in a worldgroup and have a separated inventory and experience level.
+
 ```json
 world:
     group: world
@@ -84,20 +109,24 @@ world:
   hogwarts:
     group: hogwarts
 ```
+
 In this example world and world_nether are in the same worldgroup while the world hogwarts has his own separated worldgroup.
 
 ### Disable commands and default permissions
 You can disable permissions simply by adding the permission to the list. For example, you can disable minecraft default commands by adding its permission.
+
 ```json
 DisabledPermissions:
 - bukkit.command.version
 - bukkit.command.plugins
 - bukkit.command.help
 ```
+
 You can find minecraft standard commands in the [Bukkit Wiki](https://bukkit.gamepedia.com/CraftBukkit_Commands "Commands").
 
 ### Load worlds
-You can load other worlds to your server, if there in your server directory. You can add a new world just by adding the world to the list. The world 'world' and the subworlds 'world_nether' and 'world_the_end' are loaded by default. You can change the default world in the file 'server.properties'.
+You can load other worlds to your server, if there in your server directory. You can add a new world just by adding the world to the list. The world 'world' and the subworlds 'world_nether' and 'world_the_end' are loaded by default. You can change the default world in the file `server.properties`.
+
 ```json
 Worldload:
 - hogwarts
@@ -105,6 +134,7 @@ Worldload:
 
 ### Groups
 The plugin have a permission system. A group have a name and permissions as a list. If do not want do use this add nothing to the groups. 
+
 ```json
 Groups:
   player: ''
@@ -133,6 +163,7 @@ Make sure you have an empty space after the prefix, otherwise the prefix will be
 You can use the colors codes listed in the [Minecraft Wiki](https://minecraft.gamepedia.com/Formatting_codes#Color_codes "Color Codes").
 
 You can add a group to the players in the player section. 
+
 ```json
 Players:
   8e1f0a29-7279-412d-a6a6-4266164d6a87:
@@ -152,7 +183,7 @@ All loaded worlds have own settings. <br>
 `damage` players cant take damage from any source, if this is false<br>
 `hunger` if this is false, player do not have to eat<br>
 `explotion` explotions can not make damage to blocks, if this is false<br>
-`deathmessage` no chat message about a player death will appear, if you disable the deathmessage<br> 
+`deathmessage` on chat message about a player death will appear, if you disable the deathmessage<br> 
 `gamemode` the player will set in this gamemode, if the join to the world for the first time<br>
 
 ```json
