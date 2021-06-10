@@ -14,12 +14,6 @@ This is a Bukkit/Spigot plugin for permissions, multiworld features and other ad
 - Colored names in tablist and chat
 - Different inventories in each world with the WorldGroupSystem or same inventories for specific worlds
 
-![image](images/AdminMenu.jpg)
-![image](images/WorldMenu.jpg)
-![image](images/PlayerMenu.jpg)
-![image](images/Tablist.jpg)
-![image](images/Chat.jpg)
-
 ## Develpement and Version
 
 API Version: *1.14.x*<br>
@@ -336,3 +330,11 @@ Players:
     exists: true
     group: admin
 ```
+
+## Images
+
+![image](images/AdminMenu.jpg)
+![image](images/WorldMenu.jpg)
+![image](images/PlayerMenu.jpg)
+![image](images/Tablist.jpg)
+![image](images/Chat.jpg)
