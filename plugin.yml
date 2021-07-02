@@ -1,6 +1,6 @@
 main: serversystem.main.ServerSystem
 name: ServerSystem
-version: 1.6
+version: 1.7
 author: Der_Zauberer
 api-version: 1.14
 
@@ -73,3 +73,17 @@ permissions:
   serversystem.tools.signeddit:
     description: Allow to create executable signs
     default: op
+  serversystem.rank.admin:
+    default: false
+  serversystem.rank.moderator:
+    default: false
+  serversystem.rank.developer:
+    default: false
+  serversystem.rank.supporter:
+    default: false
+  serversystem.rank.youtuber:
+    default: false
+  serversystem.rank.premium:
+    default: false
+  serversystem.rank.player:
+    default: false
