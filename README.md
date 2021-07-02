@@ -17,7 +17,7 @@ This is a Bukkit/Spigot plugin for permissions, multiworld features and other ad
 ## Develpement and Version
 
 API Version: *1.17.x*<br>
-Plugin Version: *v1.7*<br>
+Plugin Version: *v2.0*<br>
 Java Class Version: *52 (Java8)*<br>
 
 ## Commands
