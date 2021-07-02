@@ -28,7 +28,6 @@ commands:
   permission:
     description: Set the permissions of a player
     usage: /<command> [<player>] [<group>]
-    permission: serversystem.command.permission
   vanish:
     description: Allow the player to vanish
     usage: /<command> [<player>]

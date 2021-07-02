@@ -19,24 +19,28 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(args.length == 2) {
-			if(Bukkit.getPlayer(args[0]) != null && Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
-				if(Config.getSection("Groups", false) != null && Config.getSection("Groups", false).contains(args[1])) {
-					Player player = Bukkit.getPlayer(args[0]);
-					PermissionHandler.removeConfigPermissions(player);
-					Config.setPlayerGroup(player, args[1]);
-					PermissionHandler.addConfigPermissions(player);
-					PermissionHandler.reloadPlayerPermissions(player);
-					TeamHandler.addRoleToPlayer(player);
-					ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
+		if(!(sender instanceof Player) || sender.hasPermission("serversystem.command.permission")) {
+			if(args.length == 2) {
+				if(Bukkit.getPlayer(args[0]) != null && Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+					if(Config.getSection("Groups", false) != null && Config.getSection("Groups", false).contains(args[1])) {
+						Player player = Bukkit.getPlayer(args[0]);
+						PermissionHandler.removeConfigPermissions(player);
+						Config.setPlayerGroup(player, args[1]);
+						PermissionHandler.addConfigPermissions(player);
+						PermissionHandler.reloadPlayerPermissions(player);
+						TeamHandler.addRoleToPlayer(player);
+						ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
+					} else {
+						ChatHandler.sendServerErrorMessage(sender, "The group does not exist!");
+					}
 				} else {
-					ChatHandler.sendServerErrorMessage(sender, "The group does not exist!");
+					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 				}
 			} else {
-				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
 			}
 		} else {
-			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 		}
 		return true;
 	}
