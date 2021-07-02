@@ -17,33 +17,76 @@ public class Config {
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
 	public Config() {
-		if(!file.exists()) {
+		if(config.get("Server.joinmessage") == null) {
 			config.set("Server.joinmessage", true);
+		}
+		if(config.get("Server.leavemessage") == null) {
 			config.set("Server.leavemessage", true);
+		}
+		if(config.get("Server.title.text") == null) {
 			config.set("Server.title.text", "");
+		}
+		if(config.get("Server.title.color") == null) {
 			config.set("Server.title.color", "");
+		}
+		if(config.get("Server.subtitle.text") == null) {
+			config.set("Server.subtitle.text", "");
+		}
+		if(config.get("Server.subtitle.color") == null) {
 			config.set("Server.subtitle.color", "");
-			config.set("Server.title.text", "");
+		}
+		if(config.get("Server.tablist.title.text") == null) {
 			config.set("Server.tablist.title.text", "");
+		}
+		if(config.get("Server.tablist.title.color") == null) {
 			config.set("Server.tablist.title.color", "");
+		}
+		if(config.get("Server.tablist.subtitle.text") == null) {
+			config.set("Server.tablist.subtitle.text", "");
+		}
+		if(config.get("Server.tablist.subtitle.color") == null) {
 			config.set("Server.tablist.subtitle.color", "");
-			config.set("Server.tablist.title.text", "");
+		}
+		if(config.get("Server.message.prefix") == null) {
 			config.set("Server.message.prefix", "[Server]");
+		}
+		if(config.get("Server.message.prefixcolor") == null) {
 			config.set("Server.message.prefixcolor", "yellow");
+		}
+		if(config.get("Server.message.color") == null) {
 			config.set("Server.message.color", "yellow");
+		}
+		if(config.get("Server.message.errorcolor") == null) {
 			config.set("Server.message.errorcolor", "red");
+		}
+		if(config.get("Server.lobby") == null) {
 			config.set("Server.lobby", false);
+		}
+		if(config.get("Server.lobbyworld") == null) {
 			config.set("Server.lobbyworld", "world");
+		}
+		if(config.get("Server.enableworldgroups") == null) {
 			config.set("Server.enableworldgroups", true);
+		}
+		if(config.get("DisabledPermissions") == null) {
 			config.set("DisabledPermissions", "");
+		}
+		if(config.get("Worldload") == null) {
 			config.set("Worldload", "");
-			config.set("Groups.player", "");
-			saveConfig();
+		}
+		if(config.get("Groups") == null) {
+			addGroup("player");
+			addGroup("admin");
+		}
+		if(config.get("Ranks") == null) {
+			setRank("01RankAdmin", "dark_red", "[Admin] ", "serversystem.rank.admin");
+			setRank("02RankPlayer", "white", "", "serversystem.rank.player");
 		}
 		for(World world : Bukkit.getWorlds()) {
 			addWorld(world.getName());
 			Bukkit.getWorld(world.getName()).setPVP(hasWorldPVP(world.getName()));
 		}
+		saveConfig();
 	}
 	
 	public static ArrayList<String> getSection(String section, boolean keys) {
@@ -76,26 +119,27 @@ public class Config {
 		return config.getString("Players." + player.getUniqueId() + ".group");
 	}
 	
-	public static void addGroup(String group) {
-		config.set("Groups." + group, "");
+	public static void addGroup(String name) {
+		config.set("Groups." + name + ".parent", "");
+		config.set("Groups." + name + ".permissions", "");
 		saveConfig();
 	}
 	
-	public static void removeGroup(String group) {
-		config.set("Groups." + group, null);
+	public static void removeGroup(String name) {
+		config.set("Groups." + name, null);
 		saveConfig();
 	}
 	
-	public static String getGroupParent(String group) {
-		return config.getString("Groups." + group + ".parent");
+	public static String getGroupParent(String name) {
+		return config.getString("Groups." + name + ".parent");
 	}
 	
-	public static List<String> getGroupPermissions(String group) {
+	public static List<String> getGroupPermissions(String name) {
 		ArrayList<String> permissions = new ArrayList<>();
-		permissions.addAll(config.getStringList("Groups." + group + ".permissions"));
-		while (getGroupParent(group) != null) {
-			group = getGroupParent(group);
-			permissions.addAll(config.getStringList("Groups." + group + ".permissions"));	
+		permissions.addAll(config.getStringList("Groups." + name + ".permissions"));
+		while (getGroupParent(name) != null) {
+			name = getGroupParent(name);
+			permissions.addAll(config.getStringList("Groups." + name + ".permissions"));	
 		}
 		return permissions;
 	}
@@ -106,6 +150,13 @@ public class Config {
 	
 	public static List<String> getDisabledPermission() {
 		return config.getStringList("DisabledPermissions");
+	}
+	
+	public static void setRank(String name, String color, String prefix, String permission) {
+		config.set("Ranks." + name + ".color", color);
+		config.set("Ranks." + name + ".prefix", prefix);
+		config.set("Ranks." + name + ".permission", permission);
+		saveConfig();
 	}
 	
 	public static String[] getRank(String name) {
