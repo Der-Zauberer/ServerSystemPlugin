@@ -127,7 +127,7 @@ Worldload:
 ```
 
 ### Groups
-The plugin have a permission system. A group have a name and permissions as a list. If do not want do use this add nothing to the groups. 
+The plugin have a permission system. A group have a name, a parent and permissions as a list. If you don't want do use this add nothing to the groups. A group get also all permissions from it's parent.
 
 ```json
 Groups:
@@ -136,8 +136,11 @@ Groups:
     permissions:
     - serversystem.rank.moderator
     - serversystem.command.permission
+    - minecraft.command.op
   admin:
+    parent: moderator
     permissions:
+    - serversystem.tools.commandblock
     - serversystem.command.permission
     - serversystem.rank.admin
 ```
@@ -245,10 +248,12 @@ Groups:
     permissions:
     - serversystem.rank.moderator
     - serversystem.command.permission
+    - minecraft.command.op
   admin:
+    parent: moderator
     permissions:
-    - serversystem.command.permission
     - serversystem.tools.commandblock
+    - serversystem.command.permission
     - serversystem.rank.admin
 Ranks:
   01RankAdmin:
