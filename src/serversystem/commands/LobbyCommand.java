@@ -11,15 +11,20 @@ import org.bukkit.entity.Player;
 
 import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
+import serversystem.handler.ChatHandler.ErrorMessage;
 
 public class LobbyCommand implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(sender instanceof Player && Config.lobbyExists() && Config.getLobbyWorld() != null) {
-			((Player)sender).teleport(Config.getLobbyWorld().getSpawnLocation());
+		if(sender instanceof Player) {
+			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
+				((Player)sender).teleport(Config.getLobbyWorld().getSpawnLocation());
+			} else {
+				ChatHandler.sendServerErrorMessage(sender, "Lobby does not exist!");
+			}
 		} else {
-			ChatHandler.sendServerErrorMessage(sender, "Lobby does not exist!");
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
 		}
 		return true;
 	}

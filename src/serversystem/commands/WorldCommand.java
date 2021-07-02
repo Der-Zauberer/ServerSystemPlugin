@@ -20,7 +20,10 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		Player player = (Player) sender;
+		Player player = null;
+		if(sender instanceof Player) {
+			player = (Player) sender;
+		}
 		if(args.length == 1 && args[0].equals("list")) {
 			String worlds = "";
 			for(World world : Bukkit.getWorlds()) {
@@ -28,12 +31,16 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			}
 			ChatHandler.sendServerMessage(sender, "Worlds: " + worlds);
 		} else if(args.length == 2 && args[0].equals("teleport")) {
-			if(Bukkit.getWorld(args[1]) != null) {
-				WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args[1]));
-				ChatHandler.sendServerMessage(sender, "You are in world " + args[1] +  "!");
+			if(player != null) {
+				if(Bukkit.getWorld(args[1]) != null) {
+					WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args[1]));
+					ChatHandler.sendServerMessage(sender, "You are in world " + args[1] +  "!");
+				} else {
+					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.WORLDDOESNOTEXIST);
+				}	
 			} else {
-				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.WORLDDOESNOTEXIST);
-			}	
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
+			}
 		} else if(args.length == 3 && args[0].equals("teleport")) {
 			if(Bukkit.getWorld(args[1]) != null && Bukkit.getPlayer(args[2]) != null) {
 				WorldGroupHandler.teleportPlayer(Bukkit.getPlayer(args[2]), Bukkit.getWorld(args[1]));

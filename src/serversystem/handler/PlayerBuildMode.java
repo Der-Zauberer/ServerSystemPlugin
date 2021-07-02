@@ -1,6 +1,8 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
+
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +21,7 @@ public class PlayerBuildMode implements Listener {
 		buildmodePlayer(player, player);
 	}
 	
-	public static void buildmodePlayer(Player player, Player sender) {
+	public static void buildmodePlayer(Player player, CommandSender sender) {
 		if(buildplayers.contains(player)) {
 			buildplayers.remove(player);
 			ChatHandler.sendServerMessage(sender, "You can no longer build!");

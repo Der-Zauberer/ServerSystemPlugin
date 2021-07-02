@@ -39,24 +39,24 @@ public class ChatHandler implements Listener {
 	
 	public static void sendServerErrorMessage(Player player, ErrorMessage errormessage) {
 		switch (errormessage) {
-		case ONLYCONSOLE: player.sendMessage(servername + errorcolor + " " + " This command can only be used by the console!"); break;
-		case ONLYPLAYER: player.sendMessage(servername + errorcolor + " " + " This command can only be used by players!"); break;
+		case ONLYCONSOLE: player.sendMessage(servername + errorcolor + " This command can only be used by the console!"); break;
+		case ONLYPLAYER: player.sendMessage(servername + errorcolor + " This command can only be used by players!"); break;
 		case NOTENOUGHTARGUMENTS: player.sendMessage(servername + errorcolor + " Not enought arguments!"); break;
 		case PLAYERNOTONLINE: player.sendMessage(servername + errorcolor + " The player ist not online!"); break;
 		case WORLDDOESNOTEXIST: player.sendMessage(servername + errorcolor + " The world does not exist!"); break;
-		case NOPERMISSION: player.sendMessage(servername + errorcolor + " " + " You have no permission to do that!"); break;
+		case NOPERMISSION: player.sendMessage(servername + errorcolor + " You have no permission to do that!"); break;
 		default: break;
 		}
 	}
 	
 	public static void sendServerErrorMessage(CommandSender sender, ErrorMessage errormessage) {
 		switch (errormessage) {
-		case ONLYCONSOLE: sender.sendMessage(servername + errorcolor + " " + " This command can only be used by the console!"); break;
-		case ONLYPLAYER: sender.sendMessage(servername + errorcolor + " " + " This command can only be used by players!"); break;
+		case ONLYCONSOLE: sender.sendMessage(servername + errorcolor + " This command can only be used by the console!"); break;
+		case ONLYPLAYER: sender.sendMessage(servername + errorcolor + " This command can only be used by players!"); break;
 		case NOTENOUGHTARGUMENTS: sender.sendMessage(servername + errorcolor + " Not enought arguments!"); break;
 		case PLAYERNOTONLINE: sender.sendMessage(servername + errorcolor + " The player ist not online!"); break;
 		case WORLDDOESNOTEXIST: sender.sendMessage(servername + errorcolor + " The world does not exist!"); break;
-		case NOPERMISSION: sender.sendMessage(servername + errorcolor + " " + " You have no permission to do that!"); break;
+		case NOPERMISSION: sender.sendMessage(servername + errorcolor + " You have no permission to do that!"); break;
 		default: break;
 		}
 	}

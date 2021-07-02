@@ -17,10 +17,12 @@ public class BuildCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(args.length == 0) {
+		if(args.length == 0 && sender instanceof Player) {
 			PlayerBuildMode.buildmodePlayer((Player) sender);
+		} else if(args.length == 0 && !(sender instanceof Player)) {
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
 		}else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
-			PlayerBuildMode.buildmodePlayer(Bukkit.getPlayer(args[0]), (Player) sender);
+			PlayerBuildMode.buildmodePlayer(Bukkit.getPlayer(args[0]), sender);
 		}else if(args.length == 1 && !Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
 			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 		}
