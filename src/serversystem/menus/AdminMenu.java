@@ -33,7 +33,7 @@ public class AdminMenu extends PlayerInventory {
 	}
 	
 	private void addPtionEffect(Player player, PotionEffectType effect) {
-		player.addPotionEffect(new PotionEffect(effect, 12000, 2), true);
+		player.addPotionEffect(new PotionEffect(effect, 12000, 2));
 	}
 	
 	private void removeEffects(Player player) {

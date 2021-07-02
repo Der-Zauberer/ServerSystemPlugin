@@ -12,7 +12,7 @@ import serversystem.handler.WorldGroupHandler;
 public class PlayerQuitListener implements Listener {
 	
 	@EventHandler
-	public void onQuitEvent(PlayerQuitEvent event) {
+	public void onQuit(PlayerQuitEvent event) {
 		if(Config.isLeaveMessageActiv()) {
 			event.setQuitMessage(ChatHandler.getPlayerQuitMessage(event));
 		} else {

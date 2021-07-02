@@ -1,6 +1,8 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -14,6 +16,8 @@ public class WorldGroupHandler {
 	public enum WorldSetting{DAMAGE, EXPLOSION, HUNGER, PROTECTION, PVP}
 	private static ArrayList<WorldGroup> worldgroups = new ArrayList<>();
 	private static boolean enabled = Config.isWorldGroupSystemEnabled();
+	
+	public static HashMap<Player, World> playerdeaths = new HashMap<>();
 	
 	public static void autoCreateWorldGroups() {
 		for (World world : Bukkit.getWorlds()) {

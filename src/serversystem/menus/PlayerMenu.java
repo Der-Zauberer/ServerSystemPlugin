@@ -29,7 +29,7 @@ public class PlayerMenu extends PlayerInventory {
 	}
 	
 	private void addPotionEffect(Player player, PotionEffectType effect) {
-		player.addPotionEffect(new PotionEffect(effect, 12000, 2), true);
+		player.addPotionEffect(new PotionEffect(effect, 12000, 2));
 	}
 	
 	private void removeEffects(Player player) {

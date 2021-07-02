@@ -9,7 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
 import serversystem.config.Config;
 import serversystem.utilities.WorldGroup;
 
@@ -20,6 +19,7 @@ public class ChatHandler implements Listener {
 	private static String servername = parseColor(Config.getMessagePrefixColor()) + Config.getMessagePrefix();
 	
 	public static enum ErrorMessage{ONLYCONSOLE, ONLYPLAYER, NOPERMISSION, PLAYERNOTONLINE, WORLDDOESNOTEXIST, NOTENOUGHTARGUMENTS}
+	public static enum TitleType{TITLE, SUBTITLE, ACTIONBAR}
 	
 	public static void sendServerMessage(Player player, String message) {
 		player.sendMessage(servername + messagecolor + " " + message);
@@ -81,6 +81,10 @@ public class ChatHandler implements Listener {
 			Bukkit.getConsoleSender().sendMessage(servername + messagecolor + " " + message);
 		}
 		
+	}
+	
+	public static void sendTitle(Player player, String title, String subtitle) {
+		player.sendTitle(title, subtitle, 10, 100, 10);
 	}
 	
 	public static String getPlayerJoinMessage(PlayerJoinEvent event) {
