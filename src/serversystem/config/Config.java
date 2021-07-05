@@ -75,12 +75,7 @@ public class Config {
 			config.set("Worldload", "");
 		}
 		if(config.get("Groups") == null) {
-			addGroup("player");
-			addGroup("admin");
-		}
-		if(config.get("Ranks") == null) {
-			setRank("01RankAdmin", "dark_red", "[Admin] ", "serversystem.rank.admin");
-			setRank("02RankPlayer", "white", "", "serversystem.rank.player");
+			config.set("Groups", "");
 		}
 		for(World world : Bukkit.getWorlds()) {
 			addWorld(world.getName());
@@ -101,70 +96,164 @@ public class Config {
 		}
 	}
 	
-	public static void addPlayer(Player player) {
-		if(!config.getBoolean("Players." + player.getUniqueId() + ".exists")) {
-			config.set("Players." + player.getUniqueId() + ".name", player.getName());
-			config.set("Players." + player.getUniqueId() + ".exists", true);
-			config.set("Players." + player.getUniqueId() + ".group", "player");
-			saveConfig();
+	public static void setJoinMessageActive(boolean joinmessage) {
+		config.set("Server.joinmessage", joinmessage);
+	}
+	
+	public static boolean isJoinMessageActiv() {
+		return config.getBoolean("Server.joinmessage");
+	}
+	
+	public static void setLeaveMessageActive(boolean leavemessage) {
+		config.set("Server.leavemessage", leavemessage);
+	}
+	
+	public static boolean isLeaveMessageActiv() {
+		return config.getBoolean("Server.leavemessage");
+	}
+	
+	public static void getTitle(String title, String color) {
+		config.set("Server.title.text", title);
+		config.set("Server.title.color", color);
+		saveConfig();
+	}
+
+	public static String getTitle() {
+		return config.getString("Server.title.text");
+	}
+	
+	public static String getTitleColor() {
+		return config.getString("Server.title.color");
+	}
+	
+	public static void setSubtitle(String title, String color) {
+		config.set("Server.title.text", title);
+		config.set("Server.title.color", color);
+		saveConfig();
+	}
+
+	public static String getSubtitle() {
+		return config.getString("Server.subtitle.text");
+	}
+	
+	public static String getSubtitleColor() {
+		return config.getString("Server.subtitle.color");
+	}
+	
+	public static void setTablistTitle(String title, String color) {
+		config.set("Server.tablist.title.text", title);
+		config.set("Server.tablist.title.color", color);
+		saveConfig();
+	}
+
+	public static String getTablistTitle() {
+		return config.getString("Server.tablist.title.text");
+	}
+	
+	public static String getTablistTitleColor() {
+		return config.getString("Server.tablist.title.color");
+	}
+	
+	public static void setTablistSubtitle(String title, String color) {
+		config.set("Server.tablist.title.text", title);
+		config.set("Server.tablist.title.color", color);
+		saveConfig();
+	}
+
+	public static String getTablistSubtitle() {
+		return config.getString("Server.tablist.subtitle.text");
+	}
+	
+	public static String getTablistSubtitleColor() {
+		return config.getString("Server.tablist.subtitle.color");
+	}
+	
+	public static String getMessagePrefix() {
+		return config.getString("Server.message.prefix");
+	}
+	
+	public static String getMessagePrefixColor() {
+		return config.getString("Server.message.prefixcolor");
+	}
+	
+	public static String getMessageColor() {
+		return config.getString("Server.message.color");
+	}
+	
+	public static String getErrorMessageColor() {
+		return config.getString("Server.message.errorcolor");
+	}
+	
+	public static boolean lobbyExists() {
+		return config.getBoolean("Server.lobby");
+	}
+	
+	public static World getLobbyWorld() {
+		if(Bukkit.getWorld(config.getString("Server.lobbyworld")) != null) {
+			return Bukkit.getWorld(config.getString("Server.lobbyworld"));
 		}
+		return null;
 	}
 	
-	public static void setPlayerGroup(Player player, String group) {
-		config.set("Players." + player.getUniqueId() + ".group", group);
+	public static boolean isWorldGroupSystemEnabled() {
+		return config.getBoolean("Server.enableworldgroups");
+	}
+	
+	public static List<String> getDisabledPermissions() {
+		return config.getStringList("DisabledPermissions");
+	}
+	
+	public static void addToLoadWorld(String world) {
+		List<String> list = getLoadWorlds();
+		list.add(world);
+		config.set("Worldload", list);
 		saveConfig();
 	}
 	
-	public static String getPlayerGroup(Player player) {
-		return config.getString("Players." + player.getUniqueId() + ".group");
-	}
-	
-	public static void addGroup(String name) {
-		config.set("Groups." + name + ".parent", "");
-		config.set("Groups." + name + ".permissions", "");
+	public static void removeFromLoadWorld(String string) {
+		List<String> list = getLoadWorlds();
+		list.remove(string);
+		config.set("Worldload", list);
 		saveConfig();
 	}
 	
-	public static void removeGroup(String name) {
-		config.set("Groups." + name, null);
+	public static List<String> getLoadWorlds() {
+		return config.getStringList("Worldload");
+	}
+	
+	public static void removeGroup(String group) {
+		config.set("Groups." + group, null);
 		saveConfig();
 	}
 	
-	public static String getGroupParent(String name) {
-		return config.getString("Groups." + name + ".parent");
+	public static String getGroupID(String group) {
+		return config.getString("Groups." + group + ".id");
 	}
 	
-	public static List<String> getGroupPermissions(String name) {
+	public static String getGroupColor(String group) {
+		return config.getString("Groups." + group + ".color");
+	}
+	
+	public static String getGroupPrefix(String group) {
+		return config.getString("Groups." + group + ".prefix");
+	}
+	
+	public static String getGroupParent(String group) {
+		return config.getString("Groups." + group + ".parent");
+	}
+	
+	public static List<String> getGroupPermissions(String group) {
 		ArrayList<String> permissions = new ArrayList<>();
-		permissions.addAll(config.getStringList("Groups." + name + ".permissions"));
-		while (getGroupParent(name) != null) {
-			name = getGroupParent(name);
-			permissions.addAll(config.getStringList("Groups." + name + ".permissions"));	
+		permissions.addAll(config.getStringList("Groups." + group + ".permissions"));
+		while (getGroupParent(group) != null) {
+			group = getGroupParent(group);
+			permissions.addAll(config.getStringList("Groups." + group + ".permissions"));	
 		}
 		return permissions;
 	}
 	
 	public static List<String> getPlayerPermissions(Player player) {
 		return getGroupPermissions(getPlayerGroup(player));
-	}
-	
-	public static List<String> getDisabledPermission() {
-		return config.getStringList("DisabledPermissions");
-	}
-	
-	public static void setRank(String name, String color, String prefix, String permission) {
-		config.set("Ranks." + name + ".color", color);
-		config.set("Ranks." + name + ".prefix", prefix);
-		config.set("Ranks." + name + ".permission", permission);
-		saveConfig();
-	}
-	
-	public static String[] getRank(String name) {
-		String string[] = new String[3];
-		string[0] = config.getString("Ranks." + name + ".color");
-		string[1] = config.getString("Ranks." + name + ".prefix");
-		string[2] = config.getString("Ranks." + name + ".permission");
-		return string;
 	}
 	
 	public static void addWorld(String world) {
@@ -272,145 +361,22 @@ public class Config {
 		return GameMode.ADVENTURE;
 	}
 	
-	public static void setJoinMessageActive(boolean joinmessage) {
-		config.set("Server.joinmessage", joinmessage);
-	}
-	
-	public static boolean isJoinMessageActiv() {
-		return config.getBoolean("Server.joinmessage");
-	}
-	
-	public static void setLeaveMessageActive(boolean leavemessage) {
-		config.set("Server.leavemessage", leavemessage);
-	}
-	
-	public static boolean isLeaveMessageActiv() {
-		return config.getBoolean("Server.leavemessage");
-	}
-	
-	public static void addLoadWorld(String world) {
-		List<String> list = getLoadWorlds();
-		list.add(world);
-		config.set("Worldload", list);
-		saveConfig();
-	}
-	
-	public static void removeLoadWorld(String string) {
-		List<String> list = getLoadWorlds();
-		list.remove(string);
-		config.set("Worldload", list);
-		saveConfig();
-	}
-	
-	public static List<String> getLoadWorlds() {
-		return config.getStringList("Worldload");
-	}
-	
-	public static void getTitle(String title, String color) {
-		config.set("Server.title.text", title);
-		config.set("Server.title.color", color);
-		saveConfig();
-	}
-
-	public static String getTitle() {
-		return config.getString("Server.title.text");
-	}
-	
-	public static String getTitleColor() {
-		return config.getString("Server.title.color");
-	}
-	
-	public static void setSubtitle(String title, String color) {
-		config.set("Server.title.text", title);
-		config.set("Server.title.color", color);
-		saveConfig();
-	}
-
-	public static String getSubtitle() {
-		return config.getString("Server.subtitle.text");
-	}
-	
-	public static String getSubtitleColor() {
-		return config.getString("Server.subtitle.color");
-	}
-	
-	public static void setTablistTitle(String title, String color) {
-		config.set("Server.tablist.title.text", title);
-		config.set("Server.tablist.title.color", color);
-		saveConfig();
-	}
-
-	public static String getTablistTitle() {
-		return config.getString("Server.tablist.title.text");
-	}
-	
-	public static String getTablistTitleColor() {
-		return config.getString("Server.tablist.title.color");
-	}
-	
-	public static void setTablistSubtitle(String title, String color) {
-		config.set("Server.tablist.title.text", title);
-		config.set("Server.tablist.title.color", color);
-		saveConfig();
-	}
-
-	public static String getTablistSubtitle() {
-		return config.getString("Server.tablist.subtitle.text");
-	}
-	
-	public static String getTablistSubtitleColor() {
-		return config.getString("Server.tablist.subtitle.color");
-	}
-	
-	public static void setMessagePrefix(String prefix) {
-		config.set("Server.message.prefix", prefix);
-	}
-	
-	public static String getMessagePrefix() {
-		return config.getString("Server.message.prefix");
-	}
-	
-	public static void setMessagePrefixColor(String color) {
-		config.set("Server.message.prefixcolor", color);
-	}
-	
-	public static String getMessagePrefixColor() {
-		return config.getString("Server.message.prefixcolor");
-	}
-	
-	public static void setMessageColor(String color) {
-		config.set("Server.message.color", color);
-	}
-	
-	public static String getMessageColor() {
-		return config.getString("Server.message.color");
-	}
-	
-	public static void setErrorMessageColor(String color) {
-		config.set("Server.message.errorcolor", color);
-	}
-	
-	public static String getErrorMessageColor() {
-		return config.getString("Server.message.errorcolor");
-	}
-	
-	public static boolean lobbyExists() {
-		return config.getBoolean("Server.lobby");
-	}
-	
-	public static World getLobbyWorld() {
-		if(Bukkit.getWorld(config.getString("Server.lobbyworld")) != null) {
-			return Bukkit.getWorld(config.getString("Server.lobbyworld"));
+	public static void addPlayer(Player player) {
+		if(!config.getBoolean("Players." + player.getUniqueId() + ".exists")) {
+			config.set("Players." + player.getUniqueId() + ".name", player.getName());
+			config.set("Players." + player.getUniqueId() + ".exists", true);
+			config.set("Players." + player.getUniqueId() + ".group", "player");
+			saveConfig();
 		}
-		return null;
 	}
 	
-	public static void setWorldGroupsSystemEnabled(boolean worldgroup) {
-		config.set("Server.enableworldgroups", worldgroup);
+	public static void setPlayerGroup(Player player, String group) {
+		config.set("Players." + player.getUniqueId() + ".group", group);
+		saveConfig();
 	}
 	
-	public static boolean isWorldGroupSystemEnabled() {
-		return config.getBoolean("Server.enableworldgroups");
+	public static String getPlayerGroup(Player player) {
+		return config.getString("Players." + player.getUniqueId() + ".group");
 	}
 	
 	public static void saveConfig() {

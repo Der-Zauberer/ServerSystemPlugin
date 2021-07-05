@@ -1,7 +1,6 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,17 +10,15 @@ import serversystem.config.Config;
 
 public class TeamHandler {
 	
-	private static HashMap<String, String> ranks = new HashMap<>();
+	private static ArrayList<String> groups = new ArrayList<>();
 	
 	public static final String TEAMVANISH = "00Vanish";
 	
 	public static void initializeTeams() {
-		if(Config.getSection("Ranks", false) != null) {
-			for (String rank : Config.getSection("Ranks", false)) {
-				if(Config.getRank(rank) != null) {
-					String rankstring[] = Config.getRank(rank);
-					createTeam(rank, rankstring[1], ChatHandler.parseColor(rankstring[0]));
-					ranks.put(rank, rankstring[2]);
+		if(Config.getSection("Groups", false) != null) {
+			for (String group : Config.getSection("Groups", false)) {
+				if(Config.getGroupID(group) != null && Config.getGroupColor(group) != null && Config.getGroupPrefix(group) != null) {
+					createTeam(Config.getGroupID(group), Config.getGroupPrefix(group), ChatHandler.parseColor(Config.getGroupColor(group)));
 				}
 			}
 		}
@@ -29,8 +26,8 @@ public class TeamHandler {
 	}
 	
 	public static void resetTeams() {
-		for (String rank : ranks.keySet()) {
-			removeTeam(rank);
+		for (String group : groups) {
+			removeTeam(group);
 		}
 		removeTeam(TEAMVANISH);
 	}
@@ -73,14 +70,10 @@ public class TeamHandler {
 	}
 	
 	public static void addRoleToPlayer(Player player) {
-		ArrayList<String> sortedranks = new ArrayList<>();
-		sortedranks.addAll(ranks.keySet());
-		sortedranks.sort(String::compareToIgnoreCase);
-		for (String rank : sortedranks) {
-			if(player.hasPermission(ranks.get(rank))) {
-				addPlayerToTeam(rank, player);
-				return;
-			}
+		groups.sort(String::compareToIgnoreCase);
+		if(Config.getGroupID(Config.getPlayerGroup(player)) != null) {
+			addPlayerToTeam(Config.getGroupID(Config.getPlayerGroup(player)), player);
+		} else {
 			removePlayerFromTeam(player);
 		}
 	}

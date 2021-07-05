@@ -17,20 +17,26 @@ import serversystem.main.ServerSystem;
 public class PermissionHandler implements Listener {
 	
 	public static void addConfigPermissions(Player player) {
-		for(String permission : Config.getPlayerPermissions(player)) {
-			PermissionHandler.addPermission(player, permission);
+		if(Config.getPlayerPermissions(player) != null) {
+			for(String permission : Config.getPlayerPermissions(player)) {
+				PermissionHandler.addPermission(player, permission);
+			}
 		}
 	}
 	
 	public static void removeConfigPermissions(Player player) {
-		for(String permission : Config.getPlayerPermissions(player)) {
-			PermissionHandler.removePermission(player, permission);
+		if(Config.getPlayerPermissions(player) != null) {
+			for(String permission : Config.getPlayerPermissions(player)) {
+				PermissionHandler.removePermission(player, permission);
+			}
 		}
 	}
 	
 	public static void removeConfigDisablePermissions(Player player) {
-		for(String permission : Config.getDisabledPermission()) {
-			PermissionHandler.removePermission(player, permission);
+		if(Config.getDisabledPermissions() != null) {
+			for(String permission : Config.getDisabledPermissions()) {
+				PermissionHandler.removePermission(player, permission);
+			}
 		}
 	}
 	

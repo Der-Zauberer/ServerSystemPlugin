@@ -110,7 +110,7 @@ public class WorldGroupHandler {
 		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
 		World world = Bukkit.getWorld(name);
 		Config.addWorld(world.getName());
-		Config.addLoadWorld(world.getName());
+		Config.addToLoadWorld(world.getName());
 		WorldGroupHandler.addWorldGroup(new WorldGroup(world.getName(), world));
 	}
 	
@@ -118,16 +118,16 @@ public class WorldGroupHandler {
 		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
 		World world = Bukkit.getWorld(name);
 		Config.addWorld(world.getName());
-		Config.addLoadWorld(world.getName());
+		Config.addToLoadWorld(world.getName());
 		worldgroup.addWorld(world);
 	}
 	
 	public static void removeWorld(String world) {
-		Config.removeLoadWorld(world);
+		Config.removeFromLoadWorld(world);
 	}
 	
 	public static void removeWorld(World world) {
-		Config.removeLoadWorld(world.getName());
+		Config.removeFromLoadWorld(world.getName());
 	}
 	
 	public static ArrayList<WorldGroup> getWorldgroups() {
