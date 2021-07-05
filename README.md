@@ -17,7 +17,7 @@ This is a Bukkit/Spigot plugin for permissions, multiworld features and other ad
 ## Develpement and Version
 
 API Version: *1.17.x*<br>
-Plugin Version: *v2.0*<br>
+Plugin Version: *v2.1*<br>
 Java Class Version: *52 (Java8)*<br>
 
 ## Commands
@@ -125,36 +125,30 @@ Worldload:
 - hogwarts
 ```
 
-### Groups
+### Groups [until v2.1]
 The plugin have a permission system. A group have a name, a parent and permissions as a list. If you don't want do use this add nothing to the groups. A group get also all permissions from it's parent.
 
 ```json
 Groups:
   player: ''
   moderator:
+    id: 02RankModerator
+    color: dark_blue
+    prefix: '[Moderator] '  
     permissions:
-    - serversystem.rank.moderator
     - serversystem.command.permission
     - minecraft.command.op
   admin:
+    id: 01RankAdmin
+    color: dark_red
+    prefix: '[Admin] '
     parent: moderator
     permissions:
     - serversystem.tools.commandblock
     - serversystem.command.permission
-    - serversystem.rank.admin
 ```
 
-The rank permission is an individual permission set by the ranks. A rank defines the visual representation of a permission.
-
-```json
-Ranks:
-  01RankAdmin:
-    color: dark_red
-    prefix: '[Admin] '
-    permission: serversystem.rank.admin
-```
-
-Make sure you have an empty space after the prefix, otherwise the prefix will be displayed directly in front of the player's name. You can choose any name for the permission as long it is the same as the permission in the groups section. We choose `serversystem.rank.admin`. The name of the rank itself is also unimportant except for the number in front of the name. The number defines the order of the player in the tabbar. The Rank `04RankSupporter` will be displayd below the `01RankAdmin` but above the `06RankPremium` for example.
+The id of the group is unimportant except for the number in front of the name. The number defines the order of the player in the tabbar. The Rank `04RankSupporter` will be displayed below the `01RankAdmin` but above the `06RankPremium` for example. Make sure you have an empty space after the prefix, otherwise the prefix will be displayed directly in front of the player's name. You can find an example for the tabbar at the end of the document as image.
 
 You can use the colors codes listed in the [Minecraft Wiki](https://minecraft.gamepedia.com/Formatting_codes#Color_codes "Color Codes").
 
@@ -168,6 +162,8 @@ Players:
     group: admin
 
 ```
+
+For versions before v2.1 please look at [the old Documentation](https://github.com/Der-Zauberer/ServerSystemPlugin/blob/a0455d4d48d943d94fcb63ee4aa78ef9d2214c06/README.md)
 
 ### Worlds
 All loaded worlds have own settings. <br>
@@ -244,45 +240,20 @@ Worldload:
 Groups:
   player: ''
   moderator:
+    id: 02RankModerator
+    color: dark_blue
+    prefix: '[Moderator] '  
     permissions:
-    - serversystem.rank.moderator
     - serversystem.command.permission
     - minecraft.command.op
   admin:
+    id: 01RankAdmin
+    color: dark_red
+    prefix: '[Admin] '
     parent: moderator
     permissions:
     - serversystem.tools.commandblock
     - serversystem.command.permission
-    - serversystem.rank.admin
-Ranks:
-  01RankAdmin:
-    color: dark_red
-    prefix: '[Admin] '
-    permission: serversystem.rank.admin
-  02RankModerator:
-    color: dark_blue
-    prefix: '[Moderator] '
-    permission: serversystem.rank.moderator
-  03RankDeveloper:
-    color: aqua
-    prefix: '[Developer] '
-    permission: serversystem.rank.developer
-  04RankSupporter:
-    color: blue
-    prefix: '[Supporter] '
-    permission: serversystem.rank.supporter
-  05RankYouTuber:
-    color: dark_purple
-    prefix: '[YouTuber] '
-    permission: serversystem.rank.youtuber
-  06RankPremium:
-    color: gold
-    prefix: '[Premium] '
-    permission: serversystem.rank.premium
-  07RankPlayer:
-    color: white
-    prefix: ''
-    permission: serversystem.rank.player
 Worlds:
   world:
     exists: true
