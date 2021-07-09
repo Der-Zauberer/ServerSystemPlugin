@@ -361,22 +361,24 @@ public class Config {
 		return GameMode.ADVENTURE;
 	}
 	
-	public static void setWorldPermission(World world, String permission) {
+	public static void setWorldPermission(String world, String permission) {
 		config.set("Worlds." + world + ".permission", permission);
+		saveConfig();
 	}
 	
-	public static void removeWorldPermission(World world) {
+	public static void removeWorldPermission(String world) {
 		config.set("Worlds." + world + ".permission", null);
+		saveConfig();
 	}
 	
-	public static boolean hasWorldPermission(World world) {
+	public static boolean hasWorldPermission(String world) {
 		if(config.getString("Worlds." + world + ".permission") != null) {
 			return true;
 		}
 		return false;
 	}
 	
-	public static String getWorldPermission(World world) {
+	public static String getWorldPermission(String world) {
 		return config.getString("Worlds." + world + ".permission");
 	}
 	

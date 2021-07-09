@@ -75,6 +75,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 					case "hunger": ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " +Config.hasWorldHunger(args[1]) + " for the world " + args[1] + "!"); break;
 					case "explosion": ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.hasWorldExplosion(args[1]) + " for the world " + args[1] + "!"); break;
 					case "gamemode": ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.getWorldGamemode(args[1]).toString().toLowerCase() + " for the world " + args[1] + "!"); break;
+					case "permission": if(Config.hasWorldPermission(args[1])) {ChatHandler.sendServerMessage(sender, "The world " + args[1] + " has no permission!");} else {ChatHandler.sendServerMessage(sender, "The world " + args[1] + " has the permission " + Config.getWorldPermission(args[1]) + "!");} break;
 					default:
 						ChatHandler.sendServerMessage(sender, "The option does not exist!"); break;
 					}
@@ -83,7 +84,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				}
 			} else {
 				if (Bukkit.getWorld(args[1]) != null) {
-					if(!args[2].equals("gamemode")) {
+					if(!args[2].equals("gamemode") && !args[2].equals("permission")) {
 						boolean worldboolean = false;
 						if(args[3].equals("true")) {
 							worldboolean = true;
@@ -95,16 +96,26 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						case "hunger": Config.setWorldHunger(args[1], worldboolean); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
 						case "explosion": Config.setWorldExplosion(args[1], worldboolean); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to " + args[3] + " for the world " + args[1] + "!"); break;
 						default:
-							ChatHandler.sendServerMessage(sender, "The option does not exist!"); break;
+							ChatHandler.sendServerErrorMessage(sender, "The option does not exist!"); break;
 						}
 					} else {
-						switch (args[3]) {
-						case "survival": Config.setWorldGamemode(args[1], GameMode.SURVIVAL); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to survival for the world " + args[1] + "!"); break;
-						case "creative": Config.setWorldGamemode(args[1], GameMode.CREATIVE); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to creative for the world " + args[1] + "!"); break;
-						case "adventure": Config.setWorldGamemode(args[1], GameMode.ADVENTURE); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to adventure for the world " + args[1] + "!"); break;
-						case "spectator": Config.setWorldGamemode(args[1], GameMode.SPECTATOR); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to spectator for the world " + args[1] + "!"); break;
-						default:
-							ChatHandler.sendServerMessage(sender, "The gamemode does not exist!"); break;
+						if(args[2].equals("gamemode")) {
+							switch (args[3]) {
+							case "survival": Config.setWorldGamemode(args[1], GameMode.SURVIVAL); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to survival for the world " + args[1] + "!"); break;
+							case "creative": Config.setWorldGamemode(args[1], GameMode.CREATIVE); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to creative for the world " + args[1] + "!"); break;
+							case "adventure": Config.setWorldGamemode(args[1], GameMode.ADVENTURE); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to adventure for the world " + args[1] + "!"); break;
+							case "spectator": Config.setWorldGamemode(args[1], GameMode.SPECTATOR); ChatHandler.sendServerMessage(sender, "The option " + args[2] + " is set to spectator for the world " + args[1] + "!"); break;
+							default:
+								ChatHandler.sendServerMessage(sender, "The gamemode does not exist!"); break;
+							}
+						} else if(args[2].equals("permission")) {
+							if(args[3].equals("null")) {
+								Config.removeWorldPermission(args[1]);
+								ChatHandler.sendServerMessage(sender, "The permission has been removed from world " + args[1] + " now!");
+							} else {
+								Config.setWorldPermission(args[1], args[3]);
+								ChatHandler.sendServerMessage(sender, "The world " + args[1] + " has the permission " + args[3] + " now!");
+							}
 						}
 					}			
 				} else {
@@ -147,7 +158,8 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			commands.add("hunger");
 			commands.add("explosion");
 			commands.add("gamemode");
-		} else if((args.length == 4 && args[0].equals("edit")) && !args[2].equals("gamemode")) {
+			commands.add("permission");
+		} else if((args.length == 4 && args[0].equals("edit")) && !args[2].equals("gamemode") && !args[2].equals("permission")) {
 			commands.clear();
 			commands.add("true");
 			commands.add("false");

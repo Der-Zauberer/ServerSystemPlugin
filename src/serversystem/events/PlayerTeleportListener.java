@@ -19,8 +19,8 @@ public class PlayerTeleportListener implements Listener {
 		Player player = event.getPlayer();
 		World world = event.getTo().getWorld();
 		if(event.getPlayer().getWorld() != event.getTo().getWorld()) {
-			if(Config.hasWorldPermission(event.getTo().getWorld())) {
-				if(!event.getPlayer().hasPermission(Config.getWorldPermission(event.getTo().getWorld()))) {
+			if(Config.hasWorldPermission(event.getTo().getWorld().getName())) {
+				if(!event.getPlayer().hasPermission(Config.getWorldPermission(event.getTo().getWorld().getName()))) {
 					ChatHandler.sendServerErrorMessage(event.getPlayer(), ErrorMessage.NOPERMISSION);
 					event.setCancelled(true);
 				}
