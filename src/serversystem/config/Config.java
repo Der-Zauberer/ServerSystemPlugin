@@ -361,6 +361,25 @@ public class Config {
 		return GameMode.ADVENTURE;
 	}
 	
+	public static void setWorldPermission(World world, String permission) {
+		config.set("Worlds." + world + ".permission", permission);
+	}
+	
+	public static void removeWorldPermission(World world) {
+		config.set("Worlds." + world + ".permission", null);
+	}
+	
+	public static boolean hasWorldPermission(World world) {
+		if(config.getString("Worlds." + world + ".permission") != null) {
+			return true;
+		}
+		return false;
+	}
+	
+	public static String getWorldPermission(World world) {
+		return config.getString("Worlds." + world + ".permission");
+	}
+	
 	public static void addPlayer(Player player) {
 		if(!config.getBoolean("Players." + player.getUniqueId() + ".exists")) {
 			config.set("Players." + player.getUniqueId() + ".name", player.getName());

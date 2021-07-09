@@ -26,13 +26,13 @@ public class PlayerBuildMode implements Listener {
 	public static void buildmodePlayer(Player player, CommandSender sender) {
 		if(buildplayers.contains(player)) {
 			buildplayers.remove(player);
-			ChatHandler.sendServerMessage(sender, "You can no longer build!");
+			ChatHandler.sendServerMessage(player, "You can no longer build!");
 			if(player != sender) {
 				ChatHandler.sendServerMessage(sender, player.getName() + " can no longer build!");
 			}
 		} else {
 			buildplayers.add(player);
-			ChatHandler.sendServerMessage(sender, "You can build now!");
+			ChatHandler.sendServerMessage(player, "You can build now!");
 			if(player != sender) {
 				ChatHandler.sendServerMessage(sender, player.getName() + " can build now!");
 			}

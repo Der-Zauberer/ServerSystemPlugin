@@ -41,7 +41,7 @@ public class ChatHandler implements Listener {
 		switch (errormessage) {
 		case ONLYCONSOLE: player.sendMessage(servername + errorcolor + " This command can only be used by the console!"); break;
 		case ONLYPLAYER: player.sendMessage(servername + errorcolor + " This command can only be used by players!"); break;
-		case NOTENOUGHTARGUMENTS: player.sendMessage(servername + errorcolor + " Not enought arguments!"); break;
+		case NOTENOUGHTARGUMENTS: player.sendMessage(servername + errorcolor + " Not enough arguments!"); break;
 		case PLAYERNOTONLINE: player.sendMessage(servername + errorcolor + " The player ist not online!"); break;
 		case WORLDDOESNOTEXIST: player.sendMessage(servername + errorcolor + " The world does not exist!"); break;
 		case NOPERMISSION: player.sendMessage(servername + errorcolor + " You have no permission to do that!"); break;
@@ -53,7 +53,7 @@ public class ChatHandler implements Listener {
 		switch (errormessage) {
 		case ONLYCONSOLE: sender.sendMessage(servername + errorcolor + " This command can only be used by the console!"); break;
 		case ONLYPLAYER: sender.sendMessage(servername + errorcolor + " This command can only be used by players!"); break;
-		case NOTENOUGHTARGUMENTS: sender.sendMessage(servername + errorcolor + " Not enought arguments!"); break;
+		case NOTENOUGHTARGUMENTS: sender.sendMessage(servername + errorcolor + " Not enough arguments!"); break;
 		case PLAYERNOTONLINE: sender.sendMessage(servername + errorcolor + " The player ist not online!"); break;
 		case WORLDDOESNOTEXIST: sender.sendMessage(servername + errorcolor + " The world does not exist!"); break;
 		case NOPERMISSION: sender.sendMessage(servername + errorcolor + " You have no permission to do that!"); break;
@@ -111,9 +111,11 @@ public class ChatHandler implements Listener {
 	}
 	
 	public static void sendPlayerPrivateMessage(Player sender, Player receiver, String message) {		
-		sender.sendMessage(TeamHandler.getPlayerNameColor(sender) + sender.getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
-		receiver.sendMessage(TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + "Mir" + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
-		Bukkit.getConsoleSender().sendMessage("[Private] " + TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + " :" + ChatColor.GRAY + message);
+		sender.sendMessage(TeamHandler.getPlayerNameColor(sender) + "Me" + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + sender.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
+		if(sender != receiver) {
+			receiver.sendMessage(TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + "Me" + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
+		}
+		Bukkit.getConsoleSender().sendMessage("[Private] " + TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
 	}
 	
 	public static void sendPlayerTeamMessage(Player player, String message) {
