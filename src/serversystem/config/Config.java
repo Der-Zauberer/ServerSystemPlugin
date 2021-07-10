@@ -386,6 +386,9 @@ public class Config {
 			config.set("Players." + player.getUniqueId() + ".name", player.getName());
 			config.set("Players." + player.getUniqueId() + ".group", "player");
 			saveConfig();
+		} else if(!config.getString("Players." + player.getUniqueId() + ".name").equals(player.getName())) {
+			config.set("Players." + player.getUniqueId() + ".name", player.getName());
+			saveConfig();
 		}
 	}
 	
@@ -394,8 +397,44 @@ public class Config {
 		saveConfig();
 	}
 	
+	public static void setPlayerGroup(String player, String group) {
+		for(String key : getSection("Players", false)) {
+			if(config.getString("Players." + key + ".name").equals(player)) {
+				config.set("Players." + key + ".group", group);
+				saveConfig();
+				return;
+			}
+		}
+	}
+	
 	public static String getPlayerGroup(Player player) {
 		return config.getString("Players." + player.getUniqueId() + ".group");
+	}
+	
+	public static String getPlayerGroup(String player) {
+		for(String key : getSection("Players", false)) {
+			if(config.getString("Players." + key + ".name").equals(player)) {
+				return config.getString("Players." + key + ".group");
+			}
+		}
+		return null;
+	}
+	
+	public static boolean isPlayerExisting(String player) {
+		for(String key : getSection("Players", false)) {
+			if(config.getString("Players." + key + ".name").equals(player)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static List<String> getPlayers() {
+		List<String> players = new ArrayList<>();
+		for(String key : getSection("Players", false)) {
+			players.add(config.getString("Players." + key + ".name"));
+		}
+		return players;
 	}
 	
 	public static void saveConfig() {

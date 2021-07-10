@@ -12,7 +12,6 @@ import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.ChatHandler.ErrorMessage;
 import serversystem.handler.PermissionHandler;
-import serversystem.handler.PlayerVanish;
 import serversystem.handler.TeamHandler;
 
 public class PermissionCommand implements CommandExecutor, TabCompleter{
@@ -21,17 +20,20 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if(!(sender instanceof Player) || sender.hasPermission("serversystem.command.permission")) {
 			if(args.length == 2) {
-				if(Bukkit.getPlayer(args[0]) != null && Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
+				if(Bukkit.getPlayer(args[0]) != null || Config.getPlayerGroup(args[0]) != null) {
 					if(Config.getSection("Groups", false) != null && Config.getSection("Groups", false).contains(args[1])) {
-						Player player = Bukkit.getPlayer(args[0]);
-						PermissionHandler.removeConfigPermissions(player);
-						Config.setPlayerGroup(player, args[1]);
-						PermissionHandler.addConfigPermissions(player);
-						PermissionHandler.reloadPlayerPermissions(player);
-						TeamHandler.addRoleToPlayer(player);
-						ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
-					} else {
-						ChatHandler.sendServerErrorMessage(sender, "The group does not exist!");
+						if(Bukkit.getPlayer(args[0]) != null) {
+							Player player = Bukkit.getPlayer(args[0]);
+							PermissionHandler.removeConfigPermissions(player);
+							Config.setPlayerGroup(player, args[1]);
+							PermissionHandler.addConfigPermissions(player);
+							PermissionHandler.reloadPlayerPermissions(player);
+							TeamHandler.addRoleToPlayer(player);
+							ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
+						} else {
+							Config.setPlayerGroup(args[0], args[1]);
+							ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
+						}
 					}
 				} else {
 					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
@@ -47,18 +49,11 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		ArrayList<String> commands = new ArrayList<>();
+		List<String> commands = new ArrayList<>();
 		commands.clear();
 		if(args.length == 1) {
-			commands.clear();
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				if (!PlayerVanish.isPlayerVanished(player)) {
-					commands.add(player.getName());
-				}
-			}
-			return commands;
+			commands = Config.getPlayers();
 		} else if(args.length == 2) {
-			commands.clear();
 			if(Config.getSection("Groups", false) != null) {
 				commands = Config.getSection("Groups", false);
 			}

@@ -29,14 +29,16 @@ public class SaveConfig {
 		}
 	}
 	
-	public static ArrayList<String> getSection(String section, boolean key) {
-		ArrayList<String> list = new ArrayList<>();
-		if(config.getConfigurationSection(section) != null) {
-			for (String name : config.getConfigurationSection(section).getKeys(key)) {
-				list.add(name);
+	public static ArrayList<String> getSection(String section, boolean keys) {
+		try {
+			ArrayList<String> list = new ArrayList<>();
+			for (String key : config.getConfigurationSection(section).getKeys(keys)) {
+				list.add(key);
 			}
+			return list;
+		} catch (NullPointerException exception) {
+			return null;
 		}
-		return list;
 	}
 	
 	public static void setWarp(ServerWarp warp) {
