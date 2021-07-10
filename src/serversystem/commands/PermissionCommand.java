@@ -24,10 +24,8 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 					if(Config.getSection("Groups", false) != null && Config.getSection("Groups", false).contains(args[1])) {
 						if(Bukkit.getPlayer(args[0]) != null) {
 							Player player = Bukkit.getPlayer(args[0]);
-							PermissionHandler.removeConfigPermissions(player);
 							Config.setPlayerGroup(player, args[1]);
-							PermissionHandler.addConfigPermissions(player);
-							PermissionHandler.reloadPlayerPermissions(player);
+							PermissionHandler.loadPlayerPermissions(player);
 							TeamHandler.addRoleToPlayer(player);
 							ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
 						} else {
@@ -51,9 +49,9 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		List<String> commands = new ArrayList<>();
 		commands.clear();
-		if(args.length == 1) {
+		if(args.length == 1 && sender.hasPermission("serversystem.command.permission")) {
 			commands = Config.getPlayers();
-		} else if(args.length == 2) {
+		} else if(args.length == 2 && sender.hasPermission("serversystem.command.permission")) {
 			if(Config.getSection("Groups", false) != null) {
 				commands = Config.getSection("Groups", false);
 			}

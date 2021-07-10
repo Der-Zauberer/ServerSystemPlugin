@@ -4,10 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import serversystem.handler.ChatHandler;
-import serversystem.handler.TeamHandler;
-import serversystem.main.ServerSystem;
 
 public class CommandPreprocessListener implements Listener {
 	
@@ -40,18 +37,6 @@ public class CommandPreprocessListener implements Listener {
 				ChatHandler.sendPlayerPrivateMessage(Bukkit.getPlayer(messagelist[2]), Bukkit.getPlayer(messagelist[5]), getStringMessage(messagelist, 6));
 			}
 			return;
-		}
-		if((event.getMessage().toLowerCase().startsWith("/op") && (event.getPlayer().hasPermission("minecraft.command.op") || event.getPlayer().isOp())) || event.getMessage().toLowerCase().startsWith("/deop") && (event.getPlayer().hasPermission("minecraft.command.op") || event.getPlayer().isOp())) {
-			String[] messagelist = event.getMessage().split(" ");
-			if(messagelist.length > 0 && Bukkit.getPlayer(messagelist[1]) != null) {
-				new BukkitRunnable() {
-		            @Override
-		            public void run() {
-		                TeamHandler.addRoleToPlayer(Bukkit.getPlayer(messagelist[1]));
-		            }
-		            
-		        }.runTaskLater(ServerSystem.getInstance(), 20);
-			}
 		}
 	}
 	

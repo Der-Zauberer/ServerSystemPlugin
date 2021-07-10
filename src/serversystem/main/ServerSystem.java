@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.EnderchestCommand;
@@ -60,9 +62,13 @@ public class ServerSystem extends JavaPlugin{
 		}
 		WorldGroupHandler.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			PermissionHandler.removeConfigPermissions(player);
-			PermissionHandler.addConfigPermissions(player);
-			PermissionHandler.reloadPlayerPermissions(player);
+			new BukkitRunnable() {
+	            @Override
+	            public void run() {
+	            	PermissionHandler.loadPlayerPermissions(player);
+	            }
+	            
+	        }.runTaskLater(ServerSystem.getInstance(), 100);
 			TeamHandler.addRoleToPlayer(player);
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());

@@ -68,8 +68,10 @@ public class SaveConfig {
 	
 	public static ArrayList<ServerWarp> getWarps() {
 		ArrayList<ServerWarp> warps = new ArrayList<>();
-		for(String name : getSection("Warps", false)) {
-			warps.add(getWarp(name));
+		if(getSection("Warps", false) != null) {
+			for(String name : getSection("Warps", false)) {
+				warps.add(getWarp(name));
+			}
 		}
 		return warps;
 	}

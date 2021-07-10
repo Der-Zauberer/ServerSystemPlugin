@@ -1,6 +1,8 @@
 package serversystem.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,30 +11,48 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 import serversystem.config.Config;
 import serversystem.main.ServerSystem;
 
 public class PermissionHandler implements Listener {
 	
-	public static void addConfigPermissions(Player player) {
+	private static HashMap<Player, PermissionAttachment> attachments = new HashMap<>();
+	
+	public static void loadPlayerPermissions(Player player) {
+		resetPlayerPermissions(player);
 		if(Config.getPlayerPermissions(player) != null) {
-			for(String permission : Config.getPlayerPermissions(player)) {
-				PermissionHandler.addPermission(player, permission);
+			removeConfigDisablePermissions(player);
+			for(String string : Config.getPlayerPermissions(player)) {
+				if(string.endsWith("*")) {
+					string = string.substring(0, string.length() - 2);
+					for (Permission permission : Bukkit.getServer().getPluginManager().getPermissions()) {
+						if(permission.getName().startsWith(string)) {
+							PermissionHandler.addPermission(player, permission.getName());
+						}
+					}
+					for (String permission : getVanillaPermissions()) {
+						if(permission.startsWith(string) && !player.hasPermission(permission)) {
+							PermissionHandler.addPermission(player, permission);
+						}
+					}
+				} else {
+					PermissionHandler.addPermission(player, string);
+				}
 			}
+		} else {
+			removeConfigDisablePermissions(player);
 		}
+		reloadPlayerPermissions(player);
 	}
 	
-	public static void removeConfigPermissions(Player player) {
-		if(Config.getPlayerPermissions(player) != null) {
-			for(String permission : Config.getPlayerPermissions(player)) {
-				PermissionHandler.removePermission(player, permission);
-			}
-		}
+	public static void resetPlayerPermissions(Player player) {
+		removeAllPermissions(player);
+		reloadPlayerPermissions(player);
 	}
 	
-	public static void removeConfigDisablePermissions(Player player) {
+	private static void removeConfigDisablePermissions(Player player) {
 		if(Config.getDisabledPermissions() != null) {
 			for(String permission : Config.getDisabledPermissions()) {
 				PermissionHandler.removePermission(player, permission);
@@ -40,31 +60,28 @@ public class PermissionHandler implements Listener {
 		}
 	}
 	
-	public static void addPermission(Player player, String permission) {
-		PermissionAttachment attachment = player.addAttachment(ServerSystem.getInstance());
-		attachment.setPermission(permission, true);
-	}
-	
-	public static void removePermission(Player player, String permission) {
-		PermissionAttachment attachment = player.addAttachment(ServerSystem.getInstance());
-		attachment.setPermission(permission, false);
-	}
-	
-	public static void removeAll(Player player) {
-		PermissionAttachment attachment = player.addAttachment(ServerSystem.getInstance());
-		for(PermissionAttachmentInfo info : player.getEffectivePermissions()) {
-			attachment.setPermission(info.getPermission(), false);
+	private static void addPermission(Player player, String permission) {
+		if(attachments.get(player) != null) {
+			attachments.get(player).setPermission(permission, true);
 		}
 	}
 	
-	public static ArrayList<String> getPlayerPermissions(Player player) {
-		ArrayList<String> list = new ArrayList<>();
-		for(PermissionAttachmentInfo info : player.getEffectivePermissions()) {
-			list.add(info.getPermission());
+	private static void removePermission(Player player, String permission) {
+		if(attachments.get(player) != null) {
+			attachments.get(player).setPermission(permission, false);
 		}
-		return list;
 	}
-	public static void reloadPlayerPermissions(Player player) {
+	
+	private static void removeAllPermissions(Player player) {
+		if(attachments.get(player) != null) {
+			player.removeAttachment(attachments.get(player));
+			attachments.get(player).remove();
+		} 
+		PermissionAttachment attachment = player.addAttachment(ServerSystem.getInstance());
+		attachments.put(player, attachment);
+	}
+	
+	private static void reloadPlayerPermissions(Player player) {
 		if(player.isOp()) {
 			player.setOp(false);
 			player.setOp(true);
@@ -72,6 +89,65 @@ public class PermissionHandler implements Listener {
 			player.setOp(true);
 			player.setOp(false);
 		}
+	}
+	
+	private static ArrayList<String> getVanillaPermissions() {
+		ArrayList<String> permissions = new ArrayList<>();
+		permissions.add("minecraft.command.advancement");
+		permissions.add("minecraft.command.ban");
+		permissions.add("minecraft.command.ban-ip");
+		permissions.add("minecraft.command.banlist");
+		permissions.add("minecraft.command.clear");
+		permissions.add("minecraft.command.debug");
+		permissions.add("minecraft.command.defaultgamemode");
+		permissions.add("minecraft.command.deop");
+		permissions.add("minecraft.command.difficulty");
+		permissions.add("minecraft.command.effect");
+		permissions.add("minecraft.command.enchant");
+		permissions.add("minecraft.command.gamemode");
+		permissions.add("minecraft.command.gamerule");
+		permissions.add("minecraft.command.give");
+		permissions.add("minecraft.command.help");
+		permissions.add("minecraft.command.kick");
+		permissions.add("minecraft.command.kill");
+		permissions.add("minecraft.command.list");
+		permissions.add("minecraft.command.me");
+		permissions.add("minecraft.command.op");
+		permissions.add("minecraft.command.pardon");
+		permissions.add("minecraft.command.pardon-ip");
+		permissions.add("minecraft.command.playsound");
+		permissions.add("minecraft.command.save-all");
+		permissions.add("minecraft.command.save-off");
+		permissions.add("minecraft.command.save-on");
+		permissions.add("minecraft.command.say");
+		permissions.add("minecraft.command.scoreboard");
+		permissions.add("minecraft.command.seed");
+		permissions.add("minecraft.command.setblock");
+		permissions.add("minecraft.command.fill");
+		permissions.add("minecraft.command.setidletimeout");
+		permissions.add("minecraft.command.setworldspawn");
+		permissions.add("minecraft.command.spawnpoint");
+		permissions.add("minecraft.command.spreadplayers");
+		permissions.add("minecraft.command.stop");
+		permissions.add("minecraft.command.summon");
+		permissions.add("minecraft.command.msg");
+		permissions.add("minecraft.command.tellraw");
+		permissions.add("minecraft.command.testfor");
+		permissions.add("minecraft.command.testforblock");
+		permissions.add("minecraft.command.time");
+		permissions.add("minecraft.command.toggledownfall");
+		permissions.add("minecraft.command.teleport");
+		permissions.add("minecraft.command.weather");
+		permissions.add("minecraft.command.whitelist");
+		permissions.add("minecraft.command.xp");
+		permissions.add("minecraft.command.selector");
+		permissions.add("minecraft.admin.command_feedback");
+		permissions.add("minecraft.nbt.copy");
+		permissions.add("minecraft.nbt.place");
+		permissions.add("minecraft.autocraft");
+		permissions.add("minecraft.debugstick");
+		permissions.add("minecraft.debugstick.always");
+		return permissions;
 	}
 	
 	@EventHandler
