@@ -112,7 +112,7 @@ public class ChatHandler implements Listener {
 	}
 	
 	public static void sendPlayerPrivateMessage(Player sender, Player receiver, String message) {		
-		sender.sendMessage(TeamHandler.getPlayerNameColor(sender) + "Me" + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + sender.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
+		sender.sendMessage(TeamHandler.getPlayerNameColor(sender) + "Me" + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
 		if(sender != receiver) {
 			receiver.sendMessage(TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + "Me" + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
 		}
