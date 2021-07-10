@@ -85,6 +85,9 @@ permissions:
   serversystem.command.world:
     description: Teleoprt player to other teleoprt player to an other world or edit an other world
     default: op
+  serversystem.tools.adminstar:
+    description: Open the admin inventory
+    default: op
   serversystem.tools.commandblock:
     description: Allow to use commandblocks
     default: false

@@ -23,6 +23,7 @@ import serversystem.events.EntityDamageListener;
 import serversystem.events.ExplotionListener;
 import serversystem.events.HungerListener;
 import serversystem.events.PlayerDeathListener;
+import serversystem.events.PlayerInteractListener;
 import serversystem.events.PlayerJoinListener;
 import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
@@ -85,6 +86,7 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new ExplotionListener(), this);
 		Bukkit.getPluginManager().registerEvents(new HungerListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
