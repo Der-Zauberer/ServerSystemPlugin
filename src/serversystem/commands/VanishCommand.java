@@ -21,7 +21,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0 && sender instanceof Player) {
 			PlayerVanish.vanishPlayer((Player) sender);
 		} else if(args.length == 0 && !(sender instanceof Player)) {
-			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
 		} else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
 			PlayerVanish.vanishPlayer(Bukkit.getPlayer(args[0]), sender);
 		} else if(Bukkit.getPlayer(args[0]) == null) {

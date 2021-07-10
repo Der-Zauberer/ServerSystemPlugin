@@ -37,7 +37,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
 				}
 			} else {
-				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
+				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
 			}
 		} else {
 			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
@@ -48,6 +48,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		ArrayList<String> commands = new ArrayList<>();
+		commands.clear();
 		if(args.length == 1) {
 			commands.clear();
 			for (Player player : Bukkit.getOnlinePlayers()) {

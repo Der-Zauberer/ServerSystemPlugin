@@ -99,4 +99,13 @@ public class PlayerInventory {
 		return inventory;
 	}
 	
+	public static int calculateSize(int slots) {
+		int difference = 9 - (slots % 9);
+		int size = slots + difference;
+		if(size > 54) {
+			size = 54;
+		}
+		return size;
+	}
+	
 }

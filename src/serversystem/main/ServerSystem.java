@@ -10,8 +10,11 @@ import serversystem.commands.EnderchestCommand;
 import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
+import serversystem.commands.RemoveWarpCommand;
+import serversystem.commands.SetWarpCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WTPCommand;
+import serversystem.commands.WarpCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
 import serversystem.config.SaveConfig;
@@ -30,6 +33,7 @@ import serversystem.handler.PermissionHandler;
 import serversystem.handler.PlayerBuildMode;
 import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
+import serversystem.handler.WarpHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.WorldSign;
 
@@ -42,6 +46,7 @@ public class ServerSystem extends JavaPlugin{
 		new Config();
 		new SaveConfig();
 		TeamHandler.initializeTeams();
+		WarpHandler.initializeWarps();
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
@@ -99,7 +104,10 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("inventory").setExecutor(new InventoryCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());
 		getCommand("permission").setExecutor(new PermissionCommand());
+		getCommand("removewarp").setExecutor(new RemoveWarpCommand());
+		getCommand("setwarp").setExecutor(new SetWarpCommand());
 		getCommand("vanish").setExecutor(new VanishCommand());
+		getCommand("warp").setExecutor(new WarpCommand());
 		getCommand("world").setExecutor(new WorldCommand());
 		getCommand("wtp").setExecutor(new WTPCommand());
 	}

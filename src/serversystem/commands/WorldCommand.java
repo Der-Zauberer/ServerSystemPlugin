@@ -123,7 +123,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				}
 			}
 		} else {
-			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
 		}
 		return true;
 	}
@@ -131,27 +131,24 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		ArrayList<String> commands = new ArrayList<>();
+		commands.clear();
 		if(args.length == 1) {
-			commands.clear();
 			commands.add("teleport");
 			commands.add("create");
 			commands.add("list");
 			commands.add("edit");
 			commands.add("remove");
 		} else if((args.length == 2 && args[0].equals("teleport")) ||  (args.length == 2 && args[0].equals("edit")) ||  (args.length == 2 && args[0].equals("remove"))) {
-			commands.clear();
 			for(World world : Bukkit.getWorlds()) {
 				commands.add(world.getName());
 			}
 		} else if(args.length == 3 && args[0].equals("teleport")) {
-			commands.clear();
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				if (!PlayerVanish.isPlayerVanished(player)) {
 					commands.add(player.getName());
 				}
 			}
 		} else if(args.length == 3 && args[0].equals("edit")) {
-			commands.clear();
 			commands.add("protection");
 			commands.add("pvp");
 			commands.add("damage");
@@ -160,11 +157,9 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			commands.add("gamemode");
 			commands.add("permission");
 		} else if((args.length == 4 && args[0].equals("edit")) && !args[2].equals("gamemode") && !args[2].equals("permission")) {
-			commands.clear();
 			commands.add("true");
 			commands.add("false");
 		} else if((args.length == 4 && args[0].equals("edit")) && args[2].equals("gamemode")) {
-			commands.clear();
 			commands.add("survival");
 			commands.add("creative");
 			commands.add("adventure");

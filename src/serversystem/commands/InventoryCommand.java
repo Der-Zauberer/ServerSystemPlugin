@@ -35,6 +35,7 @@ public class InventoryCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		List<String> commands = new ArrayList<>();
+		commands.clear();
 		if(args.length == 1) {
 			commands.clear();
 			for (Player player : Bukkit.getOnlinePlayers()) {
@@ -42,8 +43,6 @@ public class InventoryCommand implements CommandExecutor, TabCompleter {
 					commands.add(player.getName());
 				}
 			}
-		} else {
-			commands.clear();
 		}
 		return commands;
 	}

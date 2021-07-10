@@ -20,7 +20,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0 && sender instanceof Player) {
 			PlayerBuildMode.buildmodePlayer((Player) sender);
 		} else if(args.length == 0 && !(sender instanceof Player)) {
-			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHTARGUMENTS);
+			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
 		}else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
 			PlayerBuildMode.buildmodePlayer(Bukkit.getPlayer(args[0]), sender);
 		}else if(args.length == 1 && !Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {

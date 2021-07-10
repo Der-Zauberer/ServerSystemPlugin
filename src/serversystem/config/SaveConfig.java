@@ -12,6 +12,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import serversystem.handler.ChatHandler;
+import serversystem.utilities.ServerWarp;
 import serversystem.utilities.WorldGroup;
 
 public class SaveConfig {
@@ -26,14 +29,47 @@ public class SaveConfig {
 		}
 	}
 	
-	public static ArrayList<String> getSection(String section) {
+	public static ArrayList<String> getSection(String section, boolean key) {
 		ArrayList<String> list = new ArrayList<>();
 		if(config.getConfigurationSection(section) != null) {
-			for (String key : config.getConfigurationSection(section).getKeys(true)) {
-				list.add(key);
+			for (String name : config.getConfigurationSection(section).getKeys(key)) {
+				list.add(name);
 			}
 		}
 		return list;
+	}
+	
+	public static void setWarp(ServerWarp warp) {
+		config.set("Warps." + warp.getName() + ".material", warp.getMaterial().toString().toLowerCase());
+		config.set("Warps." + warp.getName() + ".location", warp.getLocation());
+		config.set("Warps." + warp.getName() + ".global", warp.isGlobal());
+		if(warp.getPermission() != null) {
+			config.set("Warps." + warp.getName() + ".permission", warp.getPermission());
+		} else {
+			config.set("Warps." + warp.getName() + ".permission", null);
+		}
+		saveConfig();
+	}
+	
+	public static void removeWarp(ServerWarp warp) {
+		config.set("Warps." + warp.getName(), null);
+		saveConfig();
+	}
+	
+	public static ServerWarp getWarp(String name) {
+		ServerWarp warp = new ServerWarp(name, ChatHandler.parseMaterial(config.getString("Warps." + name + ".material")), config.getLocation("Warps." + name + ".location"), config.getBoolean("Warps." + name + ".global"));
+		if(config.getString("Warps." + name + ".permission") != null) {
+			warp.setPermission(config.getString("Warps." + name + ".permission"));
+		}
+		return warp;
+	}
+	
+	public static ArrayList<ServerWarp> getWarps() {
+		ArrayList<ServerWarp> warps = new ArrayList<>();
+		for(String name : getSection("Warps", false)) {
+			warps.add(getWarp(name));
+		}
+		return warps;
 	}
 	
 	public static void saveInventory(Player player, WorldGroup worldgroup) {
@@ -85,10 +121,11 @@ public class SaveConfig {
 		case SPECTATOR: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 3); break;
 		default: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 0); break;
 		}
+    	saveConfig();
     }
     
     public static void loadGamemode(Player player, WorldGroup worldgroup) {
-    	if (getSection("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId()).contains("Gamemode")) {
+    	if (getSection("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId(), true).contains("Gamemode")) {
     		switch (config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode")) {
         	case 0: player.setGameMode(GameMode.SURVIVAL); break;
         	case 1: player.setGameMode(GameMode.CREATIVE); break;
