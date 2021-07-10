@@ -257,8 +257,7 @@ public class Config {
 	}
 	
 	public static void addWorld(String world) {
-		if(!config.getBoolean("Worlds." + world + ".exists")) {
-			config.set("Worlds." + world + ".exists", true);
+		if(config.get("Worlds." + world) == null) {
 			config.set("Worlds." + world + ".group", world);
 			config.set("Worlds." + world + ".worldspawn", false);
 			config.set("Worlds." + world + ".protect", false);
@@ -383,9 +382,8 @@ public class Config {
 	}
 	
 	public static void addPlayer(Player player) {
-		if(!config.getBoolean("Players." + player.getUniqueId() + ".exists")) {
+		if(config.get("Players." + player.getUniqueId()) == null) {
 			config.set("Players." + player.getUniqueId() + ".name", player.getName());
-			config.set("Players." + player.getUniqueId() + ".exists", true);
 			config.set("Players." + player.getUniqueId() + ".group", "player");
 			saveConfig();
 		}

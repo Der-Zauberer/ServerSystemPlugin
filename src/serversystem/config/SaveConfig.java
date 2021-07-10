@@ -140,7 +140,6 @@ public class SaveConfig {
     
     public static void saveLocation(Player player) {
     	String path = "Worlds." + player.getWorld().getName() + "." + player.getUniqueId();
-    	config.set(path + ".exists", true);
 		config.set(path +".X", player.getLocation().getX());
 		config.set(path +".Y", player.getLocation().getY());
 		config.set(path +".Z", player.getLocation().getZ());
@@ -151,7 +150,7 @@ public class SaveConfig {
     }
     
     public static Location loadLocation(Player player, World world) {
-    	if(!config.getBoolean("Worlds." + world.getName() + "." + player.getUniqueId() + ".exists")) {
+    	if(config.get("Worlds." + world.getName() + "." + player.getUniqueId()) == null) {
     		return null;
     	}
     	String path = "Worlds." + world.getName() + "." + player.getUniqueId();
