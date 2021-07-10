@@ -129,25 +129,8 @@ public class ChatHandler implements Listener {
 	}
 	
 	public static ChatColor parseColor(String color) {
-		switch (color) {
-		case "aqua": return ChatColor.AQUA;
-		case "black": return ChatColor.BLACK;
-		case "blue": return ChatColor.BLUE;
-		case "dark_aqua": return ChatColor.DARK_AQUA;
-		case "dark_blue": return ChatColor.DARK_BLUE;
-		case "dark_gray": return ChatColor.DARK_GRAY;
-		case "dark_green": return ChatColor.DARK_GREEN;
-		case "dark_purple": return ChatColor.DARK_PURPLE;
-		case "dark_red": return ChatColor.DARK_RED;
-		case "gold": return ChatColor.GOLD;
-		case "gray": return ChatColor.GRAY;
-		case "green": return ChatColor.GREEN;
-		case "light_purple": return ChatColor.LIGHT_PURPLE;
-		case "red": return ChatColor.RED;
-		case "white": return ChatColor.WHITE;
-		case "yellow": return ChatColor.YELLOW;
-		default: return ChatColor.WHITE;
-		}
+		color = color.toUpperCase();
+		return ChatColor.valueOf(color);
 	}
 	
 	public static Material parseMaterial(String material) {
