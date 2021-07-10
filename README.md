@@ -17,7 +17,7 @@ This is a Bukkit/Spigot plugin for permissions, multiworld features and other ad
 ## Develpement and Version
 
 API Version: *1.17.x*<br>
-Plugin Version: *v2.1*<br>
+Plugin Version: *v2.2*<br>
 Java Class Version: *52 (Java8)*<br>
 
 ## Commands
@@ -30,7 +30,10 @@ Java Class Version: *52 (Java8)*<br>
 |inventory|`/inventory [<player>]`|`serversystem.command.inventory`|false|Open the inventory of a player|
 |lobby|`/lobby`|`serversystem.command.lobby`|true|Teleport player to lobby|
 |permission|`/permission [<player>] [<group>]`|`serversystem.command.permission`|false|Set the permissions of a player|
+|setwarp|`/setwarp [name] [<item>] [<global>] [permission]`|`serversystem.command.setwarp`|false|Set a warp location|
+|removewarp|`/removewarp [<warp>]`|`serversystem.command.removewarp`|false|Remove a warp location|
 |vanish|`/vanish [<player>]`|`serversystem.command.vanish`|false|Allow the player to vanish|
+|warp|`/warp [<warp>]`|`serversystem.command.warp`|true|Teleport player to a location|
 |world|`/world [action] [<world>] [<player] /world [action] [<world>] [action] [boolean]`|`serversystem.command.world`|false|Teleport player to an other world or edit an other world|
 
 ## Permissions
@@ -42,7 +45,10 @@ Java Class Version: *52 (Java8)*<br>
 |`serversystem.command.inventory`|op|Open the inventory of a player|
 |`serversystem.command.lobby`|true|Teleport player to lobby|
 |`serversystem.command.permission`|false|Set the permissions of a player|
+|`serversystem.command.setwarp`|op|Set a warp location|
+|`serversystem.command.removewarp`|op|Remove a warp location|
 |`serversystem.command.vanish`|op|Allow the player to vanish|
+|`serversystem.command.warp`|op|Teleport player to a location|
 |`serversystem.command.world`|op|Teleoprt player to other teleport player to an other world or edit an other world|
 
 The rank permissions give the player a colored name and prefix (more information at "Groups").
@@ -97,9 +103,9 @@ Every world, which is loaded has a configuration section. There can the option `
 ```json
 world:
     group: world
-  world_nether:
+world_nether:
     group: world
-  hogwarts:
+hogwarts:
     group: hogwarts
 ```
 
@@ -137,15 +143,16 @@ Groups:
     prefix: '[Moderator] '  
     permissions:
     - serversystem.command.permission
-    - minecraft.command.op
+    - minecraft.command.*
   admin:
     id: 01RankAdmin
     color: dark_red
     prefix: '[Admin] '
     parent: moderator
     permissions:
-    - serversystem.tools.commandblock
-    - serversystem.command.permission
+    - minecraft.command.op
+    - serversystem.command.*
+    - bukkit.command.*
 ```
 
 The id of the group is unimportant except for the number in front of the name. The number defines the order of the player in the tabbar. The Rank `04RankSupporter` will be displayed below the `01RankAdmin` but above the `06RankPremium` for example. Make sure you have an empty space after the prefix, otherwise the prefix will be displayed directly in front of the player's name. You can find an example for the tabbar at the end of the document as image.
@@ -158,7 +165,6 @@ You can add a group to the players in the player section.
 Players:
   8e1f0a29-7279-412d-a6a6-4266164d6a87:
     name: Der_Zauberer
-    exists: true
     group: admin
 
 ```
@@ -167,7 +173,6 @@ For versions before v2.1 please look at [the old Documentation](https://github.c
 
 ### Worlds
 All loaded worlds have own settings. <br>
-`exists` used for internal handling, true by default<br>
 `group` defines the worldgroup of the world (more information at "Enable WorldGroups")<br>
 `worldspawn` the player will always spawn at worldspawn if this is true, otherwise he would spawn at the last position<br>
 `protect` if this is true, blocks can't be removed ore build until the player go in buildmode<br>
@@ -177,11 +182,11 @@ All loaded worlds have own settings. <br>
 `explotion` explotions can not make damage to blocks, if this is false<br>
 `deathmessage` on chat message about a player death will appear, if you disable the deathmessage<br> 
 `gamemode` the player will set in this gamemode, if the join to the world for the first time<br>
+`permission` the required permission to get to the world (optional)<br>
 
 ```json
 Worlds:
   world:
-    exists: true
     group: world
     worldspawn: false
     protect: true
@@ -200,7 +205,6 @@ A player is identified by this UUID if he change his name. For easier editing th
 Players:
   8e1f0a29-7279-412d-a6a6-4266164d6a87:
     name: Der_Zauberer
-    exists: true
     group: admin
 ```
 
@@ -256,7 +260,6 @@ Groups:
     - serversystem.command.permission
 Worlds:
   world:
-    exists: true
     group: world
     worldspawn: true
     protect: true
@@ -267,7 +270,6 @@ Worlds:
     deathmessage: true
     gamemode: 2
   world_nether:
-    exists: true
     group: world
     worldspawn: false
     protect: false
@@ -278,7 +280,6 @@ Worlds:
     deathmessage: true
     gamemode: 2
   world_the_end:
-    exists: true
     group: world
     worldspawn: false
     protect: false
@@ -289,7 +290,6 @@ Worlds:
     deathmessage: true
     gamemode: 2
   hogwarts:
-    exists: true
     group: hogwarts
     worldspawn: false
     protect: true
@@ -302,7 +302,6 @@ Worlds:
 Players:
   8e1f0a29-7279-412d-a6a6-4266164d6a87:
     name: Der_Zauberer
-    exists: true
     group: admin
 ```
 

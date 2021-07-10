@@ -54,8 +54,8 @@ public class PermissionHandler implements Listener {
 	
 	private static void removeConfigDisablePermissions(Player player) {
 		if(Config.getDisabledPermissions() != null) {
-			for(String permission : Config.getDisabledPermissions()) {
-				PermissionHandler.removePermission(player, permission);
+			for(String string : Config.getDisabledPermissions()) {
+				PermissionHandler.removePermission(player, string);
 			}
 		}
 	}

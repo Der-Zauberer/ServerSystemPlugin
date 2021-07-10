@@ -1,6 +1,6 @@
 main: serversystem.main.ServerSystem
 name: ServerSystem
-version: 2.1
+version: 2.2
 author: Der_Zauberer
 api-version: 1.17
 
@@ -33,20 +33,20 @@ commands:
     usage: /<command> [name] [<item>] [<global>] [permission]
     permission: serversystem.command.setwarp
   removewarp:
-    description: Set a warp location
-    usage: /<command> [name] [<item>] [<global>] [permission]
+    description: Remove a warp location
+    usage: /<command> [<warp>]
     permission: serversystem.command.setwarp
   vanish:
     description: Allow the player to vanish
     usage: /<command> [<player>]
     permission: serversystem.command.vanish
   warp:
-    description: Teleoprt player to a location
+    description: Teleport player to a location
     usage: /<command> [<warp>]
     permission: serversystem.command.warp
     aliases: [warps]
   world:
-    description: Teleoprt player to an other world or edit an other world
+    description: Teleport player to an other world or edit an other world
     usage: /<command> [<word>] [<player>]
     permission: serversystem.command.world
   wtp:
@@ -80,10 +80,10 @@ permissions:
     description: Allow the player to vanish
     default: op
   serversystem.command.warp:
-    description: Teleoprt player to an other world
+    description: Teleport player to an other world
     default: true
   serversystem.command.world:
-    description: Teleoprt player to other teleoprt player to an other world or edit an other world
+    description: Teleport player to an other world or edit an other world
     default: op
   serversystem.tools.adminstar:
     description: Open the admin inventory
