@@ -10,7 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
-import serversystem.handler.ChatHandler.ErrorMessage;
+import serversystem.utilities.CommandAssistant;
 import serversystem.handler.PermissionHandler;
 import serversystem.handler.TeamHandler;
 
@@ -18,8 +18,9 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(!(sender instanceof Player) || sender.hasPermission("serversystem.command.permission")) {
-			if(args.length == 2) {
+		CommandAssistant assistant = new CommandAssistant(sender);
+		if(assistant.hasPermissionOrIsConsole("serversystem.command.permission")) {
+			if(assistant.hasMinArguments(2, args)) {
 				if(Bukkit.getPlayer(args[0]) != null || Config.getPlayerGroup(args[0]) != null) {
 					if(Config.getSection("Groups", false) != null && Config.getSection("Groups", false).contains(args[1])) {
 						if(Bukkit.getPlayer(args[0]) != null) {
@@ -34,29 +35,23 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 						}
 					}
 				} else {
-					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
+					ChatHandler.sendServerErrorMessage(sender, "The player " + args[0] + " does not exist!");
 				}
-			} else {
-				ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
 			}
-		} else {
-			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 		}
 		return true;
 	}
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		List<String> commands = new ArrayList<>();
-		commands.clear();
 		if(args.length == 1 && sender.hasPermission("serversystem.command.permission")) {
-			commands = Config.getPlayers();
+			return Config.getPlayers();
 		} else if(args.length == 2 && sender.hasPermission("serversystem.command.permission")) {
 			if(Config.getSection("Groups", false) != null) {
-				commands = Config.getSection("Groups", false);
+				return Config.getSection("Groups", false);
 			}
 		}
-		return commands;
+		return new ArrayList<>();
 	}
 	
 }

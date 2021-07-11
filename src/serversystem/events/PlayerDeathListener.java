@@ -15,7 +15,7 @@ public class PlayerDeathListener implements Listener {
 	public void onDeath(PlayerDeathEvent event) {
 		if(event.getEntity() instanceof Player && WorldGroupHandler.isEnabled()) {
 			World world = event.getEntity().getWorld();
-			if(Config.hasDeathMessage(world.getName())) {
+			if(Config.hasWorldDeathMessage(world.getName())) {
 				ChatHandler.sendServerWorldGroupMessage(WorldGroupHandler.getWorldGroup(event.getEntity()), event.getDeathMessage());
 			}
 			WorldGroupHandler.playerdeaths.put(event.getEntity(), world);

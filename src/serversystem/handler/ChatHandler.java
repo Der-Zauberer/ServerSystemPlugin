@@ -2,6 +2,7 @@ package serversystem.handler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,6 +12,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import serversystem.config.Config;
+import serversystem.config.Config.WorldOption;
 import serversystem.utilities.WorldGroup;
 
 public class ChatHandler implements Listener {
@@ -19,7 +21,7 @@ public class ChatHandler implements Listener {
 	private static ChatColor errorcolor = parseColor(Config.getErrorMessageColor());
 	private static String servername = parseColor(Config.getMessagePrefixColor()) + Config.getMessagePrefix();
 	
-	public static enum ErrorMessage{ONLYCONSOLE, ONLYPLAYER, NOPERMISSION, PLAYERNOTONLINE, WORLDDOESNOTEXIST, NOTENOUGHARGUMENTS}
+	public static enum ErrorMessage{ONLYCONSOLE, ONLYPLAYER, NOPERMISSION, NOTENOUGHARGUMENTS}
 	public static enum TitleType{TITLE, SUBTITLE, ACTIONBAR}
 	
 	public static void sendServerMessage(Player player, String message) {
@@ -43,8 +45,6 @@ public class ChatHandler implements Listener {
 		case ONLYCONSOLE: player.sendMessage(servername + errorcolor + " This command can only be used by the console!"); break;
 		case ONLYPLAYER: player.sendMessage(servername + errorcolor + " This command can only be used by players!"); break;
 		case NOTENOUGHARGUMENTS: player.sendMessage(servername + errorcolor + " Not enough arguments!"); break;
-		case PLAYERNOTONLINE: player.sendMessage(servername + errorcolor + " The player ist not online!"); break;
-		case WORLDDOESNOTEXIST: player.sendMessage(servername + errorcolor + " The world does not exist!"); break;
 		case NOPERMISSION: player.sendMessage(servername + errorcolor + " You have no permission to do that!"); break;
 		default: break;
 		}
@@ -55,8 +55,6 @@ public class ChatHandler implements Listener {
 		case ONLYCONSOLE: sender.sendMessage(servername + errorcolor + " This command can only be used by the console!"); break;
 		case ONLYPLAYER: sender.sendMessage(servername + errorcolor + " This command can only be used by players!"); break;
 		case NOTENOUGHARGUMENTS: sender.sendMessage(servername + errorcolor + " Not enough arguments!"); break;
-		case PLAYERNOTONLINE: sender.sendMessage(servername + errorcolor + " The player ist not online!"); break;
-		case WORLDDOESNOTEXIST: sender.sendMessage(servername + errorcolor + " The world does not exist!"); break;
 		case NOPERMISSION: sender.sendMessage(servername + errorcolor + " You have no permission to do that!"); break;
 		default: break;
 		}
@@ -141,11 +139,21 @@ public class ChatHandler implements Listener {
 		return Material.valueOf(material);
 	}
 	
+	public static WorldOption parseWorldOption(String option) {
+		option = option.toUpperCase();
+		return WorldOption.valueOf(option);
+	}
+	
 	public static Boolean parseBoolean(String bool) {
 		if(bool.equalsIgnoreCase("true")) {
 			return true;
 		}
 		return false;
+	}
+	
+	public static GameMode parseGamemode(String gamemode) {
+		gamemode = gamemode.toUpperCase();
+		return GameMode.valueOf(gamemode);
 	}
 	
 	@EventHandler

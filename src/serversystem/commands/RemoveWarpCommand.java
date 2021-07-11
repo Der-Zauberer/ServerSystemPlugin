@@ -8,22 +8,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.WarpHandler;
-import serversystem.handler.ChatHandler.ErrorMessage;
+import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.ServerWarp;
 
 public class RemoveWarpCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(args.length > 0) {
+		if(new CommandAssistant(sender).hasMinArguments(1, args)) {
 			if(WarpHandler.getWarp(args[0]) != null) {
 				WarpHandler.removeWarp(WarpHandler.getWarp(args[0]));
 				ChatHandler.sendServerMessage(sender, "The warp " + args[0] + " has been removed successfull!");
 			} else {
 				ChatHandler.sendServerErrorMessage(sender, "The warp " + args[0] + " does not exist!");
 			}
-		} else {
-			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
 		}
 		return true;
 	}
@@ -35,8 +33,6 @@ public class RemoveWarpCommand implements CommandExecutor, TabCompleter{
 			for(ServerWarp warp : WarpHandler.getWarps()) {
 				commands.add(warp.getName());
 			}
-		} else {
-			commands.clear();
 		}
 		return commands;
 	}

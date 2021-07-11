@@ -8,41 +8,33 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import serversystem.handler.ChatHandler;
 import serversystem.handler.PlayerBuildMode;
-import serversystem.handler.PlayerVanish;
-import serversystem.handler.ChatHandler.ErrorMessage;
+import serversystem.utilities.CommandAssistant;
 
 public class BuildCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(args.length == 0 && sender instanceof Player) {
-			PlayerBuildMode.buildmodePlayer((Player) sender);
-		} else if(args.length == 0 && !(sender instanceof Player)) {
-			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
-		}else if(args.length == 1 && Bukkit.getPlayer(args[0]) != null) {
-			PlayerBuildMode.buildmodePlayer(Bukkit.getPlayer(args[0]), sender);
-		}else if(args.length == 1 && !Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(args[0]))) {
-			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.PLAYERNOTONLINE);
+		CommandAssistant assistent = new CommandAssistant(sender);
+		if(args.length == 0) {
+			if(assistent.isSenderInstanceOfPlayer(true)) {
+				PlayerBuildMode.buildmodePlayer((Player) sender);
+			}
+		} else {
+			if(assistent.isPlayer(args[0])) {
+				PlayerBuildMode.buildmodePlayer(Bukkit.getPlayer(args[0]), sender);
+			}
 		}
 		return true;
 	}
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		List<String> commands = new ArrayList<>();
 		if(args.length == 1) {
-			commands.clear();
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				if (!PlayerVanish.isPlayerVanished(player)) {
-					commands.add(player.getName());
-				}
-			}
+			return new CommandAssistant(sender).getPlayer();
 		} else {
-			commands.clear();
+			return new ArrayList<>();
 		}
-		return commands;
 	}
 	
 }

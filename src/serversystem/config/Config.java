@@ -16,6 +16,8 @@ public class Config {
 	private static File file = new File("plugins/ServerSystem", "config.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
+	public enum WorldOption{DAMAGE, PVP, PROTECTION, EXPLOSION, HUNGER, DEATHMESSAGE};
+	
 	public Config() {
 		if(config.get("Server.joinmessage") == null) {
 			config.set("Server.joinmessage", true);
@@ -330,13 +332,38 @@ public class Config {
 		return config.getBoolean("Worlds." + world + ".explosion");
 	}
 	
-	public static void setDeathMessgae(String world, boolean deathmessage) {
+	public static void setWorldDeathMessage(String world, boolean deathmessage) {
 		config.set("Worlds." + world + ".deathmessage", deathmessage);
 		saveConfig();
 	}
 	
-	public static boolean hasDeathMessage(String world) {
+	public static boolean hasWorldDeathMessage(String world) {
 		return config.getBoolean("Worlds." + world + ".deathmessage");
+	}
+	
+	public static void setWorldOption(String world, WorldOption option, boolean bool) {
+		switch (option) {
+		case DAMAGE: setWorldDamage(world, bool); break;
+		case PVP: setWorldPVP(world, bool); break;
+		case PROTECTION: setWorldProtection(world, bool); break;
+		case EXPLOSION: setWorldExplosion(world, bool); break;
+		case HUNGER: setWorldHunger(world, bool); break;
+		case DEATHMESSAGE: setWorldDeathMessage(world, bool); break;
+		default:break;
+		}
+	}
+	
+	public static boolean getWorldOption(String world, WorldOption option) {
+		switch (option) {
+		case DAMAGE: return hasWorldDamage(world);
+		case PVP: return hasWorldPVP(world);
+		case PROTECTION: return hasWorldProtection(world);
+		case EXPLOSION: return hasWorldExplosion(world);
+		case HUNGER: return hasWorldHunger(world);
+		case DEATHMESSAGE: return hasWorldDeathMessage(world);
+		default:break;
+		}
+		return false;
 	}
 	
 	public static void setWorldGamemode(String world, GameMode gamemode) {
