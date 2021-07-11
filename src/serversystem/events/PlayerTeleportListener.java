@@ -7,8 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import serversystem.config.Config;
 import serversystem.config.SaveConfig;
-import serversystem.handler.ChatHandler;
-import serversystem.handler.ChatHandler.ErrorMessage;
 import serversystem.handler.PlayerVanish;
 import serversystem.handler.WorldGroupHandler;
 
@@ -19,12 +17,6 @@ public class PlayerTeleportListener implements Listener {
 		Player player = event.getPlayer();
 		World world = event.getTo().getWorld();
 		if(event.getPlayer().getWorld() != event.getTo().getWorld()) {
-			if(Config.hasWorldPermission(event.getTo().getWorld().getName())) {
-				if(!event.getPlayer().hasPermission(Config.getWorldPermission(event.getTo().getWorld().getName()))) {
-					ChatHandler.sendServerErrorMessage(event.getPlayer(), ErrorMessage.NOPERMISSION);
-					event.setCancelled(true);
-				}
-			}
 			boolean vanished = PlayerVanish.isPlayerVanished(event.getPlayer());
 			if(!Config.hasWorldSpawn(event.getPlayer().getWorld().getName())) {
 				SaveConfig.saveLocation(event.getPlayer());

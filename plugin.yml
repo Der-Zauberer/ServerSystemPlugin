@@ -83,7 +83,10 @@ permissions:
     description: Teleport player to an other world
     default: true
   serversystem.command.world:
-    description: Teleport player to an other world or edit an other world
+    description: Teleport player to an other world
+    default: op
+  serversystem.command.world.edit:
+    description: Edit a world with the world command
     default: op
   serversystem.tools.adminstar:
     description: Open the admin inventory

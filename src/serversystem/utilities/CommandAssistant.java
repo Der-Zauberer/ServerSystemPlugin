@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.ChatHandler.ErrorMessage;
@@ -83,6 +84,14 @@ public class CommandAssistant {
 			ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 			return false;
 		}
+	}
+	
+	public boolean hasPermission(String permission) {
+		if(sender.hasPermission(permission)) {
+			return true;
+		} 
+		ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
+		return false;
 	}
 	
 	public boolean hasPermissionOrIsConsole(String permission) {
@@ -177,6 +186,26 @@ public class CommandAssistant {
 		List<String> list = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
 			list.add(world.getName());
+		}
+		return list;
+	}
+	
+	public static List<String> getWorlds(Player player) {
+		List<String> list = new ArrayList<>();
+		for(World world : Bukkit.getWorlds()) {
+			if(player.hasPermission(Config.getWorldPermission(world.getName()))) {
+				list.add(world.getName());
+			}
+		}
+		return list;
+	}
+	
+	public List<String> getWorlds(CommandSender player) {
+		List<String> list = new ArrayList<>();
+		for(World world : Bukkit.getWorlds()) {
+			if(Config.getWorldPermission(world.getName()) == null || player.hasPermission(Config.getWorldPermission(world.getName()))) {
+				list.add(world.getName());
+			}
 		}
 		return list;
 	}
