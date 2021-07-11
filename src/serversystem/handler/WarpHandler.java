@@ -15,15 +15,9 @@ public class WarpHandler {
 		warps = SaveConfig.getWarps();
 	}
 	
-	public static void setWarp(ServerWarp warp) {
-		if(getWarp(warp.getName()) != null) {
-			warps.set(warps.indexOf(getWarp(warp.getName())), warp);
-		} else {
-			warps.add(warp);
-		}
-		for(ServerWarp warps : getWarps()) {
-			SaveConfig.setWarp(warps);
-		}
+	public static void addWarp(ServerWarp warp) {
+		warps.add(warp);
+		SaveConfig.setWarp(warp);
 	}
 	
 	public static void removeWarp(ServerWarp warp) {

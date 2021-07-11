@@ -15,6 +15,7 @@ import serversystem.config.Config.WorldOption;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.ChatHandler.ErrorMessage;
 import serversystem.handler.PlayerVanish;
+import serversystem.handler.WarpHandler;
 
 public class CommandAssistant {
 	
@@ -65,6 +66,14 @@ public class CommandAssistant {
 			return true;
 		}
 		ChatHandler.sendServerErrorMessage(sender, "The player " + player + " is not online!");
+		return false;
+	}
+	
+	public boolean isWarp(String warp) {
+		if(WarpHandler.getWarp(warp) != null) {
+			return true;
+		}
+		ChatHandler.sendServerErrorMessage(sender, "The warp " + warp + " does not exist!");
 		return false;
 	}
 	
@@ -190,21 +199,31 @@ public class CommandAssistant {
 		return list;
 	}
 	
-	public static List<String> getWorlds(Player player) {
+	public List<String> getWorlds(CommandSender sender) {
 		List<String> list = new ArrayList<>();
 		for(World world : Bukkit.getWorlds()) {
-			if(player.hasPermission(Config.getWorldPermission(world.getName()))) {
+			if(Config.getWorldPermission(world.getName()) == null || sender.hasPermission(Config.getWorldPermission(world.getName()))) {
 				list.add(world.getName());
 			}
 		}
 		return list;
 	}
 	
-	public List<String> getWorlds(CommandSender player) {
+	public List<String> getWarps() {
 		List<String> list = new ArrayList<>();
-		for(World world : Bukkit.getWorlds()) {
-			if(Config.getWorldPermission(world.getName()) == null || player.hasPermission(Config.getWorldPermission(world.getName()))) {
-				list.add(world.getName());
+		for(ServerWarp warp : WarpHandler.getWarps()) {
+			list.add(warp.getName());
+		}
+		return list;
+	}
+	
+	public List<String> getWarps(Player player) {
+		List<String> list = new ArrayList<>();
+		for(ServerWarp warp : WarpHandler.getWarps()) {
+			if(warp.getPermission() == null || sender.hasPermission(warp.getPermission())) {
+				if(warp.isGlobal() || warp.getLocation().getWorld() == player.getWorld()) {
+					list.add(warp.getName());
+				}
 			}
 		}
 		return list;

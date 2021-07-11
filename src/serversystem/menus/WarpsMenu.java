@@ -28,7 +28,7 @@ public class WarpsMenu extends PlayerInventory {
 	private void teleportPlayer(Player player, ItemStack itemstack) {
 		ServerWarp warp = WarpHandler.getWarp(ChatColor.stripColor(itemstack.getItemMeta().getDisplayName()));
 		if(warp != null) {
-			warp.warpPlayer(player);
+			player.teleport(warp.getLocation());
 		}
 	}
 	

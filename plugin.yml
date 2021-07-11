@@ -28,14 +28,6 @@ commands:
   permission:
     description: Set the permissions of a player
     usage: /<command> [<player>] [<group>]
-  setwarp:
-    description: Set a warp location
-    usage: /<command> [name] [<item>] [<global>] [permission]
-    permission: serversystem.command.setwarp
-  removewarp:
-    description: Remove a warp location
-    usage: /<command> [<warp>]
-    permission: serversystem.command.setwarp
   vanish:
     description: Allow the player to vanish
     usage: /<command> [<player>]
@@ -44,7 +36,6 @@ commands:
     description: Teleport player to a location
     usage: /<command> [<warp>]
     permission: serversystem.command.warp
-    aliases: [warps]
   world:
     description: Teleport player to an other world or edit an other world
     usage: /<command> [<word>] [<player>]
@@ -73,15 +64,15 @@ permissions:
   serversystem.command.permission:
     description: Set the permissions of a player
     default: false
-  serversystem.command.setwarp:
-    description: Set a warp location
-    default: op
   serversystem.command.vanish:
     description: Allow the player to vanish
     default: op
   serversystem.command.warp:
-    description: Teleport player to an other world
+    description: Teleport player to a warp
     default: true
+  serversystem.command.warp.edit:
+    description: Edit a warp with the warp command
+    default: op
   serversystem.command.world:
     description: Teleport player to an other world
     default: op

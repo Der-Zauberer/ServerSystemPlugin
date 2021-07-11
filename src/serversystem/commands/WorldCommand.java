@@ -28,7 +28,6 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 					} else {
 						WorldGroupHandler.teleportPlayer((Player)sender, world);
-						ChatHandler.sendServerMessage(sender, "You are in world " + world.getName() + "!");
 					} 
 				} else if(sender instanceof Player && !sender.hasPermission("serversystem.command.world.edit")) {
 					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
@@ -37,8 +36,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						if(assistant.isPlayer(args[2])) {
 							Player player = Bukkit.getPlayer(args[2]);
 							WorldGroupHandler.teleportPlayer(player, world);
-							if(sender != player) {ChatHandler.sendServerMessage(sender, "The player " + player.getName() +  " is in world " + world.getName() +  "!");} 
-							ChatHandler.sendServerMessage(player, "You are in world " + world.getName() +  "!");
+							if(sender != player) {ChatHandler.sendServerMessage(sender, "Teleported the player " + player.getName() +  " to the world " + world.getName() +  "!");} 
 						}
 					} else if(assistant.isPath(1, "create", 2, args)) {
 						if (world == null) {
@@ -93,6 +91,8 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 								}
 							}
 						}
+					} else if(args.length > 1 && !args[1].equals("create") && !args[1].equals("remove") && !args[1].equals("edit") && !args[1].equals("teleport")) {
+						ChatHandler.sendServerErrorMessage(sender, args[1] + " is not a valid option!");
 					} else {
 						ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
 					}
@@ -112,7 +112,6 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			} else if(args.length == 2) {
 				commands.add("teleport");
 				commands.add("create");
-				commands.add("list");
 				commands.add("edit");
 				commands.add("remove");
 			} else if(args.length == 3 && args[1].equals("teleport")) {

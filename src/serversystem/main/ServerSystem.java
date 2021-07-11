@@ -5,15 +5,12 @@ import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.EnderchestCommand;
 import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
-import serversystem.commands.RemoveWarpCommand;
-import serversystem.commands.SetWarpCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WTPCommand;
 import serversystem.commands.WarpCommand;
@@ -38,6 +35,7 @@ import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WarpHandler;
 import serversystem.handler.WorldGroupHandler;
+import serversystem.signs.WarpSign;
 import serversystem.signs.WorldSign;
 
 public class ServerSystem extends JavaPlugin{
@@ -72,6 +70,9 @@ public class ServerSystem extends JavaPlugin{
 			TeamHandler.addRoleToPlayer(player);
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
+			}
+			if(PlayerBuildMode.isPlayerInBuildmode(player)) {
+				PlayerBuildMode.buildmodePlayer(player);
 			}
 		}
 		WorldGroupHandler.autoRemoveWorldGroups();
@@ -112,8 +113,6 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("inventory").setExecutor(new InventoryCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());
 		getCommand("permission").setExecutor(new PermissionCommand());
-		getCommand("removewarp").setExecutor(new RemoveWarpCommand());
-		getCommand("setwarp").setExecutor(new SetWarpCommand());
 		getCommand("vanish").setExecutor(new VanishCommand());
 		getCommand("warp").setExecutor(new WarpCommand());
 		getCommand("world").setExecutor(new WorldCommand());
@@ -122,6 +121,7 @@ public class ServerSystem extends JavaPlugin{
 	
 	private void registerWorldSigns() {
 		SignHandler.registerServerSign(new WorldSign());
+		SignHandler.registerServerSign(new WarpSign());
 	}
 	
 	private void repeatAutoSave() {

@@ -2,9 +2,9 @@ package serversystem.utilities;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import serversystem.handler.ChatHandler;
-import serversystem.handler.ChatHandler.ErrorMessage;
+
+import serversystem.config.SaveConfig;
+import serversystem.handler.WarpHandler;
 
 public class ServerWarp {
 	
@@ -14,11 +14,12 @@ public class ServerWarp {
 	private boolean global;
 	private String permission;
 	
-	public ServerWarp(String name, Material material, Location location, boolean global) {
+	public ServerWarp(String name, Location location) {
 		this.name = name;
-		this.material = material;
 		this.location = location;
-		this.global = global;
+		material = Material.ENDER_PEARL;
+		global = true;
+		WarpHandler.addWarp(this);
 	}
 	
 	public String getName() {
@@ -29,6 +30,11 @@ public class ServerWarp {
 		return material;
 	}
 	
+	public void setMaterial(Material material) {
+		this.material = material;
+		SaveConfig.setWarp(this);
+	}
+	
 	public Location getLocation() {
 		return location;
 	}
@@ -37,24 +43,26 @@ public class ServerWarp {
 		return global;
 	}
 	
+	public void setGlobal(boolean global) {
+		this.global = global;
+		SaveConfig.setWarp(this);
+	}
+	
 	public String getPermission() {
 		return permission;
 	}
 	
 	public void setPermission(String permission) {
 		this.permission = permission;
+		SaveConfig.setWarp(this);
 	}
 	
-	public void warpPlayer(Player player) {
-		if(global || player.getWorld() == location.getWorld()) {
-			if(permission != null) {
-				if(!player.hasPermission(permission)) {
-					ChatHandler.sendServerErrorMessage(player, ErrorMessage.NOPERMISSION);
-				}
-			}
-			player.teleport(location);
-		} else {
-			ChatHandler.sendServerErrorMessage(player, ErrorMessage.NOPERMISSION);
+	public void remove() {
+		WarpHandler.removeWarp(this);
+		try {
+			finalize();
+		} catch (Throwable exception) {
+			exception.printStackTrace();
 		}
 	}
 	
