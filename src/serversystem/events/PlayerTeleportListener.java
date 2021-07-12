@@ -24,9 +24,15 @@ public class PlayerTeleportListener implements Listener {
 			if(Config.isWorldGroupSystemEnabled()) {
 				WorldGroupHandler.getWorldGroup(player).onPlayerLeave(event.getPlayer());
 				event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
+				if(player.getAllowFlight()) {
+					player.setFlying(SaveConfig.loadFlying(player, world));
+				}
 				WorldGroupHandler.getWorldGroup(world).onPlayerJoin(event.getPlayer());
 			} else {
 				event.getPlayer().setGameMode(Config.getWorldGamemode(world.getName()));
+				if(player.getAllowFlight()) {
+					player.setFlying(SaveConfig.loadFlying(player, world));
+				}
 			}
 			if(vanished) {
 				PlayerVanish.vanishPlayer(event.getPlayer());

@@ -19,11 +19,11 @@ public class PlayerJoinListener implements Listener {
 		}
 		Config.addPlayer(event.getPlayer());
 		PermissionHandler.loadPlayerPermissions(event.getPlayer());
+		event.getPlayer().setGameMode(Config.getWorldGamemode(event.getPlayer().getWorld().getName()));
 		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerJoin(event.getPlayer());
 		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			event.getPlayer().teleport(Config.getLobbyWorld().getSpawnLocation());
 		}
-		event.getPlayer().setGameMode(Config.getWorldGamemode(event.getPlayer().getWorld().getName()));
 		if(Config.getTitle() != null && Config.getSubtitle() != null) {
 			ChatHandler.sendTitle(event.getPlayer(), ChatHandler.parseColor(Config.getTitleColor()) + Config.getTitle(), ChatHandler.parseColor(Config.getSubtitleColor()) + Config.getSubtitle());
 		}

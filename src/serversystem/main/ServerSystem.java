@@ -71,9 +71,6 @@ public class ServerSystem extends JavaPlugin{
 			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
-			if(PlayerBuildMode.isPlayerInBuildmode(player)) {
-				PlayerBuildMode.buildmodePlayer(player);
-			}
 		}
 		WorldGroupHandler.autoRemoveWorldGroups();
 		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
