@@ -1,6 +1,6 @@
 main: serversystem.main.ServerSystem
 name: ServerSystem
-version: 2.2
+version: 2.3
 author: Der_Zauberer
 api-version: 1.17
 
@@ -34,11 +34,11 @@ commands:
     permission: serversystem.command.vanish
   warp:
     description: Teleport player to a location
-    usage: /<command> [<warp>]
+    usage: /<command> <warp>] [<action>] [<option>] [value]
     permission: serversystem.command.warp
   world:
     description: Teleport player to an other world or edit an other world
-    usage: /<command> [<word>] [<player>]
+    usage: /<command> [<world>] [<action>] [<option>] [value]
     permission: serversystem.command.world
   wtp:
     description: Teleoprt player to an other world
