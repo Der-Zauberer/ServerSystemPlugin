@@ -8,7 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import serversystem.handler.PlayerVanish;
+import serversystem.handler.PlayerVanishHandler;
 import serversystem.utilities.CommandAssistant;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
@@ -18,11 +18,11 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 		CommandAssistant assistent = new CommandAssistant(sender);
 		if(args.length == 0) {
 			if(assistent.isSenderInstanceOfPlayer(true)) {
-				PlayerVanish.vanishPlayer((Player) sender);
+				PlayerVanishHandler.vanishPlayer((Player) sender);
 			}
 		} else {
 			if(assistent.isPlayer(args[0])) {
-				PlayerVanish.vanishPlayer(Bukkit.getPlayer(args[0]), sender);
+				PlayerVanishHandler.vanishPlayer(Bukkit.getPlayer(args[0]), sender);
 			}
 		}
 		return true;

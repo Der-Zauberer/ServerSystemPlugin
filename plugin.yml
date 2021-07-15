@@ -85,6 +85,9 @@ permissions:
   serversystem.tools.commandblock:
     description: Allow to use commandblocks
     default: false
+  serversystem.tools.disabledblocks:
+    description: Allow to use in the config disabled blocks
+    default: op
   serversystem.tools.signeddit:
     description: Allow to create executable signs
     default: op

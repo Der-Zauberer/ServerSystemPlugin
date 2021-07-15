@@ -73,6 +73,9 @@ public class Config {
 		if(config.get("DisabledPermissions") == null) {
 			config.set("DisabledPermissions", "");
 		}
+		if(config.get("DisabledBlocks") == null) {
+			config.set("DisabledBlocks", "");
+		}
 		if(config.get("Worldload") == null) {
 			config.set("Worldload", "");
 		}
@@ -203,6 +206,10 @@ public class Config {
 	
 	public static List<String> getDisabledPermissions() {
 		return config.getStringList("DisabledPermissions");
+	}
+	
+	public static List<String> getDisabledBlocks() {
+		return config.getStringList("DisabledBlocks");
 	}
 	
 	public static void addToLoadWorld(String world) {

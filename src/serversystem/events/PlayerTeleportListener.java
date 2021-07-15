@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import serversystem.config.Config;
 import serversystem.config.SaveConfig;
-import serversystem.handler.PlayerVanish;
+import serversystem.handler.PlayerVanishHandler;
 import serversystem.handler.WorldGroupHandler;
 
 public class PlayerTeleportListener implements Listener {
@@ -17,7 +17,7 @@ public class PlayerTeleportListener implements Listener {
 		Player player = event.getPlayer();
 		World world = event.getTo().getWorld();
 		if(event.getPlayer().getWorld() != event.getTo().getWorld()) {
-			boolean vanished = PlayerVanish.isPlayerVanished(event.getPlayer());
+			boolean vanished = PlayerVanishHandler.isPlayerVanished(event.getPlayer());
 			if(!Config.hasWorldSpawn(event.getPlayer().getWorld().getName())) {
 				SaveConfig.saveLocation(event.getPlayer());
 			}
@@ -35,7 +35,7 @@ public class PlayerTeleportListener implements Listener {
 				}
 			}
 			if(vanished) {
-				PlayerVanish.vanishPlayer(event.getPlayer());
+				PlayerVanishHandler.vanishPlayer(event.getPlayer());
 			}
 		}
 	}

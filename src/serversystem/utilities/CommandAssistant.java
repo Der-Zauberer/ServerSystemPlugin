@@ -14,7 +14,7 @@ import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.ChatHandler.ErrorMessage;
-import serversystem.handler.PlayerVanish;
+import serversystem.handler.PlayerVanishHandler;
 import serversystem.handler.WarpHandler;
 
 public class CommandAssistant {
@@ -184,7 +184,7 @@ public class CommandAssistant {
 	public List<String> getPlayer() {
 		List<String> list = new ArrayList<>();
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (!PlayerVanish.isPlayerVanished(player)) {
+			if (!PlayerVanishHandler.isPlayerVanished(player)) {
 				list.add(player.getName());
 			}
 		}

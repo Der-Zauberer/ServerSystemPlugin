@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import serversystem.main.ServerSystem;
 
-public class PlayerVanish {
+public class PlayerVanishHandler {
 	
 	private static ArrayList<Player> vanishedplayers = new ArrayList<>();
 	

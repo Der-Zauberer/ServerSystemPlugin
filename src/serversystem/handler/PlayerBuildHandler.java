@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import serversystem.config.Config;
 
-public class PlayerBuildMode implements Listener {
+public class PlayerBuildHandler implements Listener {
 	
 	private static ArrayList<Player> buildplayers = new ArrayList<>();
 	
@@ -49,8 +49,17 @@ public class PlayerBuildMode implements Listener {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
+			if(!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
 				event.setCancelled(true);
+				return;
+			}
+		}
+		if(!event.getPlayer().hasPermission("serversystem.tools.disabledblocks")) {
+			for(String string : Config.getDisabledBlocks()) {
+				if(event.getBlock().getBlockData().getAsString().equals(string)) {
+					event.setCancelled(true);
+					return;
+				}
 			}
 		}
 	}
@@ -58,8 +67,17 @@ public class PlayerBuildMode implements Listener {
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
+			if(!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
 				event.setCancelled(true);
+				return;
+			}
+		}
+		if(!event.getPlayer().hasPermission("serversystem.tools.disabledblocks")) {
+			for(String string : Config.getDisabledBlocks()) {
+				if(event.getBlock().getBlockData().getAsString().equals(string)) {
+					event.setCancelled(true);
+					return;
+				}
 			}
 		}
 	}
@@ -68,7 +86,7 @@ public class PlayerBuildMode implements Listener {
 	public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
 		if(event.getRemover() instanceof Player) {
 			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getRemover()))) {
+				if(!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getRemover()))) {
 					event.setCancelled(true);
 				}
 			}
@@ -79,7 +97,7 @@ public class PlayerBuildMode implements Listener {
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
 		if(event.getEntity().getShooter() instanceof Player) {
 			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getEntity().getShooter()))) {
+				if(!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getEntity().getShooter()))) {
 					event.setCancelled(true);
 				}
 			}
@@ -90,7 +108,7 @@ public class PlayerBuildMode implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if(event.getDamager() instanceof Player) {
 			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if(!PlayerBuildMode.isPlayerInBuildmode(((Player) event.getDamager()))) {
+				if(!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getDamager()))) {
 					event.setCancelled(true);
 				}
 			}
@@ -100,7 +118,7 @@ public class PlayerBuildMode implements Listener {
 	@EventHandler
 	public void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
 		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
+			if(!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
 				event.setCancelled(true);
 			}
 		}
@@ -109,7 +127,7 @@ public class PlayerBuildMode implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildMode.isPlayerInBuildmode(event.getPlayer())) {
+			if(!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
 				Material mainmaterial = event.getPlayer().getInventory().getItemInMainHand().getType();
 				Material secondarymaterial = event.getPlayer().getInventory().getItemInOffHand().getType();
 				ArrayList<Material> vorbidden = new ArrayList<>();
