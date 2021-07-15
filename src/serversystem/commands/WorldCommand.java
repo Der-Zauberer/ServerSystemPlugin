@@ -21,7 +21,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		CommandAssistant assistant = new CommandAssistant(sender);
 		if(assistant.hasMinArguments(1, args)) {
-			if(assistant.isWorld(args[0]) || assistant.isPath(1, "create", 2, args)) {
+			if(assistant.isPath(1, "create", 2, args) || assistant.isWorld(args[0])) {
 				World world = Bukkit.getWorld(args[0]);
 				if(args.length == 1 && sender instanceof Player) {
 					if(!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(world.getName()) != null && !sender.hasPermission(Config.getWorldPermission(world.getName()))) {
@@ -40,6 +40,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						}
 					} else if(assistant.isPath(1, "create", 2, args)) {
 						if (world == null) {
+							ChatHandler.sendServerMessage(sender, "The world " + args[0] + " will be created, please wait a moment!");
 							WorldGroupHandler.createWorld(args[0]);
 							ChatHandler.sendServerMessage(sender, "The world " + args[0] + " has been successfully created!");
 						} else {

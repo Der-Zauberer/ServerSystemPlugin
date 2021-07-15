@@ -24,7 +24,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 		if(args.length == 0 && sender instanceof Player) {
 			new WarpsMenu((Player)sender).open();
 		} else if(assistant.hasMinArguments(1, args)) {
-			if(assistant.isWarp(args[0]) || assistant.isPath(1, "create", 2, args)) {
+			if(assistant.isPath(1, "create", 2, args) || assistant.isWarp(args[0])) {
 				ServerWarp warp = WarpHandler.getWarp(args[0]);
 				if(args.length == 1 && sender instanceof Player) {
 					if(!sender.hasPermission("serversystem.command.warp.edit") && ((warp.getPermission() != null && !sender.hasPermission(warp.getPermission())) || (!warp.isGlobal() && warp.getLocation().getWorld() != ((Player)sender).getWorld()))) {
