@@ -70,6 +70,9 @@ public class Config {
 		if(config.get("Server.enableworldgroups") == null) {
 			config.set("Server.enableworldgroups", true);
 		}
+		if(config.get("Server.enableportals") == null) {
+			config.set("Server.enableportals", true);
+		}
 		if(config.get("DisabledPermissions") == null) {
 			config.set("DisabledPermissions", "");
 		}
@@ -202,6 +205,10 @@ public class Config {
 	
 	public static boolean isWorldGroupSystemEnabled() {
 		return config.getBoolean("Server.enableworldgroups");
+	}
+	
+	public static boolean arePortalsEnabled() {
+		return config.getBoolean("Server.enableportals");
 	}
 	
 	public static List<String> getDisabledPermissions() {

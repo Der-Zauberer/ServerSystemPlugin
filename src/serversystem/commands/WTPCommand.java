@@ -19,7 +19,7 @@ public class WTPCommand implements CommandExecutor, TabCompleter {
 		CommandAssistant assistant = new CommandAssistant(sender);
 		if(assistant.isSenderInstanceOfPlayer()) {
 			if(assistant.hasMinArguments(1, args)) {
-				if(assistant.isBoolean(args[0])) {
+				if(assistant.isWorld(args[0])) {
 					WorldGroupHandler.teleportPlayer((Player)sender, Bukkit.getWorld(args[0]));
 					ChatHandler.sendServerMessage(sender, "You are in world " + args[0] +  "!");
 				}
