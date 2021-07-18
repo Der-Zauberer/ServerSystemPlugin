@@ -10,8 +10,10 @@ public class PlayerRespawnListener implements Listener {
 
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent event) {
-		event.setRespawnLocation(WorldGroupHandler.playerdeaths.get(event.getPlayer()).getSpawnLocation());
-		WorldGroupHandler.playerdeaths.remove(event.getPlayer());
+		if(WorldGroupHandler.isEnabled()) {
+			event.setRespawnLocation(WorldGroupHandler.playerdeaths.get(event.getPlayer()).getSpawnLocation());
+			WorldGroupHandler.playerdeaths.remove(event.getPlayer());
+		}
 	}
 	
 }
