@@ -17,7 +17,7 @@ This is a Bukkit/Spigot plugin for permissions, multiworld features and other ad
 ## Develpement and Version
 
 API Version: *1.17.x*<br>
-Plugin Version: *v2.3*<br>
+Plugin Version: *v2.4*<br>
 Java Class Version: *52 (Java8)*<br>
 
 ## Commands
@@ -33,6 +33,7 @@ Java Class Version: *52 (Java8)*<br>
 |vanish|`/vanish [<player>]`|`serversystem.command.vanish`|false|Allow the player to vanish|
 |warp|`[/warp <warp>] [<action>] [<option>] [value]`|`serversystem.command.warp` `serversystem.command.warp.edit`|true|Teleport player to a location|
 |world|`/world [<world>] [<action>] [<option>] [value]`|`serversystem.command.world` `serversystem.command.world.edit`|false|Teleport player to an other world or edit an other world|
+|wtp|`/wtp [<world>]`|`serversystem.command.wtp`|false|Teleport player to an other world|
 
 The commands `world` and `warp` can be used to teleport with `serversystem.command.world` and `serversystem.command.warp`. The edit the warps and worlds use the same command, but with the permissions `serversystem.command.world` and `serversystem.command.warp`.
 
@@ -48,8 +49,24 @@ The commands `world` and `warp` can be used to teleport with `serversystem.comma
 |`serversystem.command.vanish`|op|Allow the player to vanish|
 |`serversystem.command.warp`|op|Teleport player to a location|
 |`serversystem.command.world`|op|Teleoprt player to other teleport player to an other world or edit an other world|
+|`serversystem.command.wtp`|op|Teleoprt player to other teleport player to an other world|
+|`serversystem.tools.adminstar`|op|Open the admin inventory|
+|`serversystem.tools.commandblock`|false|Allow to use commandblocks|
+|`serversystem.tools.disabledblocks`|op|Allow to use in the config disabled blocks|
+|`serversystem.tools.signeddit`|op|Allow to create executable signs|
 
-The rank permissions give the player a colored name and prefix (more information at "Groups").
+## Signs
+You can create teleport signs to a world or warp. As long as you have the permissions `serversystem.tools.signeddit` you can create a such a sign. Make sure, that the label is in the second line and the name of the world or warp is in the third!
+
+```
+ [World]
+worldname
+```
+
+```
+ [Warp]
+warpname
+```
 
 ## Config
 The config can be found at `/plugins/serversystem/plugin.yml` in your server folder.
@@ -108,6 +125,14 @@ hogwarts:
 ```
 
 In this example world and world_nether are in the same worldgroup while the world hogwarts has his own separated worldgroup.
+
+### Enable Portals
+The Nether-Portal and the End-Portal are enabled by default, you can disable those with:
+
+```json
+Server:
+  enableportals: false
+```
 
 ### Disable commands and default permissions
 You can disable permissions simply by adding the permission to the list. For example, you can disable minecraft default commands by adding its permission. Disabled permissions will be removed for each group, even they would get the permission, disabled permissions are overwriting the group permissions! Permissions can't be shortet by using a `*`!
