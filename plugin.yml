@@ -1,6 +1,6 @@
 main: serversystem.main.ServerSystem
 name: ServerSystem
-version: '2.4'
+version: '2.5'
 author: Der_Zauberer
 api-version: 1.17
 api: none
