@@ -260,10 +260,14 @@ public class Config {
 	
 	public static List<String> getGroupPermissions(String group) {
 		ArrayList<String> permissions = new ArrayList<>();
-		permissions.addAll(config.getStringList("Groups." + group + ".permissions"));
+		ArrayList<String> groups = new ArrayList<>();
+		groups.add(group);
 		while (getGroupParent(group) != null) {
 			group = getGroupParent(group);
-			permissions.addAll(config.getStringList("Groups." + group + ".permissions"));	
+			groups.add(group);
+		}
+		for(int i = groups.size(); i > 0; i--) {
+			permissions.addAll(config.getStringList("Groups." + groups.get(i - 1) + ".permissions"));
 		}
 		return permissions;
 	}
