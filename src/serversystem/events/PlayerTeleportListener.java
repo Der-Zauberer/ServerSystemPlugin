@@ -48,6 +48,9 @@ public class PlayerTeleportListener implements Listener {
 			if(vanished) {
 				PlayerVanishHandler.vanishPlayer(event.getPlayer());
 			}
+			if(player.getFlySpeed() > 0.2) {
+				player.setFlySpeed((float) 0.1);
+			}
 		}
 	}
 

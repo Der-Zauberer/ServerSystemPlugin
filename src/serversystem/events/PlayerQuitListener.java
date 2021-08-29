@@ -22,6 +22,9 @@ public class PlayerQuitListener implements Listener {
 		if(PlayerVanishHandler.isPlayerVanished(event.getPlayer())) {
 			PlayerVanishHandler.vanishPlayer(event.getPlayer());
 		}
+		if(event.getPlayer().getFlySpeed() > 0.2) {
+			event.getPlayer().setFlySpeed((float) 0.1);
+		}
 		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerLeave(event.getPlayer());
 		PermissionHandler.resetPlayerPermissions(event.getPlayer());
 	}
