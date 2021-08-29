@@ -11,6 +11,7 @@ import serversystem.commands.EnderchestCommand;
 import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
+import serversystem.commands.SpeedCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WTPCommand;
 import serversystem.commands.WarpCommand;
@@ -110,6 +111,7 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("inventory").setExecutor(new InventoryCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());
 		getCommand("permission").setExecutor(new PermissionCommand());
+		getCommand("speed").setExecutor(new SpeedCommand());
 		getCommand("vanish").setExecutor(new VanishCommand());
 		getCommand("warp").setExecutor(new WarpCommand());
 		getCommand("world").setExecutor(new WorldCommand());

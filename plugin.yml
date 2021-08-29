@@ -29,6 +29,9 @@ commands:
   permission:
     description: Set the permissions of a player
     usage: /<command> [<player>] [<group>]
+  speed:
+    description: Toggle players flyspeed
+    usage: /<command> 
   vanish:
     description: Allow the player to vanish
     usage: /<command> [<player>]
