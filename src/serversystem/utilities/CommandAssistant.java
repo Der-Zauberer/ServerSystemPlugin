@@ -228,5 +228,20 @@ public class CommandAssistant {
 		}
 		return list;
 	}
+	
+	public List<String> cutArguments(String args[], List<String> commands) {
+		String command = args[args.length - 1];
+		List<String> output = new ArrayList<>();
+		if(!command.isEmpty() && !command.equals("")) {
+			for (String string : commands) {
+				if(string.startsWith(command)) {
+					output.add(string);
+				}
+			}
+			return output;
+		} else {
+			return commands;
+		}
+	}
 
 }

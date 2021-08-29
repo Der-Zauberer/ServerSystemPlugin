@@ -44,14 +44,16 @@ public class PermissionCommand implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		List<String> commands = new ArrayList<>();		
 		if(args.length == 1 && sender.hasPermission("serversystem.command.permission")) {
-			return Config.getPlayers();
+			commands = Config.getPlayers();
 		} else if(args.length == 2 && sender.hasPermission("serversystem.command.permission")) {
 			if(Config.getSection("Groups", false) != null) {
-				return Config.getSection("Groups", false);
+				commands = Config.getSection("Groups", false);
 			}
 		}
-		return new ArrayList<>();
+		commands = new CommandAssistant(sender).cutArguments(args, commands);
+		return commands;
 	}
 	
 }

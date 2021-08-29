@@ -28,10 +28,13 @@ public class InventoryCommand implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		CommandAssistant assistant = new CommandAssistant(sender);
+		List<String> commands = new ArrayList<>();
 		if(args.length == 1) {
-			return new CommandAssistant(sender).getPlayer();
+			commands = assistant.getPlayer();
 		}
-		return new ArrayList<>();
+		commands = assistant.cutArguments(args, commands);
+		return commands;
 	}
 	
 }

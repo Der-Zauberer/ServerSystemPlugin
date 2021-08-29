@@ -30,11 +30,13 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		CommandAssistant assistant = new CommandAssistant(sender);
+		List<String> commands = new ArrayList<>();
 		if(args.length == 1) {
-			return new CommandAssistant(sender).getPlayer();
-		} else {
-			return new ArrayList<>();
+			commands = assistant.getPlayer();
 		}
+		assistant.cutArguments(args, commands);
+		return commands;
 	}
 
 }

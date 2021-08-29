@@ -106,17 +106,18 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
 		if(sender.hasPermission("serversystem.command.world.edit")) {
 			if(args.length == 1) {
-				commands = new CommandAssistant(sender).getWorlds();
+				commands = assistant.getWorlds();
 			} else if(args.length == 2) {
 				commands.add("teleport");
 				commands.add("create");
 				commands.add("edit");
 				commands.add("remove");
 			} else if(args.length == 3 && args[1].equals("teleport")) {
-				commands = new CommandAssistant(sender).getPlayer();
+				commands = assistant.getPlayer();
 			} else if(args.length == 3 && args[1].equals("edit")) {
 				commands.add("protection");
 				commands.add("pvp");
@@ -137,9 +138,10 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			}
 		} else {
 			if(args.length == 1) {
-				commands = new CommandAssistant(sender).getWorlds(sender);
+				commands = assistant.getWorlds(sender);
 			}
 		}
+		commands = assistant.cutArguments(args, commands);
 		return commands;
 	}
 	
