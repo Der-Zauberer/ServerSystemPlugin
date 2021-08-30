@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import serversystem.handler.ChatHandler;
 import serversystem.utilities.CommandAssistant;
 
 public class SpeedCommand implements CommandExecutor {
@@ -15,8 +16,10 @@ public class SpeedCommand implements CommandExecutor {
 			Player player = (Player)sender;
 			if(player.getFlySpeed() > 0.2) {
 				player.setFlySpeed((float) 0.1);
+				ChatHandler.sendServerMessage(sender, "You have no longer speed!");
 			} else {
 				player.setFlySpeed((float) 0.4);
+				ChatHandler.sendServerMessage(sender, "You have speed now!");
 			}
 		}
 		return true;
