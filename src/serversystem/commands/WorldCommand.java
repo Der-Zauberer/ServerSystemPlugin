@@ -117,7 +117,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				commands.add("edit");
 				commands.add("remove");
 			} else if(args.length == 3 && args[1].equals("teleport")) {
-				commands = assistant.getPlayer();
+				commands = assistant.getPlayers();
 			} else if(args.length == 3 && args[1].equals("edit")) {
 				commands.add("protection");
 				commands.add("pvp");

@@ -31,7 +31,7 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 		CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
 		if(args.length == 1) {
-			commands = assistant.getPlayer();
+			commands = assistant.getPlayers();
 		}
 		commands = assistant.cutArguments(args, commands);
 		return commands;

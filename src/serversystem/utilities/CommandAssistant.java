@@ -181,7 +181,7 @@ public class CommandAssistant {
 		return false;
 	}
 	
-	public List<String> getPlayer() {
+	public List<String> getPlayers() {
 		List<String> list = new ArrayList<>();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (!PlayerVanishHandler.isPlayerVanished(player)) {
