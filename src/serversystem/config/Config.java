@@ -273,7 +273,14 @@ public class Config {
 	}
 	
 	public static List<String> getPlayerPermissions(Player player) {
-		return getGroupPermissions(getPlayerGroup(player));
+		List<String> list = new ArrayList<>();
+		if(getGroupPermissions(getPlayerGroup(player)) != null) {
+			list.addAll(getGroupPermissions(getPlayerGroup(player)));
+		}
+		if(getPlayerSpecificPermissions(player) != null) {
+			list.addAll(getPlayerSpecificPermissions(player));
+		}
+		return list;
 	}
 	
 	public static void addWorld(String world) {
@@ -463,6 +470,10 @@ public class Config {
 			}
 		}
 		return null;
+	}
+	
+	private static List<String> getPlayerSpecificPermissions(Player player) {
+		return config.getStringList("Players." + player.getUniqueId() + ".permissions");
 	}
 	
 	public static boolean isPlayerExisting(String player) {
