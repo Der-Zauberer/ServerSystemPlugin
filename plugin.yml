@@ -1,6 +1,6 @@
 main: serversystem.main.ServerSystem
 name: ServerSystem
-version: '2.5'
+version: '2.6'
 author: Der_Zauberer
 api-version: 1.17
 api: none
@@ -32,6 +32,7 @@ commands:
   speed:
     description: Toggle players flyspeed
     usage: /<command> 
+    permission: serversystem.command.speed
   vanish:
     description: Allow the player to vanish
     usage: /<command> [<player>]
@@ -68,6 +69,9 @@ permissions:
   serversystem.command.permission:
     description: Set the permissions of a player
     default: false
+  serversystem.command.speed:
+    description: Toggle players flyspeed
+    default: op
   serversystem.command.vanish:
     description: Allow the player to vanish
     default: op

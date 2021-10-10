@@ -17,7 +17,7 @@ This is a Bukkit/Spigot plugin for permissions, multiworld features and other ad
 ## Develpement and Version
 
 API Version: *1.17.x*<br>
-Plugin Version: *v2.5*<br>
+Plugin Version: *v2.6*<br>
 Java Class Version: *52 (Java8)*<br>
 
 ## Commands
@@ -30,6 +30,7 @@ Java Class Version: *52 (Java8)*<br>
 |inventory|`/inventory [<player>]`|`serversystem.command.inventory`|false|Open the inventory of a player|
 |lobby|`/lobby`|`serversystem.command.lobby`|true|Teleport player to lobby|
 |permission|`/permission [<player>] [<group>]`|`serversystem.command.permission`|false|Set the permissions of a player|
+|speed|`/speed`|`serversystem.command.speed`|false|Toggle players flyspeed|
 |vanish|`/vanish [<player>]`|`serversystem.command.vanish`|false|Allow the player to vanish|
 |warp|`[/warp <warp>] [<action>] [<option>] [value]`|`serversystem.command.warp` `serversystem.command.warp.edit`|true|Teleport player to a location|
 |world|`/world [<world>] [<action>] [<option>] [value]`|`serversystem.command.world` `serversystem.command.world.edit`|false|Teleport player to an other world or edit an other world|
@@ -46,6 +47,7 @@ The commands `world` and `warp` can be used to teleport with `serversystem.comma
 |`serversystem.command.inventory`|op|Open the inventory of a player|
 |`serversystem.command.lobby`|true|Teleport player to lobby|
 |`serversystem.command.permission`|false|Set the permissions of a player|
+|`serversystem.command.speed`|op|Toggle players flyspeed|
 |`serversystem.command.vanish`|op|Allow the player to vanish|
 |`serversystem.command.warp`|op|Teleport player to a location|
 |`serversystem.command.world`|op|Teleoprt player to other teleport player to an other world or edit an other world|
