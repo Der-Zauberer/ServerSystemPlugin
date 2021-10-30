@@ -29,6 +29,9 @@ commands:
   permission:
     description: Set the permissions of a player
     usage: /<command> [<player>] [<group>]
+  permissionreload:
+    description: Reloads all permissions for all players
+    usage: /<command>
   speed:
     description: Toggle players flyspeed
     usage: /<command> 

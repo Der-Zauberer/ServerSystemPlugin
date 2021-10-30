@@ -500,5 +500,9 @@ public class Config {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void reloadConfig() {
+		config = YamlConfiguration.loadConfiguration(file);
+	}
 
 }

@@ -30,6 +30,7 @@ Java Class Version: *52 (Java8)*<br>
 |inventory|`/inventory [<player>]`|`serversystem.command.inventory`|false|Open the inventory of a player|
 |lobby|`/lobby`|`serversystem.command.lobby`|true|Teleport player to lobby|
 |permission|`/permission [<player>] [<group>]`|`serversystem.command.permission`|false|Set the permissions of a player|
+|permissionreload|`/permissionreload`|`serversystem.command.permission`|false|Reloads all permissions for all players|
 |speed|`/speed`|`serversystem.command.speed`|false|Toggle players flyspeed|
 |vanish|`/vanish [<player>]`|`serversystem.command.vanish`|false|Allow the player to vanish|
 |warp|`[/warp <warp>] [<action>] [<option>] [value]`|`serversystem.command.warp` `serversystem.command.warp.edit`|true|Teleport player to a location|
