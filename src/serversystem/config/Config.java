@@ -293,7 +293,7 @@ public class Config {
 			config.set("Worlds." + world + ".huger", true);
 			config.set("Worlds." + world + ".explosion", true);
 			config.set("Worlds." + world + ".deathmessage", true);
-			config.set("Worlds." + world + ".gamemode", 2);
+			config.set("Worlds." + world + ".gamemode", 0);
 			saveConfig();
 		}
 	}
