@@ -9,34 +9,30 @@ import serversystem.main.ServerSystem;
 
 public class PlayerVanishHandler {
 	
-	private static ArrayList<Player> vanishedplayers = new ArrayList<>();
+	private static ArrayList<Player> vanishedPlayers = new ArrayList<>();
 	
 	public static void vanishPlayer(Player player) {
 		vanishPlayer(player, player);
 	}
 	
 	public static void vanishPlayer(Player player, CommandSender sender) {
-		if (vanishedplayers.contains(player)) {
+		if (vanishedPlayers.contains(player)) {
 			showPlayer(player);
 			ChatHandler.sendServerMessage(player, "You are no longer vanished!");
-			if (player != sender) {
-				ChatHandler.sendServerMessage(sender, player.getName() + " is no longer vanished!");
-			}
+			if (player != sender) ChatHandler.sendServerMessage(sender, player.getName() + " is no longer vanished!");
 		} else {
 			hidePlayer(player);
 			ChatHandler.sendServerMessage(player, "You are vanished now!");
-			if (player != sender) {
-				ChatHandler.sendServerMessage(sender, player.getName() + " is vanished now!");
-			}
+			if (player != sender) ChatHandler.sendServerMessage(sender, player.getName() + " is vanished now!");
 		}
 	}
 	
 	public static boolean isPlayerVanished(Player player) {
-		return vanishedplayers.contains(player);
+		return vanishedPlayers.contains(player);
 	}
 	
 	public static ArrayList<Player> getVanishedPlayers() {
-		return vanishedplayers;
+		return vanishedPlayers;
 	}
 	
 	private static void hidePlayer(Player player) {
@@ -44,13 +40,13 @@ public class PlayerVanishHandler {
 		for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
 			everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 		}
-		if (!vanishedplayers.isEmpty()) {
-			for (Player vanishedplayer : vanishedplayers) {
+		if (!vanishedPlayers.isEmpty()) {
+			for (Player vanishedplayer : vanishedPlayers) {
 				vanishedplayer.showPlayer(ServerSystem.getInstance(), player);
 				player.hidePlayer(ServerSystem.getInstance(), vanishedplayer);
 			}
 		}
-		vanishedplayers.add(player);	
+		vanishedPlayers.add(player);	
 	}
 	
 	private static void showPlayer(Player player) {
@@ -58,12 +54,12 @@ public class PlayerVanishHandler {
 		for (Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 		}
-		if (!vanishedplayers.isEmpty()) {
-			for (Player vanishedplayer : vanishedplayers) {
+		if (!vanishedPlayers.isEmpty()) {
+			for (Player vanishedplayer : vanishedPlayers) {
 				player.hidePlayer(ServerSystem.getInstance(), vanishedplayer);
 			}
 		}
-		vanishedplayers.remove(player);
+		vanishedPlayers.remove(player);
 	}
 
 }

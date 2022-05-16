@@ -42,11 +42,7 @@ public class WarpHandler {
 	public static ArrayList<ServerWarp> getWarps(Player player) {
 		ArrayList<ServerWarp> result = new ArrayList<>();
 		for (ServerWarp warp : warps) {
-			if (warp.isGlobal() || player.getWorld() == warp.getLocation().getWorld()) {
-				if (warp.getPermission() == null || player.hasPermission(warp.getPermission())) {
-					result.add(warp);
-				}
-			}
+			if ((warp.isGlobal() || player.getWorld() == warp.getLocation().getWorld()) && (warp.getPermission() == null || player.hasPermission(warp.getPermission()))) result.add(warp);
 		}
 		return result;
 	}

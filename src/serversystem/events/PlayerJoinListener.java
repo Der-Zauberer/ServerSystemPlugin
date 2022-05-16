@@ -12,11 +12,7 @@ public class PlayerJoinListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (Config.isJoinMessageActiv()) {
-			event.setJoinMessage(ChatHandler.getPlayerJoinMessage(event));
-		} else {
-			event.setJoinMessage("");
-		}
+		ChatHandler.sendPlayerJoinMessage(event);
 		Config.addPlayer(event.getPlayer());
 		PermissionHandler.loadPlayerPermissions(event.getPlayer());
 		event.getPlayer().setGameMode(Config.getWorldGamemode(event.getPlayer().getWorld().getName()));

@@ -11,21 +11,21 @@ import serversystem.utilities.PlayerInventory.ItemOption;
 
 public class InventoryHandler implements Listener {
 
-	private static ArrayList<PlayerInventory> playerinventory = new ArrayList<>();
+	private static ArrayList<PlayerInventory> playerInventory = new ArrayList<>();
 
 	public static void addInventory(PlayerInventory inventory) {
-		playerinventory.add(inventory);
+		playerInventory.add(inventory);
 	}
 
 	public static void removeInventory(PlayerInventory inventory) {
-		playerinventory.remove(inventory);
+		playerInventory.remove(inventory);
 	}
 
 	@EventHandler
 	public void onInventoryClicked(InventoryClickEvent event) {
 		if (event.getCurrentItem() != null) {
 			try {
-				for (PlayerInventory inventory : playerinventory) {
+				for (PlayerInventory inventory : playerInventory) {
 					if (inventory.getInventory() == event.getClickedInventory() || (event.getWhoClicked().getOpenInventory().getTopInventory() == inventory.getInventory() && event.getClickedInventory() == event.getWhoClicked().getInventory() && inventory.getItemOption() == ItemOption.FIXED)) {
 						if (inventory.getItemOption() == ItemOption.FIXED) {
 							inventory.onItemClicked(event.getCurrentItem());

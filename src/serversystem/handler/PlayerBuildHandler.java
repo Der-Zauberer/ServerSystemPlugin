@@ -2,7 +2,10 @@ package serversystem.handler;
 
 import java.util.ArrayList;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,142 +15,108 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import serversystem.config.Config;
 
 public class PlayerBuildHandler implements Listener {
 	
-	private static ArrayList<Player> buildplayers = new ArrayList<>();
+	private static ArrayList<Player> buildPlayers = new ArrayList<>();
 	
 	public static void buildmodePlayer(Player player) {
 		buildmodePlayer(player, player);
 	}
 	
 	public static void buildmodePlayer(Player player, CommandSender sender) {
-		if (buildplayers.contains(player)) {
-			buildplayers.remove(player);
+		if (buildPlayers.contains(player)) {
+			buildPlayers.remove(player);
 			ChatHandler.sendServerMessage(player, "You can no longer build!");
-			if (player != sender) {
-				ChatHandler.sendServerMessage(sender, player.getName() + " can no longer build!");
-			}
+			if (player != sender) ChatHandler.sendServerMessage(sender, player.getName() + " can no longer build!");
 		} else {
-			buildplayers.add(player);
+			buildPlayers.add(player);
 			ChatHandler.sendServerMessage(player, "You can build now!");
-			if(player != sender) {
-				ChatHandler.sendServerMessage(sender, player.getName() + " can build now!");
-			}
+			if(player != sender) ChatHandler.sendServerMessage(sender, player.getName() + " can build now!");
 		}
 	}
 	
 	public static boolean isPlayerInBuildmode(Player player) {
-		if (buildplayers.contains(player)) {
-			return true;
-		}
-		return false;
+		return buildPlayers.contains(player);
 	}
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if (!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
-				event.setCancelled(true);
-				return;
-			}
-		}
-		if(!event.getPlayer().hasPermission("serversystem.tools.disabledblocks")) {
-			for (String string : Config.getDisabledBlocks()) {
-				if (event.getBlock().getBlockData().getAsString().equals(string)) {
-					event.setCancelled(true);
-					return;
-				}
-			}
-		}
+		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
+		if (!event.isCancelled()) event.setCancelled(isBlockDisabled(event.getBlock(), event.getPlayer()));
 	}
 	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if (!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
-				event.setCancelled(true);
-				return;
-			}
-		}
-		if(!event.getPlayer().hasPermission("serversystem.tools.disabledblocks")) {
-			for (String string : Config.getDisabledBlocks()) {
-				if (event.getBlock().getBlockData().getAsString().equals(string)) {
-					event.setCancelled(true);
-					return;
-				}
-			}
-		}
+		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
+		if (!event.isCancelled()) event.setCancelled(isBlockDisabled(event.getBlock(), event.getPlayer()));
 	}
 	
 	@EventHandler
 	public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
-		if (event.getRemover() instanceof Player) {
-			if (Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if (!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getRemover()))) {
-					event.setCancelled(true);
-				}
-			}
-		}
+		if (event.getRemover() instanceof Player) event.setCancelled(isActionForbidden(event.getRemover().getWorld(), (Player) event.getRemover()));
 	}
 	
 	@EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
-		if (event.getEntity().getShooter() instanceof Player) {
-			if (Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if (!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getEntity().getShooter()))) {
-					event.setCancelled(true);
-				}
-			}
-		}
+		if (event.getEntity().getShooter() instanceof Player) event.setCancelled(isActionForbidden(event.getEntity().getWorld(), (Player) event.getEntity().getShooter()));
     }
 	
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		if (event.getDamager() instanceof Player) {
-			if (Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if (!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getDamager()))) {
-					event.setCancelled(true);
-				}
-			}
-		}
+		if (event.getDamager() instanceof Player) event.setCancelled(isActionForbidden(event.getDamager().getWorld(), (Player) event.getDamager()));
 	}
 	
 	@EventHandler
 	public void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
-		if (Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if (!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
-				event.setCancelled(true);
-			}
-		}
+		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
 	}
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if (!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
-				Material mainmaterial = event.getPlayer().getInventory().getItemInMainHand().getType();
-				Material secondarymaterial = event.getPlayer().getInventory().getItemInOffHand().getType();
-				ArrayList<Material> vorbidden = new ArrayList<>();
-				vorbidden.add(Material.ARMOR_STAND);
-				vorbidden.add(Material.PAINTING);
-				vorbidden.add(Material.ITEM_FRAME);
-				vorbidden.add(Material.GLOW_ITEM_FRAME);
-				for (Material material : vorbidden) {
-					if (mainmaterial == material || secondarymaterial == material) {
-						event.setCancelled(true);
-						return;
-					}
+		if (isActionForbidden(event.getPlayer().getWorld(), event.getPlayer())) {
+			Material mainMaterial = event.getPlayer().getInventory().getItemInMainHand().getType();
+			Material secondaryMaterial = event.getPlayer().getInventory().getItemInOffHand().getType();
+			ArrayList<Material> vorbiddenMaterials = new ArrayList<>();
+			vorbiddenMaterials.add(Material.ARMOR_STAND);
+			vorbiddenMaterials.add(Material.PAINTING);
+			vorbiddenMaterials.add(Material.ITEM_FRAME);
+			vorbiddenMaterials.add(Material.GLOW_ITEM_FRAME);
+			for (Material material : vorbiddenMaterials) {
+				if (mainMaterial == material || secondaryMaterial == material) {
+					event.setCancelled(true);
+					return;
 				}
-				if (mainmaterial.toString().contains("MINECARD") || secondarymaterial.toString().contains("MINECARD")) event.setCancelled(true);
-				else if (mainmaterial.toString().contains("BOAT") || secondarymaterial.toString().contains("BOAT")) event.setCancelled(true);
-				else if (mainmaterial.toString().contains("ITEM_FRAME") || secondarymaterial.toString().contains("ITEM_FRAME")) event.setCancelled(true);
-				else if (mainmaterial.toString().contains("SPAWN_EGG") || secondarymaterial.toString().contains("SPAWN_EGG")) event.setCancelled(true);
-				else if (mainmaterial.toString().contains("BUCKET") || secondarymaterial.toString().contains("BUCKET")) event.setCancelled(true);
+			}
+			if (mainMaterial.toString().contains("MINECARD") || secondaryMaterial.toString().contains("MINECARD")) event.setCancelled(true);
+			else if (mainMaterial.toString().contains("BOAT") || secondaryMaterial.toString().contains("BOAT")) event.setCancelled(true);
+			else if (mainMaterial.toString().contains("ITEM_FRAME") || secondaryMaterial.toString().contains("ITEM_FRAME")) event.setCancelled(true);
+			else if (mainMaterial.toString().contains("SPAWN_EGG") || secondaryMaterial.toString().contains("SPAWN_EGG")) event.setCancelled(true);
+			else if (mainMaterial.toString().contains("BUCKET") || secondaryMaterial.toString().contains("BUCKET")) event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+		if (isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()) && event.getRightClicked().getType() == EntityType.ITEM_FRAME) event.setCancelled(true);
+	}
+	
+	private boolean isActionForbidden(World world, Player player) {
+		return Config.hasWorldProtection(world.getName()) && !buildPlayers.contains(player);
+	}
+	
+	private boolean isBlockDisabled(Block block, Player player) {
+		if(!player.hasPermission("serversystem.tools.disabledblocks")) {
+			for (String string : Config.getDisabledBlocks()) {
+				if (block.getBlockData().getAsString().equals(string)) {
+					return true;
+				}
 			}
 		}
+		return false;
 	}
 
 }

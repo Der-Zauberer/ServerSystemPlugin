@@ -86,12 +86,20 @@ public class ChatHandler implements Listener {
 		player.sendTitle(title, subtitle, 10, 100, 10);
 	}
 	
-	public static String getPlayerJoinMessage(PlayerJoinEvent event) {
-		return servername + messagecolor + " " + event.getPlayer().getName() + " joined the game!";
+	public static void sendPlayerJoinMessage(PlayerJoinEvent event) {
+		if (Config.isJoinMessageActiv()) {
+			event.setJoinMessage(servername + messagecolor + " " + event.getPlayer().getName() + " joined the game!");
+		} else {
+			event.setJoinMessage("");
+		}
 	}
-	
-	public static String getPlayerQuitMessage(PlayerQuitEvent event) {
-		return servername + messagecolor + " " + event.getPlayer().getName() + " left the game!";
+
+	public static void sendPlayerQuitMessage(PlayerQuitEvent event) {
+		if (Config.isLeaveMessageActiv()) {
+			event.setQuitMessage(servername + messagecolor + " " + event.getPlayer().getName() + " left the game!");
+		} else {
+			event.setQuitMessage(servername);
+		}
 	}
 	
 	public static void sendPlayerChatMessage(Player player, String message) {
@@ -137,7 +145,7 @@ public class ChatHandler implements Listener {
 	
 	public static Material parseMaterial(String material) {
 		try {
-			if(material.startsWith("minecraft:")) material = material.substring(10);
+			if (material.startsWith("minecraft:")) material = material.substring(10);
 			material = material.toUpperCase();
 			return Material.valueOf(material);
 		} catch (IllegalArgumentException exception) {

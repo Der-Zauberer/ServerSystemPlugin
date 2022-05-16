@@ -27,15 +27,15 @@ public class PermissionHandler implements Listener {
 			for (String string : Config.getPlayerPermissions(player)) {
 				if (string.endsWith("*")) {
 					string = string.substring(0, string.length() - 2);
-					boolean add = true;
+					boolean addPermission = true;
 					if (string.startsWith("-")) {
-						add = false;
+						addPermission = false;
 						string = string.substring(1);
 					}
 					addPermission(player, string + ".*");
 					for (Permission permission : Bukkit.getServer().getPluginManager().getPermissions()) {
 						if (permission.getName().startsWith(string)) {
-							if (add) {
+							if (addPermission) {
 								addPermission(player, permission.getName());
 							} else if (player.hasPermission(permission.getName())) {
 								removePermission(player, permission.getName());
@@ -44,7 +44,7 @@ public class PermissionHandler implements Listener {
 					}
 					for (String permission : getVanillaPermissions()) {
 						if (permission.startsWith(string)) {
-							if (add) {
+							if (addPermission) {
 								addPermission(player, permission);
 							} else if (player.hasPermission(permission)) {
 								removePermission(player, permission);
@@ -173,31 +173,21 @@ public class PermissionHandler implements Listener {
 
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (event.getBlock().getType() == Material.COMMAND_BLOCK || event.getBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
-			if (!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
-				event.setCancelled(true);
-			}
-		}
+		event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
 	}
 
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.getBlock().getType() == Material.COMMAND_BLOCK || event.getBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
-			if (!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
-				event.setCancelled(true);
-			}
-		}
+		event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
 	}
 
 	@EventHandler
-	public void onBlockPlace(PlayerInteractEvent event) {
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			if (event.getClickedBlock().getType() == Material.COMMAND_BLOCK || event.getClickedBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
-				if (!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
-					event.getPlayer().closeInventory();
-				}
-			}
-		}
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && isActionForbidden(event.getClickedBlock().getType(), event.getPlayer())) event.getPlayer().closeInventory();
+	}
+	
+	private boolean isActionForbidden(Material material, Player player) {
+		return (material == Material.COMMAND_BLOCK || material == Material.COMMAND_BLOCK_MINECART) && !player.hasPermission("serversystem.tools.commandblock");
 	}
 
 }

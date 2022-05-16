@@ -3,8 +3,6 @@ package serversystem.events;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import serversystem.config.Config;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.PermissionHandler;
 import serversystem.handler.PlayerVanishHandler;
@@ -14,11 +12,7 @@ public class PlayerQuitListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		if (Config.isLeaveMessageActiv()) {
-			event.setQuitMessage(ChatHandler.getPlayerQuitMessage(event));
-		} else {
-			event.setQuitMessage("");
-		}
+		ChatHandler.sendPlayerQuitMessage(event);
 		if (PlayerVanishHandler.isPlayerVanished(event.getPlayer())) {
 			PlayerVanishHandler.vanishPlayer(event.getPlayer());
 		}
