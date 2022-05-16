@@ -11,14 +11,14 @@ import serversystem.handler.WorldGroupHandler;
 public class PlayerDeathListener implements Listener {
 	
 	@EventHandler
-	public void onDeath(PlayerDeathEvent event) {
+	public void onPlayerDeath(PlayerDeathEvent event) {
 		World world = event.getEntity().getWorld();
-		if(Config.hasWorldDeathMessage(world.getName())) {
+		if (Config.hasWorldDeathMessage(world.getName())) {
 			String message = event.getDeathMessage();
-			if(Config.getPlayerGroup(event.getEntity()) != null && Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())) != null && message.startsWith(Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())))) {
+			if (Config.getPlayerGroup(event.getEntity()) != null && Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())) != null && message.startsWith(Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())))) {
 				message = message.substring(Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())).length());
 			}
-			if(WorldGroupHandler.isEnabled()) {
+			if (WorldGroupHandler.isEnabled()) {
 				ChatHandler.sendServerWorldGroupMessage(WorldGroupHandler.getWorldGroup(event.getEntity()), message);
 			} else {
 				ChatHandler.sendServerBroadcastMessage(message);

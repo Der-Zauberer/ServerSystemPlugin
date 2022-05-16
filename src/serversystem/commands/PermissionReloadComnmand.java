@@ -15,19 +15,17 @@ public class PermissionReloadComnmand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(new CommandAssistant(sender).hasPermissionOrIsConsole("serversystem.command.permission")) {
+		if (new CommandAssistant(sender).hasPermissionOrIsConsole("serversystem.command.permission")) {
 			Config.reloadConfig();
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				PermissionHandler.loadPlayerPermissions(player);
 				TeamHandler.addRoleToPlayer(player);
 				System.out.println(Config.getPlayerGroup(player));
 			}
-			
+
 			ChatHandler.sendServerMessage(sender, "Reloaded all permissions!");
 		}
 		return true;
 	}
-	
-	
 
 }

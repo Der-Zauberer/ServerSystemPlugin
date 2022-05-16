@@ -23,7 +23,7 @@ public class SignHandler implements Listener {
 	
 	public static void executeServerSign(Player player, Sign sign, String label, String args) {
 		for (ServerSign serversign : serversign) {
-			if(serversign.getLabel().equalsIgnoreCase(label)) {
+			if (serversign.getLabel().equalsIgnoreCase(label)) {
 				serversign.onAction(player, sign, args);
 			}
 		}
@@ -31,7 +31,7 @@ public class SignHandler implements Listener {
 	
 	public static boolean placeServerSign(Player player, String label, String args) {
 		for (ServerSign serversign : serversign) {
-			if(serversign.getLabel().equalsIgnoreCase(label)) {
+			if (serversign.getLabel().equalsIgnoreCase(label)) {
 				return serversign.onPlace(player, args);
 			}
 		}
@@ -42,7 +42,7 @@ public class SignHandler implements Listener {
 	public void onInteract(PlayerInteractEvent event) {
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getState() instanceof Sign) {
 			Sign sign = (Sign) event.getClickedBlock().getState();
-			if(sign.getLine(0) != null && sign.getLine(3) != null) {
+			if (sign.getLine(0) != null && sign.getLine(3) != null) {
 				String label = ChatColor.stripColor(sign.getLine(1)).substring(1, sign.getLine(1).length() -1);
 				executeServerSign(event.getPlayer(), sign, label, ChatColor.stripColor(sign.getLine(2)));
 			}
@@ -51,21 +51,21 @@ public class SignHandler implements Listener {
 	
 	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
-		if(event.getLine(0) != null && event.getLine(3) != null) {
-			if(event.getLine(1).contains("[") || event.getLine(1).contains("]")) {	
-				if(event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
+		if (event.getLine(0) != null && event.getLine(3) != null) {
+			if (event.getLine(1).contains("[") || event.getLine(1).contains("]")) {	
+				if (event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
 					String label = event.getLine(1).substring(1, event.getLine(1).length() -1);
-					if(placeServerSign(event.getPlayer(), label, event.getLine(2))) {
-						event.setLine(2, "§2" + event.getLine(2));
+					if (placeServerSign(event.getPlayer(), label, event.getLine(2))) {
+						event.setLine(2, "ï¿½2" + event.getLine(2));
 					} else {
-						event.setLine(2, "§4" + event.getLine(2));
+						event.setLine(2, "ï¿½4" + event.getLine(2));
 					}
 				} else if(!event.getPlayer().hasPermission("serversystem.tools.signeddit")){
-					event.setLine(1, "§4Permissions");
-					event.setLine(2, "§4required!");
+					event.setLine(1, "ï¿½4Permissions");
+					event.setLine(2, "ï¿½4required!");
 				}
-				
 			}	
 		}
 	}
+	
 }

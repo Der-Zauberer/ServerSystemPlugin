@@ -13,16 +13,16 @@ import serversystem.handler.WorldGroupHandler;
 public class PlayerQuitListener implements Listener {
 	
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
-		if(Config.isLeaveMessageActiv()) {
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		if (Config.isLeaveMessageActiv()) {
 			event.setQuitMessage(ChatHandler.getPlayerQuitMessage(event));
 		} else {
 			event.setQuitMessage("");
 		}
-		if(PlayerVanishHandler.isPlayerVanished(event.getPlayer())) {
+		if (PlayerVanishHandler.isPlayerVanished(event.getPlayer())) {
 			PlayerVanishHandler.vanishPlayer(event.getPlayer());
 		}
-		if(event.getPlayer().getFlySpeed() > 0.2) {
+		if (event.getPlayer().getFlySpeed() > 0.2) {
 			event.getPlayer().setFlySpeed((float) 0.1);
 		}
 		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerLeave(event.getPlayer());

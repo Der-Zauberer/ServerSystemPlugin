@@ -15,26 +15,21 @@ public class InventoryCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
 		CommandAssistant assistant = new CommandAssistant(sender);
-		if(assistant.isSenderInstanceOfPlayer()) {
-			if(assistant.hasMinArguments(1, args)) {
-				if(assistant.isPlayer(args[0])) {
-					((Player) sender).openInventory(Bukkit.getPlayer(args[0]).getInventory());
-				}
-			}
-			
+		if (assistant.isSenderInstanceOfPlayer() && assistant.hasMinArguments(1, args) && assistant.isPlayer(args[0])) {
+			((Player) sender).openInventory(Bukkit.getPlayer(args[0]).getInventory());
 		}
 		return true;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
-		if(args.length == 1) {
+		if (args.length == 1) {
 			commands = assistant.getPlayers();
 		}
 		commands = assistant.cutArguments(args, commands);
 		return commands;
 	}
-	
+
 }

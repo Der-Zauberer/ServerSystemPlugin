@@ -9,10 +9,8 @@ import serversystem.config.Config;
 public class ExplotionListener implements Listener {
 	
 	@EventHandler
-	public void onExplotion(EntityExplodeEvent event) {
-		if(!Config.hasWorldExplosion(event.getEntity().getWorld().getName())) {
-			event.blockList().clear();
-		}
+	public void onEntityExplode(EntityExplodeEvent event) {
+		if (!Config.hasWorldExplosion(event.getEntity().getWorld().getName())) event.blockList().clear();
 	}
 
 }

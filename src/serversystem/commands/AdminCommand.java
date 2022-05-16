@@ -11,12 +11,12 @@ import serversystem.utilities.CommandAssistant;
 
 import org.bukkit.entity.Player;
 
-public class AdminCommand implements CommandExecutor, TabCompleter{
+public class AdminCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if(new CommandAssistant(sender).isSenderInstanceOfPlayer()) {
-			new AdminMenu((Player)sender).open();
+		if (new CommandAssistant(sender).isSenderInstanceOfPlayer()) {
+			new AdminMenu((Player) sender).open();
 		}
 		return true;
 	}

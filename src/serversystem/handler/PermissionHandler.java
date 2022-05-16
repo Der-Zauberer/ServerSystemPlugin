@@ -17,43 +17,43 @@ import serversystem.config.Config;
 import serversystem.main.ServerSystem;
 
 public class PermissionHandler implements Listener {
-	
+
 	private static HashMap<Player, PermissionAttachment> attachments = new HashMap<>();
-	
+
 	public static void loadPlayerPermissions(Player player) {
 		resetPlayerPermissions(player);
-		if(Config.getPlayerPermissions(player) != null) {
+		if (Config.getPlayerPermissions(player) != null) {
 			removeConfigDisabledPermissions(player);
-			for(String string : Config.getPlayerPermissions(player)) {
-				if(string.endsWith("*")) {
+			for (String string : Config.getPlayerPermissions(player)) {
+				if (string.endsWith("*")) {
 					string = string.substring(0, string.length() - 2);
 					boolean add = true;
-					if(string.startsWith("-")) {
+					if (string.startsWith("-")) {
 						add = false;
 						string = string.substring(1);
 					}
-					addPermission(player, string  + ".*");
+					addPermission(player, string + ".*");
 					for (Permission permission : Bukkit.getServer().getPluginManager().getPermissions()) {
-						if(permission.getName().startsWith(string)) {
-							if(add) {
+						if (permission.getName().startsWith(string)) {
+							if (add) {
 								addPermission(player, permission.getName());
-							} else if(player.hasPermission(permission.getName())) {
+							} else if (player.hasPermission(permission.getName())) {
 								removePermission(player, permission.getName());
 							}
 						}
 					}
 					for (String permission : getVanillaPermissions()) {
-						if(permission.startsWith(string)) {
-							if(add) {
+						if (permission.startsWith(string)) {
+							if (add) {
 								addPermission(player, permission);
-							} else if(player.hasPermission(permission)) {
+							} else if (player.hasPermission(permission)) {
 								removePermission(player, permission);
 							}
 						}
 					}
-				} else if(string.startsWith("-")) {
+				} else if (string.startsWith("-")) {
 					string = string.substring(1);
-					if(player.hasPermission(string)) {
+					if (player.hasPermission(string)) {
 						removePermission(player, string);
 					}
 				} else {
@@ -65,34 +65,34 @@ public class PermissionHandler implements Listener {
 		}
 		reloadPlayerPermissions(player);
 	}
-	
+
 	public static void resetPlayerPermissions(Player player) {
 		removeAllPermissions(player);
 		reloadPlayerPermissions(player);
 	}
-	
+
 	private static void removeConfigDisabledPermissions(Player player) {
-		if(Config.getDisabledPermissions() != null) {
-			for(String string : Config.getDisabledPermissions()) {
+		if (Config.getDisabledPermissions() != null) {
+			for (String string : Config.getDisabledPermissions()) {
 				removePermission(player, string);
 			}
 		}
 	}
-	
+
 	private static void addPermission(Player player, String permission) {
-		if(attachments.get(player) != null) {
+		if (attachments.get(player) != null) {
 			attachments.get(player).setPermission(permission, true);
 		}
 	}
-	
+
 	private static void removePermission(Player player, String permission) {
-		if(attachments.get(player) != null) {
+		if (attachments.get(player) != null) {
 			attachments.get(player).setPermission(permission, false);
 		}
 	}
-	
+
 	private static void removeAllPermissions(Player player) {
-		if(attachments.get(player) != null) {
+		if (attachments.get(player) != null) {
 			for (String permission : attachments.get(player).getPermissions().keySet()) {
 				removePermission(player, permission);
 			}
@@ -100,9 +100,9 @@ public class PermissionHandler implements Listener {
 			attachments.put(player, player.addAttachment(ServerSystem.getInstance()));
 		}
 	}
-	
+
 	private static void reloadPlayerPermissions(Player player) {
-		if(player.isOp()) {
+		if (player.isOp()) {
 			player.setOp(false);
 			player.setOp(true);
 		} else {
@@ -110,7 +110,7 @@ public class PermissionHandler implements Listener {
 			player.setOp(false);
 		}
 	}
-	
+
 	private static ArrayList<String> getVanillaPermissions() {
 		ArrayList<String> permissions = new ArrayList<>();
 		permissions.add("minecraft.command.advancement");
@@ -170,31 +170,30 @@ public class PermissionHandler implements Listener {
 		permissions.add("minecraft.debugstick.always");
 		return permissions;
 	}
-	
+
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if(event.getBlock().getType() == Material.COMMAND_BLOCK || event.getBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
-			System.out.println(event.getPlayer().hasPermission("serversystem.tools.commandblock"));
-			if(!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
+		if (event.getBlock().getType() == Material.COMMAND_BLOCK || event.getBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
+			if (!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
 				event.setCancelled(true);
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		if(event.getBlock().getType() == Material.COMMAND_BLOCK || event.getBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
-			if(!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
+		if (event.getBlock().getType() == Material.COMMAND_BLOCK || event.getBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
+			if (!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
 				event.setCancelled(true);
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onBlockPlace(PlayerInteractEvent event) {
-		if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			if(event.getClickedBlock().getType() == Material.COMMAND_BLOCK || event.getClickedBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
-				if(!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if (event.getClickedBlock().getType() == Material.COMMAND_BLOCK || event.getClickedBlock().getType() == Material.COMMAND_BLOCK_MINECART) {
+				if (!event.getPlayer().hasPermission("serversystem.tools.commandblock")) {
 					event.getPlayer().closeInventory();
 				}
 			}

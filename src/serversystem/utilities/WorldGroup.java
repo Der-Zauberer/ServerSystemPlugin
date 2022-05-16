@@ -11,22 +11,22 @@ import serversystem.handler.TeamHandler;
 import serversystem.main.ServerSystem;
 
 public class WorldGroup {
-	
+
 	private String name;
 	private int currentPlayers;
 	private ArrayList<World> worlds;
-	
+
 	public WorldGroup(String name, World world) {
 		this.name = name;
 		worlds = new ArrayList<>();
 		worlds.add(world);
 	}
-	
+
 	public WorldGroup(String name, ArrayList<World> worlds) {
 		this.name = name;
 		this.worlds = worlds;
 	}
-	
+
 	public void onPlayerJoin(Player player) {
 		currentPlayers++;
 		for (Player everyplayer : Bukkit.getOnlinePlayers()) {
@@ -34,7 +34,7 @@ public class WorldGroup {
 			player.hidePlayer(ServerSystem.getInstance(), everyplayer);
 		}
 		for (World world : worlds) {
-			for(Player everyplayer : world.getPlayers()) {
+			for (Player everyplayer : world.getPlayers()) {
 				everyplayer.showPlayer(ServerSystem.getInstance(), player);
 				player.showPlayer(ServerSystem.getInstance(), everyplayer);
 			}
@@ -44,10 +44,10 @@ public class WorldGroup {
 		SaveConfig.loadGamemode(player, this);
 		TeamHandler.addRoleToPlayer(player);
 	}
-	
+
 	public void onPlayerLeave(Player player) {
 		currentPlayers--;
-		if(PlayerVanishHandler.isPlayerVanished(player)) {
+		if (PlayerVanishHandler.isPlayerVanished(player)) {
 			PlayerVanishHandler.vanishPlayer(player);
 		}
 		TeamHandler.removePlayerFromTeam(player);
@@ -61,31 +61,31 @@ public class WorldGroup {
 		player.setLevel(0);
 		player.setExp(0);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public int getCurrentPlayers() {
 		return currentPlayers;
 	}
-	
+
 	public ArrayList<World> getWorlds() {
 		return worlds;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public void addWorld(World world) {
 		worlds.add(world);
 	}
-	
+
 	public void removeWorld(World world) {
 		worlds.remove(world);
 	}
-	
+
 	public ArrayList<Player> getPlayers() {
 		ArrayList<Player> players = new ArrayList<>();
 		for (World world : worlds) {

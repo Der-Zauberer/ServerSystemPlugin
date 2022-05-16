@@ -10,11 +10,9 @@ import serversystem.config.Config;
 public class HungerListener implements Listener {
 	
 	@EventHandler
-	public void onHunger(FoodLevelChangeEvent event) {
-		if(event.getEntity() instanceof Player) {
-			if(!Config.hasWorldHunger(event.getEntity().getWorld().getName())) {
-				event.setCancelled(true);
-			}
+	public void onFoodLevelChange(FoodLevelChangeEvent event) {
+		if (event.getEntity() instanceof Player && !Config.hasWorldHunger(event.getEntity().getWorld().getName())) {
+			event.setCancelled(true);
 		}
 	}
 

@@ -16,27 +16,27 @@ public class BuildCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		CommandAssistant assistent = new CommandAssistant(sender);
-		if(args.length == 0) {
-			if(assistent.isSenderInstanceOfPlayer(true)) {
+		if (args.length == 0) {
+			if (assistent.isSenderInstanceOfPlayer(true)) {
 				PlayerBuildHandler.buildmodePlayer((Player) sender);
 			}
 		} else {
-			if(assistent.isPlayer(args[0])) {
+			if (assistent.isPlayer(args[0])) {
 				PlayerBuildHandler.buildmodePlayer(Bukkit.getPlayer(args[0]), sender);
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
-		if(args.length == 1) {
+		if (args.length == 1) {
 			commands = assistant.getPlayers();
 		}
 		assistant.cutArguments(args, commands);
 		return commands;
 	}
-	
+
 }

@@ -15,9 +15,9 @@ public class TeamHandler {
 	public static final String TEAMVANISH = "00Vanish";
 	
 	public static void initializeTeams() {
-		if(Config.getSection("Groups", false) != null) {
+		if (Config.getSection("Groups", false) != null) {
 			for (String group : Config.getSection("Groups", false)) {
-				if(Config.getGroupID(group) != null && Config.getGroupColor(group) != null && Config.getGroupPrefix(group) != null) {
+				if (Config.getGroupID(group) != null && Config.getGroupColor(group) != null && Config.getGroupPrefix(group) != null) {
 					createTeam(Config.getGroupID(group), Config.getGroupPrefix(group), ChatHandler.parseColor(Config.getGroupColor(group)));
 				}
 			}
@@ -28,7 +28,7 @@ public class TeamHandler {
 	
 	public static void resetTeams() {
 		for (String group : groups) {
-			if(getMainScoreboard().getTeam(group) != null) {
+			if (getMainScoreboard().getTeam(group) != null) {
 				resetTeam(group);
 			}
 		}
@@ -81,7 +81,7 @@ public class TeamHandler {
 	
 	public static void addRoleToPlayer(Player player) {
 		groups.sort(String::compareToIgnoreCase);
-		if(Config.getGroupID(Config.getPlayerGroup(player)) != null) {
+		if (Config.getGroupID(Config.getPlayerGroup(player)) != null) {
 			addPlayerToTeam(Config.getGroupID(Config.getPlayerGroup(player)), player);
 		} else {
 			removePlayerFromTeam(player);

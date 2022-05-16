@@ -12,20 +12,20 @@ import serversystem.handler.ChatHandler;
 import serversystem.utilities.CommandAssistant;
 
 public class LobbyCommand implements CommandExecutor, TabCompleter {
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		CommandAssistant assistant = new CommandAssistant(sender);
-		if(assistant.isSenderInstanceOfPlayer()) {
-			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
-				((Player)sender).teleport(Config.getLobbyWorld().getSpawnLocation());
+		if (assistant.isSenderInstanceOfPlayer()) {
+			if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
+				((Player) sender).teleport(Config.getLobbyWorld().getSpawnLocation());
 			} else {
 				ChatHandler.sendServerErrorMessage(sender, "Lobby does not exist!");
 			}
 		}
 		return true;
 	}
-	
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		return new ArrayList<String>();

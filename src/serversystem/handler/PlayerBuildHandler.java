@@ -24,10 +24,10 @@ public class PlayerBuildHandler implements Listener {
 	}
 	
 	public static void buildmodePlayer(Player player, CommandSender sender) {
-		if(buildplayers.contains(player)) {
+		if (buildplayers.contains(player)) {
 			buildplayers.remove(player);
 			ChatHandler.sendServerMessage(player, "You can no longer build!");
-			if(player != sender) {
+			if (player != sender) {
 				ChatHandler.sendServerMessage(sender, player.getName() + " can no longer build!");
 			}
 		} else {
@@ -40,7 +40,7 @@ public class PlayerBuildHandler implements Listener {
 	}
 	
 	public static boolean isPlayerInBuildmode(Player player) {
-		if(buildplayers.contains(player)) {
+		if (buildplayers.contains(player)) {
 			return true;
 		}
 		return false;
@@ -48,15 +48,15 @@ public class PlayerBuildHandler implements Listener {
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
+		if (Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
+			if (!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
 				event.setCancelled(true);
 				return;
 			}
 		}
 		if(!event.getPlayer().hasPermission("serversystem.tools.disabledblocks")) {
-			for(String string : Config.getDisabledBlocks()) {
-				if(event.getBlock().getBlockData().getAsString().equals(string)) {
+			for (String string : Config.getDisabledBlocks()) {
+				if (event.getBlock().getBlockData().getAsString().equals(string)) {
 					event.setCancelled(true);
 					return;
 				}
@@ -66,15 +66,15 @@ public class PlayerBuildHandler implements Listener {
 	
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
+		if (Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
+			if (!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
 				event.setCancelled(true);
 				return;
 			}
 		}
 		if(!event.getPlayer().hasPermission("serversystem.tools.disabledblocks")) {
-			for(String string : Config.getDisabledBlocks()) {
-				if(event.getBlock().getBlockData().getAsString().equals(string)) {
+			for (String string : Config.getDisabledBlocks()) {
+				if (event.getBlock().getBlockData().getAsString().equals(string)) {
 					event.setCancelled(true);
 					return;
 				}
@@ -84,9 +84,9 @@ public class PlayerBuildHandler implements Listener {
 	
 	@EventHandler
 	public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
-		if(event.getRemover() instanceof Player) {
-			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if(!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getRemover()))) {
+		if (event.getRemover() instanceof Player) {
+			if (Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
+				if (!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getRemover()))) {
 					event.setCancelled(true);
 				}
 			}
@@ -95,9 +95,9 @@ public class PlayerBuildHandler implements Listener {
 	
 	@EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
-		if(event.getEntity().getShooter() instanceof Player) {
-			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if(!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getEntity().getShooter()))) {
+		if (event.getEntity().getShooter() instanceof Player) {
+			if (Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
+				if (!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getEntity().getShooter()))) {
 					event.setCancelled(true);
 				}
 			}
@@ -106,9 +106,9 @@ public class PlayerBuildHandler implements Listener {
 	
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		if(event.getDamager() instanceof Player) {
-			if(Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
-				if(!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getDamager()))) {
+		if (event.getDamager() instanceof Player) {
+			if (Config.hasWorldProtection(event.getEntity().getWorld().getName())) {
+				if (!PlayerBuildHandler.isPlayerInBuildmode(((Player) event.getDamager()))) {
 					event.setCancelled(true);
 				}
 			}
@@ -117,8 +117,8 @@ public class PlayerBuildHandler implements Listener {
 	
 	@EventHandler
 	public void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
-		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
+		if (Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
+			if (!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
 				event.setCancelled(true);
 			}
 		}
@@ -126,8 +126,8 @@ public class PlayerBuildHandler implements Listener {
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if(Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
-			if(!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
+		if (Config.hasWorldProtection(event.getPlayer().getWorld().getName())) {
+			if (!PlayerBuildHandler.isPlayerInBuildmode(event.getPlayer())) {
 				Material mainmaterial = event.getPlayer().getInventory().getItemInMainHand().getType();
 				Material secondarymaterial = event.getPlayer().getInventory().getItemInOffHand().getType();
 				ArrayList<Material> vorbidden = new ArrayList<>();
@@ -135,23 +135,17 @@ public class PlayerBuildHandler implements Listener {
 				vorbidden.add(Material.PAINTING);
 				vorbidden.add(Material.ITEM_FRAME);
 				vorbidden.add(Material.GLOW_ITEM_FRAME);
-				for(Material material : vorbidden) {
-					if(mainmaterial == material || secondarymaterial == material) {
+				for (Material material : vorbidden) {
+					if (mainmaterial == material || secondarymaterial == material) {
 						event.setCancelled(true);
 						return;
 					}
 				}
-				if(mainmaterial.toString().contains("MINECARD") || secondarymaterial.toString().contains("MINECARD")) {
-					event.setCancelled(true);
-				} else if(mainmaterial.toString().contains("BOAT") || secondarymaterial.toString().contains("BOAT")) {
-					event.setCancelled(true);
-				} else if(mainmaterial.toString().contains("ITEM_FRAME") || secondarymaterial.toString().contains("ITEM_FRAME")) {
-					event.setCancelled(true);
-				} else if(mainmaterial.toString().contains("SPAWN_EGG") || secondarymaterial.toString().contains("SPAWN_EGG")) {
-					event.setCancelled(true);
-				} else if(mainmaterial.toString().contains("BUCKET") || secondarymaterial.toString().contains("BUCKET")) {
-					event.setCancelled(true);
-				}
+				if (mainmaterial.toString().contains("MINECARD") || secondarymaterial.toString().contains("MINECARD")) event.setCancelled(true);
+				else if (mainmaterial.toString().contains("BOAT") || secondarymaterial.toString().contains("BOAT")) event.setCancelled(true);
+				else if (mainmaterial.toString().contains("ITEM_FRAME") || secondarymaterial.toString().contains("ITEM_FRAME")) event.setCancelled(true);
+				else if (mainmaterial.toString().contains("SPAWN_EGG") || secondarymaterial.toString().contains("SPAWN_EGG")) event.setCancelled(true);
+				else if (mainmaterial.toString().contains("BUCKET") || secondarymaterial.toString().contains("BUCKET")) event.setCancelled(true);
 			}
 		}
 	}

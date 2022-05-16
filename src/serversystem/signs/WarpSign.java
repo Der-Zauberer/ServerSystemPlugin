@@ -17,22 +17,19 @@ public class WarpSign implements ServerSign {
 
 	@Override
 	public void onAction(Player player, Sign sign, String args) {
-		if(WarpHandler.getWarp(args) != null) {
+		if (WarpHandler.getWarp(args) != null) {
 			ServerWarp warp = WarpHandler.getWarp(args);
-			if(warp.getPermission() == null || player.hasPermission(warp.getPermission())) {
+			if (warp.getPermission() == null || player.hasPermission(warp.getPermission())) {
 				player.teleport(WarpHandler.getWarp(args).getLocation());
 			} else {
 				ChatHandler.sendServerErrorMessage(player, ErrorMessage.NOPERMISSION);
-			};
+			}
 		}
 	}
 
 	@Override
 	public boolean onPlace(Player player, String args) {
-		if(WarpHandler.getWarp(args) != null) {
-			return true;
-		}
-		return false;
+		return WarpHandler.getWarp(args) != null;
 	}
 
 }

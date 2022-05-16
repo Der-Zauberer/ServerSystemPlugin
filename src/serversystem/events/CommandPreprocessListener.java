@@ -9,30 +9,30 @@ import serversystem.handler.ChatHandler;
 public class CommandPreprocessListener implements Listener {
 	
 	@EventHandler
-	public void onCommandPreProcess(PlayerCommandPreprocessEvent event) {
-		if(((event.getMessage().toLowerCase().startsWith("/say") || event.getMessage().toLowerCase().startsWith("/minecraft:say")) && event.getPlayer().hasPermission("minecraft.command.say"))  || ((event.getMessage().toLowerCase().startsWith("/me") || event.getMessage().toLowerCase().startsWith("/minecraft:me")) && (event.getPlayer().hasPermission("minecraft.command.me")))){
+	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+		if (((event.getMessage().toLowerCase().startsWith("/say") || event.getMessage().toLowerCase().startsWith("/minecraft:say")) && event.getPlayer().hasPermission("minecraft.command.say"))  || ((event.getMessage().toLowerCase().startsWith("/me") || event.getMessage().toLowerCase().startsWith("/minecraft:me")) && (event.getPlayer().hasPermission("minecraft.command.me")))){
 			String[] messagelist = event.getMessage().split(" ");
-			if(messagelist.length > 1) {
+			if (messagelist.length > 1) {
 				event.setCancelled(true);
 				ChatHandler.sendPlayerChatMessage(event.getPlayer(), getStringMessage(messagelist, 1));
 			}
 			return;
 		}
-		if((event.getMessage().toLowerCase().startsWith("/msg") || event.getMessage().toLowerCase().startsWith("/minecraft:msg") || event.getMessage().toLowerCase().startsWith("/tell") || event.getMessage().toLowerCase().startsWith("/minecraft:tell")) && event.getPlayer().hasPermission("minecraft.command.msg")){
+		if ((event.getMessage().toLowerCase().startsWith("/msg") || event.getMessage().toLowerCase().startsWith("/minecraft:msg") || event.getMessage().toLowerCase().startsWith("/tell") || event.getMessage().toLowerCase().startsWith("/minecraft:tell")) && event.getPlayer().hasPermission("minecraft.command.msg")){
 			String[] messagelist = event.getMessage().split(" ");
-			if(messagelist.length > 2 && Bukkit.getPlayer(messagelist[1]) != null) {
+			if (messagelist.length > 2 && Bukkit.getPlayer(messagelist[1]) != null) {
 				event.setCancelled(true);
 				ChatHandler.sendPlayerPrivateMessage(event.getPlayer(), Bukkit.getPlayer(messagelist[1]), getStringMessage(messagelist, 2));
 			}
 			return;
 		}
-		if(event.getMessage().toLowerCase().startsWith("/execute") && event.getPlayer().hasPermission("minecraft.command.execute")) {
+		if (event.getMessage().toLowerCase().startsWith("/execute") && event.getPlayer().hasPermission("minecraft.command.execute")) {
 			String[] messagelist = event.getMessage().split(" ");
-			if(messagelist.length > 4 && messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("say") || messagelist[4].equalsIgnoreCase("minecraft:say") || messagelist[4].equalsIgnoreCase("me") || messagelist[4].equalsIgnoreCase("minecraft:me")) && Bukkit.getPlayer(messagelist[2]) != null) {
+			if (messagelist.length > 4 && messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("say") || messagelist[4].equalsIgnoreCase("minecraft:say") || messagelist[4].equalsIgnoreCase("me") || messagelist[4].equalsIgnoreCase("minecraft:me")) && Bukkit.getPlayer(messagelist[2]) != null) {
 				event.setCancelled(true);
 				ChatHandler.sendPlayerChatMessage(Bukkit.getPlayer(messagelist[2]), getStringMessage(messagelist, 5));
 			}
-			if(messagelist.length > 5 && messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("msg") || messagelist[4].equalsIgnoreCase("minecraft:say")) && Bukkit.getPlayer(messagelist[2]) != null && Bukkit.getPlayer(messagelist[5]) != null) {
+			if (messagelist.length > 5 && messagelist[1].equalsIgnoreCase("as") && messagelist[3].equalsIgnoreCase("run") && (messagelist[4].equalsIgnoreCase("msg") || messagelist[4].equalsIgnoreCase("minecraft:say")) && Bukkit.getPlayer(messagelist[2]) != null && Bukkit.getPlayer(messagelist[5]) != null) {
 				event.setCancelled(true);
 				ChatHandler.sendPlayerPrivateMessage(Bukkit.getPlayer(messagelist[2]), Bukkit.getPlayer(messagelist[5]), getStringMessage(messagelist, 6));
 			}
@@ -45,7 +45,7 @@ public class CommandPreprocessListener implements Listener {
 		for (int i = indexOfFirstMessgae; i < messagelist.length; i++) {
 			message += " " + messagelist[i];
 		}
-		if(message.startsWith(" ")) {
+		if (message.startsWith(" ")) {
 			message = message.substring(1);
 		}
 		return message;

@@ -9,11 +9,11 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import serversystem.config.Config;
 
 public class EntityDamageListener implements Listener {
-	
+
 	@EventHandler
-	public void onDamage(EntityDamageEvent event) {
-		if(event.getEntity() instanceof Player) {
-			if(!Config.hasWorldDamage(event.getEntity().getWorld().getName())) {
+	public void onEntityDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player) {
+			if (!Config.hasWorldDamage(event.getEntity().getWorld().getName())) {
 				if (event.getCause() == DamageCause.VOID) {
 					event.getEntity().teleport(event.getEntity().getWorld().getSpawnLocation());
 				}

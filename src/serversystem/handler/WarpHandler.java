@@ -26,8 +26,8 @@ public class WarpHandler {
 	}
 	
 	public static ServerWarp getWarp(String name) {
-		for(ServerWarp warp : warps) {
-			if(warp.getName().equals(name)) {
+		for (ServerWarp warp : warps) {
+			if (warp.getName().equals(name)) {
 				return warp;
 			}
 		}
@@ -41,9 +41,9 @@ public class WarpHandler {
 	
 	public static ArrayList<ServerWarp> getWarps(Player player) {
 		ArrayList<ServerWarp> result = new ArrayList<>();
-		for(ServerWarp warp : warps) {
-			if(warp.isGlobal() || player.getWorld() == warp.getLocation().getWorld()) {
-				if(warp.getPermission() == null || player.hasPermission(warp.getPermission())) {
+		for (ServerWarp warp : warps) {
+			if (warp.isGlobal() || player.getWorld() == warp.getLocation().getWorld()) {
+				if (warp.getPermission() == null || player.hasPermission(warp.getPermission())) {
 					result.add(warp);
 				}
 			}

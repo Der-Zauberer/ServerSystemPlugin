@@ -18,8 +18,8 @@ public class WorldSign implements ServerSign{
 
 	@Override
 	public void onAction(Player player, Sign sign, String args) {
-		if(Bukkit.getWorld(args) != null) {
-			if(!Config.hasWorldPermission(args) || player.hasPermission(Config.getWorldPermission(args))) {
+		if (Bukkit.getWorld(args) != null) {
+			if (!Config.hasWorldPermission(args) || player.hasPermission(Config.getWorldPermission(args))) {
 				WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args));
 			} else {
 				ChatHandler.sendServerErrorMessage(player, ErrorMessage.NOPERMISSION);
@@ -29,10 +29,7 @@ public class WorldSign implements ServerSign{
 
 	@Override
 	public boolean onPlace(Player player, String args) {
-		if(Bukkit.getWorld(args) != null) {
-			return true;
-		}
-		return false;
+		return Bukkit.getWorld(args) != null;
 	}
 
 }

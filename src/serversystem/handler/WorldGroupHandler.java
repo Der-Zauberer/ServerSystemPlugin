@@ -22,10 +22,10 @@ public class WorldGroupHandler {
 	public static void autoCreateWorldGroups() {
 		for (World world : Bukkit.getWorlds()) {
 			String worldgroup = Config.getWorldGroup(world.getName());
-			if(getWorldGroup(worldgroup) == null) {
+			if (getWorldGroup(worldgroup) == null) {
 				addWorldGroup(new WorldGroup(worldgroup, world));
 			} else {
-				if(!getWorldGroup(worldgroup).getWorlds().contains(world)) {
+				if (!getWorldGroup(worldgroup).getWorlds().contains(world)) {
 					getWorldGroup(worldgroup).addWorld(world);
 				}
 			}
@@ -36,13 +36,13 @@ public class WorldGroupHandler {
 		ArrayList<String> worldgroups = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
 			String worldgroup = Config.getWorldGroup(world.getName());
-			if(!worldgroups.contains(worldgroup)) {
+			if (!worldgroups.contains(worldgroup)) {
 				worldgroups.add(worldgroup);
 			}
 		}
 		for (int i = 0; i < worldgroups.size(); i++) {
 			WorldGroup worldgroup = WorldGroupHandler.worldgroups.get(i);
-			if(!worldgroups.contains(worldgroup.getName())) {
+			if (!worldgroups.contains(worldgroup.getName())) {
 				removeWorldGroup(worldgroup);
 				worldgroup = null;
 			}
@@ -50,7 +50,7 @@ public class WorldGroupHandler {
 	}
 	
 	public static void teleportPlayer(Player player, World world) {
-		if(Config.hasWorldSpawn(world.getName()) || SaveConfig.loadLocation(player, world) == null) {
+		if (Config.hasWorldSpawn(world.getName()) || SaveConfig.loadLocation(player, world) == null) {
 			player.teleport(world.getSpawnLocation());
 		} else {
 			player.teleport(SaveConfig.loadLocation(player, world));
@@ -58,8 +58,8 @@ public class WorldGroupHandler {
 	}
 	
 	public static void autoSavePlayerStats() {
-		for(Player player : Bukkit.getOnlinePlayers()) {
-			if(enabled) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			if (enabled) {
 				SaveConfig.saveGamemode(player, WorldGroupHandler.getWorldGroup(player));
 				SaveConfig.saveInventory(player, WorldGroupHandler.getWorldGroup(player));
 				SaveConfig.saveXp(player, WorldGroupHandler.getWorldGroup(player));
@@ -69,8 +69,8 @@ public class WorldGroupHandler {
 	}
 	
 	public static WorldGroup getWorldGroup(Player player) {
-		for(WorldGroup worldgroup : worldgroups) {
-			if(worldgroup.getWorlds().contains(player.getWorld())) {
+		for (WorldGroup worldgroup : worldgroups) {
+			if (worldgroup.getWorlds().contains(player.getWorld())) {
 				return worldgroup;
 			}
 		}
@@ -78,8 +78,8 @@ public class WorldGroupHandler {
 	}
 	
 	public static WorldGroup getWorldGroup(World world) {
-		for(WorldGroup worldgroup : worldgroups) {
-			if(worldgroup.getWorlds().contains(world)) {
+		for (WorldGroup worldgroup : worldgroups) {
+			if (worldgroup.getWorlds().contains(world)) {
 				return worldgroup;
 			}
 		}
@@ -87,8 +87,8 @@ public class WorldGroupHandler {
 	}
 	
 	public static WorldGroup getWorldGroup(String string) {
-		for(WorldGroup worldgroup : worldgroups) {
-			if(worldgroup.getName().equals(string)) {
+		for (WorldGroup worldgroup : worldgroups) {
+			if (worldgroup.getName().equals(string)) {
 				return worldgroup;
 			}
 		}

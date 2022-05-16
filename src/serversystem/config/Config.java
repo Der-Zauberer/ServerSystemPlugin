@@ -19,77 +19,37 @@ public class Config {
 	public enum WorldOption{DAMAGE, PVP, PROTECTION, EXPLOSION, HUNGER, DEATHMESSAGE};
 	
 	public Config() {
-		if(config.get("Server.joinmessage") == null) {
-			config.set("Server.joinmessage", true);
-		}
-		if(config.get("Server.leavemessage") == null) {
-			config.set("Server.leavemessage", true);
-		}
-		if(config.get("Server.title.text") == null) {
-			config.set("Server.title.text", "");
-		}
-		if(config.get("Server.title.color") == null) {
-			config.set("Server.title.color", "");
-		}
-		if(config.get("Server.subtitle.text") == null) {
-			config.set("Server.subtitle.text", "");
-		}
-		if(config.get("Server.subtitle.color") == null) {
-			config.set("Server.subtitle.color", "");
-		}
-		if(config.get("Server.tablist.title.text") == null) {
-			config.set("Server.tablist.title.text", "");
-		}
-		if(config.get("Server.tablist.title.color") == null) {
-			config.set("Server.tablist.title.color", "");
-		}
-		if(config.get("Server.tablist.subtitle.text") == null) {
-			config.set("Server.tablist.subtitle.text", "");
-		}
-		if(config.get("Server.tablist.subtitle.color") == null) {
-			config.set("Server.tablist.subtitle.color", "");
-		}
-		if(config.get("Server.message.prefix") == null) {
-			config.set("Server.message.prefix", "[Server]");
-		}
-		if(config.get("Server.message.prefixcolor") == null) {
-			config.set("Server.message.prefixcolor", "yellow");
-		}
-		if(config.get("Server.message.color") == null) {
-			config.set("Server.message.color", "yellow");
-		}
-		if(config.get("Server.message.errorcolor") == null) {
-			config.set("Server.message.errorcolor", "red");
-		}
-		if(config.get("Server.lobby") == null) {
-			config.set("Server.lobby", false);
-		}
-		if(config.get("Server.lobbyworld") == null) {
-			config.set("Server.lobbyworld", "world");
-		}
-		if(config.get("Server.enableworldgroups") == null) {
-			config.set("Server.enableworldgroups", true);
-		}
-		if(config.get("Server.enableportals") == null) {
-			config.set("Server.enableportals", true);
-		}
-		if(config.get("DisabledPermissions") == null) {
-			config.set("DisabledPermissions", "");
-		}
-		if(config.get("DisabledBlocks") == null) {
-			config.set("DisabledBlocks", "");
-		}
-		if(config.get("Worldload") == null) {
-			config.set("Worldload", "");
-		}
-		if(config.get("Groups") == null) {
-			config.set("Groups", "");
-		}
+		setDefault("Server.joinmessage", true);
+		setDefault("Server.leavemessage", true);
+		setDefault("Server.title.text", "");
+		setDefault("Server.title.color", "");
+		setDefault("Server.subtitle.text", "");
+		setDefault("Server.subtitle.color", "");
+		setDefault("Server.tablist.title.text", "");
+		setDefault("Server.tablist.title.color", "");
+		setDefault("Server.tablist.subtitle.text", "");
+		setDefault("Server.tablist.subtitle.color", "");
+		setDefault("Server.message.prefix", "[Server]");
+		setDefault("Server.message.prefixcolor", "yellow");
+		setDefault("Server.message.color", "yellow");
+		setDefault("Server.message.errorcolor", "red");
+		setDefault("Server.lobby", false);
+		setDefault("Server.lobbyworld", "world");
+		setDefault("Server.enableworldgroups", true);
+		setDefault("Server.enableportals", true);
+		setDefault("DisabledPermissions", "");
+		setDefault("DisabledBlocks", "");
+		setDefault("Worldload", "");
+		setDefault("Groups", "");
 		for(World world : Bukkit.getWorlds()) {
 			addWorld(world.getName());
 			Bukkit.getWorld(world.getName()).setPVP(hasWorldPVP(world.getName()));
 		}
 		saveConfig();
+	}
+	
+	private static void setDefault(String key, Object value) {
+		if (config.get(key) == null) config.set(key, value);
 	}
 	
 	public static ArrayList<String> getSection(String section, boolean keys) {
@@ -374,7 +334,7 @@ public class Config {
 		case EXPLOSION: setWorldExplosion(world, bool); break;
 		case HUNGER: setWorldHunger(world, bool); break;
 		case DEATHMESSAGE: setWorldDeathMessage(world, bool); break;
-		default:break;
+		default: break;
 		}
 	}
 	
@@ -386,7 +346,7 @@ public class Config {
 		case EXPLOSION: return hasWorldExplosion(world);
 		case HUNGER: return hasWorldHunger(world);
 		case DEATHMESSAGE: return hasWorldDeathMessage(world);
-		default:break;
+		default: break;
 		}
 		return false;
 	}
@@ -408,6 +368,7 @@ public class Config {
 		case 1: return GameMode.CREATIVE;
 		case 2: return GameMode.ADVENTURE;
 		case 3: return GameMode.SPECTATOR;
+		default: break;
 		}
 		return GameMode.ADVENTURE;
 	}
@@ -423,10 +384,7 @@ public class Config {
 	}
 	
 	public static boolean hasWorldPermission(String world) {
-		if(config.getString("Worlds." + world + ".permission") != null) {
-			return true;
-		}
-		return false;
+		return config.getString("Worlds." + world + ".permission") != null;
 	}
 	
 	public static String getWorldPermission(String world) {
@@ -496,8 +454,8 @@ public class Config {
 	public static void saveConfig() {
 		try {
 			config.save(file);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			exception.printStackTrace();
 		}
 	}
 	

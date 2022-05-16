@@ -26,7 +26,7 @@ public class PlayersMenu extends PlayerInventory {
 	
 	private void setPlayer(ItemStack itemstack, Player player, Player target) {
 		String name = ChatColor.stripColor(itemstack.getItemMeta().getDisplayName());
-		if(Bukkit.getPlayer(name) != null) {
+		if (Bukkit.getPlayer(name) != null) {
 			new PlayerMenu(player, target).open();
 		}
 	}

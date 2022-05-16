@@ -40,10 +40,10 @@ import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.WarpSign;
 import serversystem.signs.WorldSign;
 
-public class ServerSystem extends JavaPlugin{
-	
+public class ServerSystem extends JavaPlugin {
+
 	private static ServerSystem instance;
-	
+
 	@Override
 	public void onEnable() {
 		new Config();
@@ -56,33 +56,33 @@ public class ServerSystem extends JavaPlugin{
 		repeatAutoSave();
 		setInstance(this);
 		for (String world : Config.getLoadWorlds()) {
-			if(Bukkit.getWorld(world) == null) {
+			if (Bukkit.getWorld(world) == null) {
 				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
 			}
 		}
 		WorldGroupHandler.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			TeamHandler.addRoleToPlayer(player);
-			if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
+			if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
 		}
 		WorldGroupHandler.autoRemoveWorldGroups();
-		if(Config.lobbyExists() && Config.getLobbyWorld() != null) {
+		if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			Config.getLobbyWorld().setMonsterSpawnLimit(0);
 		}
 		new BukkitRunnable() {
-            @Override
-            public void run() {
-            	for (Player player : Bukkit.getOnlinePlayers()) {
-            		PermissionHandler.loadPlayerPermissions(player);
-            		TeamHandler.addRoleToPlayer(player);
-            	}
-            }
-            
-        }.runTaskLater(ServerSystem.getInstance(), 100);
+			@Override
+			public void run() {
+				for (Player player : Bukkit.getOnlinePlayers()) {
+					PermissionHandler.loadPlayerPermissions(player);
+					TeamHandler.addRoleToPlayer(player);
+				}
+			}
+
+		}.runTaskLater(ServerSystem.getInstance(), 100);
 	}
-	
+
 	@Override
 	public void onDisable() {
 		WorldGroupHandler.autoSavePlayerStats();
@@ -107,7 +107,7 @@ public class ServerSystem extends JavaPlugin{
 		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), this);
 		Bukkit.getPluginManager().registerEvents(new SignHandler(), this);
 	}
-	
+
 	private void registerCommands() {
 		getCommand("admin").setExecutor(new AdminCommand());
 		getCommand("build").setExecutor(new BuildCommand());
@@ -122,27 +122,27 @@ public class ServerSystem extends JavaPlugin{
 		getCommand("world").setExecutor(new WorldCommand());
 		getCommand("wtp").setExecutor(new WTPCommand());
 	}
-	
+
 	private void registerWorldSigns() {
 		SignHandler.registerServerSign(new WorldSign());
 		SignHandler.registerServerSign(new WarpSign());
 	}
-	
+
 	private void repeatAutoSave() {
-	    Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {  
-	        @Override
-	        public void run() {
-	        	WorldGroupHandler.autoSavePlayerStats();
-	        }
-	    }, 1L , (long) 120 * 20);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+			@Override
+			public void run() {
+				WorldGroupHandler.autoSavePlayerStats();
+			}
+		}, 1L, (long) 120 * 20);
 	}
-		
+
 	public static ServerSystem getInstance() {
 		return instance;
 	}
-	
+
 	public static void setInstance(ServerSystem instance) {
 		ServerSystem.instance = instance;
 	}
-	
+
 }

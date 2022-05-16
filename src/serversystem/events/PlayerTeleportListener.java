@@ -16,23 +16,21 @@ import serversystem.handler.WorldGroupHandler;
 public class PlayerTeleportListener implements Listener {
 	
 	@EventHandler
-	public void onTeleport(PlayerTeleportEvent event) {
+	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		Player player = event.getPlayer();
 		World world = event.getTo().getWorld();
-		if(event.getPlayer().getWorld() != event.getTo().getWorld()) {
+		if (event.getPlayer().getWorld() != event.getTo().getWorld()) {
 			boolean vanished = PlayerVanishHandler.isPlayerVanished(event.getPlayer());
-			if(event.getCause() == TeleportCause.NETHER_PORTAL || event.getCause() == TeleportCause.END_PORTAL) {
-				if(!Config.arePortalsEnabled()) {
-					ChatHandler.sendServerErrorMessage(event.getPlayer(), "Portals are not enabled on this server!");
-					event.setCancelled(true);
-					return;
-				}
+			if ((event.getCause() == TeleportCause.NETHER_PORTAL || event.getCause() == TeleportCause.END_PORTAL) && !Config.arePortalsEnabled()) {
+				ChatHandler.sendServerErrorMessage(event.getPlayer(), "Portals are not enabled on this server!");
+				event.setCancelled(true);
+				return;
 			} else {
 				if(!Config.hasWorldSpawn(event.getPlayer().getWorld().getName())) {
 					SaveConfig.saveLocation(event.getPlayer());
 				}
 			}
-			if(Config.isWorldGroupSystemEnabled()) {
+			if (Config.isWorldGroupSystemEnabled()) {
 				WorldGroupHandler.getWorldGroup(player).onPlayerLeave(event.getPlayer());
 				event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
 				if(player.getAllowFlight()) {
@@ -45,12 +43,8 @@ public class PlayerTeleportListener implements Listener {
 					player.setFlying(SaveConfig.loadFlying(player, world));
 				}
 			}
-			if(vanished) {
-				PlayerVanishHandler.vanishPlayer(event.getPlayer());
-			}
-			if(player.getFlySpeed() > 0.2) {
-				player.setFlySpeed((float) 0.1);
-			}
+			if (vanished) PlayerVanishHandler.vanishPlayer(event.getPlayer());
+			if (player.getFlySpeed() > 0.2) player.setFlySpeed((float) 0.1);
 		}
 	}
 

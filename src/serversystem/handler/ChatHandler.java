@@ -68,13 +68,13 @@ public class ChatHandler implements Listener {
 	}
 	
 	public static void sendServerWorldGroupMessage(WorldGroup worldgroup, String message) {
-		if(Config.isWorldGroupSystemEnabled()) {
-			for(Player player : worldgroup.getPlayers()) {
+		if (Config.isWorldGroupSystemEnabled()) {
+			for (Player player : worldgroup.getPlayers()) {
 				player.sendMessage(servername + messagecolor + " " + message);
 			}
 			Bukkit.getConsoleSender().sendMessage("[" + worldgroup.getName() + "] " + servername + messagecolor + " " + message);
 		} else {
-			for(Player player : Bukkit.getOnlinePlayers()) {
+			for (Player player : Bukkit.getOnlinePlayers()) {
 				player.sendMessage(servername + messagecolor + " " + message);
 			}
 			Bukkit.getConsoleSender().sendMessage(servername + messagecolor + " " + message);
@@ -95,13 +95,13 @@ public class ChatHandler implements Listener {
 	}
 	
 	public static void sendPlayerChatMessage(Player player, String message) {
-		if(Config.isWorldGroupSystemEnabled()) {
+		if (Config.isWorldGroupSystemEnabled()) {
 			for (Player players : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
 				players.sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
 			Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] " + TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 		} else {
-			for(Player players : Bukkit.getOnlinePlayers()) {
+			for (Player players : Bukkit.getOnlinePlayers()) {
 				players.sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
 			Bukkit.getConsoleSender().sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
@@ -111,7 +111,7 @@ public class ChatHandler implements Listener {
 	
 	public static void sendPlayerPrivateMessage(Player sender, Player receiver, String message) {		
 		sender.sendMessage(TeamHandler.getPlayerNameColor(sender) + "Me" + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
-		if(sender != receiver) {
+		if (sender != receiver) {
 			receiver.sendMessage(TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + "Me" + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
 		}
 		Bukkit.getConsoleSender().sendMessage("[Private] " + TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
@@ -119,7 +119,7 @@ public class ChatHandler implements Listener {
 	
 	public static void sendPlayerTeamMessage(Player player, String message) {
 		for (String players : player.getScoreboard().getEntryTeam(player.getName()).getEntries()) {
-			if(Bukkit.getPlayer(players) != null) {
+			if (Bukkit.getPlayer(players) != null) {
 				Bukkit.getPlayer(players).sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
 		}
@@ -137,9 +137,7 @@ public class ChatHandler implements Listener {
 	
 	public static Material parseMaterial(String material) {
 		try {
-			if(material.startsWith("minecraft:")) {
-				material = material.substring(10);
-			}
+			if(material.startsWith("minecraft:")) material = material.substring(10);
 			material = material.toUpperCase();
 			return Material.valueOf(material);
 		} catch (IllegalArgumentException exception) {
@@ -154,10 +152,7 @@ public class ChatHandler implements Listener {
 	}
 	
 	public static Boolean parseBoolean(String bool) {
-		if(bool.equalsIgnoreCase("true")) {
-			return true;
-		}
-		return false;
+		return bool.equalsIgnoreCase("true");
 	}
 	
 	public static GameMode parseGamemode(String gamemode) {

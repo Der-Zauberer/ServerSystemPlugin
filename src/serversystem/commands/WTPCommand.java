@@ -20,10 +20,10 @@ public class WTPCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		CommandAssistant assistant = new CommandAssistant(sender);
-		if(assistant.isSenderInstanceOfPlayer()) {
-			if(assistant.hasMinArguments(1, args)) {
-				if(assistant.isWorld(args[0])) {
-					if(!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(args[0]) != null && !sender.hasPermission(Config.getWorldPermission(args[0]))) {
+		if (assistant.isSenderInstanceOfPlayer()) {
+			if (assistant.hasMinArguments(1, args)) {
+				if (assistant.isWorld(args[0])) {
+					if (!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(args[0]) != null && !sender.hasPermission(Config.getWorldPermission(args[0]))) {
 						ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 					} else {
 						WorldGroupHandler.teleportPlayer((Player)sender, Bukkit.getWorld(args[0]));
@@ -38,7 +38,7 @@ public class WTPCommand implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
-		if(args.length == 1) {
+		if (args.length == 1) {
 			commands = assistant.getWorlds();
 		}
 		assistant.cutArguments(args, commands);

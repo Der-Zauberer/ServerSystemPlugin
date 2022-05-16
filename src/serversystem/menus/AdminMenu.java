@@ -37,8 +37,9 @@ public class AdminMenu extends PlayerInventory {
 	}
 	
 	private void removeEffects(Player player) {
-		for (PotionEffect effect : player.getActivePotionEffects())
+		for (PotionEffect effect : player.getActivePotionEffects()) {
 			player.removePotionEffect(effect.getType());
+		}
 	}
 
 }
