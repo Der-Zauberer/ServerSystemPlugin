@@ -11,7 +11,7 @@ import serversystem.handler.WorldGroupHandler;
 public class PlayerDeathListener implements Listener {
 	
 	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent event) {
+	public static void onPlayerDeath(PlayerDeathEvent event) {
 		World world = event.getEntity().getWorld();
 		if (Config.hasWorldDeathMessage(world.getName())) {
 			String message = event.getDeathMessage();

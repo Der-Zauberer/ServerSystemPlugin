@@ -11,7 +11,7 @@ import serversystem.handler.WorldGroupHandler;
 public class PlayerJoinListener implements Listener {
 	
 	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
+	public static void onPlayerJoin(PlayerJoinEvent event) {
 		ChatHandler.sendPlayerJoinMessage(event);
 		Config.addPlayer(event.getPlayer());
 		PermissionHandler.loadPlayerPermissions(event.getPlayer());

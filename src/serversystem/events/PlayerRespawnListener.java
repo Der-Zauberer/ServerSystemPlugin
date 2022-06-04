@@ -9,7 +9,7 @@ import serversystem.handler.WorldGroupHandler;
 public class PlayerRespawnListener implements Listener {
 
 	@EventHandler
-	public void onPlayerRespawn(PlayerRespawnEvent event) {
+	public static void onPlayerRespawn(PlayerRespawnEvent event) {
 		if (WorldGroupHandler.isEnabled()) {
 			event.setRespawnLocation(WorldGroupHandler.playerdeaths.get(event.getPlayer()).getSpawnLocation());
 			WorldGroupHandler.playerdeaths.remove(event.getPlayer());

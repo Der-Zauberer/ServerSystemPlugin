@@ -170,24 +170,24 @@ public class PermissionHandler implements Listener {
 		permissions.add("minecraft.debugstick.always");
 		return permissions;
 	}
-
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
-		event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
-	}
-
-	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event) {
-		event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
-	}
-
-	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && isActionForbidden(event.getClickedBlock().getType(), event.getPlayer())) event.getPlayer().closeInventory();
-	}
 	
-	private boolean isActionForbidden(Material material, Player player) {
+	private static boolean isActionForbidden(Material material, Player player) {
 		return (material == Material.COMMAND_BLOCK || material == Material.COMMAND_BLOCK_MINECART) && !player.hasPermission("serversystem.tools.commandblock");
+	}
+
+	@EventHandler
+	public static void onBlockPlace(BlockPlaceEvent event) {
+		event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
+	}
+
+	@EventHandler
+	public static void onBlockBreak(BlockBreakEvent event) {
+		event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
+	}
+
+	@EventHandler
+	public static void onPlayerInteract(PlayerInteractEvent event) {
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && isActionForbidden(event.getClickedBlock().getType(), event.getPlayer())) event.getPlayer().closeInventory();
 	}
 
 }

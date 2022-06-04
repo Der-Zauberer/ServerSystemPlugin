@@ -9,7 +9,7 @@ import serversystem.handler.ChatHandler;
 public class CommandPreprocessListener implements Listener {
 	
 	@EventHandler
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+	public static void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
 		if (((event.getMessage().toLowerCase().startsWith("/say") || event.getMessage().toLowerCase().startsWith("/minecraft:say")) && event.getPlayer().hasPermission("minecraft.command.say"))  || ((event.getMessage().toLowerCase().startsWith("/me") || event.getMessage().toLowerCase().startsWith("/minecraft:me")) && (event.getPlayer().hasPermission("minecraft.command.me")))){
 			String[] messagelist = event.getMessage().split(" ");
 			if (messagelist.length > 1) {
@@ -40,7 +40,7 @@ public class CommandPreprocessListener implements Listener {
 		}
 	}
 	
-	private String getStringMessage(String[] messagelist, int indexOfFirstMessgae) {
+	private static String getStringMessage(String[] messagelist, int indexOfFirstMessgae) {
 		String message = "";
 		for (int i = indexOfFirstMessgae; i < messagelist.length; i++) {
 			message += " " + messagelist[i];

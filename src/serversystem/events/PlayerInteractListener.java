@@ -11,7 +11,7 @@ import serversystem.menus.AdminMenu;
 public class PlayerInteractListener implements Listener {
 	
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	public static void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR) {
 			if (event.getItem().getType() == Material.NETHER_STAR && event.getPlayer().hasPermission("serversystem.tools.adminstar")) {
 				new AdminMenu(event.getPlayer()).open();

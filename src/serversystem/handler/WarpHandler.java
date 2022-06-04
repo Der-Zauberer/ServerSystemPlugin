@@ -9,11 +9,7 @@ import serversystem.utilities.ServerWarp;
 
 public class WarpHandler {
 	
-	private static ArrayList<ServerWarp> warps = new ArrayList<>();
-	
-	public static void initializeWarps() {
-		warps = SaveConfig.getWarps();
-	}
+	private static ArrayList<ServerWarp> warps = SaveConfig.getWarps();
 	
 	public static void addWarp(ServerWarp warp) {
 		warps.add(warp);

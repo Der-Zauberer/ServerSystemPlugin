@@ -32,10 +32,8 @@ import serversystem.events.PlayerTeleportListener;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.InventoryHandler;
 import serversystem.handler.PermissionHandler;
-import serversystem.handler.PlayerBuildHandler;
 import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
-import serversystem.handler.WarpHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.WarpSign;
 import serversystem.signs.WorldSign;
@@ -46,15 +44,13 @@ public class ServerSystem extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		setInstance(this);
 		new Config();
 		new SaveConfig();
-		TeamHandler.initializeTeams();
-		WarpHandler.initializeWarps();
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
 		repeatAutoSave();
-		setInstance(this);
 		for (String world : Config.getLoadWorlds()) {
 			if (Bukkit.getWorld(world) == null) {
 				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
@@ -89,47 +85,48 @@ public class ServerSystem extends JavaPlugin {
 		TeamHandler.resetTeams();
 	}
 
-	private void registerEvents() {
-		Bukkit.getPluginManager().registerEvents(new CommandPreprocessListener(), this);
-		Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
-		Bukkit.getPluginManager().registerEvents(new ExplotionListener(), this);
-		Bukkit.getPluginManager().registerEvents(new HungerListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
+	private static void registerEvents() {
+		Bukkit.getPluginManager().registerEvents(new CommandPreprocessListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new ExplotionListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new HungerListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), instance);
+		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), instance);
 		
-		Bukkit.getPluginManager().registerEvents(new ChatHandler(), this);
-		Bukkit.getPluginManager().registerEvents(new PermissionHandler(), this);
-		Bukkit.getPluginManager().registerEvents(new PlayerBuildHandler(), this);
-		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), this);
-		Bukkit.getPluginManager().registerEvents(new SignHandler(), this);
+		Bukkit.getPluginManager().registerEvents(new ChatHandler(), instance);
+		Bukkit.getPluginManager().registerEvents(new PermissionHandler(), instance);
+		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), instance);
+		Bukkit.getPluginManager().registerEvents(new SignHandler(), instance);
+		
+		Bukkit.getPluginManager().registerEvents(new BuildCommand(), instance);
 	}
 
-	private void registerCommands() {
-		getCommand("admin").setExecutor(new AdminCommand());
-		getCommand("build").setExecutor(new BuildCommand());
-		getCommand("enderchest").setExecutor(new EnderchestCommand());
-		getCommand("inventory").setExecutor(new InventoryCommand());
-		getCommand("lobby").setExecutor(new LobbyCommand());
-		getCommand("permission").setExecutor(new PermissionCommand());
-		getCommand("permissionreload").setExecutor(new PermissionReloadComnmand());
-		getCommand("speed").setExecutor(new SpeedCommand());
-		getCommand("vanish").setExecutor(new VanishCommand());
-		getCommand("warp").setExecutor(new WarpCommand());
-		getCommand("world").setExecutor(new WorldCommand());
-		getCommand("wtp").setExecutor(new WTPCommand());
+	private static void registerCommands() {
+		instance.getCommand("admin").setExecutor(new AdminCommand());
+		instance.getCommand("build").setExecutor(new BuildCommand());
+		instance.getCommand("enderchest").setExecutor(new EnderchestCommand());
+		instance.getCommand("inventory").setExecutor(new InventoryCommand());
+		instance.getCommand("lobby").setExecutor(new LobbyCommand());
+		instance.getCommand("permission").setExecutor(new PermissionCommand());
+		instance.getCommand("permissionreload").setExecutor(new PermissionReloadComnmand());
+		instance.getCommand("speed").setExecutor(new SpeedCommand());
+		instance.getCommand("vanish").setExecutor(new VanishCommand());
+		instance.getCommand("warp").setExecutor(new WarpCommand());
+		instance.getCommand("world").setExecutor(new WorldCommand());
+		instance.getCommand("wtp").setExecutor(new WTPCommand());
 	}
 
-	private void registerWorldSigns() {
+	private static void registerWorldSigns() {
 		SignHandler.registerServerSign(new WorldSign());
 		SignHandler.registerServerSign(new WarpSign());
 	}
 
-	private void repeatAutoSave() {
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+	private static void repeatAutoSave() {
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Runnable() {
 			@Override
 			public void run() {
 				WorldGroupHandler.autoSavePlayerStats();

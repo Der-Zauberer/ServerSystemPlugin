@@ -14,7 +14,7 @@ public class TeamHandler {
 	
 	public static final String TEAMVANISH = "00Vanish";
 	
-	public static void initializeTeams() {
+	static {
 		if (Config.getSection("Groups", false) != null) {
 			for (String group : Config.getSection("Groups", false)) {
 				if (Config.getGroupID(group) != null && Config.getGroupColor(group) != null && Config.getGroupPrefix(group) != null) {

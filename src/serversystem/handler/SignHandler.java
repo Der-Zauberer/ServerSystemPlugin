@@ -39,7 +39,7 @@ public class SignHandler implements Listener {
 	}
 	
 	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
+	public static void onInteract(PlayerInteractEvent event) {
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getState() instanceof Sign) {
 			Sign sign = (Sign) event.getClickedBlock().getState();
 			if (sign.getLine(0) != null && sign.getLine(3) != null) {
@@ -50,7 +50,7 @@ public class SignHandler implements Listener {
 	}
 	
 	@EventHandler
-	public void onSignChange(SignChangeEvent event) {
+	public static void onSignChange(SignChangeEvent event) {
 		if (event.getLine(0) != null && event.getLine(3) != null) {
 			if (event.getLine(1).contains("[") || event.getLine(1).contains("]")) {	
 				if (event.getPlayer().hasPermission("serversystem.tools.signeddit")) {

@@ -2,19 +2,17 @@ package serversystem.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
+import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.ChatHandler.ErrorMessage;
-import serversystem.handler.PlayerVanishHandler;
 import serversystem.handler.WarpHandler;
 
 public class CommandAssistant {
@@ -139,7 +137,7 @@ public class CommandAssistant {
 	public List<String> getPlayers() {
 		List<String> list = new ArrayList<>();
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (!PlayerVanishHandler.isPlayerVanished(player)) list.add(player.getName());
+			if (!VanishCommand.isVanished(player)) list.add(player.getName());
 		}
 		return list;
 	}

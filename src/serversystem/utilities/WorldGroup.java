@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import serversystem.commands.BuildCommand;
+import serversystem.commands.VanishCommand;
 import serversystem.config.SaveConfig;
-import serversystem.handler.PlayerBuildHandler;
-import serversystem.handler.PlayerVanishHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.main.ServerSystem;
 
@@ -47,12 +47,12 @@ public class WorldGroup {
 
 	public void onPlayerLeave(Player player) {
 		currentPlayers--;
-		if (PlayerVanishHandler.isPlayerVanished(player)) {
-			PlayerVanishHandler.vanishPlayer(player);
+		if (VanishCommand.isVanished(player)) {
+			VanishCommand.toggleVanish(player);
 		}
 		TeamHandler.removePlayerFromTeam(player);
-		if (PlayerBuildHandler.isPlayerInBuildmode(player)) {
-			PlayerBuildHandler.buildmodePlayer(player);
+		if (BuildCommand.isInBuildmode(player)) {
+			BuildCommand.toggleBuildMode(player);
 		}
 		SaveConfig.saveInventory(player, this);
 		SaveConfig.saveXp(player, this);

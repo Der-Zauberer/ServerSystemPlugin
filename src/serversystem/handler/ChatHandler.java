@@ -169,7 +169,7 @@ public class ChatHandler implements Listener {
 	}
 	
 	@EventHandler
-	public void onChat(AsyncPlayerChatEvent event) {
+	public static void onChat(AsyncPlayerChatEvent event) {
 		event.setCancelled(true);
 		sendPlayerChatMessage(event.getPlayer(), event.getMessage());
 	}

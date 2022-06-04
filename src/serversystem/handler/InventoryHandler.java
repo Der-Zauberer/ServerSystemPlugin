@@ -22,7 +22,7 @@ public class InventoryHandler implements Listener {
 	}
 
 	@EventHandler
-	public void onInventoryClicked(InventoryClickEvent event) {
+	public static void onInventoryClicked(InventoryClickEvent event) {
 		if (event.getCurrentItem() != null) {
 			try {
 				for (PlayerInventory inventory : playerInventory) {

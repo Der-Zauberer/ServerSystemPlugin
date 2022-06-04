@@ -11,7 +11,7 @@ import serversystem.config.Config;
 public class EntityDamageListener implements Listener {
 
 	@EventHandler
-	public void onEntityDamage(EntityDamageEvent event) {
+	public static void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
 			if (!Config.hasWorldDamage(event.getEntity().getWorld().getName())) {
 				if (event.getCause() == DamageCause.VOID) {
