@@ -9,15 +9,15 @@ import serversystem.handler.ChatHandler.ErrorMessage;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.ServerSign;
 
-public class WorldSign implements ServerSign{
+public class WorldSign extends ServerSign {
 
-	@Override
-	public String getLabel() {
-		return "world";
+	public WorldSign() {
+		super("world");
+		setClickAction(this::clickAction);
+		setPlaceAction(this::placeAction);
 	}
-
-	@Override
-	public void onAction(Player player, Sign sign, String args) {
+	
+	private void clickAction(Player player, Sign sign, String args) {
 		if (Bukkit.getWorld(args) != null) {
 			if (!Config.hasWorldPermission(args) || player.hasPermission(Config.getWorldPermission(args))) {
 				WorldGroupHandler.teleportPlayer(player, Bukkit.getWorld(args));
@@ -27,8 +27,7 @@ public class WorldSign implements ServerSign{
 		}
 	}
 
-	@Override
-	public boolean onPlace(Player player, String args) {
+	private boolean placeAction(Player player, String args) {
 		return Bukkit.getWorld(args) != null;
 	}
 

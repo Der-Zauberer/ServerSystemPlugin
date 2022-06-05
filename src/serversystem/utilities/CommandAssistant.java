@@ -13,7 +13,6 @@ import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.ChatHandler.ErrorMessage;
-import serversystem.handler.WarpHandler;
 
 public class CommandAssistant {
 
@@ -55,7 +54,7 @@ public class CommandAssistant {
 	}
 
 	public boolean isWarp(String warp) {
-		if (WarpHandler.getWarp(warp) != null) return true;
+		if (ServerWarp.getWarp(warp) != null) return true;
 		ChatHandler.sendServerErrorMessage(sender, "The warp " + warp + " does not exist!");
 		return false;
 	}
@@ -162,7 +161,7 @@ public class CommandAssistant {
 
 	public List<String> getWarps() {
 		List<String> list = new ArrayList<>();
-		for (ServerWarp warp : WarpHandler.getWarps()) {
+		for (ServerWarp warp : ServerWarp.getWarps()) {
 			list.add(warp.getName());
 		}
 		return list;
@@ -170,7 +169,7 @@ public class CommandAssistant {
 
 	public List<String> getWarps(Player player) {
 		List<String> list = new ArrayList<>();
-		for (ServerWarp warp : WarpHandler.getWarps()) {
+		for (ServerWarp warp : ServerWarp.getWarps()) {
 			if (warp.getPermission() == null || sender.hasPermission(warp.getPermission())) {
 				if (warp.isGlobal() || warp.getLocation().getWorld() == player.getWorld()) list.add(warp.getName());
 			}

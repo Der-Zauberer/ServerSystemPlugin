@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import serversystem.handler.ChatHandler;
 import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.ServerWarp;
-import serversystem.handler.WarpHandler;
 import serversystem.menus.WarpsMenu;
 import serversystem.handler.ChatHandler.ErrorMessage;
 
@@ -25,7 +24,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 			new WarpsMenu((Player)sender).open();
 		} else if (assistant.hasMinArguments(1, args)) {
 			if (assistant.isPath(1, "create", 2, args) || assistant.isWarp(args[0])) {
-				ServerWarp warp = WarpHandler.getWarp(args[0]);
+				ServerWarp warp = ServerWarp.getWarp(args[0]);
 				if (args.length == 1 && sender instanceof Player) {
 					if (!sender.hasPermission("serversystem.command.warp.edit") && ((warp.getPermission() != null && !sender.hasPermission(warp.getPermission())) || (!warp.isGlobal() && warp.getLocation().getWorld() != ((Player)sender).getWorld()))) {
 						ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
@@ -45,15 +44,15 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 						if (assistant.isSenderInstanceOfPlayer()) {
 							if (warp == null) {
 								warp = new ServerWarp(args[0], ((Player)sender).getLocation());
-								WarpHandler.addWarp(warp);
+								ServerWarp.addWarp(warp);
 								ChatHandler.sendServerMessage(sender, "The warp " + warp.getName() + " has been added!");					
 							} else {
 								ChatHandler.sendServerMessage(sender, "The warp " + warp.getName() + " does already exist!");
 							}
 						}
 					} else if (assistant.isPath(1, "remove", 2, args)) {
-						WarpHandler.removeWarp(warp);
-						ChatHandler.sendServerMessage(sender, "The warp " + args[0] + " has been removed successfull!");
+						ServerWarp.removeWarp(warp);
+						ChatHandler.sendServerMessage(sender, "The warp " + args[0] + " has been removed successfully!");
 					} else if (assistant.isPath(1, "edit", 3, args)) {
 						if (assistant.hasMinArguments(3, args)) {
 							if (assistant.isPath(2, "material", 4, args)) {

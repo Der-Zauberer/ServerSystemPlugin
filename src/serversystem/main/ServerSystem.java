@@ -32,11 +32,11 @@ import serversystem.events.PlayerTeleportListener;
 import serversystem.handler.ChatHandler;
 import serversystem.handler.InventoryHandler;
 import serversystem.handler.PermissionHandler;
-import serversystem.handler.SignHandler;
 import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.WarpSign;
 import serversystem.signs.WorldSign;
+import serversystem.utilities.ServerSign;
 
 public class ServerSystem extends JavaPlugin {
 
@@ -100,9 +100,10 @@ public class ServerSystem extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new ChatHandler(), instance);
 		Bukkit.getPluginManager().registerEvents(new PermissionHandler(), instance);
 		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), instance);
-		Bukkit.getPluginManager().registerEvents(new SignHandler(), instance);
 		
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), instance);
+		
+		Bukkit.getPluginManager().registerEvents(ServerSign.getInstance(), instance);
 	}
 
 	private static void registerCommands() {
@@ -121,8 +122,8 @@ public class ServerSystem extends JavaPlugin {
 	}
 
 	private static void registerWorldSigns() {
-		SignHandler.registerServerSign(new WorldSign());
-		SignHandler.registerServerSign(new WarpSign());
+		ServerSign.registerServerSign(new WorldSign());
+		ServerSign.registerServerSign(new WarpSign());
 	}
 
 	private static void repeatAutoSave() {
