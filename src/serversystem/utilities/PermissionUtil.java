@@ -1,4 +1,4 @@
-package serversystem.handler;
+package serversystem.utilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,10 +16,13 @@ import org.bukkit.permissions.PermissionAttachment;
 import serversystem.config.Config;
 import serversystem.main.ServerSystem;
 
-public class PermissionHandler implements Listener {
-
+public class PermissionUtil implements Listener {
+	
+	private static PermissionUtil instance = new PermissionUtil();
 	private static HashMap<Player, PermissionAttachment> attachments = new HashMap<>();
 
+	private PermissionUtil() {}
+	
 	public static void loadPlayerPermissions(Player player) {
 		resetPlayerPermissions(player);
 		if (Config.getPlayerPermissions(player) != null) {
@@ -173,6 +176,10 @@ public class PermissionHandler implements Listener {
 	
 	private static boolean isActionForbidden(Material material, Player player) {
 		return (material == Material.COMMAND_BLOCK || material == Material.COMMAND_BLOCK_MINECART) && !player.hasPermission("serversystem.tools.commandblock");
+	}
+	
+	public static PermissionUtil getInstance() {
+		return instance;
 	}
 
 	@EventHandler

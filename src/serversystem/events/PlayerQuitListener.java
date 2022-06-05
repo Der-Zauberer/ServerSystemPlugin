@@ -4,15 +4,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import serversystem.commands.VanishCommand;
-import serversystem.handler.ChatHandler;
-import serversystem.handler.PermissionHandler;
 import serversystem.handler.WorldGroupHandler;
+import serversystem.utilities.ChatUtil;
+import serversystem.utilities.PermissionUtil;
 
 public class PlayerQuitListener implements Listener {
 	
 	@EventHandler
 	public static void onPlayerQuit(PlayerQuitEvent event) {
-		ChatHandler.sendPlayerQuitMessage(event);
+		ChatUtil.sendPlayerQuitMessage(event);
 		if (VanishCommand.isVanished(event.getPlayer())) {
 			VanishCommand.toggleVanish(event.getPlayer());
 		}
@@ -20,7 +20,7 @@ public class PlayerQuitListener implements Listener {
 			event.getPlayer().setFlySpeed((float) 0.1);
 		}
 		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerLeave(event.getPlayer());
-		PermissionHandler.resetPlayerPermissions(event.getPlayer());
+		PermissionUtil.resetPlayerPermissions(event.getPlayer());
 	}
 
 }

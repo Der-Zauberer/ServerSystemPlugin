@@ -1,4 +1,4 @@
-package serversystem.handler;
+package serversystem.utilities;
 
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
@@ -8,17 +8,19 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import serversystem.config.Config;
 
-public class TeamHandler {
+public class TeamUtil {
 	
 	private static ArrayList<String> groups = new ArrayList<>();
 	
 	public static final String TEAMVANISH = "00Vanish";
 	
+	private TeamUtil() {}
+	
 	static {
 		if (Config.getSection("Groups", false) != null) {
 			for (String group : Config.getSection("Groups", false)) {
 				if (Config.getGroupID(group) != null && Config.getGroupColor(group) != null && Config.getGroupPrefix(group) != null) {
-					createTeam(Config.getGroupID(group), Config.getGroupPrefix(group), ChatHandler.parseColor(Config.getGroupColor(group)));
+					createTeam(Config.getGroupID(group), Config.getGroupPrefix(group), ChatUtil.parseColor(Config.getGroupColor(group)));
 				}
 			}
 		}

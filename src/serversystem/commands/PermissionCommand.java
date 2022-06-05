@@ -9,10 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
-import serversystem.handler.ChatHandler;
+import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
-import serversystem.handler.PermissionHandler;
-import serversystem.handler.TeamHandler;
+import serversystem.utilities.PermissionUtil;
+import serversystem.utilities.TeamUtil;
 
 public class PermissionCommand implements CommandExecutor, TabCompleter {
 
@@ -26,16 +26,16 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 						if (Bukkit.getPlayer(args[0]) != null) {
 							Player player = Bukkit.getPlayer(args[0]);
 							Config.setPlayerGroup(player, args[1]);
-							PermissionHandler.loadPlayerPermissions(player);
-							TeamHandler.addRoleToPlayer(player);
-							ChatHandler.sendServerMessage(sender, "Moved the player " + player.getName() + " in group " + args[1] + "!");
+							PermissionUtil.loadPlayerPermissions(player);
+							TeamUtil.addRoleToPlayer(player);
+							ChatUtil.sendServerMessage(sender, "Moved the player " + player.getName() + " in group " + args[1] + "!");
 						} else {
 							Config.setPlayerGroup(args[0], args[1]);
-							ChatHandler.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
+							ChatUtil.sendServerMessage(sender, "Moved the player " + args[0] + " in group " + args[1] + "!");
 						}
 					}
 				} else {
-					ChatHandler.sendServerErrorMessage(sender, "The player " + args[0] + " does not exist!");
+					ChatUtil.sendServerErrorMessage(sender, "The player " + args[0] + " does not exist!");
 				}
 			}
 		}

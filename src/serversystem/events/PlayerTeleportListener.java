@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.SaveConfig;
-import serversystem.handler.ChatHandler;
 import serversystem.handler.WorldGroupHandler;
+import serversystem.utilities.ChatUtil;
 
 public class PlayerTeleportListener implements Listener {
 	
@@ -21,7 +21,7 @@ public class PlayerTeleportListener implements Listener {
 		if (event.getPlayer().getWorld() != event.getTo().getWorld()) {
 			boolean vanished = VanishCommand.isVanished(event.getPlayer());
 			if ((event.getCause() == TeleportCause.NETHER_PORTAL || event.getCause() == TeleportCause.END_PORTAL) && !Config.arePortalsEnabled()) {
-				ChatHandler.sendServerErrorMessage(event.getPlayer(), "Portals are not enabled on this server!");
+				ChatUtil.sendServerErrorMessage(event.getPlayer(), "Portals are not enabled on this server!");
 				event.setCancelled(true);
 				return;
 			} else {

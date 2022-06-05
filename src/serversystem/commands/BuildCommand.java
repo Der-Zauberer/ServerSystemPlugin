@@ -13,6 +13,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -23,7 +24,7 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import serversystem.config.Config;
-import serversystem.handler.ChatHandler;
+import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
 
 public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
@@ -37,12 +38,12 @@ private static ArrayList<Player> buildPlayers = new ArrayList<>();
 	public static void toggleBuildMode(Player player, CommandSender sender) {
 		if (buildPlayers.contains(player)) {
 			buildPlayers.remove(player);
-			ChatHandler.sendServerMessage(player, "You can no longer build!");
-			if (player != sender) ChatHandler.sendServerMessage(sender, player.getName() + " can no longer build!");
+			ChatUtil.sendServerMessage(player, "You can no longer build!");
+			if (player != sender) ChatUtil.sendServerMessage(sender, player.getName() + " can no longer build!");
 		} else {
 			buildPlayers.add(player);
-			ChatHandler.sendServerMessage(player, "You can build now!");
-			if(player != sender) ChatHandler.sendServerMessage(sender, player.getName() + " can build now!");
+			ChatUtil.sendServerMessage(player, "You can build now!");
+			if(player != sender) ChatUtil.sendServerMessage(sender, player.getName() + " can build now!");
 		}
 	}
 	
@@ -83,39 +84,39 @@ private static ArrayList<Player> buildPlayers = new ArrayList<>();
 		return commands;
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onBlockBreak(BlockBreakEvent event) {
 		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
 		if (!event.isCancelled()) event.setCancelled(isBlockDisabled(event.getBlock(), event.getPlayer()));
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onBlockPlace(BlockPlaceEvent event) {
 		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
 		if (!event.isCancelled()) event.setCancelled(isBlockDisabled(event.getBlock(), event.getPlayer()));
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
 		if (event.getRemover() instanceof Player) event.setCancelled(isActionForbidden(event.getRemover().getWorld(), (Player) event.getRemover()));
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
     public static void onProjectileLaunch(ProjectileLaunchEvent event) {
 		if (event.getEntity().getShooter() instanceof Player) event.setCancelled(isActionForbidden(event.getEntity().getWorld(), (Player) event.getEntity().getShooter()));
     }
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 		if (event.getDamager() instanceof Player) event.setCancelled(isActionForbidden(event.getDamager().getWorld(), (Player) event.getDamager()));
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
 		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerInteract(PlayerInteractEvent event) {
 		if (isActionForbidden(event.getPlayer().getWorld(), event.getPlayer())) {
 			Material mainMaterial = event.getPlayer().getInventory().getItemInMainHand().getType();
@@ -139,7 +140,7 @@ private static ArrayList<Player> buildPlayers = new ArrayList<>();
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		if (isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()) && event.getRightClicked().getType() == EntityType.ITEM_FRAME) event.setCancelled(true);
 	}

@@ -5,8 +5,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import serversystem.config.Config;
-import serversystem.handler.ChatHandler;
 import serversystem.handler.WorldGroupHandler;
+import serversystem.utilities.ChatUtil;
 
 public class PlayerDeathListener implements Listener {
 	
@@ -19,9 +19,9 @@ public class PlayerDeathListener implements Listener {
 				message = message.substring(Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())).length());
 			}
 			if (WorldGroupHandler.isEnabled()) {
-				ChatHandler.sendServerWorldGroupMessage(WorldGroupHandler.getWorldGroup(event.getEntity()), message);
+				ChatUtil.sendServerWorldGroupMessage(WorldGroupHandler.getWorldGroup(event.getEntity()), message);
 			} else {
-				ChatHandler.sendServerBroadcastMessage(message);
+				ChatUtil.sendServerBroadcastMessage(message);
 			}
 			
 		}

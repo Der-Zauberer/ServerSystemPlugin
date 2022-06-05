@@ -8,11 +8,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import serversystem.handler.ChatHandler;
-import serversystem.handler.TeamHandler;
+
 import serversystem.handler.WorldGroupHandler;
 import serversystem.main.ServerSystem;
+import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
+import serversystem.utilities.TeamUtil;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
 
@@ -25,12 +26,12 @@ private static ArrayList<Player> vanishedPlayers = new ArrayList<>();
 	public static void toggleVanish(Player player, CommandSender sender) {
 		if (vanishedPlayers.contains(player)) {
 			show(player);
-			ChatHandler.sendServerMessage(player, "You are no longer vanished!");
-			if (player != sender) ChatHandler.sendServerMessage(sender, player.getName() + " is no longer vanished!");
+			ChatUtil.sendServerMessage(player, "You are no longer vanished!");
+			if (player != sender) ChatUtil.sendServerMessage(sender, player.getName() + " is no longer vanished!");
 		} else {
 			hide(player);
-			ChatHandler.sendServerMessage(player, "You are vanished now!");
-			if (player != sender) ChatHandler.sendServerMessage(sender, player.getName() + " is vanished now!");
+			ChatUtil.sendServerMessage(player, "You are vanished now!");
+			if (player != sender) ChatUtil.sendServerMessage(sender, player.getName() + " is vanished now!");
 		}
 	}
 	
@@ -43,7 +44,7 @@ private static ArrayList<Player> vanishedPlayers = new ArrayList<>();
 	}
 	
 	private static void hide(Player player) {
-		TeamHandler.addPlayerToTeam(TeamHandler.TEAMVANISH, player.getName());
+		TeamUtil.addPlayerToTeam(TeamUtil.TEAMVANISH, player.getName());
 		for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
 			everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 		}
@@ -57,7 +58,7 @@ private static ArrayList<Player> vanishedPlayers = new ArrayList<>();
 	}
 	
 	private static void show(Player player) {
-		TeamHandler.addRoleToPlayer(player);
+		TeamUtil.addRoleToPlayer(player);
 		for (Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 		}

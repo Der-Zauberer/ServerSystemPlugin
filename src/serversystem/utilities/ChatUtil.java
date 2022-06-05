@@ -1,4 +1,4 @@
-package serversystem.handler;
+package serversystem.utilities;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,9 +13,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
-import serversystem.utilities.WorldGroup;
+import serversystem.handler.WorldGroupHandler;
 
-public class ChatHandler implements Listener {
+public class ChatUtil implements Listener {
+	
+	private static ChatUtil instance = new ChatUtil();
 	
 	private static ChatColor messagecolor = parseColor(Config.getMessageColor());
 	private static ChatColor errorcolor = parseColor(Config.getErrorMessageColor());
@@ -23,6 +25,8 @@ public class ChatHandler implements Listener {
 	
 	public static enum ErrorMessage{ONLYCONSOLE, ONLYPLAYER, NOPERMISSION, NOTENOUGHARGUMENTS}
 	public static enum TitleType{TITLE, SUBTITLE, ACTIONBAR}
+	
+	private ChatUtil() {}
 	
 	public static void sendServerMessage(Player player, String message) {
 		player.sendMessage(servername + messagecolor + " " + message);
@@ -105,33 +109,33 @@ public class ChatHandler implements Listener {
 	public static void sendPlayerChatMessage(Player player, String message) {
 		if (Config.isWorldGroupSystemEnabled()) {
 			for (Player players : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
-				players.sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+				players.sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
-			Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] " + TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+			Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] " + TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 		} else {
 			for (Player players : Bukkit.getOnlinePlayers()) {
-				players.sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+				players.sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
-			Bukkit.getConsoleSender().sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+			Bukkit.getConsoleSender().sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 		}
 		
 	}
 	
 	public static void sendPlayerPrivateMessage(Player sender, Player receiver, String message) {		
-		sender.sendMessage(TeamHandler.getPlayerNameColor(sender) + "Me" + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
+		sender.sendMessage(TeamUtil.getPlayerNameColor(sender) + "Me" + ChatColor.WHITE + " -> " + TeamUtil.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
 		if (sender != receiver) {
-			receiver.sendMessage(TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + "Me" + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
+			receiver.sendMessage(TeamUtil.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamUtil.getPlayerNameColor(receiver) + "Me" + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
 		}
-		Bukkit.getConsoleSender().sendMessage("[Private] " + TeamHandler.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamHandler.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
+		Bukkit.getConsoleSender().sendMessage("[Private] " + TeamUtil.getPlayerNameColor(sender) + sender.getPlayer().getName() + ChatColor.WHITE + " -> " + TeamUtil.getPlayerNameColor(receiver) + receiver.getName() + ChatColor.WHITE + ": " + ChatColor.GRAY + message);
 	}
 	
 	public static void sendPlayerTeamMessage(Player player, String message) {
 		for (String players : player.getScoreboard().getEntryTeam(player.getName()).getEntries()) {
 			if (Bukkit.getPlayer(players) != null) {
-				Bukkit.getPlayer(players).sendMessage(TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+				Bukkit.getPlayer(players).sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
 		}
-		Bukkit.getConsoleSender().sendMessage("[" + player.getScoreboard().getEntryTeam(player.getName()).getName() + "] " + TeamHandler.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+		Bukkit.getConsoleSender().sendMessage("[" + player.getScoreboard().getEntryTeam(player.getName()).getName() + "] " + TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 	}
 	
 	public static ChatColor parseColor(String color) {
@@ -166,6 +170,10 @@ public class ChatHandler implements Listener {
 	public static GameMode parseGamemode(String gamemode) {
 		gamemode = gamemode.toUpperCase();
 		return GameMode.valueOf(gamemode);
+	}
+	
+	public static ChatUtil getInstance() {
+		return instance;
 	}
 	
 	@EventHandler

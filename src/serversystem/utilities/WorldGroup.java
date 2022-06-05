@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.config.SaveConfig;
-import serversystem.handler.TeamHandler;
 import serversystem.main.ServerSystem;
 
 public class WorldGroup {
@@ -42,7 +41,7 @@ public class WorldGroup {
 		SaveConfig.loadInventory(player, this);
 		SaveConfig.loadXp(player, this);
 		SaveConfig.loadGamemode(player, this);
-		TeamHandler.addRoleToPlayer(player);
+		TeamUtil.addRoleToPlayer(player);
 	}
 
 	public void onPlayerLeave(Player player) {
@@ -50,7 +49,7 @@ public class WorldGroup {
 		if (VanishCommand.isVanished(player)) {
 			VanishCommand.toggleVanish(player);
 		}
-		TeamHandler.removePlayerFromTeam(player);
+		TeamUtil.removePlayerFromTeam(player);
 		if (BuildCommand.isInBuildmode(player)) {
 			BuildCommand.toggleBuildMode(player);
 		}

@@ -9,11 +9,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import serversystem.handler.ChatHandler;
+
+import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.ServerWarp;
+import serversystem.utilities.ChatUtil.ErrorMessage;
 import serversystem.menus.WarpsMenu;
-import serversystem.handler.ChatHandler.ErrorMessage;
 
 public class WarpCommand implements CommandExecutor, TabCompleter {
 
@@ -27,71 +28,71 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 				ServerWarp warp = ServerWarp.getWarp(args[0]);
 				if (args.length == 1 && sender instanceof Player) {
 					if (!sender.hasPermission("serversystem.command.warp.edit") && ((warp.getPermission() != null && !sender.hasPermission(warp.getPermission())) || (!warp.isGlobal() && warp.getLocation().getWorld() != ((Player)sender).getWorld()))) {
-						ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
+						ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 					} else {
 						((Player)sender).teleport(warp.getLocation());
 					} 
 				} else if (sender instanceof Player && !sender.hasPermission("serversystem.command.warp.edit")) {
-					ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
+					ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 				} else if (sender.hasPermission("serversystem.command.warp.edit")) {
 					if (assistant.isPath(1, "teleport", 3, args)) {
 						if (assistant.isPlayer(args[2])) {
 							Player player = Bukkit.getPlayer(args[2]);
 							player.teleport(warp.getLocation());
-							if (sender != player) {ChatHandler.sendServerMessage(sender, "Teleported the player " + player.getName() +  " to the warp " + warp.getName() +  "!");} 
+							if (sender != player) {ChatUtil.sendServerMessage(sender, "Teleported the player " + player.getName() +  " to the warp " + warp.getName() +  "!");} 
 						}
 					} else if (assistant.isPath(1, "create", 2, args)) {
 						if (assistant.isSenderInstanceOfPlayer()) {
 							if (warp == null) {
 								warp = new ServerWarp(args[0], ((Player)sender).getLocation());
 								ServerWarp.addWarp(warp);
-								ChatHandler.sendServerMessage(sender, "The warp " + warp.getName() + " has been added!");					
+								ChatUtil.sendServerMessage(sender, "The warp " + warp.getName() + " has been added!");					
 							} else {
-								ChatHandler.sendServerMessage(sender, "The warp " + warp.getName() + " does already exist!");
+								ChatUtil.sendServerMessage(sender, "The warp " + warp.getName() + " does already exist!");
 							}
 						}
 					} else if (assistant.isPath(1, "remove", 2, args)) {
 						ServerWarp.removeWarp(warp);
-						ChatHandler.sendServerMessage(sender, "The warp " + args[0] + " has been removed successfully!");
+						ChatUtil.sendServerMessage(sender, "The warp " + args[0] + " has been removed successfully!");
 					} else if (assistant.isPath(1, "edit", 3, args)) {
 						if (assistant.hasMinArguments(3, args)) {
 							if (assistant.isPath(2, "material", 4, args)) {
 								if (assistant.isMaterial(args[3])) {
-									warp.setMaterial(ChatHandler.parseMaterial(args[3]));
-									ChatHandler.sendServerMessage(sender, "The material has been set to " + args[3] + " for the warp " + warp.getName() + "!");
+									warp.setMaterial(ChatUtil.parseMaterial(args[3]));
+									ChatUtil.sendServerMessage(sender, "The material has been set to " + args[3] + " for the warp " + warp.getName() + "!");
 								}
 							} else if (assistant.isPath(2, "material", 3, args)) {
-								ChatHandler.sendServerMessage(sender, "The material is set to " + warp.getMaterial().toString().toLowerCase() + " for the warp " + warp.getName() + "!");
+								ChatUtil.sendServerMessage(sender, "The material is set to " + warp.getMaterial().toString().toLowerCase() + " for the warp " + warp.getName() + "!");
 							} else if (assistant.isPath(2, "global", 4, args)) {
 								if (assistant.isBoolean(args[3])) {
-									warp.setGlobal(ChatHandler.parseBoolean(args[3]));
-									ChatHandler.sendServerMessage(sender, "The option global has been set to " + args[3] + " for the warp " + warp.getName() + "!");
+									warp.setGlobal(ChatUtil.parseBoolean(args[3]));
+									ChatUtil.sendServerMessage(sender, "The option global has been set to " + args[3] + " for the warp " + warp.getName() + "!");
 								}
 							} else if (assistant.isPath(2, "global", 3, args)) {
-								ChatHandler.sendServerMessage(sender, "The option global is set to " + Boolean.toString(warp.isGlobal()) + " for the warp " + warp.getName() + "!");
+								ChatUtil.sendServerMessage(sender, "The option global is set to " + Boolean.toString(warp.isGlobal()) + " for the warp " + warp.getName() + "!");
 							} else if (assistant.isPath(2, "permission", 4, args)) {
 								if (args[3].equals("null")) {
 									warp.setPermission(null);
-									ChatHandler.sendServerMessage(sender, "The permission has been removed from warp " + warp.getName() + " now!");
+									ChatUtil.sendServerMessage(sender, "The permission has been removed from warp " + warp.getName() + " now!");
 								} else {
 									warp.setPermission(args[3]);
-									ChatHandler.sendServerMessage(sender, "The warp " + warp.getName() + " has the permission " + args[3] + " now!");
+									ChatUtil.sendServerMessage(sender, "The warp " + warp.getName() + " has the permission " + args[3] + " now!");
 								}
 							} else if (assistant.isPath(2, "permission", 3, args)) {
 								if(warp.getPermission() == null) {
-									ChatHandler.sendServerMessage(sender, "The warp " + warp.getName() + " has no permission!");
+									ChatUtil.sendServerMessage(sender, "The warp " + warp.getName() + " has no permission!");
 								} else {
-									ChatHandler.sendServerMessage(sender, "The warp " + warp.getName() + " has the permission " + warp.getPermission() + "!");
+									ChatUtil.sendServerMessage(sender, "The warp " + warp.getName() + " has the permission " + warp.getPermission() + "!");
 								}
 							} else {
-								ChatHandler.sendServerErrorMessage(sender, args[2] + " is not a valid option!");
+								ChatUtil.sendServerErrorMessage(sender, args[2] + " is not a valid option!");
 							}
 						}
 						
 					} else if (args.length > 1 && !args[1].equals("create") && !args[1].equals("remove") && !args[1].equals("edit") && !args[1].equals("teleport")) {
-						ChatHandler.sendServerErrorMessage(sender, args[1] + " is not a valid option!");
+						ChatUtil.sendServerErrorMessage(sender, args[1] + " is not a valid option!");
 					} else {
-						ChatHandler.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
+						ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
 					}
 				}
 			}

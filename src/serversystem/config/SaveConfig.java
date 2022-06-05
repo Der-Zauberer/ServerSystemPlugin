@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import serversystem.handler.ChatHandler;
+import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ServerWarp;
 import serversystem.utilities.WorldGroup;
 
@@ -63,7 +63,7 @@ public class SaveConfig {
 
 	public static ServerWarp getWarp(String name) {
 		ServerWarp warp = new ServerWarp(name, config.getLocation("Warps." + name + ".location"));
-		warp.setMaterial(ChatHandler.parseMaterial(config.getString("Warps." + name + ".material")));
+		warp.setMaterial(ChatUtil.parseMaterial(config.getString("Warps." + name + ".material")));
 		warp.setGlobal(config.getBoolean("Warps." + name + ".global"));
 		if (config.getString("Warps." + name + ".permission") != null) {
 			warp.setPermission(config.getString("Warps." + name + ".permission"));

@@ -29,14 +29,14 @@ import serversystem.events.PlayerJoinListener;
 import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
-import serversystem.handler.ChatHandler;
 import serversystem.handler.InventoryHandler;
-import serversystem.handler.PermissionHandler;
-import serversystem.handler.TeamHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.WarpSign;
 import serversystem.signs.WorldSign;
+import serversystem.utilities.ChatUtil;
+import serversystem.utilities.PermissionUtil;
 import serversystem.utilities.ServerSign;
+import serversystem.utilities.TeamUtil;
 
 public class ServerSystem extends JavaPlugin {
 
@@ -58,7 +58,7 @@ public class ServerSystem extends JavaPlugin {
 		}
 		WorldGroupHandler.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			TeamHandler.addRoleToPlayer(player);
+			TeamUtil.addRoleToPlayer(player);
 			if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
@@ -71,8 +71,8 @@ public class ServerSystem extends JavaPlugin {
 			@Override
 			public void run() {
 				for (Player player : Bukkit.getOnlinePlayers()) {
-					PermissionHandler.loadPlayerPermissions(player);
-					TeamHandler.addRoleToPlayer(player);
+					PermissionUtil.loadPlayerPermissions(player);
+					TeamUtil.addRoleToPlayer(player);
 				}
 			}
 
@@ -82,7 +82,7 @@ public class ServerSystem extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		WorldGroupHandler.autoSavePlayerStats();
-		TeamHandler.resetTeams();
+		TeamUtil.resetTeams();
 	}
 
 	private static void registerEvents() {
@@ -97,12 +97,12 @@ public class ServerSystem extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), instance);
 		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), instance);
 		
-		Bukkit.getPluginManager().registerEvents(new ChatHandler(), instance);
-		Bukkit.getPluginManager().registerEvents(new PermissionHandler(), instance);
 		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), instance);
 		
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), instance);
 		
+		Bukkit.getPluginManager().registerEvents(ChatUtil.getInstance(), instance);
+		Bukkit.getPluginManager().registerEvents(PermissionUtil.getInstance(), instance);
 		Bukkit.getPluginManager().registerEvents(ServerSign.getInstance(), instance);
 	}
 
