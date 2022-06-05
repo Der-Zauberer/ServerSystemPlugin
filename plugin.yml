@@ -25,6 +25,7 @@ commands:
   lobby:
     description: Teleport player to lobby
     usage: /<command>
+    aliases: [hub, h, l]
     permission: serversystem.command.lobby
   permission:
     description: Set the permissions of a player
