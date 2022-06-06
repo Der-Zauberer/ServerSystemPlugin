@@ -6,30 +6,39 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import serversystem.utilities.ExtendedItemStack;
 import serversystem.utilities.PlayerInventory;
 
 public class AdminMenu extends PlayerInventory {
 
 	public AdminMenu(Player player) {
-		super(player, 36, "Admin");
-		setItemOption(ItemOption.FIXED);
-		setItem(0, createItem("Gamemode Survival", Material.IRON_SHOVEL), (itemstack) -> {player.setGameMode(GameMode.SURVIVAL);});
-		setItem(9, createItem("Gamemode Creative", Material.IRON_PICKAXE), (itemstack) -> {player.setGameMode(GameMode.CREATIVE);});
-		setItem(18, createItem("Gamemode Adventure", Material.IRON_SWORD), (itemstack) -> {player.setGameMode(GameMode.ADVENTURE);});
-		setItem(27, createItem("Gamemode Spectator", Material.IRON_HELMET), (itemstack) -> {player.setGameMode(GameMode.SPECTATOR);});
-		setItem(2, createItem("Time Morning", Material.CLOCK), (itemstack) -> {player.getWorld().setTime(0);});
-		setItem(11, createItem("Time Day", Material.CLOCK), (itemstack) -> {player.getWorld().setTime(6000);});
-		setItem(20, createItem("Time Night", Material.CLOCK), (itemstack) -> {player.getWorld().setTime(13000);});
-		setItem(29, createItem("Time Midnight", Material.CLOCK), (itemstack) -> {player.getWorld().setTime(18000);});
-		setItem(4, createPotionItem("Effect Speed", Color.BLUE, PotionEffectType.SPEED), (itemstack) -> {addPtionEffect(player, PotionEffectType.SPEED);});
-		setItem(13, createPotionItem("Effect Jump Boost", Color.GREEN, PotionEffectType.JUMP), (itemstack) -> {addPtionEffect(player, PotionEffectType.JUMP);});
-		setItem(22, createPotionItem("Effect Invisibilitiy", Color.PURPLE, PotionEffectType.INVISIBILITY), (itemstack) -> {addPtionEffect(player, PotionEffectType.INVISIBILITY);});
-		setItem(31, createItem("Remove Effects", Material.GLASS_BOTTLE), (itemstack) -> {removeEffects(player);});
-		setItem(6, createItem("Weather Clear", Material.SUNFLOWER), (itemstack) -> {player.getWorld().setStorm(false);});
-		setItem(15, createItem("Weather Rain", Material.WATER_BUCKET), (itemstack) -> {player.getWorld().setStorm(true); player.getWorld().setThundering(false);});
-		setItem(24, createItem("Weather Thunderstorm", Material.HOPPER), (itemstack) -> {player.getWorld().setStorm(true); player.getWorld().setThundering(true);});
-		setItem(8, createItem("World Settings", Material.ZOMBIE_HEAD), (itemstack) -> {new WorldsMenu(player).open();});
-		setItem(17, createItem("Players", Material.PLAYER_HEAD), (itemstack) -> {new PlayersMenu(player).open();});
+		super(player, 4, "Admin");
+		setFixed(true);
+		setItem(0, new ExtendedItemStack("Gamemode Survival", Material.IRON_SHOVEL), event -> player.setGameMode(GameMode.SURVIVAL));
+		setItem(9, new ExtendedItemStack("Gamemode Creative", Material.IRON_PICKAXE), event -> player.setGameMode(GameMode.CREATIVE));
+		setItem(18, new ExtendedItemStack("Gamemode Adventure", Material.IRON_SWORD), event -> player.setGameMode(GameMode.ADVENTURE));
+		setItem(27, new ExtendedItemStack("Gamemode Spectator", Material.IRON_HELMET), event -> player.setGameMode(GameMode.SPECTATOR));
+		setItem(2, new ExtendedItemStack("Time Morning", Material.CLOCK), event -> player.getWorld().setTime(0));
+		setItem(11, new ExtendedItemStack("Time Day", Material.CLOCK), event -> player.getWorld().setTime(6000));
+		setItem(20, new ExtendedItemStack("Time Night", Material.CLOCK), event -> player.getWorld().setTime(13000));
+		setItem(29, new ExtendedItemStack("Time Midnight", Material.CLOCK), event -> player.getWorld().setTime(18000));
+		setItem(4, new ExtendedItemStack("Effect Speed", Material.POTION).addPotionMeta(Color.BLUE, new PotionEffect(PotionEffectType.SPEED, 3600, 2)), event -> addPtionEffect(player, PotionEffectType.SPEED));
+		setItem(13, new ExtendedItemStack("Effect Jump Boost", Material.POTION).addPotionMeta(Color.BLUE, new PotionEffect(PotionEffectType.JUMP, 3600, 2)), event -> addPtionEffect(player, PotionEffectType.JUMP));
+		setItem(22, new ExtendedItemStack("Effect Invisibilitiy", Material.POTION).addPotionMeta(Color.BLUE, new PotionEffect(PotionEffectType.INVISIBILITY, 3600, 2)), event -> addPtionEffect(player, PotionEffectType.INVISIBILITY));
+		setItem(31, new ExtendedItemStack("Remove Effects", Material.GLASS_BOTTLE), event -> removeEffects(player));
+		setItem(6, new ExtendedItemStack("Weather Clear", Material.SUNFLOWER), event -> {
+			player.getWorld().setStorm(false);
+		});
+		setItem(15, new ExtendedItemStack("Weather Rain", Material.WATER_BUCKET), event -> {
+			player.getWorld().setStorm(true); 
+			player.getWorld().setThundering(false);
+		});
+		setItem(24, new ExtendedItemStack("Weather Thunderstorm", Material.HOPPER), event -> {
+			player.getWorld().setStorm(true); 
+			player.getWorld().setThundering(true);
+		});
+		setItem(8, new ExtendedItemStack("World Settings", Material.ZOMBIE_HEAD), event -> new WorldListMenu(player).open());
+		setItem(17, new ExtendedItemStack("Players", Material.PLAYER_HEAD), event -> new PlayerListMenu(player).open());
 	}
 	
 	private void addPtionEffect(Player player, PotionEffectType effect) {

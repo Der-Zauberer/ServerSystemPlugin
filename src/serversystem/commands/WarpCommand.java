@@ -14,7 +14,7 @@ import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.ServerWarp;
 import serversystem.utilities.ChatUtil.ErrorMessage;
-import serversystem.menus.WarpsMenu;
+import serversystem.menus.WarpListMenu;
 
 public class WarpCommand implements CommandExecutor, TabCompleter {
 
@@ -22,7 +22,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		CommandAssistant assistant = new CommandAssistant(sender);
 		if (args.length == 0 && sender instanceof Player) {
-			new WarpsMenu((Player)sender).open();
+			new WarpListMenu((Player)sender).open();
 		} else if (assistant.hasMinArguments(1, args)) {
 			if (assistant.isPath(1, "create", 2, args) || assistant.isWarp(args[0])) {
 				ServerWarp warp = ServerWarp.getWarp(args[0]);

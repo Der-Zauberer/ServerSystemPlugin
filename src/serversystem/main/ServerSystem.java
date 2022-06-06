@@ -29,12 +29,13 @@ import serversystem.events.PlayerJoinListener;
 import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
-import serversystem.handler.InventoryHandler;
 import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.WarpSign;
 import serversystem.signs.WorldSign;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.ExtendedItemStack;
 import serversystem.utilities.PermissionUtil;
+import serversystem.utilities.PlayerInventory;
 import serversystem.utilities.ServerSign;
 import serversystem.utilities.TeamUtil;
 
@@ -97,12 +98,12 @@ public class ServerSystem extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), instance);
 		Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), instance);
 		
-		Bukkit.getPluginManager().registerEvents(new InventoryHandler(), instance);
-		
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), instance);
 		
 		Bukkit.getPluginManager().registerEvents(ChatUtil.getInstance(), instance);
+		Bukkit.getPluginManager().registerEvents(ExtendedItemStack.getInstance(), instance);
 		Bukkit.getPluginManager().registerEvents(PermissionUtil.getInstance(), instance);
+		Bukkit.getPluginManager().registerEvents(PlayerInventory.getInstance(), instance);
 		Bukkit.getPluginManager().registerEvents(ServerSign.getInstance(), instance);
 	}
 

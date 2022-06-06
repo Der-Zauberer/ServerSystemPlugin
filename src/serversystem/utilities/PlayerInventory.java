@@ -1,108 +1,152 @@
 package serversystem.utilities;
 
+import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.List;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import serversystem.actions.InventoryClickAction;
 
-import serversystem.handler.InventoryHandler;
-
-public class PlayerInventory {
-
-	public enum ItemOption {
-		DRAGABLE,
-		GETABLE,
-		FIXED
-	};
-
+public class PlayerInventory implements Listener {
+	
+	private boolean fixed;
+	private int height;
 	private Inventory inventory;
-	private ItemOption itemoption;
 	private Player player;
-	private HashMap<ItemStack, ActionEvent> events = new HashMap<>();
+	private HashMap<Integer, InventoryClickAction> actions;
+	
+	private static PlayerInventory instance = new PlayerInventory();
+	private static ArrayList<PlayerInventory> inventories = new ArrayList<>();
 
-	public PlayerInventory(Player player, int number, String name) {
+	private PlayerInventory() {};
+	
+	public PlayerInventory(Player player, int height, String name) {
+		this.fixed = false;
+		this.height = height;
 		this.player = player;
-		inventory = Bukkit.createInventory(player, number, name);
+		this.inventory = Bukkit.createInventory(player, height * 9, name);
+		this.actions = new HashMap<>();
 	}
-
-	public static ItemStack createItem(String name, Material material) {
-		return new ItemBuilder(name, material).buildItem();
+	
+	public PlayerInventory setItem(int slot, ItemStack itemStack, InventoryClickAction action) {
+		inventory.setItem(slot, itemStack);
+		actions.put(slot, action);
+		return this;
 	}
-
-	public static ItemStack createPotionItem(String name, Color color, PotionEffectType potioneffect) {
-		ItemBuilder itembuilder = new ItemBuilder(name, Material.POTION);
-		itembuilder.buildItem();
-		itembuilder.addPotionMeta(color, new PotionEffect(potioneffect, 3600, 2));
-		return itembuilder.getItemStack();
+	
+	public PlayerInventory setItem(int slot, ItemStack itemStack) {
+		inventory.setItem(slot, itemStack);
+		if (actions.containsKey(slot)) actions.remove(slot);
+		return this;
 	}
-
-	public static ItemStack createPlayerSkullItem(String name, Player player) {
-		ItemBuilder itembuilder = new ItemBuilder(name, Material.PLAYER_HEAD);
-		itembuilder.buildItem();
-		itembuilder.addPlayerSkullMeta(player);
-		return itembuilder.getItemStack();
+	
+	public PlayerInventory setItemList(List<ItemStack> items, InventoryClickAction action) {
+		return setItemList(items, action, null);
 	}
-
-	public static ItemStack createBooleanItem(String name, boolean defaults) {
-		ItemBuilder itembuilder;
-		if (defaults) itembuilder = new ItemBuilder(name + " true", Material.GREEN_DYE);
-		else itembuilder = new ItemBuilder(name + " false", Material.RED_DYE);
-		return itembuilder.buildItem();
+	
+	public PlayerInventory setItemList(List<ItemStack> items, InventoryClickAction action, InventoryClickAction backAction) {
+		fillList(items, action, 0, backAction);
+		return this;
 	}
-
-	public void setItem(int slot, ItemStack itemstack, ActionEvent event) {
-		inventory.setItem(slot, itemstack);
-		events.put(itemstack, event);
+	
+	private void fillList(List<ItemStack> items, InventoryClickAction action, int position, InventoryClickAction backAction) {
+		clear();
+		for (int i = 0; i < inventory.getSize() - 9 && i + position < items.size(); i++) {
+			setItem(i, items.get(i + position), action);
+		}
+		if (position > inventory.getSize() - 10) {
+			setItem(inventory.getSize() - 9, new ExtendedItemStack("Previous Page", Material.ARROW), event -> {
+				fillList(items, action, position - (inventory.getSize() - 9), backAction);
+			});
+		}
+		if (backAction != null) {
+			setItem(inventory.getSize() - 5, new ExtendedItemStack("Back", Material.SPECTRAL_ARROW), backAction);
+		}
+		if (position + inventory.getSize() - 10 < items.size()) {
+			setItem(inventory.getSize() - 1, new ExtendedItemStack("Next Page", Material.ARROW), event -> {
+				fillList(items, action, position + (inventory.getSize() - 9), backAction);
+			});
+		}
 	}
-
-	public void setItem(int slot, ItemStack itemstack) {
-		inventory.setItem(slot, itemstack);
-	}
-
-	public void setEvent(ItemStack itemstack, ActionEvent event) {
-		events.put(itemstack, event);
-	}
-
-	public void onItemClicked(ItemStack itemstack) {
-		if (events.containsKey(itemstack)) events.get(itemstack).executeOnAction(itemstack);
-	}
-
-	public void open() {
+	
+	public PlayerInventory open() {
 		player.openInventory(inventory);
-		InventoryHandler.addInventory(this);
+		inventories.add(this);
+		return this;
 	}
-
-	public void close() {
+	
+	public PlayerInventory close() {
 		player.closeInventory();
-		InventoryHandler.removeInventory(this);
+		inventories.remove(this);
+		return this;
 	}
-
-	public void clear() {
+	
+	public PlayerInventory clear() {
+		actions.clear();
 		inventory.clear();
+		return this;
 	}
-
-	public void setItemOption(ItemOption itemoption) {
-		this.itemoption = itemoption;
+	
+	public PlayerInventory setFixed(boolean fixed) {
+		this.fixed = fixed;
+		return this;
 	}
-
-	public ItemOption getItemOption() {
-		return itemoption;
+	
+	public boolean isFixed() {
+		return fixed;
 	}
-
-	public Inventory getInventory() {
-		return inventory;
+	
+	public int getHeight() {
+		return height;
 	}
-
-	public static int calculateSize(int slots) {
-		int difference = 9 - (slots % 9);
-		int size = slots + difference;
-		if (size > 54) size = 54;
-		return size;
+	
+	public PlayerInventory setInventoryClickAction(int slot, InventoryClickAction action) {
+		actions.put(slot, action);
+		return this;
 	}
-
+	
+	public InventoryClickAction getInventoryClickAction(int slot) {
+		return actions.get(slot);
+	}
+	
+	@EventHandler
+	public static void onInventoryClicked(InventoryClickEvent event) {
+		try {
+			if(event.getCurrentItem() != null) {
+				for(PlayerInventory inventory : inventories) {
+					if (event.getClickedInventory() == inventory.inventory) {
+						if (inventory.actions.containsKey(event.getSlot())) inventory.actions.get(event.getSlot()).onAction(event);
+						if (inventory.isFixed()) event.setCancelled(true);
+						return;
+					} else if (inventory.isFixed() && event.getWhoClicked().getOpenInventory().getTopInventory() == inventory.inventory) {
+						event.setCancelled(true);
+						return;
+					}
+				}
+			}
+		} catch (ConcurrentModificationException exception) {}
+	}
+	
+	@EventHandler
+	public static void onInventoryClosed(InventoryCloseEvent event) {
+		for (PlayerInventory inventory : inventories) {
+			if (event.getInventory() == inventory.inventory) {
+				inventories.remove(inventory);
+				return;
+			}
+		}
+	}
+	
+	public static PlayerInventory getInstance() {
+		return instance;
+	}
+	
 }
