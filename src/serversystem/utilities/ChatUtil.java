@@ -13,7 +13,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
-import serversystem.handler.WorldGroupHandler;
 
 public class ChatUtil implements Listener {
 	
@@ -108,10 +107,10 @@ public class ChatUtil implements Listener {
 	
 	public static void sendPlayerChatMessage(Player player, String message) {
 		if (Config.isWorldGroupSystemEnabled()) {
-			for (Player players : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
+			for (Player players : WorldGroup.getWorldGroup(player).getPlayers()) {
 				players.sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
-			Bukkit.getConsoleSender().sendMessage("[" + WorldGroupHandler.getWorldGroup(player).getName() + "] " + TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+			Bukkit.getConsoleSender().sendMessage("[" + WorldGroup.getWorldGroup(player).getName() + "] " + TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 		} else {
 			for (Player players : Bukkit.getOnlinePlayers()) {
 				players.sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);

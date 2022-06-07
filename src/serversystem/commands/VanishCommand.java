@@ -8,12 +8,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
-import serversystem.handler.WorldGroupHandler;
 import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.TeamUtil;
+import serversystem.utilities.WorldGroup;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
 
@@ -59,7 +58,7 @@ private static ArrayList<Player> vanishedPlayers = new ArrayList<>();
 	
 	private static void show(Player player) {
 		TeamUtil.addRoleToPlayer(player);
-		for (Player everyPlayer : WorldGroupHandler.getWorldGroup(player).getPlayers()) {
+		for (Player everyPlayer : WorldGroup.getWorldGroup(player).getPlayers()) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 		}
 		if (!vanishedPlayers.isEmpty()) {

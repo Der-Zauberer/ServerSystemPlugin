@@ -5,27 +5,28 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import serversystem.config.Config;
-import serversystem.handler.WorldGroupHandler;
+import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.WorldGroup;
 
 public class PlayerDeathListener implements Listener {
 	
 	@EventHandler
 	public static void onPlayerDeath(PlayerDeathEvent event) {
 		World world = event.getEntity().getWorld();
-		if (Config.hasWorldDeathMessage(world.getName())) {
+		if (Config.getWorldOption(world.getName(), WorldOption.DEATHMESSAGE)) {
 			String message = event.getDeathMessage();
 			if (Config.getPlayerGroup(event.getEntity()) != null && Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())) != null && message.startsWith(Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())))) {
 				message = message.substring(Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())).length());
 			}
-			if (WorldGroupHandler.isEnabled()) {
-				ChatUtil.sendServerWorldGroupMessage(WorldGroupHandler.getWorldGroup(event.getEntity()), message);
+			if (WorldGroup.isEnabled()) {
+				ChatUtil.sendServerWorldGroupMessage(WorldGroup.getWorldGroup(event.getEntity()), message);
 			} else {
 				ChatUtil.sendServerBroadcastMessage(message);
 			}
 			
 		}
-		WorldGroupHandler.playerdeaths.put(event.getEntity(), world);
+		WorldGroup.getPlayerDeaths().put(event.getEntity(), world);
 		event.setDeathMessage("");
 	}
 	

@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
+import serversystem.utilities.WorldGroup;
 import serversystem.utilities.ChatUtil.ErrorMessage;
-import serversystem.handler.WorldGroupHandler;
 
 public class WorldCommand implements CommandExecutor, TabCompleter{
 	
@@ -27,7 +27,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 					if (!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(world.getName()) != null && !sender.hasPermission(Config.getWorldPermission(world.getName()))) {
 						ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 					} else {
-						WorldGroupHandler.teleportPlayer((Player)sender, world);
+						WorldGroup.teleportPlayer((Player)sender, world);
 					} 
 				} else if (sender instanceof Player && !sender.hasPermission("serversystem.command.world.edit")) {
 					ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
@@ -35,25 +35,24 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 					if (assistant.isPath(1, "teleport", 3, args)) {
 						if (assistant.isPlayer(args[2])) {
 							Player player = Bukkit.getPlayer(args[2]);
-							WorldGroupHandler.teleportPlayer(player, world);
+							WorldGroup.teleportPlayer(player, world);
 							if (sender != player) {ChatUtil.sendServerMessage(sender, "Teleported the player " + player.getName() +  " to the world " + world.getName() +  "!");} 
 						}
 					} else if (assistant.isPath(1, "create", 2, args)) {
 						if (world == null) {
 							ChatUtil.sendServerMessage(sender, "The world " + args[0] + " will be created, please wait a moment!");
-							WorldGroupHandler.createWorld(args[0]);
+							WorldGroup.createWorld(args[0]);
 							ChatUtil.sendServerMessage(sender, "The world " + args[0] + " has been successfully created!");
 						} else {
 							ChatUtil.sendServerMessage(sender, "The world " + world.getName() + " is already loaded!");
 						}
 					} else if (assistant.isPath(1, "remove", 2, args)) {
-						WorldGroupHandler.removeWorld(world.getName());
+						Config.removeFromLoadWorld(world.getName());
 						ChatUtil.sendServerMessage(sender, "The world " + world.getName() + " will be removed after a restart!");
 					} else if (assistant.isPath(1, "edit", 3, args)) {
 						if (args.length == 3) {
 							if (!args[2].equals("gamemode") && !args[2].equals("permission")) {
 								if (assistant.isWorldOption(args[2])) {
-									Config.getWorldOption(world.getName(), ChatUtil.parseWorldOption(args[2]));
 									ChatUtil.sendServerMessage(sender, "The option " + args[2] + " is set to " + Config.getWorldOption(world.getName(), ChatUtil.parseWorldOption(args[2])) + " for the world " + world.getName() + "!");
 								}
 							} else {

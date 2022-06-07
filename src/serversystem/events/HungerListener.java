@@ -6,12 +6,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import serversystem.config.Config;
+import serversystem.config.Config.WorldOption;
 
 public class HungerListener implements Listener {
 	
 	@EventHandler
 	public static void onFoodLevelChange(FoodLevelChangeEvent event) {
-		if (event.getEntity() instanceof Player && !Config.hasWorldHunger(event.getEntity().getWorld().getName())) {
+		if (event.getEntity() instanceof Player && !Config.getWorldOption(event.getEntity().getWorld().getName(), WorldOption.HUNGER)) {
 			event.setCancelled(true);
 		}
 	}

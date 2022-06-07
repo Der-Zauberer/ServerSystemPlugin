@@ -29,7 +29,6 @@ import serversystem.events.PlayerJoinListener;
 import serversystem.events.PlayerQuitListener;
 import serversystem.events.PlayerRespawnListener;
 import serversystem.events.PlayerTeleportListener;
-import serversystem.handler.WorldGroupHandler;
 import serversystem.signs.WarpSign;
 import serversystem.signs.WorldSign;
 import serversystem.utilities.ChatUtil;
@@ -38,6 +37,7 @@ import serversystem.utilities.PermissionUtil;
 import serversystem.utilities.PlayerInventory;
 import serversystem.utilities.ServerSign;
 import serversystem.utilities.TeamUtil;
+import serversystem.utilities.WorldGroup;
 
 public class ServerSystem extends JavaPlugin {
 
@@ -57,14 +57,14 @@ public class ServerSystem extends JavaPlugin {
 				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
 			}
 		}
-		WorldGroupHandler.autoCreateWorldGroups();
+		WorldGroup.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			TeamUtil.addRoleToPlayer(player);
 			if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
 		}
-		WorldGroupHandler.autoRemoveWorldGroups();
+		WorldGroup.autoRemoveWorldGroups();
 		if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			Config.getLobbyWorld().setMonsterSpawnLimit(0);
 		}
@@ -82,7 +82,7 @@ public class ServerSystem extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		WorldGroupHandler.autoSavePlayerStats();
+		WorldGroup.autoSavePlayerStats();
 		TeamUtil.resetTeams();
 	}
 
@@ -131,7 +131,7 @@ public class ServerSystem extends JavaPlugin {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Runnable() {
 			@Override
 			public void run() {
-				WorldGroupHandler.autoSavePlayerStats();
+				WorldGroup.autoSavePlayerStats();
 			}
 		}, 1L, (long) 120 * 20);
 	}

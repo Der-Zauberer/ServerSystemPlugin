@@ -5,9 +5,10 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import serversystem.config.Config;
-import serversystem.handler.WorldGroupHandler;
+import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ExtendedItemStack;
 import serversystem.utilities.PlayerInventory;
+import serversystem.utilities.WorldGroup;
 
 public class WorldMenu extends PlayerInventory {
 	
@@ -15,28 +16,25 @@ public class WorldMenu extends PlayerInventory {
 		super(player, 4, "World: " + world.getName());
 		setFixed(true);
 		setItem(0, new ExtendedItemStack("Damage", Material.SHIELD));
-		setItem(2, new ExtendedItemStack("Explosion", Material.TNT));
-		setItem(4, new ExtendedItemStack("Hunger", Material.COOKED_BEEF));
-		setItem(6, new ExtendedItemStack("Protection", Material.GOLDEN_PICKAXE));
-		setItem(8, new ExtendedItemStack("PVP", Material.IRON_SWORD));
-		setItem(9, new ExtendedItemStack("Damage", (Config.hasWorldDamage(world.getName())) ? Material.GREEN_DYE : Material.RED_DYE), event -> {
-			Config.setWorldDamage(world.getName(), invertItemStack(event.getCurrentItem(), 9, Config.hasWorldDamage(world.getName())));
-		});
-		setItem(11, new ExtendedItemStack("Explosion", (Config.hasWorldExplosion(world.getName())) ? Material.GREEN_DYE : Material.RED_DYE), event -> {
-			Config.setWorldExplosion(world.getName(), invertItemStack(event.getCurrentItem(), 11, Config.hasWorldExplosion(world.getName())));
-		});
-		setItem(13, new ExtendedItemStack("Hunger", (Config.hasWorldHunger(world.getName())) ? Material.GREEN_DYE : Material.RED_DYE), event -> {
-			Config.setWorldHunger(world.getName(), invertItemStack(event.getCurrentItem(), 13, Config.hasWorldHunger(world.getName())));
-		});
-		setItem(15, new ExtendedItemStack("Protection", (Config.hasWorldProtection(world.getName())) ? Material.GREEN_DYE : Material.RED_DYE), event -> {
-			Config.setWorldProtection(world.getName(), invertItemStack(event.getCurrentItem(), 15, Config.hasWorldProtection(world.getName())));
-		});
-		setItem(17, new ExtendedItemStack("PVP", (Config.hasWorldPVP(world.getName())) ? Material.GREEN_DYE : Material.RED_DYE), event -> {
-			Config.setWorldPVP(world.getName(), invertItemStack(event.getCurrentItem(), 17, Config.hasWorldPVP(world.getName())));
-		});
+		setItem(2, new ExtendedItemStack("Hunger", Material.COOKED_BEEF));
+		setItem(4, new ExtendedItemStack("PVP", Material.IRON_SWORD));
+		setItem(6, new ExtendedItemStack("Explosion", Material.TNT));
+		setItem(8, new ExtendedItemStack("Protection", Material.GOLDEN_PICKAXE));
+		createBooleanItem(9, world, WorldOption.DAMAGE);
+		createBooleanItem(11, world, WorldOption.HUNGER);
+		createBooleanItem(13, world, WorldOption.PVP);
+		createBooleanItem(15, world, WorldOption.EXPLOSION);
+		createBooleanItem(17, world, WorldOption.PROTECTION);
 		setItem(27, new ExtendedItemStack(world.getName(), Material.ZOMBIE_HEAD));
 		setItem(31, new ExtendedItemStack("Back", Material.SPECTRAL_ARROW), event -> new WorldListMenu(player).open());
-		setItem(35, new ExtendedItemStack("Teleport to " + world.getName(), Material.ENDER_PEARL), event -> WorldGroupHandler.teleportPlayer(player, world));
+		setItem(35, new ExtendedItemStack("Teleport to " + world.getName(), Material.ENDER_PEARL), event -> WorldGroup.teleportPlayer(player, world));
+	}
+	
+	private void createBooleanItem(int slot, World world, WorldOption option) {
+		String name = option.toString().substring(0, 1).toUpperCase() + option.toString().substring(1).toLowerCase();
+		setItem(slot, new ExtendedItemStack(name, (Config.getWorldOption(world.getName(), option)) ? Material.GREEN_DYE : Material.RED_DYE), event -> {
+			Config.setWorldOption(world.getName(), option, invertItemStack(event.getCurrentItem(), slot, Config.getWorldOption(world.getName(), option)));
+		});
 	}
 	
 	private boolean invertItemStack(ItemStack itemStack, int slot, boolean option) {

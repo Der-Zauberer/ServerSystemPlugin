@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import serversystem.config.Config;
+import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
 
@@ -52,7 +53,7 @@ private static ArrayList<Player> buildPlayers = new ArrayList<>();
 	}
 	
 	private static boolean isActionForbidden(World world, Player player) {
-		return Config.hasWorldProtection(world.getName()) && !buildPlayers.contains(player);
+		return Config.getWorldOption(world.getName(), WorldOption.PROTECTION) && !buildPlayers.contains(player);
 	}
 	
 	private static boolean isBlockDisabled(Block block, Player player) {

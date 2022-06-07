@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.SaveConfig;
-import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.WorldGroup;
 
 public class PlayerTeleportListener implements Listener {
 	
@@ -30,12 +30,12 @@ public class PlayerTeleportListener implements Listener {
 				}
 			}
 			if (Config.isWorldGroupSystemEnabled()) {
-				WorldGroupHandler.getWorldGroup(player).onPlayerLeave(event.getPlayer());
+				WorldGroup.getWorldGroup(player).onPlayerLeave(event.getPlayer());
 				event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld().getName()));
 				if(player.getAllowFlight()) {
 					player.setFlying(SaveConfig.loadFlying(player, world));
 				}
-				WorldGroupHandler.getWorldGroup(world).onPlayerJoin(event.getPlayer());
+				WorldGroup.getWorldGroup(world).onPlayerJoin(event.getPlayer());
 			} else {
 				event.getPlayer().setGameMode(Config.getWorldGamemode(world.getName()));
 				if(player.getAllowFlight()) {

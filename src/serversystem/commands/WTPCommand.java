@@ -8,12 +8,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
 import serversystem.config.Config;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
+import serversystem.utilities.WorldGroup;
 import serversystem.utilities.ChatUtil.ErrorMessage;
-import serversystem.handler.WorldGroupHandler;
 
 public class WTPCommand implements CommandExecutor, TabCompleter {
 
@@ -26,7 +25,7 @@ public class WTPCommand implements CommandExecutor, TabCompleter {
 					if (!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(args[0]) != null && !sender.hasPermission(Config.getWorldPermission(args[0]))) {
 						ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 					} else {
-						WorldGroupHandler.teleportPlayer((Player)sender, Bukkit.getWorld(args[0]));
+						WorldGroup.teleportPlayer((Player)sender, Bukkit.getWorld(args[0]));
 					}
 				}
 			}

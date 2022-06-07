@@ -1,11 +1,14 @@
 package serversystem.utilities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.VanishCommand;
+import serversystem.config.Config;
 import serversystem.config.SaveConfig;
 import serversystem.main.ServerSystem;
 
@@ -14,6 +17,11 @@ public class WorldGroup {
 	private String name;
 	private int currentPlayers;
 	private ArrayList<World> worlds;
+	
+	private static ArrayList<WorldGroup> worldGroups = new ArrayList<>();
+	private static boolean enabled = Config.isWorldGroupSystemEnabled();
+	
+	private static HashMap<Player, World> playerDeaths = new HashMap<>();
 
 	public WorldGroup(String name, World world) {
 		this.name = name;
@@ -91,6 +99,118 @@ public class WorldGroup {
 			players.addAll(world.getPlayers());
 		}
 		return players;
+	}
+	
+	public static void autoCreateWorldGroups() {
+		for (World world : Bukkit.getWorlds()) {
+			String worldgroup = Config.getWorldGroup(world.getName());
+			if (getWorldGroup(worldgroup) == null) {
+				addWorldGroup(new WorldGroup(worldgroup, world));
+			} else {
+				if (!getWorldGroup(worldgroup).getWorlds().contains(world)) {
+					getWorldGroup(worldgroup).addWorld(world);
+				}
+			}
+		}
+	}
+	
+	public static void autoRemoveWorldGroups() {
+		ArrayList<String> worldgroups = new ArrayList<>();
+		for (World world : Bukkit.getWorlds()) {
+			String worldgroup = Config.getWorldGroup(world.getName());
+			if (!worldgroups.contains(worldgroup)) {
+				worldgroups.add(worldgroup);
+			}
+		}
+		for (int i = 0; i < worldgroups.size(); i++) {
+			WorldGroup worldgroup = worldGroups.get(i);
+			if (!worldgroups.contains(worldgroup.getName())) {
+				removeWorldGroup(worldgroup);
+				worldgroup = null;
+			}
+		}
+	}
+	
+	public static void teleportPlayer(Player player, World world) {
+		if (Config.hasWorldSpawn(world.getName()) || SaveConfig.loadLocation(player, world) == null) {
+			player.teleport(world.getSpawnLocation());
+		} else {
+			player.teleport(SaveConfig.loadLocation(player, world));
+		}
+	}
+	
+	public static void autoSavePlayerStats() {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			if (enabled) {
+				SaveConfig.saveGamemode(player, getWorldGroup(player));
+				SaveConfig.saveInventory(player, getWorldGroup(player));
+				SaveConfig.saveXp(player, getWorldGroup(player));
+			}
+			SaveConfig.saveLocation(player);
+		}
+	}
+	
+	public static WorldGroup getWorldGroup(Player player) {
+		for (WorldGroup worldgroup : worldGroups) {
+			if (worldgroup.getWorlds().contains(player.getWorld())) {
+				return worldgroup;
+			}
+		}
+		return null;
+	}
+	
+	public static WorldGroup getWorldGroup(World world) {
+		for (WorldGroup worldgroup : worldGroups) {
+			if (worldgroup.getWorlds().contains(world)) {
+				return worldgroup;
+			}
+		}
+		return null;
+	}
+	
+	public static WorldGroup getWorldGroup(String string) {
+		for (WorldGroup worldgroup : worldGroups) {
+			if (worldgroup.getName().equals(string)) {
+				return worldgroup;
+			}
+		}
+		return null;
+	}
+	
+	public static void addWorldGroup(WorldGroup worldgroup) {
+		worldGroups.add(worldgroup);
+	}
+	
+	public static void removeWorldGroup(WorldGroup worldgroup) {
+		worldGroups.remove(worldgroup);
+	}
+	
+	public static void createWorld(String name) {
+		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
+		World world = Bukkit.getWorld(name);
+		Config.addWorld(world.getName());
+		Config.addToLoadWorld(world.getName());
+		addWorldGroup(new WorldGroup(world.getName(), world));
+	}
+	
+	public static void createWorld(String name, WorldGroup worldgroup) {
+		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
+		World world = Bukkit.getWorld(name);
+		Config.addWorld(world.getName());
+		Config.addToLoadWorld(world.getName());
+		worldgroup.addWorld(world);
+	}
+	
+	public static HashMap<Player, World> getPlayerDeaths() {
+		return playerDeaths;
+	}
+	
+	public static ArrayList<WorldGroup> getWorldgroups() {
+		return worldGroups;
+	}
+	
+	public static boolean isEnabled() {
+		return enabled;
 	}
 
 }

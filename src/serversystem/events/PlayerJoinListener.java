@@ -4,9 +4,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import serversystem.config.Config;
-import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.PermissionUtil;
+import serversystem.utilities.WorldGroup;
 
 public class PlayerJoinListener implements Listener {
 	
@@ -16,7 +16,7 @@ public class PlayerJoinListener implements Listener {
 		Config.addPlayer(event.getPlayer());
 		PermissionUtil.loadPlayerPermissions(event.getPlayer());
 		event.getPlayer().setGameMode(Config.getWorldGamemode(event.getPlayer().getWorld().getName()));
-		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerJoin(event.getPlayer());
+		WorldGroup.getWorldGroup(event.getPlayer()).onPlayerJoin(event.getPlayer());
 		if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			event.getPlayer().teleport(Config.getLobbyWorld().getSpawnLocation());
 		}

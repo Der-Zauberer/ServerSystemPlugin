@@ -43,7 +43,7 @@ public class Config {
 		setDefault("Groups", "");
 		for(World world : Bukkit.getWorlds()) {
 			addWorld(world.getName());
-			Bukkit.getWorld(world.getName()).setPVP(hasWorldPVP(world.getName()));
+			Bukkit.getWorld(world.getName()).setPVP(getWorldOption(world.getName(), WorldOption.PVP));
 		}
 		saveConfig();
 	}
@@ -271,84 +271,12 @@ public class Config {
 		return config.getBoolean("Worlds." + world + ".worldspawn");
 	}
 	
-	public static void setWorldProtection(String world, boolean protect) {
-		config.set("Worlds." + world + ".protect", protect);
-		saveConfig();
-	}
-	
-	public static boolean hasWorldProtection(String world) {
-		return config.getBoolean("Worlds." + world + ".protect");
-	}
-	
-	public static void setWorldPVP(String world, boolean pvp) {
-		Bukkit.getWorld(world).setPVP(pvp);
-		config.set("Worlds." + world + ".pvp", pvp);
-		saveConfig();
-	}
-	
-	public static boolean hasWorldPVP(String world) {
-		return config.getBoolean("Worlds." + world + ".pvp");
-	}
-	
-	public static void setWorldDamage(String world, boolean damage) {
-		config.set("Worlds." + world + ".damage", damage);
-		saveConfig();
-	}
-	
-	public static boolean hasWorldDamage(String world) {
-		return config.getBoolean("Worlds." + world + ".damage");
-	}
-	
-	public static void setWorldHunger(String world, boolean hunger) {
-		config.set("Worlds." + world + ".hunger", hunger);
-		saveConfig();
-	}
-	
-	public static boolean hasWorldHunger(String world) {
-		return config.getBoolean("Worlds." + world + ".hunger");
-	}
-	
-	public static void setWorldExplosion(String world, boolean explosion) {
-		config.set("Worlds." + world + ".explosion", explosion);
-		saveConfig();
-	}
-	
-	public static boolean hasWorldExplosion(String world) {
-		return config.getBoolean("Worlds." + world + ".explosion");
-	}
-	
-	public static void setWorldDeathMessage(String world, boolean deathmessage) {
-		config.set("Worlds." + world + ".deathmessage", deathmessage);
-		saveConfig();
-	}
-	
-	public static boolean hasWorldDeathMessage(String world) {
-		return config.getBoolean("Worlds." + world + ".deathmessage");
-	}
-	
 	public static void setWorldOption(String world, WorldOption option, boolean bool) {
-		switch (option) {
-		case DAMAGE: setWorldDamage(world, bool); break;
-		case PVP: setWorldPVP(world, bool); break;
-		case PROTECTION: setWorldProtection(world, bool); break;
-		case EXPLOSION: setWorldExplosion(world, bool); break;
-		case HUNGER: setWorldHunger(world, bool); break;
-		case DEATHMESSAGE: setWorldDeathMessage(world, bool); break;
-		default: break;
-		}
+		config.set("Worlds." + world + "." + option.toString().toLowerCase(), bool);
 	}
 	
 	public static boolean getWorldOption(String world, WorldOption option) {
-		switch (option) {
-		case DAMAGE: return hasWorldDamage(world);
-		case PVP: return hasWorldPVP(world);
-		case PROTECTION: return hasWorldProtection(world);
-		case EXPLOSION: return hasWorldExplosion(world);
-		case HUNGER: return hasWorldHunger(world);
-		case DEATHMESSAGE: return hasWorldDeathMessage(world);
-		default: break;
-		}
-		return false;
+		return config.getBoolean("Worlds." + world + "." + option.toString().toLowerCase());
 	}
 	
 	public static void setWorldGamemode(String world, GameMode gamemode) {

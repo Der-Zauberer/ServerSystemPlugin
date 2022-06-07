@@ -4,9 +4,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import serversystem.commands.VanishCommand;
-import serversystem.handler.WorldGroupHandler;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.PermissionUtil;
+import serversystem.utilities.WorldGroup;
 
 public class PlayerQuitListener implements Listener {
 	
@@ -19,7 +19,7 @@ public class PlayerQuitListener implements Listener {
 		if (event.getPlayer().getFlySpeed() > 0.2) {
 			event.getPlayer().setFlySpeed((float) 0.1);
 		}
-		WorldGroupHandler.getWorldGroup(event.getPlayer()).onPlayerLeave(event.getPlayer());
+		WorldGroup.getWorldGroup(event.getPlayer()).onPlayerLeave(event.getPlayer());
 		PermissionUtil.resetPlayerPermissions(event.getPlayer());
 	}
 
