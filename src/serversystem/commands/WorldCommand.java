@@ -19,10 +19,10 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		if (assistant.hasMinArguments(1, args)) {
 			if (assistant.isPath(1, "create", 2, args) || assistant.isWorld(args[0])) {
-				World world = Bukkit.getWorld(args[0]);
+				final World world = Bukkit.getWorld(args[0]);
 				if (args.length == 1 && sender instanceof Player) {
 					if (!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(world.getName()) != null && !sender.hasPermission(Config.getWorldPermission(world.getName()))) {
 						ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
@@ -105,7 +105,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
 		if(sender.hasPermission("serversystem.command.world.edit")) {
 			if (args.length == 1) {

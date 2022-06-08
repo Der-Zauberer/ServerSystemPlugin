@@ -18,7 +18,7 @@ public class WorldGroup {
 	private int currentPlayers;
 	private ArrayList<World> worlds;
 	
-	private static ArrayList<WorldGroup> worldGroups = new ArrayList<>();
+	private static final ArrayList<WorldGroup> worldGroups = new ArrayList<>();
 	private static boolean enabled = Config.isWorldGroupSystemEnabled();
 	
 	private static HashMap<Player, World> playerDeaths = new HashMap<>();
@@ -94,7 +94,7 @@ public class WorldGroup {
 	}
 
 	public ArrayList<Player> getPlayers() {
-		ArrayList<Player> players = new ArrayList<>();
+		final ArrayList<Player> players = new ArrayList<>();
 		for (World world : worlds) {
 			players.addAll(world.getPlayers());
 		}
@@ -103,7 +103,7 @@ public class WorldGroup {
 	
 	public static void autoCreateWorldGroups() {
 		for (World world : Bukkit.getWorlds()) {
-			String worldgroup = Config.getWorldGroup(world.getName());
+			final String worldgroup = Config.getWorldGroup(world.getName());
 			if (getWorldGroup(worldgroup) == null) {
 				addWorldGroup(new WorldGroup(worldgroup, world));
 			} else {
@@ -115,7 +115,7 @@ public class WorldGroup {
 	}
 	
 	public static void autoRemoveWorldGroups() {
-		ArrayList<String> worldgroups = new ArrayList<>();
+		final ArrayList<String> worldgroups = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
 			String worldgroup = Config.getWorldGroup(world.getName());
 			if (!worldgroups.contains(worldgroup)) {
@@ -187,7 +187,7 @@ public class WorldGroup {
 	
 	public static void createWorld(String name) {
 		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
-		World world = Bukkit.getWorld(name);
+		final World world = Bukkit.getWorld(name);
 		Config.addWorld(world.getName());
 		Config.addToLoadWorld(world.getName());
 		addWorldGroup(new WorldGroup(world.getName(), world));
@@ -195,7 +195,7 @@ public class WorldGroup {
 	
 	public static void createWorld(String name, WorldGroup worldgroup) {
 		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
-		World world = Bukkit.getWorld(name);
+		final World world = Bukkit.getWorld(name);
 		Config.addWorld(world.getName());
 		Config.addToLoadWorld(world.getName());
 		worldgroup.addWorld(world);

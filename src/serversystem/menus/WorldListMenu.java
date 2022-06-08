@@ -16,8 +16,7 @@ public class WorldListMenu extends PlayerInventory {
 	public WorldListMenu(Player player) {
 		super(player, 4, "Worlds");
 		setFixed(true);
-		
-		ArrayList<ItemStack> items = new ArrayList<>();
+		final ArrayList<ItemStack> items = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
 			items.add(new ExtendedItemStack(world.getName(), Material.ZOMBIE_HEAD));
 		}
@@ -25,7 +24,7 @@ public class WorldListMenu extends PlayerInventory {
 	}
 	
 	private void setWorld(ItemStack itemstack, Player player) {
-		String name = ChatColor.stripColor(itemstack.getItemMeta().getDisplayName());
+		final String name = ChatColor.stripColor(itemstack.getItemMeta().getDisplayName());
 		if (Bukkit.getWorld(name) != null) new WorldMenu(player, Bukkit.getWorld(name)).open();
 	}
 

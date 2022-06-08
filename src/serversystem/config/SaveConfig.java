@@ -19,7 +19,7 @@ import serversystem.utilities.WorldGroup;
 
 public class SaveConfig {
 
-	private static File file = new File("plugins/ServerSystem", "saveconfig.yml");
+	private static final File file = new File("plugins/ServerSystem", "saveconfig.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 	public static enum LogTypes {
@@ -34,7 +34,7 @@ public class SaveConfig {
 
 	public static ArrayList<String> getSection(String section, boolean keys) {
 		try {
-			ArrayList<String> list = new ArrayList<>();
+			final ArrayList<String> list = new ArrayList<>();
 			for (String key : config.getConfigurationSection(section).getKeys(keys)) {
 				list.add(key);
 			}
@@ -62,7 +62,7 @@ public class SaveConfig {
 	}
 
 	public static ServerWarp getWarp(String name) {
-		ServerWarp warp = new ServerWarp(name, config.getLocation("Warps." + name + ".location"));
+		final ServerWarp warp = new ServerWarp(name, config.getLocation("Warps." + name + ".location"));
 		warp.setMaterial(ChatUtil.parseMaterial(config.getString("Warps." + name + ".material")));
 		warp.setGlobal(config.getBoolean("Warps." + name + ".global"));
 		if (config.getString("Warps." + name + ".permission") != null) {
@@ -82,8 +82,8 @@ public class SaveConfig {
 	}
 
 	public static void saveInventory(Player player, WorldGroup worldgroup) {
-		String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
-		String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
+		final String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
+		final String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
 		for (int i = 0; i < player.getInventory().getArmorContents().length; i++) {
 			config.set(configarmor + "." + i, player.getInventory().getArmorContents()[i]);
 		}
@@ -95,8 +95,8 @@ public class SaveConfig {
 
 	public static void loadInventory(Player player, WorldGroup worldgroup) {
 		if (doesPlayerExist(player, worldgroup)) {
-			String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
-			String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
+			final String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
+			final String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
 			player.getInventory().clear();
 			ItemStack[] content = new ItemStack[4];
 			for (int i = 0; i < 4; i++) {
@@ -157,7 +157,7 @@ public class SaveConfig {
 	}
 
 	public static void saveLocation(Player player) {
-		String path = "Worlds." + player.getWorld().getName() + "." + player.getUniqueId();
+		final String path = "Worlds." + player.getWorld().getName() + "." + player.getUniqueId();
 		config.set(path + ".X", player.getLocation().getX());
 		config.set(path + ".Y", player.getLocation().getY());
 		config.set(path + ".Z", player.getLocation().getZ());
@@ -169,13 +169,13 @@ public class SaveConfig {
 
 	public static Location loadLocation(Player player, World world) {
 		if (config.get("Worlds." + world.getName() + "." + player.getUniqueId()) == null) return null;
-		String path = "Worlds." + world.getName() + "." + player.getUniqueId();
-		Location location = new Location(world, config.getDouble(path + ".X"), config.getDouble(path + ".Y"), config.getDouble(path + ".Z"), (float) config.getDouble(path + ".Pitch"), (float) config.getDouble(path + ".Yaw"));
+		final String path = "Worlds." + world.getName() + "." + player.getUniqueId();
+		final Location location = new Location(world, config.getDouble(path + ".X"), config.getDouble(path + ".Y"), config.getDouble(path + ".Z"), (float) config.getDouble(path + ".Pitch"), (float) config.getDouble(path + ".Yaw"));
 		return location;
 	}
 
 	public static boolean loadFlying(Player player, World world) {
-		String path = "Worlds." + world.getName() + "." + player.getUniqueId();
+		final String path = "Worlds." + world.getName() + "." + player.getUniqueId();
 		return config.getBoolean(path + ".Fly");
 	}
 
@@ -192,8 +192,8 @@ public class SaveConfig {
 		case KICK: logtype = "Kick"; break;
 		default: break;
 		}
-		String times[] = new Timestamp(System.currentTimeMillis()).toString().split(":");
-		String time = times[0] + ":" + times[1];
+		final String times[] = new Timestamp(System.currentTimeMillis()).toString().split(":");
+		final String time = times[0] + ":" + times[1];
 		List<String> list = config.getStringList(player.getUniqueId() + "." + logtype);
 		list.add(time + " " + message);
 		config.set(player.getUniqueId() + "." + logtype, list);

@@ -15,7 +15,7 @@ public class LobbyCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		if (assistant.isSenderInstanceOfPlayer()) {
 			if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
 				((Player) sender).teleport(Config.getLobbyWorld().getSpawnLocation());

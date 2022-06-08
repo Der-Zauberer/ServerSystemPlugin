@@ -15,7 +15,7 @@ public class PlayerListMenu extends PlayerInventory {
 	public PlayerListMenu(Player player) {
 		super(player, 4, "Player");
 		setFixed(true);
-		ArrayList<ItemStack> items = new ArrayList<>();
+		final ArrayList<ItemStack> items = new ArrayList<>();
 		for (Player target : Bukkit.getOnlinePlayers()) {
 			items.add(new ExtendedItemStack(target.getDisplayName(), Material.PLAYER_HEAD).addPlayerSkullMeta(target));
 		}
@@ -23,7 +23,7 @@ public class PlayerListMenu extends PlayerInventory {
 	}
 	
 	private void setPlayer(ItemStack itemstack, Player player) {
-		String name = ChatColor.stripColor(itemstack.getItemMeta().getDisplayName());
+		final String name = ChatColor.stripColor(itemstack.getItemMeta().getDisplayName());
 		if (Bukkit.getPlayer(name) != null) {
 			new PlayerMenu(player, Bukkit.getPlayer(name)).open();
 		}

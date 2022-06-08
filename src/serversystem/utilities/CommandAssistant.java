@@ -133,7 +133,7 @@ public class CommandAssistant {
 	}
 
 	public List<String> getPlayers() {
-		List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<>();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (!VanishCommand.isVanished(player)) list.add(player.getName());
 		}
@@ -141,7 +141,7 @@ public class CommandAssistant {
 	}
 
 	public List<String> getWorlds() {
-		List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
 			list.add(world.getName());
 		}
@@ -149,7 +149,7 @@ public class CommandAssistant {
 	}
 
 	public List<String> getWorlds(CommandSender sender) {
-		List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
 			if (Config.getWorldPermission(world.getName()) == null || sender.hasPermission(Config.getWorldPermission(world.getName()))) {
 				list.add(world.getName());
@@ -159,7 +159,7 @@ public class CommandAssistant {
 	}
 
 	public List<String> getWarps() {
-		List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<>();
 		for (ServerWarp warp : ServerWarp.getWarps()) {
 			list.add(warp.getName());
 		}
@@ -167,7 +167,7 @@ public class CommandAssistant {
 	}
 
 	public List<String> getWarps(Player player) {
-		List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<>();
 		for (ServerWarp warp : ServerWarp.getWarps()) {
 			if (warp.getPermission() == null || sender.hasPermission(warp.getPermission())) {
 				if (warp.isGlobal() || warp.getLocation().getWorld() == player.getWorld()) list.add(warp.getName());
@@ -177,8 +177,8 @@ public class CommandAssistant {
 	}
 
 	public List<String> cutArguments(String args[], List<String> commands) {
-		String command = args[args.length - 1];
-		List<String> output = new ArrayList<>();
+		final String command = args[args.length - 1];
+		final List<String> output = new ArrayList<>();
 		if (!command.isEmpty() && !command.equals("")) {
 			for (String string : commands) {
 				if (string.startsWith(command)) output.add(string);

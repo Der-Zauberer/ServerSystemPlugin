@@ -20,7 +20,6 @@ public class PermissionReloadComnmand implements CommandExecutor {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				PermissionUtil.loadPlayerPermissions(player);
 				TeamUtil.addRoleToPlayer(player);
-				System.out.println(Config.getPlayerGroup(player));
 			}
 
 			ChatUtil.sendServerMessage(sender, "Reloaded all permissions!");

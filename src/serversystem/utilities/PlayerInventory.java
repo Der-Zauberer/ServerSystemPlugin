@@ -23,8 +23,8 @@ public class PlayerInventory implements Listener {
 	private Player player;
 	private HashMap<Integer, InventoryClickAction> actions;
 	
-	private static PlayerInventory instance = new PlayerInventory();
-	private static ArrayList<PlayerInventory> inventories = new ArrayList<>();
+	private static final PlayerInventory instance = new PlayerInventory();
+	private static final ArrayList<PlayerInventory> inventories = new ArrayList<>();
 
 	private PlayerInventory() {};
 	

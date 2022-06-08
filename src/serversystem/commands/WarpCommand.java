@@ -20,7 +20,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		if (args.length == 0 && sender instanceof Player) {
 			new WarpListMenu((Player)sender).open();
 		} else if (assistant.hasMinArguments(1, args)) {
@@ -102,7 +102,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
 		if(sender.hasPermission("serversystem.command.world.edit")) {
 			if (args.length == 1) {
@@ -127,11 +127,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 				}
 			}
 		} else {
-			if (args.length == 1) {
-				if (sender instanceof Player) {
-					commands = assistant.getWarps((Player)sender);
-				}
-			}
+			if (args.length == 1 && sender instanceof Player) commands = assistant.getWarps((Player)sender);
 		}
 		commands = assistant.cutArguments(args, commands);
 		return commands;

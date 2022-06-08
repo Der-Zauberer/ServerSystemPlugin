@@ -18,9 +18,9 @@ public class ChatUtil implements Listener {
 	
 	private static ChatUtil instance = new ChatUtil();
 	
-	private static ChatColor messagecolor = parseColor(Config.getMessageColor());
-	private static ChatColor errorcolor = parseColor(Config.getErrorMessageColor());
-	private static String servername = parseColor(Config.getMessagePrefixColor()) + Config.getMessagePrefix();
+	private static final ChatColor messagecolor = parseColor(Config.getMessageColor());
+	private static final ChatColor errorcolor = parseColor(Config.getErrorMessageColor());
+	private static final String servername = parseColor(Config.getMessagePrefixColor()) + Config.getMessagePrefix();
 	
 	public static enum ErrorMessage{ONLYCONSOLE, ONLYPLAYER, NOPERMISSION, NOTENOUGHARGUMENTS}
 	public static enum TitleType{TITLE, SUBTITLE, ACTIONBAR}

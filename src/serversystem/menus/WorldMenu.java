@@ -31,7 +31,7 @@ public class WorldMenu extends PlayerInventory {
 	}
 	
 	private void createBooleanItem(int slot, World world, WorldOption option) {
-		String name = option.toString().substring(0, 1).toUpperCase() + option.toString().substring(1).toLowerCase();
+		final String name = option.toString().substring(0, 1).toUpperCase() + option.toString().substring(1).toLowerCase();
 		setItem(slot, new ExtendedItemStack(name, (Config.getWorldOption(world.getName(), option)) ? Material.GREEN_DYE : Material.RED_DYE), event -> {
 			Config.setWorldOption(world.getName(), option, invertItemStack(event.getCurrentItem(), slot, Config.getWorldOption(world.getName(), option)));
 		});

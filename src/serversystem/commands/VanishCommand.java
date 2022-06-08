@@ -16,7 +16,7 @@ import serversystem.utilities.WorldGroup;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
 
-private static ArrayList<Player> vanishedPlayers = new ArrayList<>();
+	private static final ArrayList<Player> vanishedPlayers = new ArrayList<>();
 	
 	public static void toggleVanish(Player player) {
 		toggleVanish(player, player);
@@ -71,7 +71,7 @@ private static ArrayList<Player> vanishedPlayers = new ArrayList<>();
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistent = new CommandAssistant(sender);
+		final CommandAssistant assistent = new CommandAssistant(sender);
 		if (args.length == 0) {
 			if (assistent.isSenderInstanceOfPlayer(true)) toggleVanish((Player) sender);
 		} else {
@@ -82,7 +82,7 @@ private static ArrayList<Player> vanishedPlayers = new ArrayList<>();
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
 		if (args.length == 1) commands = assistant.getPlayers();
 		assistant.cutArguments(args, commands);

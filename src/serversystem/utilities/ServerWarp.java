@@ -15,7 +15,7 @@ public class ServerWarp {
 	private boolean global;
 	private String permission;
 	
-	private static ArrayList<ServerWarp> warps = SaveConfig.getWarps();
+	private static final ArrayList<ServerWarp> warps = SaveConfig.getWarps();
 
 	public ServerWarp(String name, Location location) {
 		this.name = name;
@@ -84,7 +84,7 @@ public class ServerWarp {
 	}
 	
 	public static ArrayList<ServerWarp> getWarps(Player player) {
-		ArrayList<ServerWarp> result = new ArrayList<>();
+		final ArrayList<ServerWarp> result = new ArrayList<>();
 		for (ServerWarp warp : warps) {
 			if ((warp.isGlobal() || player.getWorld() == warp.getLocation().getWorld()) && (warp.getPermission() == null || player.hasPermission(warp.getPermission()))) result.add(warp);
 		}

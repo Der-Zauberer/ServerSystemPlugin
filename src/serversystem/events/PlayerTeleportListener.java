@@ -16,8 +16,8 @@ public class PlayerTeleportListener implements Listener {
 	
 	@EventHandler
 	public static void onPlayerTeleport(PlayerTeleportEvent event) {
-		Player player = event.getPlayer();
-		World world = event.getTo().getWorld();
+		final Player player = event.getPlayer();
+		final World world = event.getTo().getWorld();
 		if (event.getPlayer().getWorld() != event.getTo().getWorld()) {
 			boolean vanished = VanishCommand.isVanished(event.getPlayer());
 			if ((event.getCause() == TeleportCause.NETHER_PORTAL || event.getCause() == TeleportCause.END_PORTAL) && !Config.arePortalsEnabled()) {

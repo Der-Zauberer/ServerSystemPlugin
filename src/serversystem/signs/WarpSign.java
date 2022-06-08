@@ -18,7 +18,7 @@ public class WarpSign extends ServerSign {
 	
 	private void clickAction(Player player, Sign sign, String args) {
 		if (ServerWarp.getWarp(args) != null) {
-			ServerWarp warp = ServerWarp.getWarp(args);
+			final ServerWarp warp = ServerWarp.getWarp(args);
 			if (warp.getPermission() == null || player.hasPermission(warp.getPermission())) {
 				player.teleport(ServerWarp.getWarp(args).getLocation());
 			} else {

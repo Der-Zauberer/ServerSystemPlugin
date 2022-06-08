@@ -18,7 +18,7 @@ public class WTPCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		if (assistant.isSenderInstanceOfPlayer()) {
 			if (assistant.hasMinArguments(1, args)) {
 				if (assistant.isWorld(args[0])) {
@@ -35,7 +35,7 @@ public class WTPCommand implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
 		if (args.length == 1) {
 			commands = assistant.getWorlds();

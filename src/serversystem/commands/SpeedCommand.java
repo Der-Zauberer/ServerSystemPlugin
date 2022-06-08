@@ -13,7 +13,7 @@ public class SpeedCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (new CommandAssistant(sender).isSenderInstanceOfPlayer()) {
-			Player player = (Player) sender;
+			final Player player = (Player) sender;
 			if (player.getFlySpeed() > 0.2) {
 				player.setFlySpeed((float) 0.1);
 				ChatUtil.sendServerMessage(sender, "You have no longer speed!");

@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.EnderchestCommand;
@@ -51,7 +50,7 @@ public class ServerSystem extends JavaPlugin {
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
-		repeatAutoSave();
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, () -> WorldGroup.autoSavePlayerStats(), 1L, (long) 120 * 20);
 		for (String world : Config.getLoadWorlds()) {
 			if (Bukkit.getWorld(world) == null) {
 				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
@@ -68,16 +67,12 @@ public class ServerSystem extends JavaPlugin {
 		if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
 			Config.getLobbyWorld().setMonsterSpawnLimit(0);
 		}
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				for (Player player : Bukkit.getOnlinePlayers()) {
-					PermissionUtil.loadPlayerPermissions(player);
-					TeamUtil.addRoleToPlayer(player);
-				}
+		Bukkit.getScheduler().runTaskLater(this, () -> {
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				PermissionUtil.loadPlayerPermissions(player);
+				TeamUtil.addRoleToPlayer(player);
 			}
-
-		}.runTaskLater(ServerSystem.getInstance(), 100);
+		}, 100);
 	}
 
 	@Override
@@ -125,15 +120,6 @@ public class ServerSystem extends JavaPlugin {
 	private static void registerWorldSigns() {
 		ServerSign.registerServerSign(new WorldSign());
 		ServerSign.registerServerSign(new WarpSign());
-	}
-
-	private static void repeatAutoSave() {
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, new Runnable() {
-			@Override
-			public void run() {
-				WorldGroup.autoSavePlayerStats();
-			}
-		}, 1L, (long) 120 * 20);
 	}
 
 	public static ServerSystem getInstance() {

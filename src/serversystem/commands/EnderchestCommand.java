@@ -14,7 +14,7 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		if (assistant.isSenderInstanceOfPlayer()) {
 			Player player = (Player) sender;
 			if (args.length == 0) {
@@ -28,11 +28,9 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
-		if (args.length == 1) {
-			commands = assistant.getPlayers();
-		}
+		if (args.length == 1) commands = assistant.getPlayers();
 		commands = assistant.cutArguments(args, commands);
 		return commands;
 	}

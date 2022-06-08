@@ -18,8 +18,8 @@ import serversystem.main.ServerSystem;
 
 public class PermissionUtil implements Listener {
 	
-	private static PermissionUtil instance = new PermissionUtil();
-	private static HashMap<Player, PermissionAttachment> attachments = new HashMap<>();
+	private static final PermissionUtil instance = new PermissionUtil();
+	private static final HashMap<Player, PermissionAttachment> attachments = new HashMap<>();
 
 	private PermissionUtil() {}
 	

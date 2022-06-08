@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 
 public class Config {
 	
-	private static File file = new File("plugins/ServerSystem", "config.yml");
+	private static final File file = new File("plugins/ServerSystem", "config.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
 	public enum WorldOption{DAMAGE, PVP, PROTECTION, EXPLOSION, HUNGER, DEATHMESSAGE};
@@ -54,7 +54,7 @@ public class Config {
 	
 	public static ArrayList<String> getSection(String section, boolean keys) {
 		try {
-			ArrayList<String> list = new ArrayList<>();
+			final ArrayList<String> list = new ArrayList<>();
 			for (String key : config.getConfigurationSection(section).getKeys(keys)) {
 				list.add(key);
 			}
@@ -187,7 +187,7 @@ public class Config {
 	}
 	
 	public static void removeFromLoadWorld(String string) {
-		List<String> list = getLoadWorlds();
+		final List<String> list = getLoadWorlds();
 		list.remove(string);
 		config.set("Worldload", list);
 		saveConfig();
@@ -219,8 +219,8 @@ public class Config {
 	}
 	
 	public static List<String> getGroupPermissions(String group) {
-		ArrayList<String> permissions = new ArrayList<>();
-		ArrayList<String> groups = new ArrayList<>();
+		final ArrayList<String> permissions = new ArrayList<>();
+		final ArrayList<String> groups = new ArrayList<>();
 		groups.add(group);
 		while (getGroupParent(group) != null) {
 			group = getGroupParent(group);
@@ -233,7 +233,7 @@ public class Config {
 	}
 	
 	public static List<String> getPlayerPermissions(Player player) {
-		List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<>();
 		if(getGroupPermissions(getPlayerGroup(player)) != null) {
 			list.addAll(getGroupPermissions(getPlayerGroup(player)));
 		}
@@ -372,7 +372,7 @@ public class Config {
 	}
 	
 	public static List<String> getPlayers() {
-		List<String> players = new ArrayList<>();
+		final List<String> players = new ArrayList<>();
 		for(String key : getSection("Players", false)) {
 			players.add(config.getString("Players." + key + ".name"));
 		}

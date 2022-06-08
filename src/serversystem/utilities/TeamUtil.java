@@ -10,7 +10,7 @@ import serversystem.config.Config;
 
 public class TeamUtil {
 	
-	private static ArrayList<String> groups = new ArrayList<>();
+	private static final ArrayList<String> groups = new ArrayList<>();
 	
 	public static final String TEAMVANISH = "00Vanish";
 	

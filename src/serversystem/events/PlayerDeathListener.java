@@ -13,7 +13,7 @@ public class PlayerDeathListener implements Listener {
 	
 	@EventHandler
 	public static void onPlayerDeath(PlayerDeathEvent event) {
-		World world = event.getEntity().getWorld();
+		final World world = event.getEntity().getWorld();
 		if (Config.getWorldOption(world.getName(), WorldOption.DEATHMESSAGE)) {
 			String message = event.getDeathMessage();
 			if (Config.getPlayerGroup(event.getEntity()) != null && Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())) != null && message.startsWith(Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())))) {

@@ -18,13 +18,13 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		if (assistant.hasPermissionOrIsConsole("serversystem.command.permission")) {
 			if (assistant.hasMinArguments(2, args)) {
 				if (Bukkit.getPlayer(args[0]) != null || Config.getPlayerGroup(args[0]) != null) {
 					if (Config.getSection("Groups", false) != null && Config.getSection("Groups", false).contains(args[1])) {
 						if (Bukkit.getPlayer(args[0]) != null) {
-							Player player = Bukkit.getPlayer(args[0]);
+							final Player player = Bukkit.getPlayer(args[0]);
 							Config.setPlayerGroup(player, args[1]);
 							PermissionUtil.loadPlayerPermissions(player);
 							TeamUtil.addRoleToPlayer(player);
@@ -48,9 +48,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 		if (args.length == 1 && sender.hasPermission("serversystem.command.permission")) {
 			commands = Config.getPlayers();
 		} else if (args.length == 2 && sender.hasPermission("serversystem.command.permission")) {
-			if (Config.getSection("Groups", false) != null) {
-				commands = Config.getSection("Groups", false);
-			}
+			if (Config.getSection("Groups", false) != null) commands = Config.getSection("Groups", false);
 		}
 		commands = new CommandAssistant(sender).cutArguments(args, commands);
 		return commands;

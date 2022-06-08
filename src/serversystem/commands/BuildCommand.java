@@ -30,7 +30,7 @@ import serversystem.utilities.CommandAssistant;
 
 public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	
-private static ArrayList<Player> buildPlayers = new ArrayList<>();
+	private static final ArrayList<Player> buildPlayers = new ArrayList<>();
 	
 	public static void toggleBuildMode(Player player) {
 		toggleBuildMode(player, player);
@@ -78,7 +78,7 @@ private static ArrayList<Player> buildPlayers = new ArrayList<>();
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistant = new CommandAssistant(sender);
+		final CommandAssistant assistant = new CommandAssistant(sender);
 		List<String> commands = new ArrayList<>();
 		if (args.length == 1) commands = assistant.getPlayers();
 		assistant.cutArguments(args, commands);
@@ -120,8 +120,8 @@ private static ArrayList<Player> buildPlayers = new ArrayList<>();
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerInteract(PlayerInteractEvent event) {
 		if (isActionForbidden(event.getPlayer().getWorld(), event.getPlayer())) {
-			Material mainMaterial = event.getPlayer().getInventory().getItemInMainHand().getType();
-			Material secondaryMaterial = event.getPlayer().getInventory().getItemInOffHand().getType();
+			final Material mainMaterial = event.getPlayer().getInventory().getItemInMainHand().getType();
+			final Material secondaryMaterial = event.getPlayer().getInventory().getItemInOffHand().getType();
 			ArrayList<Material> vorbiddenMaterials = new ArrayList<>();
 			vorbiddenMaterials.add(Material.ARMOR_STAND);
 			vorbiddenMaterials.add(Material.PAINTING);
