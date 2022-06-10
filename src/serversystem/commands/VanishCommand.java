@@ -18,19 +18,19 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 
 	private static final ArrayList<Player> vanishedPlayers = new ArrayList<>();
 	
-	public static void toggleVanish(Player player) {
-		toggleVanish(player, player);
+	public static void toggleVanish(Player player, boolean chatOutput) {
+		toggleVanish(player, player, chatOutput);
 	}
 	
-	public static void toggleVanish(Player player, CommandSender sender) {
+	public static void toggleVanish(Player player, CommandSender sender, boolean chatOutput) {
 		if (vanishedPlayers.contains(player)) {
 			show(player);
-			ChatUtil.sendServerMessage(player, "You are no longer vanished!");
-			if (player != sender) ChatUtil.sendServerMessage(sender, player.getName() + " is no longer vanished!");
+			if (chatOutput) ChatUtil.sendServerMessage(player, "You are no longer vanished!");
+			if (player != sender && chatOutput) ChatUtil.sendServerMessage(sender, player.getName() + " is no longer vanished!");
 		} else {
 			hide(player);
-			ChatUtil.sendServerMessage(player, "You are vanished now!");
-			if (player != sender) ChatUtil.sendServerMessage(sender, player.getName() + " is vanished now!");
+			if (chatOutput) ChatUtil.sendServerMessage(player, "You are vanished now!");
+			if (player != sender && chatOutput) ChatUtil.sendServerMessage(sender, player.getName() + " is vanished now!");
 		}
 	}
 	
@@ -73,9 +73,9 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		final CommandAssistant assistent = new CommandAssistant(sender);
 		if (args.length == 0) {
-			if (assistent.isSenderInstanceOfPlayer(true)) toggleVanish((Player) sender);
+			if (assistent.isSenderInstanceOfPlayer(true)) toggleVanish((Player) sender, true);
 		} else {
-			if (assistent.isPlayer(args[0])) toggleVanish(Bukkit.getPlayer(args[0]), sender);
+			if (assistent.isPlayer(args[0])) toggleVanish(Bukkit.getPlayer(args[0]), sender, true);
 		}
 		return true;
 	}

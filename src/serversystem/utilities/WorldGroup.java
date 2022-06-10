@@ -6,8 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
-import serversystem.commands.BuildCommand;
-import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
 import serversystem.config.Config.WorldOption;
@@ -36,7 +34,7 @@ public class WorldGroup {
 		this.worlds = worlds;
 	}
 
-	public void onPlayerJoin(Player player) {
+	public void join(Player player) {
 		currentPlayers++;
 		for (Player everyplayer : Bukkit.getOnlinePlayers()) {
 			everyplayer.hidePlayer(ServerSystem.getInstance(), player);
@@ -52,15 +50,9 @@ public class WorldGroup {
 		TeamUtil.addRoleToPlayer(player);
 	}
 
-	public void onPlayerLeave(Player player) {
+	public void quit(Player player) {
 		currentPlayers--;
-		if (VanishCommand.isVanished(player)) {
-			VanishCommand.toggleVanish(player);
-		}
 		TeamUtil.removePlayerFromTeam(player);
-		if (BuildCommand.isInBuildmode(player)) {
-			BuildCommand.toggleBuildMode(player);
-		}
 		SaveConfig.savePlayerProfile(player, this);
 		player.getInventory().clear();
 		player.setLevel(0);
