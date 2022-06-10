@@ -101,7 +101,7 @@ public class ExtendedItemStack extends ItemStack implements Listener {
 	
 	public ExtendedItemStack addPotionMeta(Color color, PotionEffect effect) {
 		if(getType() == Material.POTION) {
-			PotionMeta potionMeta = (PotionMeta) getItemMeta();
+			final PotionMeta potionMeta = (PotionMeta) getItemMeta();
 			potionMeta.setColor(color);
 			potionMeta.addCustomEffect(effect, true);
 			setItemMeta(potionMeta);
@@ -111,7 +111,7 @@ public class ExtendedItemStack extends ItemStack implements Listener {
 	
 	public ExtendedItemStack addPlayerSkullMeta(Player player) {
 		if(getType() == Material.PLAYER_HEAD) {
-			SkullMeta skullMeta = (SkullMeta) getItemMeta();
+			final SkullMeta skullMeta = (SkullMeta) getItemMeta();
 			skullMeta.setOwningPlayer(player);
 			setItemMeta(skullMeta);
 		}
@@ -151,7 +151,7 @@ public class ExtendedItemStack extends ItemStack implements Listener {
 	}
 	
 	public static ArrayList<ItemStack> getItemsAsItemStack() {
-		ArrayList<ItemStack> itemStacks = new ArrayList<>();
+		final ArrayList<ItemStack> itemStacks = new ArrayList<>();
 		extendedItemStacks.forEach(item -> itemStacks.add(item));
 		return itemStacks;
 	}
@@ -166,7 +166,7 @@ public class ExtendedItemStack extends ItemStack implements Listener {
 	
 	@EventHandler
 	public static void onPlayerInteract(PlayerInteractEvent event) {
-		ExtendedItemStack itemStack;																																						
+		final ExtendedItemStack itemStack;																																						
 		if ((itemStack = getItem(event.getItem())) != null) {
 			if (itemStack.getInteractAction() != null) itemStack.getInteractAction().onAction(event);
 			if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
