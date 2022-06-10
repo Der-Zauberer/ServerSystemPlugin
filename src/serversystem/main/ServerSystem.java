@@ -17,6 +17,7 @@ import serversystem.commands.WTPCommand;
 import serversystem.commands.WarpCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
+import serversystem.config.Config.ConfigOption;
 import serversystem.config.SaveConfig;
 import serversystem.events.CommandPreprocessListener;
 import serversystem.events.EntityDamageListener;
@@ -59,12 +60,12 @@ public class ServerSystem extends JavaPlugin {
 		WorldGroup.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			TeamUtil.addRoleToPlayer(player);
-			if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
+			if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
 		}
 		WorldGroup.autoRemoveWorldGroups();
-		if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
+		if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
 			Config.getLobbyWorld().setMonsterSpawnLimit(0);
 		}
 		Bukkit.getScheduler().runTaskLater(this, () -> {

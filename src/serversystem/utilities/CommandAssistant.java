@@ -151,7 +151,7 @@ public class CommandAssistant {
 	public List<String> getWorlds(CommandSender sender) {
 		final List<String> list = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
-			if (Config.getWorldPermission(world.getName()) == null || sender.hasPermission(Config.getWorldPermission(world.getName()))) {
+			if (Config.getWorldPermission(world) == null || sender.hasPermission(Config.getWorldPermission(world))) {
 				list.add(world.getName());
 			}
 		}

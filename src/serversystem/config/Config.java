@@ -5,45 +5,50 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import serversystem.utilities.ChatUtil;
 
 public class Config {
 	
 	private static final File file = new File("plugins/ServerSystem", "config.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
-	public enum WorldOption{DAMAGE, PVP, PROTECTION, EXPLOSION, HUNGER, DEATHMESSAGE};
+	public enum ConfigOption{JOIN_MESSAGE, QUIT_MESSAGE, ENABLE_WORLD_GROUPS, ENABLE_PORTALS, LOBBY}
+	public enum TitleTypeOption{TITLE, SUBTITLE, TABLIST_TITLE, TABLIST_SUBTITLE}
+	public enum WorldOption{DAMAGE, HUNGER, PVP, EXPLOSION, PROTECTION, WORLD_SPAWN, DEATH_MESSAGE}
 	
 	public Config() {
-		setDefault("Server.joinmessage", true);
-		setDefault("Server.leavemessage", true);
-		setDefault("Server.title.text", "");
-		setDefault("Server.title.color", "");
-		setDefault("Server.subtitle.text", "");
-		setDefault("Server.subtitle.color", "");
-		setDefault("Server.tablist.title.text", "");
-		setDefault("Server.tablist.title.color", "");
-		setDefault("Server.tablist.subtitle.text", "");
-		setDefault("Server.tablist.subtitle.color", "");
-		setDefault("Server.message.prefix", "[Server]");
-		setDefault("Server.message.prefixcolor", "yellow");
-		setDefault("Server.message.color", "yellow");
-		setDefault("Server.message.errorcolor", "red");
-		setDefault("Server.lobby", false);
-		setDefault("Server.lobbyworld", "world");
-		setDefault("Server.enableworldgroups", true);
-		setDefault("Server.enableportals", true);
-		setDefault("DisabledPermissions", "");
-		setDefault("DisabledBlocks", "");
-		setDefault("Worldload", "");
-		setDefault("Groups", "");
+		setDefault("join_message", true);
+		setDefault("leave_message", true);
+		setDefault("enable_world_groups", false);
+		setDefault("enable_portals", true);
+		setDefault("lobby", false);
+		setDefault("lobby_world", "world");
+		setDefault("title.text", "");
+		setDefault("title.color", "");
+		setDefault("subtitle.text", "");
+		setDefault("subtitle.color", "");
+		setDefault("tablist.title.text", "");
+		setDefault("tablist.title.color", "");
+		setDefault("tablist.subtitle.text", "");
+		setDefault("tablist.subtitle.color", "");
+		setDefault("message.prefix", "[Server]");
+		setDefault("message.prefix_color", "yellow");
+		setDefault("message.color", "yellow");
+		setDefault("message.error_color", "red");
+		setDefault("disabled_permissions", "");
+		setDefault("disabled_blocks", "");
+		setDefault("load_worlds", "");
+		setDefault("worlds", "");
+		setDefault("groups", "");
+		setDefault("player", "");
 		for(World world : Bukkit.getWorlds()) {
-			addWorld(world.getName());
-			Bukkit.getWorld(world.getName()).setPVP(getWorldOption(world.getName(), WorldOption.PVP));
+			addWorld(world);
 		}
 		saveConfig();
 	}
@@ -64,158 +69,93 @@ public class Config {
 		}
 	}
 	
-	public static void setJoinMessageActive(boolean joinmessage) {
-		config.set("Server.joinmessage", joinmessage);
+	public static void setConfigOption(ConfigOption option, boolean value) {
+		config.set(option.toString().toLowerCase(), value);
 	}
 	
-	public static boolean isJoinMessageActiv() {
-		return config.getBoolean("Server.joinmessage");
-	}
-	
-	public static void setLeaveMessageActive(boolean leavemessage) {
-		config.set("Server.leavemessage", leavemessage);
-	}
-	
-	public static boolean isLeaveMessageActiv() {
-		return config.getBoolean("Server.leavemessage");
-	}
-	
-	public static void getTitle(String title, String color) {
-		config.set("Server.title.text", title);
-		config.set("Server.title.color", color);
-		saveConfig();
-	}
-
-	public static String getTitle() {
-		return config.getString("Server.title.text");
-	}
-	
-	public static String getTitleColor() {
-		return config.getString("Server.title.color");
-	}
-	
-	public static void setSubtitle(String title, String color) {
-		config.set("Server.title.text", title);
-		config.set("Server.title.color", color);
-		saveConfig();
-	}
-
-	public static String getSubtitle() {
-		return config.getString("Server.subtitle.text");
-	}
-	
-	public static String getSubtitleColor() {
-		return config.getString("Server.subtitle.color");
-	}
-	
-	public static void setTablistTitle(String title, String color) {
-		config.set("Server.tablist.title.text", title);
-		config.set("Server.tablist.title.color", color);
-		saveConfig();
-	}
-
-	public static String getTablistTitle() {
-		return config.getString("Server.tablist.title.text");
-	}
-	
-	public static String getTablistTitleColor() {
-		return config.getString("Server.tablist.title.color");
-	}
-	
-	public static void setTablistSubtitle(String title, String color) {
-		config.set("Server.tablist.title.text", title);
-		config.set("Server.tablist.title.color", color);
-		saveConfig();
-	}
-
-	public static String getTablistSubtitle() {
-		return config.getString("Server.tablist.subtitle.text");
-	}
-	
-	public static String getTablistSubtitleColor() {
-		return config.getString("Server.tablist.subtitle.color");
-	}
-	
-	public static String getMessagePrefix() {
-		return config.getString("Server.message.prefix");
-	}
-	
-	public static String getMessagePrefixColor() {
-		return config.getString("Server.message.prefixcolor");
-	}
-	
-	public static String getMessageColor() {
-		return config.getString("Server.message.color");
-	}
-	
-	public static String getErrorMessageColor() {
-		return config.getString("Server.message.errorcolor");
-	}
-	
-	public static boolean lobbyExists() {
-		return config.getBoolean("Server.lobby");
+	public static boolean getConfigOption(ConfigOption option) {
+		return config.getBoolean(option.toString().toLowerCase());
 	}
 	
 	public static World getLobbyWorld() {
-		if(Bukkit.getWorld(config.getString("Server.lobbyworld")) != null) {
-			return Bukkit.getWorld(config.getString("Server.lobbyworld"));
+		if(Bukkit.getWorld(config.getString("lobby_world")) != null) return Bukkit.getWorld(config.getString("lobby_world"));
+		return null;
+	}
+	
+	public static void setTitle(TitleTypeOption type, String text, String color) {
+		config.set(type.toString().toLowerCase().replace('_', '.') + ".text", text);
+		config.set(type.toString().toLowerCase().replace('_', '.') + ".color", color);
+	}
+	
+	public static String getTitle(TitleTypeOption type) {
+		final String text = config.getString(type.toString().toLowerCase().replace('_', '.') + ".text");
+		if (text != null) {
+			final ChatColor color = ChatUtil.parseColor(config.getString(type.toString().toLowerCase().replace('_', '.') + ".color"));
+			return color + text;
 		}
 		return null;
 	}
 	
-	public static boolean isWorldGroupSystemEnabled() {
-		return config.getBoolean("Server.enableworldgroups");
+	public static String getMessagePrefix() {
+		final String prefix = config.getString("message.prefix");
+		final ChatColor color = ChatUtil.parseColor(config.getString("message.prefix_color"));
+		if (prefix != null && !prefix.isEmpty()) return color + prefix; else return color + "server";
 	}
 	
-	public static boolean arePortalsEnabled() {
-		return config.getBoolean("Server.enableportals");
+	public static ChatColor getMessageColor() {
+		return ChatUtil.parseColor(config.getString("message.color"));
+	}
+	
+	public static ChatColor getErrorMessageColor() {
+		return ChatUtil.parseColor(config.getString("message.error_color"));
 	}
 	
 	public static List<String> getDisabledPermissions() {
-		return config.getStringList("DisabledPermissions");
+		return config.getStringList("disabled_permissions");
 	}
 	
 	public static List<String> getDisabledBlocks() {
-		return config.getStringList("DisabledBlocks");
+		return config.getStringList("disabled_blocks");
 	}
 	
-	public static void addToLoadWorld(String world) {
+	public static void addLoadWorld(String world) {
 		List<String> list = getLoadWorlds();
 		list.add(world);
-		config.set("Worldload", list);
+		config.set("load_worlds", list);
 		saveConfig();
 	}
 	
-	public static void removeFromLoadWorld(String string) {
+	public static void removeLoadWorld(String string) {
 		final List<String> list = getLoadWorlds();
 		list.remove(string);
-		config.set("Worldload", list);
+		config.set("load_worlds", list);
 		saveConfig();
 	}
 	
 	public static List<String> getLoadWorlds() {
-		return config.getStringList("Worldload");
+		return config.getStringList("load_worlds");
 	}
 	
 	public static void removeGroup(String group) {
-		config.set("Groups." + group, null);
+		config.set("groups." + group, null);
 		saveConfig();
 	}
 	
 	public static String getGroupID(String group) {
-		return config.getString("Groups." + group + ".id");
+		return config.getString("groups." + group + ".id");
 	}
 	
-	public static String getGroupColor(String group) {
-		return config.getString("Groups." + group + ".color");
+	public static ChatColor getGroupColor(String group) {
+		return ChatUtil.parseColor(config.getString("groups." + group + ".color"));
 	}
 	
 	public static String getGroupPrefix(String group) {
-		return config.getString("Groups." + group + ".prefix");
+		final String prefix = config.getString("groups." + group + ".prefix");
+		if (prefix != null) return prefix; else return "";
 	}
 	
 	public static String getGroupParent(String group) {
-		return config.getString("Groups." + group + ".parent");
+		return config.getString("groups." + group + ".parent");
 	}
 	
 	public static List<String> getGroupPermissions(String group) {
@@ -226,72 +166,68 @@ public class Config {
 			group = getGroupParent(group);
 			groups.add(group);
 		}
-		for(int i = groups.size(); i > 0; i--) {
-			permissions.addAll(config.getStringList("Groups." + groups.get(i - 1) + ".permissions"));
+		for (int i = groups.size(); i > 0; i--) {
+			permissions.addAll(config.getStringList("groups." + groups.get(i - 1) + ".permissions"));
 		}
 		return permissions;
 	}
 	
 	public static List<String> getPlayerPermissions(Player player) {
 		final List<String> list = new ArrayList<>();
-		if(getGroupPermissions(getPlayerGroup(player)) != null) {
+		if (getGroupPermissions(getPlayerGroup(player)) != null) {
 			list.addAll(getGroupPermissions(getPlayerGroup(player)));
 		}
-		if(getPlayerSpecificPermissions(player) != null) {
+		if (getPlayerSpecificPermissions(player) != null) {
 			list.addAll(getPlayerSpecificPermissions(player));
 		}
 		return list;
 	}
 	
-	public static void addWorld(String world) {
-		if(config.get("Worlds." + world) == null) {
-			config.set("Worlds." + world + ".group", world);
-			config.set("Worlds." + world + ".worldspawn", false);
-			config.set("Worlds." + world + ".protect", false);
-			config.set("Worlds." + world + ".pvp", true);
-			config.set("Worlds." + world + ".damage", true);
-			config.set("Worlds." + world + ".huger", true);
-			config.set("Worlds." + world + ".explosion", true);
-			config.set("Worlds." + world + ".deathmessage", true);
-			config.set("Worlds." + world + ".gamemode", 0);
+	public static void addWorld(World world) {
+		if(config.get("worlds." + world.getName()) == null) {
+			config.set("worlds." + world.getName() + ".group", world.getName());
+			config.set("worlds." + world.getName() + ".damage", true);
+			config.set("worlds." + world.getName() + ".hunger", true);
+			config.set("worlds." + world.getName() + ".pvp", world.getPVP());
+			config.set("worlds." + world.getName() + ".explosion", true);
+			config.set("worlds." + world.getName() + ".protection", false);
+			config.set("worlds." + world.getName() + ".world_spawn", false);
+			config.set("worlds." + world.getName() + ".death_message", true);
+			config.set("worlds." + world.getName() + ".gamemode", 0);
 			saveConfig();
 		}
 	}
 	
-	public static void setWorldGroup(String world, String group) {
-		config.set("Worlds." + world + ".group", group);
+	public static void setWorldGroup(World world, String worldGroup) {
+		config.set("worlds." + world.getName() + ".group", worldGroup);
 		saveConfig();
 	}
 	
-	public static String getWorldGroup(String world) {
-		return config.getString("Worlds." + world + ".group");
+	public static String getWorldGroup(World world) {
+		return config.getString("worlds." + world.getName() + ".group");
 	}
 	
-	public static boolean hasWorldSpawn(String world) {
-		return config.getBoolean("Worlds." + world + ".worldspawn");
+	public static void setWorldOption(World world, WorldOption option, boolean bool) {
+		config.set("worlds." + world.getName() + "." + option.toString().toLowerCase(), bool);
 	}
 	
-	public static void setWorldOption(String world, WorldOption option, boolean bool) {
-		config.set("Worlds." + world + "." + option.toString().toLowerCase(), bool);
+	public static boolean getWorldOption(World world, WorldOption option) {
+		return config.getBoolean("worlds." + world.getName() + "." + option.toString().toLowerCase());
 	}
 	
-	public static boolean getWorldOption(String world, WorldOption option) {
-		return config.getBoolean("Worlds." + world + "." + option.toString().toLowerCase());
-	}
-	
-	public static void setWorldGamemode(String world, GameMode gamemode) {
+	public static void setWorldGamemode(World world, GameMode gamemode) {
 		switch (gamemode) {
-		case SURVIVAL: config.set("Worlds." + world + ".gamemode", 0); break;
-		case CREATIVE: config.set("Worlds." + world + ".gamemode", 1); break;
-		case ADVENTURE: config.set("Worlds." + world + ".gamemode", 2); break;
-		case SPECTATOR: config.set("Worlds." + world + ".gamemode", 3); break;
+		case SURVIVAL: config.set("worlds." + world.getName() + ".gamemode", 0); break;
+		case CREATIVE: config.set("worlds." + world.getName() + ".gamemode", 1); break;
+		case ADVENTURE: config.set("worlds." + world.getName() + ".gamemode", 2); break;
+		case SPECTATOR: config.set("worlds." + world.getName() + ".gamemode", 3); break;
 		default: break;
 		}
 		saveConfig();
 	}
 	
-	public static GameMode getWorldGamemode(String world) {
-		switch (config.getInt("Worlds." + world + ".gamemode")) {
+	public static GameMode getWorldGamemode(World world) {
+		switch (config.getInt("worlds." + world + ".gamemode")) {
 		case 0: return GameMode.SURVIVAL;
 		case 1: return GameMode.CREATIVE;
 		case 2: return GameMode.ADVENTURE;
@@ -301,44 +237,44 @@ public class Config {
 		return GameMode.ADVENTURE;
 	}
 	
-	public static void setWorldPermission(String world, String permission) {
-		config.set("Worlds." + world + ".permission", permission);
+	public static void setWorldPermission(World world, String permission) {
+		config.set("worlds." + world.getName() + ".permission", permission);
 		saveConfig();
 	}
 	
-	public static void removeWorldPermission(String world) {
-		config.set("Worlds." + world + ".permission", null);
+	public static void removeWorldPermission(World world) {
+		config.set("worlds." + world.getName() + ".permission", null);
 		saveConfig();
 	}
 	
-	public static boolean hasWorldPermission(String world) {
-		return config.getString("Worlds." + world + ".permission") != null;
+	public static boolean hasWorldPermission(World world) {
+		return config.getString("worlds." + world.getName() + ".permission") != null;
 	}
 	
-	public static String getWorldPermission(String world) {
-		return config.getString("Worlds." + world + ".permission");
+	public static String getWorldPermission(World world) {
+		return config.getString("worlds." + world.getName() + ".permission");
 	}
 	
 	public static void addPlayer(Player player) {
-		if(config.get("Players." + player.getUniqueId()) == null) {
-			config.set("Players." + player.getUniqueId() + ".name", player.getName());
-			config.set("Players." + player.getUniqueId() + ".group", "player");
+		if (config.get("player." + player.getUniqueId()) == null) {
+			config.set("player." + player.getUniqueId() + ".name", player.getName());
+			config.set("player." + player.getUniqueId() + ".group", "player");
 			saveConfig();
-		} else if(!config.getString("Players." + player.getUniqueId() + ".name").equals(player.getName())) {
-			config.set("Players." + player.getUniqueId() + ".name", player.getName());
+		} else if (!config.getString("player." + player.getUniqueId() + ".name").equals(player.getName())) {
+			config.set("player." + player.getUniqueId() + ".name", player.getName());
 			saveConfig();
 		}
 	}
 	
 	public static void setPlayerGroup(Player player, String group) {
-		config.set("Players." + player.getUniqueId() + ".group", group);
+		config.set("player." + player.getUniqueId() + ".group", group);
 		saveConfig();
 	}
 	
 	public static void setPlayerGroup(String player, String group) {
-		for(String key : getSection("Players", false)) {
-			if(config.getString("Players." + key + ".name").equals(player)) {
-				config.set("Players." + key + ".group", group);
+		for (String key : getSection("player", false)) {
+			if (config.getString("player." + key + ".name").equals(player)) {
+				config.set("player." + key + ".group", group);
 				saveConfig();
 				return;
 			}
@@ -346,25 +282,25 @@ public class Config {
 	}
 	
 	public static String getPlayerGroup(Player player) {
-		return config.getString("Players." + player.getUniqueId() + ".group");
+		return config.getString("player." + player.getUniqueId() + ".group");
 	}
 	
 	public static String getPlayerGroup(String player) {
-		for(String key : getSection("Players", false)) {
-			if(config.getString("Players." + key + ".name").equals(player)) {
-				return config.getString("Players." + key + ".group");
+		for (String key : getSection("player", false)) {
+			if (config.getString("player." + key + ".name").equals(player)) {
+				return config.getString("player." + key + ".group");
 			}
 		}
 		return null;
 	}
 	
 	private static List<String> getPlayerSpecificPermissions(Player player) {
-		return config.getStringList("Players." + player.getUniqueId() + ".permissions");
+		return config.getStringList("player." + player.getUniqueId() + ".permissions");
 	}
 	
 	public static boolean isPlayerExisting(String player) {
-		for(String key : getSection("Players", false)) {
-			if(config.getString("Players." + key + ".name").equals(player)) {
+		for (String key : getSection("player", false)) {
+			if (config.getString("player." + key + ".name").equals(player)) {
 				return true;
 			}
 		}
@@ -373,8 +309,8 @@ public class Config {
 	
 	public static List<String> getPlayers() {
 		final List<String> players = new ArrayList<>();
-		for(String key : getSection("Players", false)) {
-			players.add(config.getString("Players." + key + ".name"));
+		for (String key : getSection("player", false)) {
+			players.add(config.getString("player." + key + ".name"));
 		}
 		return players;
 	}
@@ -383,7 +319,7 @@ public class Config {
 		try {
 			config.save(file);
 		} catch (IOException exception) {
-			exception.printStackTrace();
+			Bukkit.getLogger().warning("Something went wrong while saving config.yml!");
 		}
 	}
 	

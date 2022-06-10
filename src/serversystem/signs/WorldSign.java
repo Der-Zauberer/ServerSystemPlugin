@@ -1,6 +1,7 @@
 package serversystem.signs;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
@@ -18,8 +19,9 @@ public class WorldSign extends ServerSign {
 	}
 	
 	private void clickAction(Player player, Sign sign, String args) {
-		if (Bukkit.getWorld(args) != null) {
-			if (!Config.hasWorldPermission(args) || player.hasPermission(Config.getWorldPermission(args))) {
+		World world = Bukkit.getWorld(args);
+		if (world != null) {
+			if (!Config.hasWorldPermission(world) || player.hasPermission(Config.getWorldPermission(world))) {
 				WorldGroup.teleportPlayer(player, Bukkit.getWorld(args));
 			} else {
 				ChatUtil.sendServerErrorMessage(player, ErrorMessage.NOPERMISSION);

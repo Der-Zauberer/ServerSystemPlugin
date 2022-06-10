@@ -22,7 +22,7 @@ public class WTPCommand implements CommandExecutor, TabCompleter {
 		if (assistant.isSenderInstanceOfPlayer()) {
 			if (assistant.hasMinArguments(1, args)) {
 				if (assistant.isWorld(args[0])) {
-					if (!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(args[0]) != null && !sender.hasPermission(Config.getWorldPermission(args[0]))) {
+					if (!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(Bukkit.getWorld(args[0])) != null && !sender.hasPermission(Config.getWorldPermission(Bukkit.getWorld(args[0])))) {
 						ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
 					} else {
 						WorldGroup.teleportPlayer((Player)sender, Bukkit.getWorld(args[0]));

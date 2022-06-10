@@ -2,9 +2,8 @@ package serversystem.config;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -12,24 +11,26 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ServerWarp;
 import serversystem.utilities.WorldGroup;
 
 public class SaveConfig {
 
-	private static final File file = new File("plugins/ServerSystem", "saveconfig.yml");
+	private static final File file = new File("plugins/ServerSystem", "save_config.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-	public static enum LogTypes {
-		WARNING, REPORT, BAN, KICK
-	};
-
 	public SaveConfig() {
+		setDefault("warps", "");
+		setDefault("worlds", "");
+		setDefault("world_groups", "");
 		if (!file.exists()) {
 			saveConfig();
 		}
+	}
+	
+	private static void setDefault(String key, Object value) {
+		if (config.get(key) == null) config.set(key, value);
 	}
 
 	public static ArrayList<String> getSection(String section, boolean keys) {
@@ -45,196 +46,176 @@ public class SaveConfig {
 	}
 
 	public static void setWarp(ServerWarp warp) {
-		config.set("Warps." + warp.getName() + ".material", warp.getMaterial().toString().toLowerCase());
-		config.set("Warps." + warp.getName() + ".location", warp.getLocation());
-		config.set("Warps." + warp.getName() + ".global", warp.isGlobal());
+		config.set("warps." + warp.getName() + ".material", warp.getMaterial().toString().toLowerCase());
+		config.set("warps." + warp.getName() + ".location", warp.getLocation());
+		config.set("warps." + warp.getName() + ".global", warp.isGlobal());
 		if (warp.getPermission() != null) {
-			config.set("Warps." + warp.getName() + ".permission", warp.getPermission());
+			config.set("warps." + warp.getName() + ".permission", warp.getPermission());
 		} else {
-			config.set("Warps." + warp.getName() + ".permission", null);
+			config.set("warps." + warp.getName() + ".permission", null);
 		}
 		saveConfig();
 	}
 
 	public static void removeWarp(ServerWarp warp) {
-		config.set("Warps." + warp.getName(), null);
+		config.set("warps." + warp.getName(), null);
 		saveConfig();
 	}
 
 	public static ServerWarp getWarp(String name) {
-		final ServerWarp warp = new ServerWarp(name, config.getLocation("Warps." + name + ".location"));
-		warp.setMaterial(ChatUtil.parseMaterial(config.getString("Warps." + name + ".material")));
-		warp.setGlobal(config.getBoolean("Warps." + name + ".global"));
-		if (config.getString("Warps." + name + ".permission") != null) {
-			warp.setPermission(config.getString("Warps." + name + ".permission"));
+		try {
+			final ServerWarp warp = new ServerWarp(name, config.getLocation("warps." + name + ".location"));
+			warp.setMaterial(ChatUtil.parseMaterial(config.getString("warps." + name + ".material")));
+			warp.setGlobal(config.getBoolean("warps." + name + ".global"));
+			if (config.getString("warps." + name + ".permission") != null) {
+				warp.setPermission(config.getString("warps." + name + ".permission"));
+			}
+			return warp;
+		} catch (Exception exception) {
+			Bukkit.getLogger().warning("Something went wrong while loadig the warp " + name + "!");
+			return null;
 		}
-		return warp;
+		
 	}
 
 	public static ArrayList<ServerWarp> getWarps() {
 		ArrayList<ServerWarp> warps = new ArrayList<>();
-		if (getSection("Warps", false) != null) {
-			for (String name : getSection("Warps", false)) {
+		if (getSection("warps", false) != null) {
+			for (String name : getSection("warps", false)) {
 				warps.add(getWarp(name));
 			}
 		}
 		return warps;
 	}
+	
+	public static void saveLocation(Player player) {
+		final String path = "worlds." + player.getWorld().getName() + "." + player.getUniqueId();
+		config.set(path + ".name", player.getDisplayName());
+		config.set(path + ".x", player.getLocation().getX());
+		config.set(path + ".y", player.getLocation().getY());
+		config.set(path + ".z", player.getLocation().getZ());
+		config.set(path + ".pitch", player.getLocation().getPitch());
+		config.set(path + ".yaw", player.getLocation().getYaw());
+		config.set(path + ".fly", player.isFlying());
+		saveConfig();
+	}
 
-	public static void saveInventory(Player player, WorldGroup worldgroup) {
-		final String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
-		final String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
+	public static Location loadLocation(Player player, World world) {
+		try {
+			if (config.get("worlds." + world.getName() + "." + player.getUniqueId()) == null) return null;
+			final String path = "worlds." + world.getName() + "." + player.getUniqueId();
+			final Location location = new Location(world, config.getDouble(path + ".x"), config.getDouble(path + ".y"), config.getDouble(path + ".z"), (float) config.getDouble(path + ".pitch"), (float) config.getDouble(path + ".yaw"));
+			return location;
+		} catch (Exception exception) {
+			Bukkit.getLogger().warning("Something went wrong while loadig location of " + player.getDisplayName() + "!");
+			return null;
+		}
+	}
+
+	public static boolean loadFlying(Player player, World world) {
+		try {
+			final String path = "worlds." + world.getName() + "." + player.getUniqueId();
+			return config.getBoolean(path + ".fly");
+		} catch (Exception exception) {
+			Bukkit.getLogger().warning("Something went wrong while loadig fly mode of " + player.getDisplayName() + "!");
+			return false;
+		}
+	}
+	
+	public static void savePlayerProfile(Player player, WorldGroup worldGroup) {
+		config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".name", player.getDisplayName());
+		saveXp(player, worldGroup);
+		saveGamemode(player, worldGroup);
+		saveInventory(player, worldGroup);
+		saveConfig();
+	}
+	
+	public static void loadPlayerProfile(Player player, WorldGroup worldGroup) {
+		if (config.get("world_groups." + worldGroup.getName() + "." + player.getUniqueId()) != null) {
+			try {
+				loadXp(player, worldGroup);
+			} catch (Exception exception) {
+				Bukkit.getLogger().warning("Something went wrong while loadig xp of " + player.getDisplayName() + "!");
+			}
+			try {
+				loadGamemode(player, worldGroup);
+			} catch (Exception exception) {
+				Bukkit.getLogger().warning("Something went wrong while loadig gamemode of " + player.getDisplayName() + "!");
+			}
+			try {
+				loadInventory(player, worldGroup);
+			} catch (Exception exception) {
+				Bukkit.getLogger().warning("Something went wrong while loadig inventory of " + player.getDisplayName() + "!");
+			}
+		} else {
+			savePlayerProfile(player, worldGroup);
+		}
+	}
+
+	private static void saveXp(Player player, WorldGroup worldGroup) {
+		config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".level", player.getLevel());
+		config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".experience", player.getExp());
+	}
+
+	private static void loadXp(Player player, WorldGroup worldGroup) {
+		player.setLevel(config.getInt("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".level"));
+		player.setExp(config.getInt("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".experience"));
+	}
+
+	private static void saveGamemode(Player player, WorldGroup worldGroup) {
+		switch (player.getGameMode()) {
+		case SURVIVAL: config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".gamemode", 0); break;
+		case CREATIVE: config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".gamemode", 1); break;
+		case ADVENTURE: config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".gamemode", 2); break;
+		case SPECTATOR: config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".gamemode", 3); break;
+		default: config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".gamemode", 0); break;
+		}
+	}
+
+	private static void loadGamemode(Player player, WorldGroup worldGroup) {
+		switch (config.getInt("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".gamemode")) {
+		case 0: player.setGameMode(GameMode.SURVIVAL); break;
+		case 1: player.setGameMode(GameMode.CREATIVE); break;
+		case 2: player.setGameMode(GameMode.ADVENTURE); break;
+		case 3: player.setGameMode(GameMode.SPECTATOR); break;
+		default: player.setGameMode(GameMode.ADVENTURE); break;
+		}
+	}
+	
+	private static void saveInventory(Player player, WorldGroup worldGroup) {
+		final String configarmor = "world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".inventory.armor";
+		final String configcontent = "world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".inventory.content";
 		for (int i = 0; i < player.getInventory().getArmorContents().length; i++) {
 			config.set(configarmor + "." + i, player.getInventory().getArmorContents()[i]);
 		}
 		for (int i = 0; i < player.getInventory().getContents().length; i++) {
 			config.set(configcontent + "." + i, player.getInventory().getContents()[i]);
 		}
-		saveConfig();
 	}
 
-	public static void loadInventory(Player player, WorldGroup worldgroup) {
-		if (doesPlayerExist(player, worldgroup)) {
-			final String configarmor = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Armor";
-			final String configcontent = "WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Inventory.Content";
-			player.getInventory().clear();
-			ItemStack[] content = new ItemStack[4];
-			for (int i = 0; i < 4; i++) {
-				if (config.getItemStack(configarmor + "." + i) != null) {
-					content[i] = config.getItemStack(configarmor + "." + i);
-				}
-			}
-			player.getInventory().setArmorContents(content);
-			content = new ItemStack[41];
-			for (int i = 0; i < 41; i++) {
-				content[i] = config.getItemStack(configcontent + "." + i);
-			}
-			player.getInventory().setContents(content);
-		} else {
-			saveInventory(player, worldgroup);
-		}
-	}
-
-	public static void saveXp(Player player, WorldGroup worldgroup) {
-		config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Level", player.getLevel());
-		config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Experience", player.getExp());
-		saveConfig();
-	}
-
-	public static void loadXp(Player player, WorldGroup worldgroup) {
-		if (doesPlayerExist(player, worldgroup)) {
-			player.setLevel(config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Level"));
-			player.setExp(config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Experience"));
-		} else {
-			saveXp(player, worldgroup);
-		}
-	}
-
-	public static void saveGamemode(Player player, WorldGroup worldgroup) {
-		switch (player.getGameMode()) {
-		case SURVIVAL: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 0); break;
-		case CREATIVE: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 1); break;
-		case ADVENTURE: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 2); break;
-		case SPECTATOR: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 3); break;
-		default: config.set("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode", 0); break;
-		}
-		saveConfig();
-	}
-
-	public static void loadGamemode(Player player, WorldGroup worldgroup) {
-		if (doesPlayerExist(player, worldgroup)) {
-			switch (config.getInt("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId() + ".Gamemode")) {
-			case 0: player.setGameMode(GameMode.SURVIVAL); break;
-			case 1: player.setGameMode(GameMode.CREATIVE); break;
-			case 2: player.setGameMode(GameMode.ADVENTURE); break;
-			case 3: player.setGameMode(GameMode.SPECTATOR); break;
-			default: player.setGameMode(GameMode.ADVENTURE); break;
-			}
-		} else {
-			player.setGameMode(Config.getWorldGamemode(player.getWorld().getName()));
-			saveConfig();
-		}
-	}
-
-	public static void saveLocation(Player player) {
-		final String path = "Worlds." + player.getWorld().getName() + "." + player.getUniqueId();
-		config.set(path + ".X", player.getLocation().getX());
-		config.set(path + ".Y", player.getLocation().getY());
-		config.set(path + ".Z", player.getLocation().getZ());
-		config.set(path + ".Pitch", player.getLocation().getPitch());
-		config.set(path + ".Yaw", player.getLocation().getYaw());
-		config.set(path + ".Fly", player.isFlying());
-		saveConfig();
-	}
-
-	public static Location loadLocation(Player player, World world) {
-		if (config.get("Worlds." + world.getName() + "." + player.getUniqueId()) == null) return null;
-		final String path = "Worlds." + world.getName() + "." + player.getUniqueId();
-		final Location location = new Location(world, config.getDouble(path + ".X"), config.getDouble(path + ".Y"), config.getDouble(path + ".Z"), (float) config.getDouble(path + ".Pitch"), (float) config.getDouble(path + ".Yaw"));
-		return location;
-	}
-
-	public static boolean loadFlying(Player player, World world) {
-		final String path = "Worlds." + world.getName() + "." + player.getUniqueId();
-		return config.getBoolean(path + ".Fly");
-	}
-
-	public static boolean doesPlayerExist(Player player, WorldGroup worldgroup) {
-		return config.get("WorldGroups." + worldgroup.getName() + "." + player.getUniqueId()) != null;
-	}
-
-	public static void saveLog(Player player, LogTypes logtypes, String message) {
-		String logtype = "";
-		switch (logtypes) {
-		case WARNING: logtype = "Warning"; break;
-		case REPORT: logtype = "Report"; break;
-		case BAN: logtype = "Ban"; break;
-		case KICK: logtype = "Kick"; break;
-		default: break;
-		}
-		final String times[] = new Timestamp(System.currentTimeMillis()).toString().split(":");
-		final String time = times[0] + ":" + times[1];
-		List<String> list = config.getStringList(player.getUniqueId() + "." + logtype);
-		list.add(time + " " + message);
-		config.set(player.getUniqueId() + "." + logtype, list);
-		saveConfig();
-	}
-
-	public static List<String> getLog(Player player, LogTypes logtypes) {
-		String logtype = "";
-		switch (logtypes) {
-		case WARNING: logtype = "Warning"; break;
-		case REPORT: logtype = "Report"; break;
-		case BAN: logtype = "Ban"; break;
-		case KICK: logtype = "Kick"; break;
-		default: break;
-		}
-		return config.getStringList(player.getUniqueId() + "." + logtype);
-	}
-
-	public static List<String> getLatestLog(Player player, LogTypes logtypes) {
-		String logtype = "";
-		switch (logtypes) {
-		case WARNING: logtype = "Warning"; break;
-		case REPORT: logtype = "Report"; break;
-		case BAN: logtype = "Ban"; break;
-		case KICK: logtype = "Kick"; break;
-		default: break;
-		}
-		List<String> list = config.getStringList(player.getUniqueId() + "." + logtype);
-		if (list.size() > 20) {
-			for (int i = 0; i < list.size() - 20; i++) {
-				list.remove(i);
+	private static void loadInventory(Player player, WorldGroup worldGroup) {
+		final String configarmor = "world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".inventory.armor";
+		final String configcontent = "world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".inventory.content";
+		player.getInventory().clear();
+		ItemStack[] content = new ItemStack[4];
+		for (int i = 0; i < 4; i++) {
+			if (config.getItemStack(configarmor + "." + i) != null) {
+				content[i] = config.getItemStack(configarmor + "." + i);
 			}
 		}
-		return list;
+		player.getInventory().setArmorContents(content);
+		content = new ItemStack[41];
+		for (int i = 0; i < 41; i++) {
+			content[i] = config.getItemStack(configcontent + "." + i);
+		}
+		player.getInventory().setContents(content);
 	}
 
 	public static void saveConfig() {
 		try {
 			config.save(file);
 		} catch (IOException exception) {
-			exception.printStackTrace();
+			Bukkit.getLogger().warning("Something went wrong while saving save_config.yml!");
 		}
 	}
 

@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
+import serversystem.config.Config.ConfigOption;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
 
@@ -17,7 +18,7 @@ public class LobbyCommand implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		final CommandAssistant assistant = new CommandAssistant(sender);
 		if (assistant.isSenderInstanceOfPlayer()) {
-			if (Config.lobbyExists() && Config.getLobbyWorld() != null) {
+			if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
 				((Player) sender).teleport(Config.getLobbyWorld().getSpawnLocation());
 			} else {
 				ChatUtil.sendServerErrorMessage(sender, "Lobby does not exist!");

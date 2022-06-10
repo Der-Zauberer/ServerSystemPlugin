@@ -53,7 +53,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	}
 	
 	private static boolean isActionForbidden(World world, Player player) {
-		return Config.getWorldOption(world.getName(), WorldOption.PROTECTION) && !buildPlayers.contains(player);
+		return Config.getWorldOption(world, WorldOption.PROTECTION) && !buildPlayers.contains(player);
 	}
 	
 	private static boolean isBlockDisabled(Block block, Player player) {

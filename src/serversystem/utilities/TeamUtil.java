@@ -19,8 +19,8 @@ public class TeamUtil {
 	static {
 		if (Config.getSection("Groups", false) != null) {
 			for (String group : Config.getSection("Groups", false)) {
-				if (Config.getGroupID(group) != null && Config.getGroupColor(group) != null && Config.getGroupPrefix(group) != null) {
-					createTeam(Config.getGroupID(group), Config.getGroupPrefix(group), ChatUtil.parseColor(Config.getGroupColor(group)));
+				if (Config.getGroupID(group) != null) {
+					createTeam(Config.getGroupID(group), Config.getGroupPrefix(group), Config.getGroupColor(group));
 				}
 			}
 		}
@@ -37,11 +37,11 @@ public class TeamUtil {
 		groups.clear();
 	}
 	
-	public static void createTeam(String name, String prefix, ChatColor color) {
-		if (getMainScoreboard().getTeam(name) == null) {
-			getMainScoreboard().registerNewTeam(name).setPrefix(prefix);
-			getMainScoreboard().getTeam(name).setColor(color);
-			groups.add(name);
+	public static void createTeam(String id, String prefix, ChatColor color) {
+		if (getMainScoreboard().getTeam(id) == null) {
+			getMainScoreboard().registerNewTeam(id).setPrefix(prefix);
+			getMainScoreboard().getTeam(id).setColor(color);
+			groups.add(id);
 		}
 	}
 	

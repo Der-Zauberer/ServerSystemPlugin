@@ -12,7 +12,7 @@ public class HungerListener implements Listener {
 	
 	@EventHandler
 	public static void onFoodLevelChange(FoodLevelChangeEvent event) {
-		if (event.getEntity() instanceof Player && !Config.getWorldOption(event.getEntity().getWorld().getName(), WorldOption.HUNGER)) {
+		if (event.getEntity() instanceof Player && !Config.getWorldOption(event.getEntity().getWorld(), WorldOption.HUNGER)) {
 			event.setCancelled(true);
 		}
 	}

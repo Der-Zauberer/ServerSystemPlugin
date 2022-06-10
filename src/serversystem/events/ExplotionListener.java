@@ -11,7 +11,7 @@ public class ExplotionListener implements Listener {
 	
 	@EventHandler
 	public static void onEntityExplode(EntityExplodeEvent event) {
-		if (!Config.getWorldOption(event.getEntity().getWorld().getName(), WorldOption.EXPLOSION)) event.blockList().clear();
+		if (!Config.getWorldOption(event.getEntity().getWorld(), WorldOption.EXPLOSION)) event.blockList().clear();
 	}
 
 }

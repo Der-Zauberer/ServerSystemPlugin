@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
+import serversystem.config.Config.ConfigOption;
+import serversystem.config.Config.WorldOption;
 import serversystem.config.SaveConfig;
 import serversystem.main.ServerSystem;
 
@@ -19,7 +21,7 @@ public class WorldGroup {
 	private ArrayList<World> worlds;
 	
 	private static final ArrayList<WorldGroup> worldGroups = new ArrayList<>();
-	private static boolean enabled = Config.isWorldGroupSystemEnabled();
+	private static boolean enabled = Config.getConfigOption(ConfigOption.ENABLE_WORLD_GROUPS);
 	
 	private static HashMap<Player, World> playerDeaths = new HashMap<>();
 
@@ -46,9 +48,7 @@ public class WorldGroup {
 				player.showPlayer(ServerSystem.getInstance(), everyplayer);
 			}
 		}
-		SaveConfig.loadInventory(player, this);
-		SaveConfig.loadXp(player, this);
-		SaveConfig.loadGamemode(player, this);
+		SaveConfig.loadPlayerProfile(player, this);
 		TeamUtil.addRoleToPlayer(player);
 	}
 
@@ -61,9 +61,7 @@ public class WorldGroup {
 		if (BuildCommand.isInBuildmode(player)) {
 			BuildCommand.toggleBuildMode(player);
 		}
-		SaveConfig.saveInventory(player, this);
-		SaveConfig.saveXp(player, this);
-		SaveConfig.saveGamemode(player, this);
+		SaveConfig.savePlayerProfile(player, this);
 		player.getInventory().clear();
 		player.setLevel(0);
 		player.setExp(0);
@@ -103,13 +101,11 @@ public class WorldGroup {
 	
 	public static void autoCreateWorldGroups() {
 		for (World world : Bukkit.getWorlds()) {
-			final String worldgroup = Config.getWorldGroup(world.getName());
+			final String worldgroup = Config.getWorldGroup(world);
 			if (getWorldGroup(worldgroup) == null) {
 				addWorldGroup(new WorldGroup(worldgroup, world));
-			} else {
-				if (!getWorldGroup(worldgroup).getWorlds().contains(world)) {
-					getWorldGroup(worldgroup).addWorld(world);
-				}
+			} else if (!getWorldGroup(worldgroup).getWorlds().contains(world)) {
+				getWorldGroup(worldgroup).addWorld(world);
 			}
 		}
 	}
@@ -117,7 +113,7 @@ public class WorldGroup {
 	public static void autoRemoveWorldGroups() {
 		final ArrayList<String> worldgroups = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
-			String worldgroup = Config.getWorldGroup(world.getName());
+			String worldgroup = Config.getWorldGroup(world);
 			if (!worldgroups.contains(worldgroup)) {
 				worldgroups.add(worldgroup);
 			}
@@ -132,7 +128,7 @@ public class WorldGroup {
 	}
 	
 	public static void teleportPlayer(Player player, World world) {
-		if (Config.hasWorldSpawn(world.getName()) || SaveConfig.loadLocation(player, world) == null) {
+		if (Config.getWorldOption(world, WorldOption.WORLD_SPAWN) || SaveConfig.loadLocation(player, world) == null) {
 			player.teleport(world.getSpawnLocation());
 		} else {
 			player.teleport(SaveConfig.loadLocation(player, world));
@@ -142,9 +138,7 @@ public class WorldGroup {
 	public static void autoSavePlayerStats() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (enabled) {
-				SaveConfig.saveGamemode(player, getWorldGroup(player));
-				SaveConfig.saveInventory(player, getWorldGroup(player));
-				SaveConfig.saveXp(player, getWorldGroup(player));
+				SaveConfig.savePlayerProfile(player, getWorldGroup(player));
 			}
 			SaveConfig.saveLocation(player);
 		}
@@ -188,16 +182,16 @@ public class WorldGroup {
 	public static void createWorld(String name) {
 		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
 		final World world = Bukkit.getWorld(name);
-		Config.addWorld(world.getName());
-		Config.addToLoadWorld(world.getName());
+		Config.addWorld(world);
+		Config.addLoadWorld(world.getName());
 		addWorldGroup(new WorldGroup(world.getName(), world));
 	}
 	
 	public static void createWorld(String name, WorldGroup worldgroup) {
 		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
 		final World world = Bukkit.getWorld(name);
-		Config.addWorld(world.getName());
-		Config.addToLoadWorld(world.getName());
+		Config.addWorld(world);
+		Config.addLoadWorld(world.getName());
 		worldgroup.addWorld(world);
 	}
 	

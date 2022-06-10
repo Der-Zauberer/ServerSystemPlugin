@@ -12,15 +12,16 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import serversystem.config.Config;
+import serversystem.config.Config.ConfigOption;
 import serversystem.config.Config.WorldOption;
 
 public class ChatUtil implements Listener {
 	
 	private static ChatUtil instance = new ChatUtil();
 	
-	private static final ChatColor messagecolor = parseColor(Config.getMessageColor());
-	private static final ChatColor errorcolor = parseColor(Config.getErrorMessageColor());
-	private static final String servername = parseColor(Config.getMessagePrefixColor()) + Config.getMessagePrefix();
+	private static final ChatColor messageColor = Config.getMessageColor();
+	private static final ChatColor errorColor = Config.getErrorMessageColor();
+	private static final String prefix = Config.getMessagePrefix();
 	
 	public static enum ErrorMessage{ONLYCONSOLE, ONLYPLAYER, NOPERMISSION, NOTENOUGHARGUMENTS}
 	public static enum TitleType{TITLE, SUBTITLE, ACTIONBAR}
@@ -28,59 +29,59 @@ public class ChatUtil implements Listener {
 	private ChatUtil() {}
 	
 	public static void sendServerMessage(Player player, String message) {
-		player.sendMessage(servername + messagecolor + " " + message);
+		player.sendMessage(prefix + messageColor + " " + message);
 	}
 	
 	public static void sendServerMessage(CommandSender sender, String message) {
-		sender.sendMessage(servername + messagecolor + " " + message);
+		sender.sendMessage(prefix + messageColor + " " + message);
 	}
 	
 	public static void sendServerErrorMessage(Player player, String message) {
-		player.sendMessage(servername + errorcolor + " " + message);
+		player.sendMessage(prefix + errorColor + " " + message);
 	}
 	
 	public static void sendServerErrorMessage(CommandSender sender, String message) {
-		sender.sendMessage(servername + errorcolor + " " + message);
+		sender.sendMessage(prefix + errorColor + " " + message);
 	}
 	
 	public static void sendServerErrorMessage(Player player, ErrorMessage errormessage) {
 		switch (errormessage) {
-		case ONLYCONSOLE: player.sendMessage(servername + errorcolor + " This command can only be used by the console!"); break;
-		case ONLYPLAYER: player.sendMessage(servername + errorcolor + " This command can only be used by players!"); break;
-		case NOTENOUGHARGUMENTS: player.sendMessage(servername + errorcolor + " Not enough arguments!"); break;
-		case NOPERMISSION: player.sendMessage(servername + errorcolor + " You have no permission to do that!"); break;
+		case ONLYCONSOLE: player.sendMessage(prefix + errorColor + " This command can only be used by the console!"); break;
+		case ONLYPLAYER: player.sendMessage(prefix + errorColor + " This command can only be used by players!"); break;
+		case NOTENOUGHARGUMENTS: player.sendMessage(prefix + errorColor + " Not enough arguments!"); break;
+		case NOPERMISSION: player.sendMessage(prefix + errorColor + " You have no permission to do that!"); break;
 		default: break;
 		}
 	}
 	
 	public static void sendServerErrorMessage(CommandSender sender, ErrorMessage errormessage) {
 		switch (errormessage) {
-		case ONLYCONSOLE: sender.sendMessage(servername + errorcolor + " This command can only be used by the console!"); break;
-		case ONLYPLAYER: sender.sendMessage(servername + errorcolor + " This command can only be used by players!"); break;
-		case NOTENOUGHARGUMENTS: sender.sendMessage(servername + errorcolor + " Not enough arguments!"); break;
-		case NOPERMISSION: sender.sendMessage(servername + errorcolor + " You have no permission to do that!"); break;
+		case ONLYCONSOLE: sender.sendMessage(prefix + errorColor + " This command can only be used by the console!"); break;
+		case ONLYPLAYER: sender.sendMessage(prefix + errorColor + " This command can only be used by players!"); break;
+		case NOTENOUGHARGUMENTS: sender.sendMessage(prefix + errorColor + " Not enough arguments!"); break;
+		case NOPERMISSION: sender.sendMessage(prefix + errorColor + " You have no permission to do that!"); break;
 		default: break;
 		}
 	}
 	
 	public static void sendServerBroadcastMessage(String message) {
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			player.sendMessage(servername + messagecolor + " " + message);
+			player.sendMessage(prefix + messageColor + " " + message);
 		}
-		Bukkit.getConsoleSender().sendMessage(servername + messagecolor + " " + message);
+		Bukkit.getConsoleSender().sendMessage(prefix + messageColor + " " + message);
 	}
 	
 	public static void sendServerWorldGroupMessage(WorldGroup worldgroup, String message) {
-		if (Config.isWorldGroupSystemEnabled()) {
+		if (Config.getConfigOption(ConfigOption.ENABLE_WORLD_GROUPS)) {
 			for (Player player : worldgroup.getPlayers()) {
-				player.sendMessage(servername + messagecolor + " " + message);
+				player.sendMessage(prefix + messageColor + " " + message);
 			}
-			Bukkit.getConsoleSender().sendMessage("[" + worldgroup.getName() + "] " + servername + messagecolor + " " + message);
+			Bukkit.getConsoleSender().sendMessage("[" + worldgroup.getName() + "] " + prefix + messageColor + " " + message);
 		} else {
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				player.sendMessage(servername + messagecolor + " " + message);
+				player.sendMessage(prefix + messageColor + " " + message);
 			}
-			Bukkit.getConsoleSender().sendMessage(servername + messagecolor + " " + message);
+			Bukkit.getConsoleSender().sendMessage(prefix + messageColor + " " + message);
 		}
 		
 	}
@@ -90,23 +91,23 @@ public class ChatUtil implements Listener {
 	}
 	
 	public static void sendPlayerJoinMessage(PlayerJoinEvent event) {
-		if (Config.isJoinMessageActiv()) {
-			event.setJoinMessage(servername + messagecolor + " " + event.getPlayer().getName() + " joined the game!");
+		if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) {
+			event.setJoinMessage(prefix + messageColor + " " + event.getPlayer().getName() + " joined the game!");
 		} else {
 			event.setJoinMessage("");
 		}
 	}
 
 	public static void sendPlayerQuitMessage(PlayerQuitEvent event) {
-		if (Config.isLeaveMessageActiv()) {
-			event.setQuitMessage(servername + messagecolor + " " + event.getPlayer().getName() + " left the game!");
+		if (Config.getConfigOption(ConfigOption.QUIT_MESSAGE)) {
+			event.setQuitMessage(prefix + messageColor + " " + event.getPlayer().getName() + " left the game!");
 		} else {
-			event.setQuitMessage(servername);
+			event.setQuitMessage(prefix);
 		}
 	}
 	
 	public static void sendPlayerChatMessage(Player player, String message) {
-		if (Config.isWorldGroupSystemEnabled()) {
+		if (Config.getConfigOption(ConfigOption.ENABLE_WORLD_GROUPS)) {
 			for (Player players : WorldGroup.getWorldGroup(player).getPlayers()) {
 				players.sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 			}
