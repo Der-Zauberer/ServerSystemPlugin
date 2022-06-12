@@ -51,7 +51,6 @@ public class ServerSystem extends JavaPlugin {
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, () -> WorldGroup.autoSavePlayerStats(), 1L, (long) 120 * 20);
 		for (String world : Config.getLoadWorlds()) {
 			if (Bukkit.getWorld(world) == null) {
 				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
@@ -59,12 +58,17 @@ public class ServerSystem extends JavaPlugin {
 		}
 		WorldGroup.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
+			if (WorldGroup.isEnabled() && WorldGroup.getWorldGroup(player) == null) WorldGroup.getWorldGroup(player.getWorld()).join(player);
+			for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
+				player.showPlayer(this, everyPlayer);
+			}
 			TeamUtil.addRoleToPlayer(player);
 			if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
 				player.teleport(Config.getLobbyWorld().getSpawnLocation());
 			}
 		}
 		WorldGroup.autoRemoveWorldGroups();
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, () -> WorldGroup.autoSavePlayerStats(), 1L, (long) 120 * 20);
 		Bukkit.getScheduler().runTaskLater(this, () -> {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				PermissionUtil.loadPlayerPermissions(player);

@@ -31,7 +31,7 @@ public class PlayerTeleportListener implements Listener {
 		}
 		if (BuildCommand.isInBuildmode(player)) BuildCommand.toggleBuildMode(player);
 		if (vanished) VanishCommand.toggleVanish(player, false);
-		if (Config.getConfigOption(ConfigOption.ENABLE_WORLD_GROUPS)) {
+		if (WorldGroup.isEnabled()) {
 			WorldGroup.getWorldGroup(player).quit(event.getPlayer());
 			event.getPlayer().setGameMode(Config.getWorldGamemode(event.getTo().getWorld()));
 			if(player.getAllowFlight()) player.setFlying(SaveConfig.loadFlying(player, world));

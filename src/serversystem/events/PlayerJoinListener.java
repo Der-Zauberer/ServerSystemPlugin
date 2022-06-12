@@ -17,7 +17,7 @@ public class PlayerJoinListener implements Listener {
 		Config.addPlayer(event.getPlayer());
 		PermissionUtil.loadPlayerPermissions(event.getPlayer());
 		event.getPlayer().setGameMode(Config.getWorldGamemode(event.getPlayer().getWorld()));
-		WorldGroup.getWorldGroup(event.getPlayer()).join(event.getPlayer());
+		if (WorldGroup.isEnabled()) WorldGroup.getWorldGroup(event.getPlayer().getWorld()).join(event.getPlayer());
 		if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
 			event.getPlayer().teleport(Config.getLobbyWorld().getSpawnLocation());
 		}

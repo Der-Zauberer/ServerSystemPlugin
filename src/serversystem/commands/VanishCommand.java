@@ -12,7 +12,6 @@ import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.TeamUtil;
-import serversystem.utilities.WorldGroup;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
 
@@ -44,29 +43,30 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	
 	private static void hide(Player player) {
 		TeamUtil.addPlayerToTeam(TeamUtil.TEAMVANISH, player.getName());
-		for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
-			everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
-		}
-		if (!vanishedPlayers.isEmpty()) {
-			for (Player vanishedplayer : vanishedPlayers) {
-				vanishedplayer.showPlayer(ServerSystem.getInstance(), player);
-				player.hidePlayer(ServerSystem.getInstance(), vanishedplayer);
-			}
+		for (Player everyPlayer : ChatUtil.getVisualPlayers(player, false)) {
+			if (isVanished(everyPlayer)) {
+				player.showPlayer(ServerSystem.getInstance(), everyPlayer);
+				everyPlayer.showPlayer(ServerSystem.getInstance(), player);
+			} else {
+				everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
+			}	
 		}
 		vanishedPlayers.add(player);	
 	}
 	
 	private static void show(Player player) {
 		TeamUtil.addRoleToPlayer(player);
-		for (Player everyPlayer : WorldGroup.getWorldGroup(player).getPlayers()) {
+		for (Player everyPlayer : ChatUtil.getVisualPlayers(player, false)) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 		}
-		if (!vanishedPlayers.isEmpty()) {
-			for (Player vanishedplayer : vanishedPlayers) {
-				player.hidePlayer(ServerSystem.getInstance(), vanishedplayer);
-			}
+		for (Player vanishedPlayer : vanishedPlayers) {
+			player.hidePlayer(ServerSystem.getInstance(), vanishedPlayer);
 		}
 		vanishedPlayers.remove(player);
+	}
+	
+	public static void getVisualPlayers(Player player) {
+		
 	}
 	
 	@Override

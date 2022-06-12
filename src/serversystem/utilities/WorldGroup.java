@@ -6,6 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
+
+import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
 import serversystem.config.Config.WorldOption;
@@ -14,9 +16,9 @@ import serversystem.main.ServerSystem;
 
 public class WorldGroup {
 
-	private String name;
-	private int currentPlayers;
-	private ArrayList<World> worlds;
+	private final String name;
+	private final ArrayList<Player> players;
+	private final ArrayList<World> worlds;
 	
 	private static final ArrayList<WorldGroup> worldGroups = new ArrayList<>();
 	private static boolean enabled = Config.getConfigOption(ConfigOption.ENABLE_WORLD_GROUPS);
@@ -25,54 +27,45 @@ public class WorldGroup {
 
 	public WorldGroup(String name, World world) {
 		this.name = name;
+		players = new ArrayList<>();
 		worlds = new ArrayList<>();
 		worlds.add(world);
 	}
 
 	public WorldGroup(String name, ArrayList<World> worlds) {
 		this.name = name;
+		players = new ArrayList<>();
 		this.worlds = worlds;
 	}
 
 	public void join(Player player) {
-		currentPlayers++;
-		for (Player everyplayer : Bukkit.getOnlinePlayers()) {
-			everyplayer.hidePlayer(ServerSystem.getInstance(), player);
-			player.hidePlayer(ServerSystem.getInstance(), everyplayer);
+		players.add(player);
+		for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
+			everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
+			player.hidePlayer(ServerSystem.getInstance(), everyPlayer);
 		}
-		for (World world : worlds) {
-			for (Player everyplayer : world.getPlayers()) {
-				everyplayer.showPlayer(ServerSystem.getInstance(), player);
-				player.showPlayer(ServerSystem.getInstance(), everyplayer);
-			}
+		for (Player everyPlayer : ChatUtil.getVisualPlayers(player, false)) {
+			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
+			if (!VanishCommand.isVanished(everyPlayer)) player.showPlayer(ServerSystem.getInstance(), everyPlayer);
 		}
 		SaveConfig.loadPlayerProfile(player, this);
 		TeamUtil.addRoleToPlayer(player);
 	}
 
 	public void quit(Player player) {
-		currentPlayers--;
 		TeamUtil.removePlayerFromTeam(player);
 		SaveConfig.savePlayerProfile(player, this);
 		player.getInventory().clear();
 		player.setLevel(0);
 		player.setExp(0);
+		players.remove(player);
 	}
 
 	public String getName() {
 		return name;
 	}
-
-	public int getCurrentPlayers() {
-		return currentPlayers;
-	}
-
 	public ArrayList<World> getWorlds() {
 		return worlds;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void addWorld(World world) {
@@ -84,35 +77,31 @@ public class WorldGroup {
 	}
 
 	public ArrayList<Player> getPlayers() {
-		final ArrayList<Player> players = new ArrayList<>();
-		for (World world : worlds) {
-			players.addAll(world.getPlayers());
-		}
 		return players;
 	}
 	
 	public static void autoCreateWorldGroups() {
 		for (World world : Bukkit.getWorlds()) {
-			final String worldgroup = Config.getWorldGroup(world);
-			if (getWorldGroup(worldgroup) == null) {
-				addWorldGroup(new WorldGroup(worldgroup, world));
-			} else if (!getWorldGroup(worldgroup).getWorlds().contains(world)) {
-				getWorldGroup(worldgroup).addWorld(world);
+			final String worldGroup = Config.getWorldGroup(world);
+			if (getWorldGroup(worldGroup) == null) {
+				addWorldGroup(new WorldGroup(worldGroup, world));
+			} else if (!getWorldGroup(worldGroup).getWorlds().contains(world)) {
+				getWorldGroup(worldGroup).addWorld(world);
 			}
 		}
 	}
 	
 	public static void autoRemoveWorldGroups() {
-		final ArrayList<String> worldgroups = new ArrayList<>();
+		final ArrayList<String> worldGroups = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
 			String worldgroup = Config.getWorldGroup(world);
-			if (!worldgroups.contains(worldgroup)) {
-				worldgroups.add(worldgroup);
+			if (!worldGroups.contains(worldgroup)) {
+				worldGroups.add(worldgroup);
 			}
 		}
-		for (int i = 0; i < worldgroups.size(); i++) {
-			WorldGroup worldgroup = worldGroups.get(i);
-			if (!worldgroups.contains(worldgroup.getName())) {
+		for (int i = 0; i < worldGroups.size(); i++) {
+			WorldGroup worldgroup = WorldGroup.worldGroups.get(i);
+			if (!worldGroups.contains(worldgroup.getName())) {
 				removeWorldGroup(worldgroup);
 				worldgroup = null;
 			}
@@ -129,36 +118,28 @@ public class WorldGroup {
 	
 	public static void autoSavePlayerStats() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (enabled) {
-				SaveConfig.savePlayerProfile(player, getWorldGroup(player));
-			}
+			if (enabled) SaveConfig.savePlayerProfile(player, getWorldGroup(player));
 			SaveConfig.saveLocation(player);
 		}
 	}
 	
 	public static WorldGroup getWorldGroup(Player player) {
 		for (WorldGroup worldgroup : worldGroups) {
-			if (worldgroup.getWorlds().contains(player.getWorld())) {
-				return worldgroup;
-			}
+			if (worldgroup.getPlayers().contains(player)) return worldgroup;
 		}
 		return null;
 	}
 	
 	public static WorldGroup getWorldGroup(World world) {
 		for (WorldGroup worldgroup : worldGroups) {
-			if (worldgroup.getWorlds().contains(world)) {
-				return worldgroup;
-			}
+			if (worldgroup.getWorlds().contains(world)) return worldgroup;
 		}
 		return null;
 	}
 	
-	public static WorldGroup getWorldGroup(String string) {
+	public static WorldGroup getWorldGroup(String name) {
 		for (WorldGroup worldgroup : worldGroups) {
-			if (worldgroup.getName().equals(string)) {
-				return worldgroup;
-			}
+			if (worldgroup.getName().equals(name)) return worldgroup;
 		}
 		return null;
 	}

@@ -15,7 +15,7 @@ public class PlayerQuitListener implements Listener {
 		ChatUtil.sendPlayerQuitMessage(event);
 		if (VanishCommand.isVanished(event.getPlayer())) VanishCommand.toggleVanish(event.getPlayer(), false);
 		if (event.getPlayer().getFlySpeed() > 0.2) event.getPlayer().setFlySpeed((float) 0.1);
-		WorldGroup.getWorldGroup(event.getPlayer()).quit(event.getPlayer());
+		if (WorldGroup.isEnabled()) WorldGroup.getWorldGroup(event.getPlayer()).quit(event.getPlayer());
 		PermissionUtil.resetPlayerPermissions(event.getPlayer());
 	}
 

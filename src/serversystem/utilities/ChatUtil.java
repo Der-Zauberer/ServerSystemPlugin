@@ -1,5 +1,8 @@
 package serversystem.utilities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -11,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
 import serversystem.config.Config.TitleTypeOption;
@@ -103,23 +108,15 @@ public class ChatUtil implements Listener {
 		if (Config.getConfigOption(ConfigOption.QUIT_MESSAGE)) {
 			event.setQuitMessage(prefix + messageColor + " " + event.getPlayer().getName() + " left the game!");
 		} else {
-			event.setQuitMessage(prefix);
+			event.setQuitMessage("");
 		}
 	}
 	
 	public static void sendPlayerChatMessage(Player player, String message) {
-		if (Config.getConfigOption(ConfigOption.ENABLE_WORLD_GROUPS)) {
-			for (Player players : WorldGroup.getWorldGroup(player).getPlayers()) {
-				players.sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
-			}
-			Bukkit.getConsoleSender().sendMessage("[" + WorldGroup.getWorldGroup(player).getName() + "] " + TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
-		} else {
-			for (Player players : Bukkit.getOnlinePlayers()) {
-				players.sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
-			}
-			Bukkit.getConsoleSender().sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+		for (Player players : getVisualPlayers(player, false)) {
+			players.sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 		}
-		
+		Bukkit.getConsoleSender().sendMessage(TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
 	}
 	
 	public static void sendPlayerPrivateMessage(Player sender, Player receiver, String message) {		
@@ -150,6 +147,15 @@ public class ChatUtil implements Listener {
 		final String tablistSubtitle = Config.getTitle(TitleTypeOption.TABLIST_SUBTITLE);
 		if (tablistTitle != null) player.setPlayerListHeader(tablistTitle);
 		if (tablistSubtitle != null) player.setPlayerListFooter(tablistSubtitle);
+	}
+	
+	public static List<Player> getVisualPlayers(Player player, boolean excludeVanished) {
+		final List<Player> players = new ArrayList<>();
+		if (VanishCommand.isVanished(player)) excludeVanished = false;
+		for (Player everyPlayer : (!Config.getConfigOption(ConfigOption.GLOBAL_CHAT_AND_TABLIST) && Config.getConfigOption(ConfigOption.ENABLE_WORLD_GROUPS)) ? WorldGroup.getWorldGroup(player).getPlayers() : Bukkit.getOnlinePlayers()) {
+			if (!excludeVanished || !VanishCommand.isVanished(player)) players.add(everyPlayer);
+		}
+		return players;
 	}
 	
 	public static ChatColor parseColor(String color) {
