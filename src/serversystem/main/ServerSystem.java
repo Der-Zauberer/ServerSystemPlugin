@@ -65,15 +65,14 @@ public class ServerSystem extends JavaPlugin {
 			}
 		}
 		WorldGroup.autoRemoveWorldGroups();
-		if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
-			Config.getLobbyWorld().setMonsterSpawnLimit(0);
-		}
 		Bukkit.getScheduler().runTaskLater(this, () -> {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				PermissionUtil.loadPlayerPermissions(player);
 				TeamUtil.addRoleToPlayer(player);
+				ChatUtil.sendServerTitle(player);
+				ChatUtil.sendServerTablistTitle(player);
 			}
-		}, 100);
+		}, 40);
 	}
 
 	@Override

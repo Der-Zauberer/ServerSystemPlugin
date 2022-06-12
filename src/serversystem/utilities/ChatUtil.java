@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
+import serversystem.config.Config.TitleTypeOption;
 import serversystem.config.Config.WorldOption;
 
 public class ChatUtil implements Listener {
@@ -136,6 +137,19 @@ public class ChatUtil implements Listener {
 			}
 		}
 		Bukkit.getConsoleSender().sendMessage("[" + player.getScoreboard().getEntryTeam(player.getName()).getName() + "] " + TeamUtil.getPlayerNameColor(player) + player.getName() + ChatColor.WHITE + ": " + message);
+	}
+	
+	public static void sendServerTitle(Player player) {
+		final String title = Config.getTitle(TitleTypeOption.TITLE);
+		final String subtitle = Config.getTitle(TitleTypeOption.SUBTITLE);
+		if (title != null && subtitle != null) ChatUtil.sendTitle(player, title, subtitle);
+	}
+	
+	public static void sendServerTablistTitle(Player player) {
+		final String tablistTitle = Config.getTitle(TitleTypeOption.TABLIST_TITLE);
+		final String tablistSubtitle = Config.getTitle(TitleTypeOption.TABLIST_SUBTITLE);
+		if (tablistTitle != null) player.setPlayerListHeader(tablistTitle);
+		if (tablistSubtitle != null) player.setPlayerListFooter(tablistSubtitle);
 	}
 	
 	public static ChatColor parseColor(String color) {

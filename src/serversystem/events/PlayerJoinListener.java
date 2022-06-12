@@ -5,7 +5,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
-import serversystem.config.Config.TitleTypeOption;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.PermissionUtil;
 import serversystem.utilities.WorldGroup;
@@ -22,12 +21,7 @@ public class PlayerJoinListener implements Listener {
 		if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
 			event.getPlayer().teleport(Config.getLobbyWorld().getSpawnLocation());
 		}
-		final String title = Config.getTitle(TitleTypeOption.TITLE);
-		final String subtitle = Config.getTitle(TitleTypeOption.SUBTITLE);
-		if (title != null && subtitle != null) ChatUtil.sendTitle(event.getPlayer(), title, subtitle);
-		final String tablistTitle = Config.getTitle(TitleTypeOption.TABLIST_TITLE);
-		final String tablistSubtitle = Config.getTitle(TitleTypeOption.TABLIST_SUBTITLE);
-		if (tablistTitle != null) event.getPlayer().setPlayerListHeader(tablistTitle);
-		if (tablistSubtitle != null) event.getPlayer().setPlayerListFooter(tablistSubtitle);
+		ChatUtil.sendServerTitle(event.getPlayer());
+		ChatUtil.sendServerTablistTitle(event.getPlayer());
 	}
 }
