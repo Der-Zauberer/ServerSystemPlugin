@@ -132,21 +132,9 @@ public class SaveConfig {
 	
 	public static void loadPlayerProfile(Player player, WorldGroup worldGroup) {
 		if (config.get("world_groups." + worldGroup.getName() + "." + player.getUniqueId()) != null) {
-			try {
-				loadXp(player, worldGroup);
-			} catch (Exception exception) {
-				Bukkit.getLogger().warning("Something went wrong while loadig xp of " + player.getDisplayName() + "!");
-			}
-			try {
-				loadGamemode(player, worldGroup);
-			} catch (Exception exception) {
-				Bukkit.getLogger().warning("Something went wrong while loadig gamemode of " + player.getDisplayName() + "!");
-			}
-			try {
-				loadInventory(player, worldGroup);
-			} catch (Exception exception) {
-				Bukkit.getLogger().warning("Something went wrong while loadig inventory of " + player.getDisplayName() + "!");
-			}
+			loadXp(player, worldGroup);
+			loadGamemode(player, worldGroup);
+			loadInventory(player, worldGroup);
 		} else {
 			savePlayerProfile(player, worldGroup);
 		}
