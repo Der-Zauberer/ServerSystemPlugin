@@ -47,7 +47,7 @@ public class Config {
 		setDefault("load_worlds", "");
 		setDefault("worlds", "");
 		setDefault("groups", "");
-		setDefault("player", "");
+		setDefault("players", "");
 		for(World world : Bukkit.getWorlds()) {
 			addWorld(world);
 		}
@@ -257,25 +257,25 @@ public class Config {
 	}
 	
 	public static void addPlayer(Player player) {
-		if (config.get("player." + player.getUniqueId()) == null) {
-			config.set("player." + player.getUniqueId() + ".name", player.getName());
-			config.set("player." + player.getUniqueId() + ".group", "player");
+		if (config.get("players." + player.getUniqueId()) == null) {
+			config.set("players." + player.getUniqueId() + ".name", player.getName());
+			config.set("players." + player.getUniqueId() + ".group", "player");
 			saveConfig();
-		} else if (!config.getString("player." + player.getUniqueId() + ".name").equals(player.getName())) {
-			config.set("player." + player.getUniqueId() + ".name", player.getName());
+		} else if (!config.getString("players." + player.getUniqueId() + ".name").equals(player.getName())) {
+			config.set("players." + player.getUniqueId() + ".name", player.getName());
 			saveConfig();
 		}
 	}
 	
 	public static void setPlayerGroup(Player player, String group) {
-		config.set("player." + player.getUniqueId() + ".group", group);
+		config.set("players." + player.getUniqueId() + ".group", group);
 		saveConfig();
 	}
 	
 	public static void setPlayerGroup(String player, String group) {
-		for (String key : getSection("player", false)) {
-			if (config.getString("player." + key + ".name").equals(player)) {
-				config.set("player." + key + ".group", group);
+		for (String key : getSection("players", false)) {
+			if (config.getString("players." + key + ".name").equals(player)) {
+				config.set("players." + key + ".group", group);
 				saveConfig();
 				return;
 			}
@@ -283,25 +283,25 @@ public class Config {
 	}
 	
 	public static String getPlayerGroup(Player player) {
-		return config.getString("player." + player.getUniqueId() + ".group");
+		return config.getString("players." + player.getUniqueId() + ".group");
 	}
 	
 	public static String getPlayerGroup(String player) {
-		for (String key : getSection("player", false)) {
-			if (config.getString("player." + key + ".name").equals(player)) {
-				return config.getString("player." + key + ".group");
+		for (String key : getSection("players", false)) {
+			if (config.getString("players." + key + ".name").equals(player)) {
+				return config.getString("players." + key + ".group");
 			}
 		}
 		return null;
 	}
 	
 	private static List<String> getPlayerSpecificPermissions(Player player) {
-		return config.getStringList("player." + player.getUniqueId() + ".permissions");
+		return config.getStringList("players." + player.getUniqueId() + ".permissions");
 	}
 	
 	public static boolean isPlayerExisting(String player) {
-		for (String key : getSection("player", false)) {
-			if (config.getString("player." + key + ".name").equals(player)) {
+		for (String key : getSection("players", false)) {
+			if (config.getString("players." + key + ".name").equals(player)) {
 				return true;
 			}
 		}
@@ -310,8 +310,8 @@ public class Config {
 	
 	public static List<String> getPlayers() {
 		final List<String> players = new ArrayList<>();
-		for (String key : getSection("player", false)) {
-			players.add(config.getString("player." + key + ".name"));
+		for (String key : getSection("players", false)) {
+			players.add(config.getString("players." + key + ".name"));
 		}
 		return players;
 	}
