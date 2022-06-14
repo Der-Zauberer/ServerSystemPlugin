@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,8 +53,8 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 		return buildPlayers.contains(player);
 	}
 	
-	private static boolean isActionForbidden(World world, Player player) {
-		return Config.getWorldOption(world, WorldOption.PROTECTION) && !buildPlayers.contains(player);
+	private static boolean isActionForbidden(World world, Entity entity) {
+		return Config.getWorldOption(world, WorldOption.PROTECTION) && (!(entity instanceof Player) || !buildPlayers.contains((Player) entity));
 	}
 	
 	private static boolean isBlockDisabled(Block block, Player player) {
@@ -87,34 +88,34 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onBlockBreak(BlockBreakEvent event) {
-		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
-		if (!event.isCancelled()) event.setCancelled(isBlockDisabled(event.getBlock(), event.getPlayer()));
+		if (!event.isCancelled() && isActionForbidden(event.getPlayer().getWorld(), event.getPlayer())) event.setCancelled(true);
+		if (!event.isCancelled() && isBlockDisabled(event.getBlock(), event.getPlayer())) event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onBlockPlace(BlockPlaceEvent event) {
-		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
-		if (!event.isCancelled()) event.setCancelled(isBlockDisabled(event.getBlock(), event.getPlayer()));
+		if (!event.isCancelled() && isActionForbidden(event.getPlayer().getWorld(), event.getPlayer())) event.setCancelled(true);
+		if (!event.isCancelled() && isBlockDisabled(event.getBlock(), event.getPlayer())) event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
-		if (event.getRemover() instanceof Player) event.setCancelled(isActionForbidden(event.getRemover().getWorld(), (Player) event.getRemover()));
+		if (!event.isCancelled() && event.getRemover() instanceof Player && isActionForbidden(event.getRemover().getWorld(), event.getRemover())) event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
     public static void onProjectileLaunch(ProjectileLaunchEvent event) {
-		if (event.getEntity().getShooter() instanceof Player) event.setCancelled(isActionForbidden(event.getEntity().getWorld(), (Player) event.getEntity().getShooter()));
+		if (!event.isCancelled() && event.getEntity().getShooter() instanceof Player && isActionForbidden(event.getEntity().getWorld(), (Entity) event.getEntity().getShooter())) event.setCancelled(true);
     }
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-		if (event.getDamager() instanceof Player) event.setCancelled(isActionForbidden(event.getDamager().getWorld(), (Player) event.getDamager()));
+		if (!event.isCancelled() && event.getDamager() instanceof Player && isActionForbidden(event.getDamager().getWorld(), event.getDamager())) event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerArmorStandManipulate(PlayerArmorStandManipulateEvent event) {
-		event.setCancelled(isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()));
+		if (!event.isCancelled() && isActionForbidden(event.getPlayer().getWorld(), event.getPlayer())) event.setCancelled(true);
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -143,7 +144,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-		if (isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()) && event.getRightClicked().getType() == EntityType.ITEM_FRAME) event.setCancelled(true);
+		if (!event.isCancelled() && isActionForbidden(event.getPlayer().getWorld(), event.getPlayer()) && event.getRightClicked().getType() == EntityType.ITEM_FRAME) event.setCancelled(true);
 	}
 
 }
