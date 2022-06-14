@@ -186,12 +186,8 @@ public class ExtendedItemStack extends ItemStack implements Listener {
 		return null;
 	}
 	
-	public static boolean isItem(ItemStack itemstack, Material material, int custommodeldata) {
-		if(itemstack != null && itemstack.getType() == material && itemstack.hasItemMeta() && itemstack.getItemMeta().hasCustomModelData() && itemstack.getItemMeta().getCustomModelData() == custommodeldata) {
-			return true;
-		} else {
-			return false;
-		}
+	public static boolean isItem(ItemStack itemStack, Material material, int customModelData) {
+		return itemStack != null && itemStack.getType() == material && itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData() && itemStack.getItemMeta().getCustomModelData() == customModelData;
 	}
 	
 	public static ExtendedItemStack getInstance() {
