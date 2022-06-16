@@ -17,6 +17,7 @@ import serversystem.commands.WarpCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
+import serversystem.config.SaveConfig;
 import serversystem.events.CommandPreprocessListener;
 import serversystem.events.EntityDamageListener;
 import serversystem.events.ExplotionListener;
@@ -65,6 +66,7 @@ public class ServerSystem extends JavaPlugin {
 			}
 		}
 		WorldGroup.autoRemoveWorldGroups();
+		SaveConfig.autoRemoveWorldGroups();
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, () -> WorldGroup.autoSavePlayerStats(), 1L, (long) 120 * 20);
 		Bukkit.getScheduler().runTaskLater(this, () -> {
 			for (Player player : Bukkit.getOnlinePlayers()) {

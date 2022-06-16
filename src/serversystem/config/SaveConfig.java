@@ -88,6 +88,18 @@ public class SaveConfig {
 		return warps;
 	}
 	
+	public static void removeWorld(String world) {
+		config.set("worlds." + world, null);
+		saveConfig();
+	}
+	
+	public static void autoRemoveWorldGroups() {
+		for (String name : getSection("warps", false)) {
+			if (WorldGroup.getWorldGroup(name) == null) config.set("world_groups." + name, null);
+		}
+		saveConfig();
+	}
+	
 	public static void saveLocation(Player player) {
 		final String path = "worlds." + player.getWorld().getName() + "." + player.getUniqueId();
 		config.set(path + ".name", player.getDisplayName());

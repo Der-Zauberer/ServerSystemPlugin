@@ -126,10 +126,12 @@ public class Config {
 		saveConfig();
 	}
 	
-	public static void removeLoadWorld(String string) {
+	public static void removeLoadWorld(String world) {
 		final List<String> list = getLoadWorlds();
-		list.remove(string);
+		list.remove(world);
 		config.set("load_worlds", list);
+		config.set("worlds." + world, null);
+		SaveConfig.removeWorld(world);
 		saveConfig();
 	}
 	
@@ -189,6 +191,7 @@ public class Config {
 	public static void addWorld(World world) {
 		if(config.get("worlds." + world.getName()) == null) {
 			config.set("worlds." + world.getName() + ".group", world.getName());
+			config.set("worlds." + world.getName() + ".permission", "");
 			config.set("worlds." + world.getName() + ".damage", true);
 			config.set("worlds." + world.getName() + ".hunger", true);
 			config.set("worlds." + world.getName() + ".pvp", world.getPVP());
@@ -208,6 +211,22 @@ public class Config {
 	
 	public static String getWorldGroup(World world) {
 		return config.getString("worlds." + world.getName() + ".group");
+	}
+	
+	public static void setWorldPermission(World world, String permission) {
+		config.set("worlds." + world.getName() + ".permission", permission);
+		saveConfig();
+	}
+	
+	public static void removeWorldPermission(World world) {
+		config.set("worlds." + world.getName() + ".permission", "");
+		saveConfig();
+	}
+	
+	public static String getWorldPermission(World world) {
+		final String permission = config.getString("worlds." + world.getName() + ".permission");
+		if (permission.isEmpty()) return null;
+		return permission;
 	}
 	
 	public static void setWorldOption(World world, WorldOption option, boolean bool) {
@@ -239,24 +258,6 @@ public class Config {
 		default: break;
 		}
 		return GameMode.ADVENTURE;
-	}
-	
-	public static void setWorldPermission(World world, String permission) {
-		config.set("worlds." + world.getName() + ".permission", permission);
-		saveConfig();
-	}
-	
-	public static void removeWorldPermission(World world) {
-		config.set("worlds." + world.getName() + ".permission", null);
-		saveConfig();
-	}
-	
-	public static boolean hasWorldPermission(World world) {
-		return config.getString("worlds." + world.getName() + ".permission") != null;
-	}
-	
-	public static String getWorldPermission(World world) {
-		return config.getString("worlds." + world.getName() + ".permission");
 	}
 	
 	public static void addPlayer(Player player) {

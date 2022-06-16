@@ -20,7 +20,7 @@ public class WorldSign extends ServerSign {
 	private void clickAction(Player player, Sign sign, String args) {
 		World world = Bukkit.getWorld(args);
 		if (world != null) {
-			if (!Config.hasWorldPermission(world) || player.hasPermission(Config.getWorldPermission(world))) {
+			if (Config.getWorldPermission(world) == null || player.hasPermission(Config.getWorldPermission(world))) {
 				WorldGroup.teleportPlayer(player, Bukkit.getWorld(args));
 			} else {
 				ChatUtil.sendErrorMessage(player, ChatUtil.NO_PERMISSION);
