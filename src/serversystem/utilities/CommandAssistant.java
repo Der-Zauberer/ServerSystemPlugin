@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
-import serversystem.utilities.ChatUtil.ErrorMessage;
 
 public class CommandAssistant {
 
@@ -23,62 +22,62 @@ public class CommandAssistant {
 
 	public boolean isSenderInstanceOfPlayer() {
 		if (sender instanceof Player) return true;
-		ChatUtil.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
+		ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
 		return false;
 	}
 
 	public boolean isSenderInstanceOfPlayer(boolean notenougharguments) {
 		if (sender instanceof Player) return true;
-		if (notenougharguments) ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
-		else ChatUtil.sendServerErrorMessage(sender, ErrorMessage.ONLYPLAYER);
+		if (notenougharguments) ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
+		else ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
 		return false;
 	}
 
 	public boolean isSenderNotInstanceOfPlayer() {
 		if (!(sender instanceof Player)) return true;
-		ChatUtil.sendServerErrorMessage(sender, ErrorMessage.ONLYCONSOLE);
+		ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_CONSOLE);
 		return false;
 	}
 
 	public boolean isWorld(String world) {
 		if (Bukkit.getWorld(world) != null) return true;
-		ChatUtil.sendServerErrorMessage(sender, "The world " + world + " does not exist!");
+		ChatUtil.sendErrorMessage(sender, "The world " + world + " does not exist!");
 		return false;
 	}
 
 	public boolean isPlayer(String player) {
 		if (Bukkit.getPlayer(player) != null) return true;
-		ChatUtil.sendServerErrorMessage(sender, "The player " + player + " is not online!");
+		ChatUtil.sendErrorMessage(sender, "The player " + player + " is not online!");
 		return false;
 	}
 
 	public boolean isWarp(String warp) {
 		if (ServerWarp.getWarp(warp) != null) return true;
-		ChatUtil.sendServerErrorMessage(sender, "The warp " + warp + " does not exist!");
+		ChatUtil.sendErrorMessage(sender, "The warp " + warp + " does not exist!");
 		return false;
 	}
 
 	public boolean hasPlayerPermission(Player player, String permission) {
 		if (player.hasPermission(permission)) return true;
-		ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
+		ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 		return false;
 	}
 
 	public boolean hasSenderPermission(String permission) {
 		if (sender.hasPermission(permission)) return true;
-		ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
+		ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 		return false;
 	}
 
 	public boolean hasPermission(String permission) {
 		if (sender.hasPermission(permission)) return true;
-		ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
+		ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 		return false;
 	}
 
 	public boolean hasPermissionOrIsConsole(String permission) {
 		if (!(sender instanceof Player) || sender.hasPermission(permission)) return true;
-		ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
+		ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 		return false;
 	}
 
@@ -86,7 +85,7 @@ public class CommandAssistant {
 		for (GameMode gm : GameMode.values()) {
 			if (gm.toString().equalsIgnoreCase(gamemode)) return true;
 		}
-		ChatUtil.sendServerErrorMessage(sender, gamemode + " is not a valid gamemode!");
+		ChatUtil.sendErrorMessage(sender, gamemode + " is not a valid gamemode!");
 		return false;
 	}
 
@@ -95,7 +94,7 @@ public class CommandAssistant {
 		for (Material mt : Material.values()) {
 			if (mt.toString().equalsIgnoreCase(material)) return true;
 		}
-		ChatUtil.sendServerErrorMessage(sender, material + " is not a valid material!");
+		ChatUtil.sendErrorMessage(sender, material + " is not a valid material!");
 		return false;
 	}
 
@@ -103,19 +102,19 @@ public class CommandAssistant {
 		for (WorldOption wo : WorldOption.values()) {
 			if (wo.toString().equalsIgnoreCase(option)) return true;
 		}
-		ChatUtil.sendServerErrorMessage(sender, option + " is not a valid option!");
+		ChatUtil.sendErrorMessage(sender, option + " is not a valid option!");
 		return false;
 	}
 
 	public boolean isBoolean(String bool) {
 		if (bool.equalsIgnoreCase("true") || bool.equalsIgnoreCase("false")) return true;
-		ChatUtil.sendServerErrorMessage(sender, bool + " is not a valid boolean!");
+		ChatUtil.sendErrorMessage(sender, bool + " is not a valid boolean!");
 		return false;
 	}
 
 	public boolean hasMinArguments(int min, String args[]) {
 		if (args.length >= min) return true;
-		ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOTENOUGHARGUMENTS);
+		ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 		return false;
 	}
 

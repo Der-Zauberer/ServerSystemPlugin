@@ -10,7 +10,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.TeamUtil;
 
 public class VanishCommand implements CommandExecutor, TabCompleter {
@@ -24,12 +23,12 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	public static void toggleVanish(Player player, CommandSender sender, boolean chatOutput) {
 		if (vanishedPlayers.contains(player)) {
 			show(player);
-			if (chatOutput) ChatUtil.sendServerMessage(player, "You are no longer vanished!");
-			if (player != sender && chatOutput) ChatUtil.sendServerMessage(sender, player.getName() + " is no longer vanished!");
+			if (chatOutput) ChatUtil.sendMessage(player, "You are no longer vanished!");
+			if (player != sender && chatOutput) ChatUtil.sendMessage(sender, player.getName() + " is no longer vanished!");
 		} else {
 			hide(player);
-			if (chatOutput) ChatUtil.sendServerMessage(player, "You are vanished now!");
-			if (player != sender && chatOutput) ChatUtil.sendServerMessage(sender, player.getName() + " is vanished now!");
+			if (chatOutput) ChatUtil.sendMessage(player, "You are vanished now!");
+			if (player != sender && chatOutput) ChatUtil.sendMessage(sender, player.getName() + " is vanished now!");
 		}
 	}
 	
@@ -43,7 +42,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	
 	private static void hide(Player player) {
 		TeamUtil.addPlayerToTeam(TeamUtil.TEAMVANISH, player.getName());
-		for (Player everyPlayer : ChatUtil.getVisualPlayers(player, false)) {
+		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
 			if (isVanished(everyPlayer)) {
 				player.showPlayer(ServerSystem.getInstance(), everyPlayer);
 				everyPlayer.showPlayer(ServerSystem.getInstance(), player);
@@ -56,7 +55,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	
 	private static void show(Player player) {
 		TeamUtil.addRoleToPlayer(player);
-		for (Player everyPlayer : ChatUtil.getVisualPlayers(player, false)) {
+		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 		}
 		for (Player vanishedPlayer : vanishedPlayers) {
@@ -71,22 +70,20 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		final CommandAssistant assistent = new CommandAssistant(sender);
 		if (args.length == 0) {
-			if (assistent.isSenderInstanceOfPlayer(true)) toggleVanish((Player) sender, true);
+			if (sender instanceof Player) toggleVanish((Player) sender, true);
+			else ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 		} else {
-			if (assistent.isPlayer(args[0])) toggleVanish(Bukkit.getPlayer(args[0]), sender, true);
+			if (Bukkit.getPlayer(args[0]) != null) toggleVanish(Bukkit.getPlayer(args[0]), sender, true);
+			else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		}
 		return true;
 	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		final CommandAssistant assistant = new CommandAssistant(sender);
-		List<String> commands = new ArrayList<>();
-		if (args.length == 1) commands = assistant.getPlayers();
-		assistant.cutArguments(args, commands);
-		return commands;
+		if (args.length == 1) return ChatUtil.cutArguments(args, ChatUtil.getReachableChatPlayers(sender));
+		else return new ArrayList<>();
 	}
 
 }

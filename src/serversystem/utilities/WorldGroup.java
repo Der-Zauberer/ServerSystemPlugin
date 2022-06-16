@@ -44,7 +44,7 @@ public class WorldGroup {
 			everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 			player.hidePlayer(ServerSystem.getInstance(), everyPlayer);
 		}
-		for (Player everyPlayer : ChatUtil.getVisualPlayers(player, false)) {
+		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 			if (!VanishCommand.isVanished(everyPlayer)) player.showPlayer(ServerSystem.getInstance(), everyPlayer);
 		}

@@ -8,14 +8,17 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import serversystem.utilities.CommandAssistant;
+import serversystem.utilities.ChatUtil;
 
 public class InventoryCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
-		final CommandAssistant assistant = new CommandAssistant(sender);
-		if (assistant.isSenderInstanceOfPlayer() && assistant.hasMinArguments(1, args) && assistant.isPlayer(args[0])) {
+		if (!(sender instanceof Player)) {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
+		} else if (args.length < 1) {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
+		} else {
 			((Player) sender).openInventory(Bukkit.getPlayer(args[0]).getInventory());
 		}
 		return true;
@@ -23,11 +26,8 @@ public class InventoryCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		final CommandAssistant assistant = new CommandAssistant(sender);
-		List<String> commands = new ArrayList<>();
-		if (args.length == 1) commands = assistant.getPlayers();
-		commands = assistant.cutArguments(args, commands);
-		return commands;
+		if (args.length == 1) return ChatUtil.cutArguments(args, ChatUtil.getReachableChatPlayers(sender));
+		else return new ArrayList<>();
 	}
 
 }

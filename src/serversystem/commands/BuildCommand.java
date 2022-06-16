@@ -27,7 +27,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.CommandAssistant;
 
 public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	
@@ -37,15 +36,15 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 		toggleBuildMode(player, player);
 	}
 	
-	public static void toggleBuildMode(Player player, CommandSender sender) {
+	private static void toggleBuildMode(Player player, CommandSender sender) {
 		if (buildPlayers.contains(player)) {
 			buildPlayers.remove(player);
-			ChatUtil.sendServerMessage(player, "You can no longer build!");
-			if (player != sender) ChatUtil.sendServerMessage(sender, player.getName() + " can no longer build!");
+			ChatUtil.sendMessage(player, "You can no longer build!");
+			if (player != sender) ChatUtil.sendMessage(sender, player.getName() + " can no longer build!");
 		} else {
 			buildPlayers.add(player);
-			ChatUtil.sendServerMessage(player, "You can build now!");
-			if(player != sender) ChatUtil.sendServerMessage(sender, player.getName() + " can build now!");
+			ChatUtil.sendMessage(player, "You can build now!");
+			if(player != sender) ChatUtil.sendMessage(sender, player.getName() + " can build now!");
 		}
 	}
 	
@@ -68,22 +67,20 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		CommandAssistant assistent = new CommandAssistant(sender);
 		if (args.length == 0) {
-			if (assistent.isSenderInstanceOfPlayer(true)) toggleBuildMode((Player) sender);
+			if (sender instanceof Player) toggleBuildMode((Player) sender);
+			else ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 		} else {
-			if (assistent.isPlayer(args[0])) toggleBuildMode(Bukkit.getPlayer(args[0]), sender);
+			if (Bukkit.getPlayer(args[0]) != null) toggleBuildMode(Bukkit.getPlayer(args[0]), sender);
+			else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		}
 		return true;
 	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		final CommandAssistant assistant = new CommandAssistant(sender);
-		List<String> commands = new ArrayList<>();
-		if (args.length == 1) commands = assistant.getPlayers();
-		assistant.cutArguments(args, commands);
-		return commands;
+		if (args.length == 1) return ChatUtil.cutArguments(args, ChatUtil.getReachableChatPlayers(sender));
+		else return new ArrayList<>();
 	}
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

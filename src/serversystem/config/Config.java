@@ -58,7 +58,7 @@ public class Config {
 		if (config.get(key) == null) config.set(key, value);
 	}
 	
-	public static ArrayList<String> getSection(String section, boolean keys) {
+	private static ArrayList<String> getSection(String section, boolean keys) {
 		try {
 			final ArrayList<String> list = new ArrayList<>();
 			for (String key : config.getConfigurationSection(section).getKeys(keys)) {
@@ -137,11 +137,6 @@ public class Config {
 		return config.getStringList("load_worlds");
 	}
 	
-	public static void removeGroup(String group) {
-		config.set("groups." + group, null);
-		saveConfig();
-	}
-	
 	public static String getGroupID(String group) {
 		return config.getString("groups." + group + ".id");
 	}
@@ -182,6 +177,13 @@ public class Config {
 			list.addAll(getPlayerSpecificPermissions(player));
 		}
 		return list;
+	}
+	
+	
+	public static List<String> getGroups() {
+		List<String> groups = Config.getSection("groups", false);
+		if (groups == null) groups = new ArrayList<>();
+		return groups;
 	}
 	
 	public static void addWorld(World world) {

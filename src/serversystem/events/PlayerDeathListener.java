@@ -20,9 +20,9 @@ public class PlayerDeathListener implements Listener {
 				message = message.substring(Config.getGroupPrefix(Config.getPlayerGroup(event.getEntity())).length());
 			}
 			if (WorldGroup.isEnabled()) {
-				ChatUtil.sendServerWorldGroupMessage(WorldGroup.getWorldGroup(event.getEntity()), message);
+				ChatUtil.sendWorldGroupMessage(WorldGroup.getWorldGroup(event.getEntity()), message);
 			} else {
-				ChatUtil.sendServerBroadcastMessage(message);
+				ChatUtil.sendBroadcastMessage(message);
 			}
 			
 		}

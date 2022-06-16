@@ -33,7 +33,7 @@ public class SaveConfig {
 		if (config.get(key) == null) config.set(key, value);
 	}
 
-	public static ArrayList<String> getSection(String section, boolean keys) {
+	private static ArrayList<String> getSection(String section, boolean keys) {
 		try {
 			final ArrayList<String> list = new ArrayList<>();
 			for (String key : config.getConfigurationSection(section).getKeys(keys)) {

@@ -12,7 +12,6 @@ import serversystem.config.Config;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.WorldGroup;
-import serversystem.utilities.ChatUtil.ErrorMessage;
 
 public class WTPCommand implements CommandExecutor, TabCompleter {
 
@@ -23,7 +22,7 @@ public class WTPCommand implements CommandExecutor, TabCompleter {
 			if (assistant.hasMinArguments(1, args)) {
 				if (assistant.isWorld(args[0])) {
 					if (!sender.hasPermission("serversystem.command.world.edit") && Config.getWorldPermission(Bukkit.getWorld(args[0])) != null && !sender.hasPermission(Config.getWorldPermission(Bukkit.getWorld(args[0])))) {
-						ChatUtil.sendServerErrorMessage(sender, ErrorMessage.NOPERMISSION);
+						ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 					} else {
 						WorldGroup.teleportPlayer((Player)sender, Bukkit.getWorld(args[0]));
 					}

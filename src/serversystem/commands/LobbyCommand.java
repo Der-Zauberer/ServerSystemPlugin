@@ -10,19 +10,17 @@ import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.CommandAssistant;
 
 public class LobbyCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		final CommandAssistant assistant = new CommandAssistant(sender);
-		if (assistant.isSenderInstanceOfPlayer()) {
-			if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
-				((Player) sender).teleport(Config.getLobbyWorld().getSpawnLocation());
-			} else {
-				ChatUtil.sendServerErrorMessage(sender, "Lobby does not exist!");
-			}
+		if (!(sender instanceof Player)) {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
+		} else if (!Config.getConfigOption(ConfigOption.LOBBY) || Config.getLobbyWorld() == null) {
+			ChatUtil.sendErrorMessage(sender, "There is no lobby on this server!");
+		} else {
+			((Player) sender).teleport(Config.getLobbyWorld().getSpawnLocation());
 		}
 		return true;
 	}

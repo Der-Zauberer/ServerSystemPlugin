@@ -16,12 +16,10 @@ public class TeamUtil {
 	
 	private TeamUtil() {}
 	
-	static {
-		if (Config.getSection("Groups", false) != null) {
-			for (String group : Config.getSection("Groups", false)) {
-				if (Config.getGroupID(group) != null) {
-					createTeam(Config.getGroupID(group), Config.getGroupPrefix(group), Config.getGroupColor(group));
-				}
+	public static void createTeams() {
+		for (String group : Config.getGroups()) {
+			if (Config.getGroupID(group) != null) {
+				createTeam(Config.getGroupID(group), Config.getGroupPrefix(group), Config.getGroupColor(group));
 			}
 		}
 		createTeam(TEAMVANISH, "[VANISH] ", ChatColor.GRAY);

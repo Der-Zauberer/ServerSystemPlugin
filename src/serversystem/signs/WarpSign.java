@@ -2,11 +2,9 @@ package serversystem.signs;
 
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
-
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ServerSign;
 import serversystem.utilities.ServerWarp;
-import serversystem.utilities.ChatUtil.ErrorMessage;
 
 public class WarpSign extends ServerSign {
 
@@ -22,7 +20,7 @@ public class WarpSign extends ServerSign {
 			if (warp.getPermission() == null || player.hasPermission(warp.getPermission())) {
 				player.teleport(ServerWarp.getWarp(args).getLocation());
 			} else {
-				ChatUtil.sendServerErrorMessage(player, ErrorMessage.NOPERMISSION);
+				ChatUtil.sendErrorMessage(player, ChatUtil.NO_PERMISSION);
 			}
 		}
 	}

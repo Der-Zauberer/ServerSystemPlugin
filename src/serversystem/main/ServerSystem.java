@@ -54,6 +54,7 @@ public class ServerSystem extends JavaPlugin {
 			}
 		}
 		WorldGroup.autoCreateWorldGroups();
+		TeamUtil.createTeams();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (WorldGroup.isEnabled() && WorldGroup.getWorldGroup(player) == null) WorldGroup.getWorldGroup(player.getWorld()).join(player);
 			for (Player everyPlayer : Bukkit.getOnlinePlayers()) {

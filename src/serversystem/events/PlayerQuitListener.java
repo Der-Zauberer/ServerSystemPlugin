@@ -12,7 +12,7 @@ public class PlayerQuitListener implements Listener {
 	
 	@EventHandler
 	public static void onPlayerQuit(PlayerQuitEvent event) {
-		ChatUtil.sendPlayerQuitMessage(event);
+		ChatUtil.sendQuitMessage(event);
 		if (VanishCommand.isVanished(event.getPlayer())) VanishCommand.toggleVanish(event.getPlayer(), false);
 		if (event.getPlayer().getFlySpeed() > 0.2) event.getPlayer().setFlySpeed((float) 0.1);
 		if (WorldGroup.isEnabled()) WorldGroup.getWorldGroup(event.getPlayer()).quit(event.getPlayer());

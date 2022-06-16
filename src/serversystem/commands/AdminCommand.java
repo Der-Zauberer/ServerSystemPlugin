@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import serversystem.menus.AdminMenu;
-import serversystem.utilities.CommandAssistant;
+import serversystem.utilities.ChatUtil;
 
 import org.bukkit.entity.Player;
 
@@ -15,7 +15,8 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (new CommandAssistant(sender).isSenderInstanceOfPlayer()) new AdminMenu((Player) sender).open();
+		if (sender instanceof Player) new AdminMenu((Player) sender).open();
+		else ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
 		return true;
 	}
 

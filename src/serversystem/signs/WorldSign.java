@@ -8,7 +8,6 @@ import serversystem.config.Config;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ServerSign;
 import serversystem.utilities.WorldGroup;
-import serversystem.utilities.ChatUtil.ErrorMessage;
 
 public class WorldSign extends ServerSign {
 
@@ -24,7 +23,7 @@ public class WorldSign extends ServerSign {
 			if (!Config.hasWorldPermission(world) || player.hasPermission(Config.getWorldPermission(world))) {
 				WorldGroup.teleportPlayer(player, Bukkit.getWorld(args));
 			} else {
-				ChatUtil.sendServerErrorMessage(player, ErrorMessage.NOPERMISSION);
+				ChatUtil.sendErrorMessage(player, ChatUtil.NO_PERMISSION);
 			}
 		}
 	}

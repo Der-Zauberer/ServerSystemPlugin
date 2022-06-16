@@ -8,31 +8,31 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import serversystem.utilities.CommandAssistant;
+import serversystem.utilities.ChatUtil;
 
 public class EnderchestCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		final CommandAssistant assistant = new CommandAssistant(sender);
-		if (assistant.isSenderInstanceOfPlayer()) {
-			Player player = (Player) sender;
-			if (args.length == 0) {
-				player.openInventory(player.getEnderChest());
-			} else if (assistant.isPlayer(args[0])) {
-				player.openInventory(Bukkit.getPlayer(args[0]).getEnderChest());
-			}
+		if (!(sender instanceof Player)) {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
+			return true;
+		}
+		final Player player = (Player) sender;
+		if (args.length == 0) {
+			player.openInventory(player.getEnderChest());
+		} else if (Bukkit.getPlayer(args[0]) != null) {
+			player.openInventory(Bukkit.getPlayer(args[0]).getEnderChest());
+		} else {
+			ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		}
 		return true;
 	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		final CommandAssistant assistant = new CommandAssistant(sender);
-		List<String> commands = new ArrayList<>();
-		if (args.length == 1) commands = assistant.getPlayers();
-		commands = assistant.cutArguments(args, commands);
-		return commands;
+		if (args.length == 1) return ChatUtil.cutArguments(args, ChatUtil.getReachableChatPlayers(sender));
+		else return new ArrayList<>();
 	}
 
 }
