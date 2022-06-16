@@ -27,7 +27,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			if (!(sender instanceof Player)) ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 			else if (Bukkit.getWorld(args[0]) == null) ChatUtil.sendNotExistErrorMessage(sender, "world", args[0]);
 			else if (Config.getWorldPermission(Bukkit.getWorld(args[0])) != null && !sender.hasPermission(Config.getWorldPermission(Bukkit.getWorld(args[0])))) ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
-			else WorldGroup.teleportPlayer((Player)sender, Bukkit.getWorld(args[0]));
+			else WorldGroup.teleportPlayer((Player) sender, Bukkit.getWorld(args[0]));
 		} else {
 			final World world = Bukkit.getWorld(args[0]);
 			final Option option = ChatUtil.getEnumValue(Option.values(), args[1]);
@@ -39,7 +39,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				ChatUtil.sendNotExistErrorMessage(sender, "world", args[0]);
 			} else if (option == Option.TELEPORT) {
 				if (args.length == 2) {
-					if (sender instanceof Player) WorldGroup.teleportPlayer((Player)sender, world);
+					if (sender instanceof Player) WorldGroup.teleportPlayer((Player) sender, world);
 					else ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS); 
 				} else if (args.length == 3) {
 					if (Bukkit.getPlayer(args[2]) != null) WorldGroup.teleportPlayer(Bukkit.getPlayer(args[2]), world);
@@ -81,11 +81,11 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						} else {
 							final boolean bool = args[3].equalsIgnoreCase("true") ? true : false;
 							Config.setWorldOption(world, worldOption, bool);
-							ChatUtil.sendMessage(sender, "Set " + worldOption.toString().toLowerCase() + " for the world " + world.getName() + " to " + bool + "!");
+							ChatUtil.sendMessage(sender, "Set option " + worldOption.toString().toLowerCase() + " for the world " + world.getName() + " to " + bool + "!");
 						}
 					} else if (args[2].equalsIgnoreCase("world_group")) {
 						if (args.length == 3) {
-							ChatUtil.sendMessage(sender, "The option world_group for the world " + world.getName() + " is " + Config.getWorldGroup(world) + "!");
+							ChatUtil.sendMessage(sender, "The world_group for the world " + world.getName() + " is " + Config.getWorldGroup(world) + "!");
 						} else {
 							Config.setWorldGroup(world, args[3]);
 							ChatUtil.sendMessage(sender, "Set world_group for the world " + world.getName() + " to " + args[3] + "!");
@@ -93,14 +93,14 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						}
 					} else if (args[2].equalsIgnoreCase("permission")) {
 						if (args.length == 3) {
-							ChatUtil.sendMessage(sender, "The option permission for the world " + world.getName() + " is " + Config.getWorldPermission(world) + "!");
+							ChatUtil.sendMessage(sender, "The permission for the world " + world.getName() + " is " + Config.getWorldPermission(world) + "!");
 						} else {
 							Config.setWorldPermission(world, args[3]);
 							ChatUtil.sendMessage(sender, "Set permission for the world " + world.getName() + " to " + args[3] + "!");
 						}
 					} else if (args[2].equalsIgnoreCase("gamemode")) {
 						if (args.length == 3) {
-							ChatUtil.sendMessage(sender, "The option gamemode for the world " + world.getName() + " is " + Config.getWorldGamemode(world).toString().toLowerCase() + "!");
+							ChatUtil.sendMessage(sender, "The gamemode for the world " + world.getName() + " is " + Config.getWorldGamemode(world).toString().toLowerCase() + "!");
 						} else if (ChatUtil.getEnumValue(GameMode.values(), args[3]) == null) {
 							ChatUtil.sendNotExistErrorMessage(sender, "gamemode", args[3]);
 						} else {
