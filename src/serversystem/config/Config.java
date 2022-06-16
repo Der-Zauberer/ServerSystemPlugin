@@ -18,16 +18,17 @@ public class Config {
 	private static final File file = new File("plugins/ServerSystem", "config.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 	
-	public enum ConfigOption{JOIN_MESSAGE, QUIT_MESSAGE, ENABLE_WORLD_GROUPS, ENABLE_PORTALS, GLOBAL_CHAT_AND_TABLIST, LOBBY}
+	public enum ConfigOption{JOIN_MESSAGE, QUIT_MESSAGE, ENABLE_PORTALS, ENABLE_WORLD_GROUPS, GLOBAL_CHAT_AND_TABLIST, GLOBAL_INVENTORY, LOBBY}
 	public enum TitleTypeOption{TITLE, SUBTITLE, TABLIST_TITLE, TABLIST_SUBTITLE}
 	public enum WorldOption{DAMAGE, HUNGER, PVP, EXPLOSION, PROTECTION, WORLD_SPAWN, DEATH_MESSAGE}
 	
 	static {
 		setDefault("join_message", true);
 		setDefault("leave_message", true);
-		setDefault("enable_world_groups", false);
 		setDefault("enable_portals", true);
+		setDefault("enable_world_groups", false);
 		setDefault("global_chat_and_tablist", false);
+		setDefault("global_inventory", false);
 		setDefault("lobby", false);
 		setDefault("lobby_world", "world");
 		setDefault("title.text", "");
@@ -225,7 +226,7 @@ public class Config {
 	
 	public static String getWorldPermission(World world) {
 		final String permission = config.getString("worlds." + world.getName() + ".permission");
-		if (permission.isEmpty()) return null;
+		if (permission != null && permission.isEmpty()) return null;
 		return permission;
 	}
 	

@@ -11,6 +11,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import serversystem.config.Config.ConfigOption;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ServerWarp;
 import serversystem.utilities.WorldGroup;
@@ -136,17 +138,24 @@ public class SaveConfig {
 	
 	public static void savePlayerProfile(Player player, WorldGroup worldGroup) {
 		config.set("world_groups." + worldGroup.getName() + "." + player.getUniqueId() + ".name", player.getDisplayName());
-		saveXp(player, worldGroup);
 		saveGamemode(player, worldGroup);
-		saveInventory(player, worldGroup);
+		if (!Config.getConfigOption(ConfigOption.GLOBAL_INVENTORY)) {
+			saveXp(player, worldGroup);
+			saveInventory(player, worldGroup);
+			player.getInventory().clear();
+			player.setLevel(0);
+			player.setExp(0);
+		}
 		saveConfig();
 	}
 	
 	public static void loadPlayerProfile(Player player, WorldGroup worldGroup) {
 		if (config.get("world_groups." + worldGroup.getName() + "." + player.getUniqueId()) != null) {
-			loadXp(player, worldGroup);
 			loadGamemode(player, worldGroup);
-			loadInventory(player, worldGroup);
+			if (!Config.getConfigOption(ConfigOption.GLOBAL_INVENTORY)) {
+				loadXp(player, worldGroup);
+				loadInventory(player, worldGroup);
+			}
 		} else {
 			savePlayerProfile(player, worldGroup);
 		}
