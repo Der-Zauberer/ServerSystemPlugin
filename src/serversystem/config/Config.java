@@ -22,7 +22,7 @@ public class Config {
 	public enum TitleTypeOption{TITLE, SUBTITLE, TABLIST_TITLE, TABLIST_SUBTITLE}
 	public enum WorldOption{DAMAGE, HUNGER, PVP, EXPLOSION, PROTECTION, WORLD_SPAWN, DEATH_MESSAGE}
 	
-	public Config() {
+	static {
 		setDefault("join_message", true);
 		setDefault("leave_message", true);
 		setDefault("enable_world_groups", false);
@@ -320,7 +320,7 @@ public class Config {
 		try {
 			config.save(file);
 		} catch (IOException exception) {
-			Bukkit.getLogger().warning("Something went wrong while saving config.yml!");
+			Bukkit.getLogger().warning("Something went wrong while saving plugins/ServerSystem/config.yml!");
 		}
 	}
 	

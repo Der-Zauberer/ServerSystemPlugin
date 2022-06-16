@@ -18,7 +18,6 @@ import serversystem.commands.WarpCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
-import serversystem.config.SaveConfig;
 import serversystem.events.CommandPreprocessListener;
 import serversystem.events.EntityDamageListener;
 import serversystem.events.ExplotionListener;
@@ -46,8 +45,6 @@ public class ServerSystem extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		setInstance(this);
-		new Config();
-		new SaveConfig();
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
@@ -126,12 +123,12 @@ public class ServerSystem extends JavaPlugin {
 		ServerSign.registerServerSign(new WarpSign());
 	}
 
-	public static ServerSystem getInstance() {
-		return instance;
-	}
-
 	public static void setInstance(ServerSystem instance) {
 		ServerSystem.instance = instance;
+	}
+	
+	public static ServerSystem getInstance() {
+		return instance;
 	}
 
 }

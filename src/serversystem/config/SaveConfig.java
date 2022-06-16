@@ -20,7 +20,7 @@ public class SaveConfig {
 	private static final File file = new File("plugins/ServerSystem", "save_config.yml");
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-	public SaveConfig() {
+	static {
 		setDefault("warps", "");
 		setDefault("worlds", "");
 		setDefault("world_groups", "");
@@ -203,7 +203,7 @@ public class SaveConfig {
 		try {
 			config.save(file);
 		} catch (IOException exception) {
-			Bukkit.getLogger().warning("Something went wrong while saving save_config.yml!");
+			Bukkit.getLogger().warning("Something went wrong while saving plugins/ServerSystem/save_config.yml!");
 		}
 	}
 
