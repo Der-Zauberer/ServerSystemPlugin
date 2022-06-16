@@ -17,15 +17,14 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 		if (!(sender instanceof Player)) {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
 			return true;
+		} else if (args.length > 1) {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
+			return true;
 		}
 		final Player player = (Player) sender;
-		if (args.length == 0) {
-			player.openInventory(player.getEnderChest());
-		} else if (Bukkit.getPlayer(args[0]) != null) {
-			player.openInventory(Bukkit.getPlayer(args[0]).getEnderChest());
-		} else {
-			ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
-		}
+		if (args.length == 0) player.openInventory(player.getEnderChest());
+		else if (Bukkit.getPlayer(args[0]) != null) player.openInventory(Bukkit.getPlayer(args[0]).getEnderChest());
+		else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		return true;
 	}
 

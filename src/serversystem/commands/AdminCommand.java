@@ -15,8 +15,9 @@ public class AdminCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (sender instanceof Player) new AdminMenu((Player) sender).open();
-		else ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
+		if (!(sender instanceof Player)) ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
+		else if (args.length != 0) ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
+		else new AdminMenu((Player) sender).open();
 		return true;
 	}
 

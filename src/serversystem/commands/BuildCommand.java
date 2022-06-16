@@ -70,9 +70,11 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 		if (args.length == 0) {
 			if (sender instanceof Player) toggleBuildMode((Player) sender);
 			else ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
-		} else {
+		} else if (args.length == 1) {
 			if (Bukkit.getPlayer(args[0]) != null) toggleBuildMode(Bukkit.getPlayer(args[0]), sender);
 			else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
+		} else {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 		}
 		return true;
 	}

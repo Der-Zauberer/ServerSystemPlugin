@@ -212,6 +212,7 @@ public class Config {
 	
 	public static void setWorldOption(World world, WorldOption option, boolean bool) {
 		config.set("worlds." + world.getName() + "." + option.toString().toLowerCase(), bool);
+		if (option == WorldOption.PVP) world.setPVP(bool);
 	}
 	
 	public static boolean getWorldOption(World world, WorldOption option) {

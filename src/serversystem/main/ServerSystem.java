@@ -13,7 +13,6 @@ import serversystem.commands.PermissionCommand;
 import serversystem.commands.PermissionReloadComnmand;
 import serversystem.commands.SpeedCommand;
 import serversystem.commands.VanishCommand;
-import serversystem.commands.WTPCommand;
 import serversystem.commands.WarpCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
@@ -116,7 +115,6 @@ public class ServerSystem extends JavaPlugin {
 		instance.getCommand("vanish").setExecutor(new VanishCommand());
 		instance.getCommand("warp").setExecutor(new WarpCommand());
 		instance.getCommand("world").setExecutor(new WorldCommand());
-		instance.getCommand("wtp").setExecutor(new WTPCommand());
 	}
 
 	private static void registerWorldSigns() {

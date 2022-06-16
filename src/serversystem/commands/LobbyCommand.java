@@ -15,13 +15,10 @@ public class LobbyCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!(sender instanceof Player)) {
-			ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
-		} else if (!Config.getConfigOption(ConfigOption.LOBBY) || Config.getLobbyWorld() == null) {
-			ChatUtil.sendErrorMessage(sender, "There is no lobby on this server!");
-		} else {
-			((Player) sender).teleport(Config.getLobbyWorld().getSpawnLocation());
-		}
+		if (!(sender instanceof Player)) ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
+		else if (args.length != 0) ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
+		else if (!Config.getConfigOption(ConfigOption.LOBBY) || Config.getLobbyWorld() == null) ChatUtil.sendErrorMessage(sender, "There is no lobby on this server!");
+		else ((Player) sender).teleport(Config.getLobbyWorld().getSpawnLocation());
 		return true;
 	}
 

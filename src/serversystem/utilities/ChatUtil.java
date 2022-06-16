@@ -25,8 +25,9 @@ public class ChatUtil implements Listener {
 	
 	public static final String ONLY_CONSOLE = "This command can only be used by the console!";
 	public static final String ONLY_PLAYER = "This command can only be used by players!";
-	public static final String NO_PERMISSION = "Not enough arguments!";
-	public static final String NOT_ENOUGHT_ARGUMENTS = "You have no permission to do that!";
+	public static final String NO_PERMISSION = "You have no permission to do that!";
+	public static final String NOT_ENOUGHT_ARGUMENTS = "Not enough arguments!";
+	public static final String TO_MANY_ARGUMENTS = "To many arguments!";
 	
 	private static final ChatUtil instance = new ChatUtil();
 	
@@ -153,7 +154,7 @@ public class ChatUtil implements Listener {
 	public static List<String> getReachableChatPlayers(CommandSender sender) {
 		final List<String> players = new ArrayList<>();
 		for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
-			if (!(sender instanceof Player) || !VanishCommand.isVanished(everyPlayer)) players.add(everyPlayer.getName());
+			if (!(sender instanceof Player) || sender == everyPlayer || !VanishCommand.isVanished(everyPlayer)) players.add(everyPlayer.getName());
 		}
 		return players;
 	}
@@ -169,6 +170,13 @@ public class ChatUtil implements Listener {
 		} else {
 			return commands;
 		}
+	}
+	
+	public static <T extends Enum<T>> T getEnumValue(T t[], String string) {
+		for (T value : t) {
+			if (value.toString().equalsIgnoreCase(string)) return value;
+		}
+		return null;
 	}
 	
 	public static ChatColor parseColor(String color) {
@@ -192,8 +200,7 @@ public class ChatUtil implements Listener {
 	}
 	
 	public static WorldOption parseWorldOption(String option) {
-		option = option.toUpperCase();
-		return WorldOption.valueOf(option);
+		return WorldOption.valueOf(option.toUpperCase());
 	}
 	
 	public static Boolean parseBoolean(String bool) {
@@ -201,8 +208,7 @@ public class ChatUtil implements Listener {
 	}
 	
 	public static GameMode parseGamemode(String gamemode) {
-		gamemode = gamemode.toUpperCase();
-		return GameMode.valueOf(gamemode);
+		return GameMode.valueOf(gamemode.toUpperCase());
 	}
 	
 	public static ChatUtil getInstance() {

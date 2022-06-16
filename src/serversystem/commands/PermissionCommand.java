@@ -21,6 +21,8 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 		} else if (args.length < 2) {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
+		} else if (args.length > 2) {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 		} else if (Bukkit.getPlayer(args[0]) == null && Config.getPlayerGroup(args[0]) == null) {
 			ChatUtil.sendNotExistErrorMessage(sender, "player", args[0]);
 		} else if (!Config.getGroups().contains(args[1])) {

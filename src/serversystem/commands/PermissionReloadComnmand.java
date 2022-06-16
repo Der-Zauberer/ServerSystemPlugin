@@ -19,6 +19,8 @@ public class PermissionReloadComnmand implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender instanceof Player && !((Player) sender).hasPermission("serversystem.command.permission")) {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
+		} else if (args.length != 0) {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 		} else {
 			TeamUtil.resetTeams();
 			Config.reloadConfig();

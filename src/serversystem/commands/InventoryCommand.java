@@ -14,13 +14,10 @@ public class InventoryCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
-		if (!(sender instanceof Player)) {
-			ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
-		} else if (args.length < 1) {
-			ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
-		} else {
-			((Player) sender).openInventory(Bukkit.getPlayer(args[0]).getInventory());
-		}
+		if (!(sender instanceof Player)) ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
+		 else if (args.length < 1) ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
+		 else if (args.length > 1) ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
+		 else ((Player) sender).openInventory(Bukkit.getPlayer(args[0]).getInventory());
 		return true;
 	}
 
