@@ -2,10 +2,8 @@ package serversystem.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,12 +12,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
 import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
 import serversystem.config.Config.TitleTypeOption;
-import serversystem.config.Config.WorldOption;
 
 public class ChatUtil implements Listener {
 	
@@ -196,19 +192,6 @@ public class ChatUtil implements Listener {
 		} catch (IllegalArgumentException exception) {
 			return Material.BARRIER;
 		}
-		
-	}
-	
-	public static WorldOption parseWorldOption(String option) {
-		return WorldOption.valueOf(option.toUpperCase());
-	}
-	
-	public static Boolean parseBoolean(String bool) {
-		return bool.equalsIgnoreCase("true");
-	}
-	
-	public static GameMode parseGamemode(String gamemode) {
-		return GameMode.valueOf(gamemode.toUpperCase());
 	}
 	
 	public static ChatUtil getInstance() {
