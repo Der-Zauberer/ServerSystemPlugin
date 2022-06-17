@@ -215,12 +215,8 @@ public class Config {
 	}
 	
 	public static void setWorldPermission(World world, String permission) {
-		config.set("worlds." + world.getName() + ".permission", permission);
-		saveConfig();
-	}
-	
-	public static void removeWorldPermission(World world) {
-		config.set("worlds." + world.getName() + ".permission", "");
+		if (permission == null || permission.equalsIgnoreCase("null")) config.set("worlds." + world.getName() + ".permission", "");
+		else config.set("worlds." + world.getName() + ".permission", permission);
 		saveConfig();
 	}
 	

@@ -51,11 +51,8 @@ public class SaveConfig {
 		config.set("warps." + warp.getName() + ".material", warp.getMaterial().toString().toLowerCase());
 		config.set("warps." + warp.getName() + ".location", warp.getLocation());
 		config.set("warps." + warp.getName() + ".global", warp.isGlobal());
-		if (warp.getPermission() != null) {
-			config.set("warps." + warp.getName() + ".permission", warp.getPermission());
-		} else {
-			config.set("warps." + warp.getName() + ".permission", null);
-		}
+		if (warp.getPermission() == null || warp.getPermission().equalsIgnoreCase("null")) config.set("warps." + warp.getName() + ".permission", "");
+		else config.set("warps." + warp.getName() + ".permission", warp.getPermission());
 		saveConfig();
 	}
 
@@ -69,7 +66,7 @@ public class SaveConfig {
 			final ServerWarp warp = new ServerWarp(name, config.getLocation("warps." + name + ".location"));
 			warp.setMaterial(ChatUtil.parseMaterial(config.getString("warps." + name + ".material")));
 			warp.setGlobal(config.getBoolean("warps." + name + ".global"));
-			if (config.getString("warps." + name + ".permission") != null) {
+			if (config.getString("warps." + name + ".permission") != null && !config.getString("warps." + name + ".permission").isEmpty()) {
 				warp.setPermission(config.getString("warps." + name + ".permission"));
 			}
 			return warp;
