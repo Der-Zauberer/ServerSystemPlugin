@@ -4,6 +4,6 @@ import org.bukkit.entity.Player;
 
 public interface ServerSignPlaceAction {
 	
-	public abstract boolean onAction(Player player, String args);
+	boolean onAction(Player player, String args);
 
 }

@@ -15,9 +15,7 @@ public class EntityDamageListener implements Listener {
 	public static void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
 			if (!Config.getWorldOption(event.getEntity().getWorld(), WorldOption.DAMAGE)) {
-				if (event.getCause() == DamageCause.VOID) {
-					event.getEntity().teleport(event.getEntity().getWorld().getSpawnLocation());
-				}
+				if (event.getCause() == DamageCause.VOID) event.getEntity().teleport(event.getEntity().getWorld().getSpawnLocation());
 				event.setCancelled(true);
 			}
 		}

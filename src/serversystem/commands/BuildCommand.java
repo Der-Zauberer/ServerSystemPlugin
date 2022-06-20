@@ -37,15 +37,20 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	}
 	
 	private static void toggleBuildMode(Player player, CommandSender sender) {
-		if (buildPlayers.contains(player)) {
-			buildPlayers.remove(player);
-			ChatUtil.sendMessage(player, "You can no longer build!");
-			if (player != sender) ChatUtil.sendMessage(sender, player.getName() + " can no longer build!");
+		if (Config.getWorldOption(player.getWorld(), WorldOption.PROTECTION)) {
+			if (buildPlayers.contains(player)) {
+				buildPlayers.remove(player);
+				ChatUtil.sendMessage(player, "You can no longer build!");
+				if (player != sender) ChatUtil.sendMessage(sender, player.getName() + " can no longer build!");
+			} else {
+				buildPlayers.add(player);
+				ChatUtil.sendMessage(player, "You can build now!");
+				if(player != sender) ChatUtil.sendMessage(sender, player.getName() + " can build now!");
+			}
 		} else {
-			buildPlayers.add(player);
-			ChatUtil.sendMessage(player, "You can build now!");
-			if(player != sender) ChatUtil.sendMessage(sender, player.getName() + " can build now!");
+			ChatUtil.sendErrorMessage(sender, "This world is not protected!");
 		}
+		
 	}
 	
 	public static boolean isInBuildmode(Player player) {
@@ -109,6 +114,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public static void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+		if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) return;
 		if (!event.isCancelled() && event.getDamager() instanceof Player && isActionForbidden(event.getDamager().getWorld(), event.getDamager())) event.setCancelled(true);
 	}
 	
