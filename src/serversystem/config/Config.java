@@ -3,6 +3,7 @@ package serversystem.config;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.ServerGroup;
 
 public class Config {
 	
@@ -60,15 +62,13 @@ public class Config {
 	}
 	
 	private static ArrayList<String> getSection(String section, boolean keys) {
+		final ArrayList<String> list = new ArrayList<>();
 		try {
-			final ArrayList<String> list = new ArrayList<>();
 			for (String key : config.getConfigurationSection(section).getKeys(keys)) {
 				list.add(key);
 			}
-			return list;
-		} catch (NullPointerException exception) {
-			return null;
-		}
+		} catch (NullPointerException exception) {}
+		return list;
 	}
 	
 	public static void setConfigOption(ConfigOption option, boolean value) {
@@ -140,52 +140,52 @@ public class Config {
 		return config.getStringList("load_worlds");
 	}
 	
-	public static String getGroupID(String group) {
-		return config.getString("groups." + group + ".id");
+	public static void saveGroup(ServerGroup group) {
+		final String path = "groups." + group.getName() + ".";
+		config.set(path + "id", group.getId());
+		config.set(path + "color", group.getColor().name().toLowerCase());
+		config.set(path + "prefix", group.getPrefix() != null ? group.getPrefix() : "");
+		if (group.hasParent()) config.set(path + "parent", group.getParent().getName());
+		else config.set(path + "parent", null);
+		if (!group.getPermissions().isEmpty()) config.set(path + "permissions", group.getPermissions());
+		saveConfig();
 	}
 	
-	public static ChatColor getGroupColor(String group) {
-		return ChatUtil.parseColor(config.getString("groups." + group + ".color"));
-	}
-	
-	public static String getGroupPrefix(String group) {
-		final String prefix = config.getString("groups." + group + ".prefix");
-		if (prefix != null) return prefix; else return "";
-	}
-	
-	public static String getGroupParent(String group) {
-		return config.getString("groups." + group + ".parent");
-	}
-	
-	public static List<String> getGroupPermissions(String group) {
-		final ArrayList<String> permissions = new ArrayList<>();
-		final ArrayList<String> groups = new ArrayList<>();
-		groups.add(group);
-		while (getGroupParent(group) != null) {
-			group = getGroupParent(group);
-			groups.add(group);
+	public static ServerGroup loadGroup(String group) {
+		final String path = "groups." + group + ".";
+		final String id = config.getString(path + "id");
+		if (id != null) {
+			final ChatColor color = ChatUtil.parseColor(config.getString(path + "color"));
+			final String prefix = config.getString(path + "prefix");
+			final List<String> permissions = config.getStringList(path + "permissions");
+			final ServerGroup serverGroup = new ServerGroup(id, group, color, prefix, permissions != null ? permissions : new ArrayList<>(), false);
+			return serverGroup;
 		}
-		for (int i = groups.size(); i > 0; i--) {
-			permissions.addAll(config.getStringList("groups." + groups.get(i - 1) + ".permissions"));
-		}
-		return permissions;
+		return null;
 	}
 	
-	public static List<String> getPlayerPermissions(Player player) {
-		final List<String> list = new ArrayList<>();
-		if (getGroupPermissions(getPlayerGroup(player)) != null) {
-			list.addAll(getGroupPermissions(getPlayerGroup(player)));
+	public static List<ServerGroup> loadGroups() {
+		final List<ServerGroup> groups = new ArrayList<>();
+		final HashMap<ServerGroup, String> parents = new HashMap<>();
+		for (String groupName : Config.getSection("groups", false)) {
+			final ServerGroup group = Config.loadGroup(groupName);
+			if (group != null) {
+				groups.add(group);
+				String parent;
+				if (group.getParent() == null && (parent = config.getString("groups." + groupName + ".parent")) != null && !parent.isEmpty()) {
+					parents.put(group, parent);
+				}
+			}
 		}
-		if (getPlayerSpecificPermissions(player) != null) {
-			list.addAll(getPlayerSpecificPermissions(player));
+		for (ServerGroup serverGroup : parents.keySet()) {
+			for (ServerGroup parent : groups) {
+				if (parent.getName().equals(parents.get(serverGroup))) {
+					serverGroup.setParent(parent);
+					break;
+				}
+			}
 		}
-		return list;
-	}
-	
-	
-	public static List<String> getGroups() {
-		List<String> groups = Config.getSection("groups", false);
-		if (groups == null) groups = new ArrayList<>();
+		groups.forEach(group -> group.update());
 		return groups;
 	}
 	
@@ -296,7 +296,7 @@ public class Config {
 		return null;
 	}
 	
-	private static List<String> getPlayerSpecificPermissions(Player player) {
+	public static List<String> getPlayerSpecificPermissions(Player player) {
 		return config.getStringList("players." + player.getUniqueId() + ".permissions");
 	}
 	

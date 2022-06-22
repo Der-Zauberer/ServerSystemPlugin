@@ -25,46 +25,42 @@ public class PermissionUtil implements Listener {
 	
 	public static void loadPlayerPermissions(Player player) {
 		resetPlayerPermissions(player);
-		if (Config.getPlayerPermissions(player) != null) {
-			removeConfigDisabledPermissions(player);
-			for (String string : Config.getPlayerPermissions(player)) {
-				if (string.endsWith("*")) {
-					string = string.substring(0, string.length() - 2);
-					boolean addPermission = true;
-					if (string.startsWith("-")) {
-						addPermission = false;
-						string = string.substring(1);
-					}
-					addPermission(player, string + ".*");
-					for (Permission permission : Bukkit.getServer().getPluginManager().getPermissions()) {
-						if (permission.getName().startsWith(string)) {
-							if (addPermission) {
-								addPermission(player, permission.getName());
-							} else if (player.hasPermission(permission.getName())) {
-								removePermission(player, permission.getName());
-							}
-						}
-					}
-					for (String permission : getVanillaPermissions()) {
-						if (permission.startsWith(string)) {
-							if (addPermission) {
-								addPermission(player, permission);
-							} else if (player.hasPermission(permission)) {
-								removePermission(player, permission);
-							}
-						}
-					}
-				} else if (string.startsWith("-")) {
+		removeConfigDisabledPermissions(player);
+		for (String string : ServerGroup.getPlayerPermissions(player)) {
+			if (string.endsWith("*")) {
+				string = string.substring(0, string.length() - 2);
+				boolean addPermission = true;
+				if (string.startsWith("-")) {
+					addPermission = false;
 					string = string.substring(1);
-					if (player.hasPermission(string)) {
-						removePermission(player, string);
-					}
-				} else {
-					addPermission(player, string);
 				}
+				addPermission(player, string + ".*");
+				for (Permission permission : Bukkit.getServer().getPluginManager().getPermissions()) {
+					if (permission.getName().startsWith(string)) {
+						if (addPermission) {
+							addPermission(player, permission.getName());
+						} else if (player.hasPermission(permission.getName())) {
+							removePermission(player, permission.getName());
+						}
+					}
+				}
+				for (String permission : getVanillaPermissions()) {
+					if (permission.startsWith(string)) {
+						if (addPermission) {
+							addPermission(player, permission);
+						} else if (player.hasPermission(permission)) {
+							removePermission(player, permission);
+						}
+					}
+				}
+			} else if (string.startsWith("-")) {
+				string = string.substring(1);
+				if (player.hasPermission(string)) {
+					removePermission(player, string);
+				}
+			} else {
+				addPermission(player, string);
 			}
-		} else {
-			removeConfigDisabledPermissions(player);
 		}
 		reloadPlayerPermissions(player);
 	}
@@ -105,13 +101,8 @@ public class PermissionUtil implements Listener {
 	}
 
 	private static void reloadPlayerPermissions(Player player) {
-		if (player.isOp()) {
-			player.setOp(false);
-			player.setOp(true);
-		} else {
-			player.setOp(true);
-			player.setOp(false);
-		}
+		player.setOp(!player.isOp());
+		player.setOp(!player.isOp());
 	}
 
 	private static ArrayList<String> getVanillaPermissions() {

@@ -54,7 +54,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	}
 	
 	private static void show(Player player) {
-		TeamUtil.addRoleToPlayer(player);
+		TeamUtil.addGroupToPlayer(player);
 		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 		}

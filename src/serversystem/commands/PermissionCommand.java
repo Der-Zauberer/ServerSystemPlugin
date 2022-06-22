@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.PermissionUtil;
+import serversystem.utilities.ServerGroup;
 import serversystem.utilities.TeamUtil;
 
 public class PermissionCommand implements CommandExecutor, TabCompleter {
@@ -25,14 +26,14 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 		} else if (Bukkit.getPlayer(args[0]) == null && Config.getPlayerGroup(args[0]) == null) {
 			ChatUtil.sendNotExistErrorMessage(sender, "player", args[0]);
-		} else if (!Config.getGroups().contains(args[1])) {
+		} else if (ServerGroup.getGroup(args[1]) == null) {
 			ChatUtil.sendNotExistErrorMessage(sender, "group", args[1]);
 		} else {
 			if (Bukkit.getPlayer(args[0]) != null) {
 				final Player player = Bukkit.getPlayer(args[0]);
 				Config.setPlayerGroup(player, args[1]);
 				PermissionUtil.loadPlayerPermissions(player);
-				TeamUtil.addRoleToPlayer(player);
+				TeamUtil.addGroupToPlayer(player);
 				ChatUtil.sendMessage(sender, "Moved the player " + player.getName() + " in group " + args[1] + "!");
 			} else {
 				Config.setPlayerGroup(args[0], args[1]);
@@ -46,8 +47,13 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		List<String> commands = new ArrayList<>();
 		if (sender.hasPermission("serversystem.command.permission")) {
-			if (args.length == 1) commands = Config.getPlayers();
-			else if (args.length == 2) commands = Config.getGroups();
+			if (args.length == 1) {
+				commands = Config.getPlayers();
+			} else if (args.length == 2) {
+				for (ServerGroup group : ServerGroup.getGroups()) {
+					commands.add(group.getName());
+				}
+			}
 		}
 		commands = ChatUtil.cutArguments(args, commands);
 		return commands;

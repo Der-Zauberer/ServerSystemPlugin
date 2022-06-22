@@ -10,7 +10,7 @@ import serversystem.commands.EnderchestCommand;
 import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
-import serversystem.commands.PermissionReloadComnmand;
+import serversystem.commands.PermissionReloadCommand;
 import serversystem.commands.SpeedCommand;
 import serversystem.commands.VanishCommand;
 import serversystem.commands.WarpCommand;
@@ -54,34 +54,29 @@ public class ServerSystem extends JavaPlugin {
 			}
 		}
 		WorldGroup.autoCreateWorldGroups();
-		TeamUtil.createTeams();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (WorldGroup.isEnabled() && WorldGroup.getWorldGroup(player) == null) WorldGroup.getWorldGroup(player.getWorld()).join(player);
 			for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
 				player.showPlayer(this, everyPlayer);
 			}
-			TeamUtil.addRoleToPlayer(player);
-			if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) {
-				player.teleport(Config.getLobbyWorld().getSpawnLocation());
-			}
+			if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) player.teleport(Config.getLobbyWorld().getSpawnLocation());
 		}
 		WorldGroup.autoRemoveWorldGroups();
 		SaveConfig.autoRemoveWorldGroups();
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			PermissionUtil.loadPlayerPermissions(player);
+			TeamUtil.addGroupToPlayer(player);
+			ChatUtil.sendServerTitle(player);
+			ChatUtil.sendServerTablistTitle(player);
+		}
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, () -> WorldGroup.autoSavePlayerStats(), 1L, (long) 120 * 20);
-		Bukkit.getScheduler().runTaskLater(this, () -> {
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				PermissionUtil.loadPlayerPermissions(player);
-				TeamUtil.addRoleToPlayer(player);
-				ChatUtil.sendServerTitle(player);
-				ChatUtil.sendServerTablistTitle(player);
-			}
-		}, 40);
 	}
 
 	@Override
 	public void onDisable() {
 		WorldGroup.autoSavePlayerStats();
 		TeamUtil.resetTeams();
+		Bukkit.getOnlinePlayers().forEach(player -> PermissionUtil.resetPlayerPermissions(player));
 	}
 
 	private static void registerEvents() {
@@ -112,7 +107,7 @@ public class ServerSystem extends JavaPlugin {
 		instance.getCommand("inventory").setExecutor(new InventoryCommand());
 		instance.getCommand("lobby").setExecutor(new LobbyCommand());
 		instance.getCommand("permission").setExecutor(new PermissionCommand());
-		instance.getCommand("permissionreload").setExecutor(new PermissionReloadComnmand());
+		instance.getCommand("permissionreload").setExecutor(new PermissionReloadCommand());
 		instance.getCommand("speed").setExecutor(new SpeedCommand());
 		instance.getCommand("vanish").setExecutor(new VanishCommand());
 		instance.getCommand("warp").setExecutor(new WarpCommand());

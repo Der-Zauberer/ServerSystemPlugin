@@ -49,7 +49,7 @@ public class WorldGroup {
 			if (!VanishCommand.isVanished(everyPlayer)) player.showPlayer(ServerSystem.getInstance(), everyPlayer);
 		}
 		SaveConfig.loadPlayerProfile(player, this);
-		TeamUtil.addRoleToPlayer(player);
+		TeamUtil.addGroupToPlayer(player);
 	}
 
 	public void quit(Player player) {
