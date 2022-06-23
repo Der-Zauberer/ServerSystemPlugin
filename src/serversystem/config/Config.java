@@ -80,7 +80,7 @@ public class Config {
 	}
 	
 	public static World getLobbyWorld() {
-		if(Bukkit.getWorld(config.getString("lobby_world")) != null) return Bukkit.getWorld(config.getString("lobby_world"));
+		if (Bukkit.getWorld(config.getString("lobby_world")) != null) return Bukkit.getWorld(config.getString("lobby_world"));
 		return null;
 	}
 	
@@ -142,7 +142,7 @@ public class Config {
 	
 	public static void saveGroup(ServerGroup group) {
 		final String path = "groups." + group.getName() + ".";
-		config.set(path + "id", group.getId());
+		config.set(path + "priority", group.getPriority());
 		config.set(path + "color", group.getColor().name().toLowerCase());
 		config.set(path + "prefix", group.getPrefix() != null ? group.getPrefix() : "");
 		if (group.hasParent()) config.set(path + "parent", group.getParent().getName());
@@ -153,12 +153,12 @@ public class Config {
 	
 	public static ServerGroup loadGroup(String group) {
 		final String path = "groups." + group + ".";
-		final String id = config.getString(path + "id");
-		if (id != null) {
+		if (config.get("groups." + group) != null) {
+			final int priority = config.getInt(path + "priority");
 			final ChatColor color = ChatUtil.parseColor(config.getString(path + "color"));
 			final String prefix = config.getString(path + "prefix");
 			final List<String> permissions = config.getStringList(path + "permissions");
-			final ServerGroup serverGroup = new ServerGroup(id, group, color, prefix, permissions != null ? permissions : new ArrayList<>(), false);
+			final ServerGroup serverGroup = new ServerGroup(group, priority, color, prefix, permissions != null ? permissions : new ArrayList<>(), false);
 			return serverGroup;
 		}
 		return null;
@@ -302,9 +302,7 @@ public class Config {
 	
 	public static boolean isPlayerExisting(String player) {
 		for (String key : getSection("players", false)) {
-			if (config.getString("players." + key + ".name").equals(player)) {
-				return true;
-			}
+			if (config.getString("players." + key + ".name").equals(player)) return true;
 		}
 		return false;
 	}

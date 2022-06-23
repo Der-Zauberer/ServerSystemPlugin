@@ -3,39 +3,40 @@ package serversystem.utilities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 import serversystem.config.Config;
 
 public class ServerGroup {
 	
-	private final String id;
 	private final String name;
+	private int priority;
 	private ChatColor color;
 	private String prefix;
 	private ServerGroup parent;
+	private Team team;
 	private final List<String> permissions;
 	
 	private static List<ServerGroup> groups = Config.loadGroups();
 	
-	public ServerGroup(String id, String name) {
-		this.id = id;
+	public ServerGroup(String name) {
 		this.name = name;
+		this.priority = 99;
 		this.color = ChatColor.WHITE;
 		this.prefix = "";
 		this.permissions = new ArrayList<>();
 		update();
 	}
 	
-	public ServerGroup(String id, String name, ChatColor color, String prefix, List<String> permissions) {
-		this(id, name, color, prefix, permissions, true);
+	public ServerGroup(String name, int priority, ChatColor color, String prefix, List<String> permissions) {
+		this(name, priority, color, prefix, permissions, true);
 	}
 	
-	public ServerGroup(String id, String name, ChatColor color, String prefix, List<String> permissions, boolean update) {
-		this.id = id;
+	public ServerGroup(String name, int priority, ChatColor color, String prefix, List<String> permissions, boolean update) {
 		this.name = name;
+		this.priority = priority > 99 ? 99 : priority;
 		this.color = color;
 		this.prefix = prefix != null ? prefix : "";
 		this.permissions = permissions;
@@ -43,27 +44,34 @@ public class ServerGroup {
 	}
 	
 	public void update() {
-		if (TeamUtil.getTeam(id) != null) {
-			final Set<String> entries = TeamUtil.getTeam(id).getEntries();
-			TeamUtil.removeTeam(id);
-			TeamUtil.createTeam(id, prefix, color);
+		String teamName = Integer.toString(priority);
+		if (teamName.length() == 1) teamName = "0" + teamName;
+		teamName += name;
+		if (team != null) {
+			final Set<String> entries = team.getEntries();
+			TeamUtil.removeTeam(team);
+			team = TeamUtil.createTeam(teamName, prefix, color);
 			for (String entry : entries) {
-				TeamUtil.getTeam(id).addEntry(entry);
+				team.addEntry(entry);
 				final Player player = Bukkit.getPlayer(entry);
 				if (player != null) PermissionUtil.loadPlayerPermissions(player);
 			}
 		} else {
-			TeamUtil.createTeam(id, prefix, color);
+			team = TeamUtil.createTeam(teamName, prefix, color);
 		}
 		Config.saveGroup(this);
 	}
 	
-	public String getId() {
-		return id;
-	}
-	
 	public String getName() {
 		return name;
+	}
+	
+	public void setPriority(int priority) {
+		this.priority = priority > 99 ? 99 : priority;
+	}
+	
+	public int getPriority() {
+		return priority;
 	}
 	
 	public void setColor(ChatColor color) {
@@ -93,6 +101,11 @@ public class ServerGroup {
 	
 	public boolean hasParent() {
 		return parent != null;
+	}
+	
+	public Team getTeam() {
+		if (TeamUtil.getTeam(team.getName()) != null) return team;
+		else return null;
 	}
 	
 	public void addPermission(String permission) {

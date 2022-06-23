@@ -54,7 +54,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 				} else {
 					ServerWarp newWarp = new ServerWarp(args[0], ((Player)sender).getLocation());
 					ServerWarp.addWarp(newWarp);
-					ChatUtil.sendMessage(sender, "The warp " + newWarp.getName() + " has been added!");				
+					ChatUtil.sendMessage(sender, "The warp " + newWarp.getName() + " has been added!");		
 				}
 			} else if (option == Option.REMOVE) {
 				if (args.length < 3) {

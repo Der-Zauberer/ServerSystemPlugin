@@ -36,11 +36,17 @@ public class TeamUtil {
 		teams.clear();
 	}
 	
-	public static void createTeam(String id, String prefix, ChatColor color) {
+	public static Team createTeam(String id, String prefix, ChatColor color) {
 		Team team = getMainScoreboard().registerNewTeam(id);
 		if (prefix != null && !prefix.isEmpty()) team.setPrefix(prefix + " ");
 		team.setColor(color);
 		teams.add(id);
+		return team;
+	}
+	
+	public static void removeTeam(Team team) {
+		team.unregister();
+		teams.remove(team.getName());
 	}
 	
 	public static void removeTeam(String team) {
@@ -52,12 +58,20 @@ public class TeamUtil {
 		getMainScoreboard().getTeam(team).unregister();
 	}
 	
+	public static void addPlayerToTeam(Team team, String player) {
+		team.addEntry(player);
+	}
+	
 	public static void addPlayerToTeam(String team, String player) {
 		getMainScoreboard().getTeam(team).addEntry(player);
 	}
 	
 	public static void removePlayerFromTeam(String team, String player) {
 		getMainScoreboard().getTeam(team).removeEntry(player);
+	}
+	
+	public static void removePlayerFromTeam(Team team, String player) {
+		team.removeEntry(player);
 	}
 	
 	public static void removePlayerFromTeam(Player player) {
@@ -79,7 +93,7 @@ public class TeamUtil {
 			addPlayerToTeam(TEAMVANISH, player.getName());
 		} else {
 			ServerGroup group = ServerGroup.getGroup(Config.getPlayerGroup(player));
-			if (group != null) addPlayerToTeam(group.getId(), player.getName());
+			if (group != null && group.getTeam() != null) addPlayerToTeam(group.getTeam(), player.getName());
 			else removePlayerFromTeam(player);
 		}
 	}
