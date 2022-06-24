@@ -44,7 +44,7 @@ public class ServerSystem extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		setInstance(this);
+		instance = this;
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
@@ -93,11 +93,11 @@ public class ServerSystem extends JavaPlugin {
 		
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), instance);
 		
-		Bukkit.getPluginManager().registerEvents(ChatUtil.getInstance(), instance);
-		Bukkit.getPluginManager().registerEvents(ExtendedItemStack.getInstance(), instance);
-		Bukkit.getPluginManager().registerEvents(PermissionUtil.getInstance(), instance);
-		Bukkit.getPluginManager().registerEvents(PlayerInventory.getInstance(), instance);
-		Bukkit.getPluginManager().registerEvents(ServerSign.getInstance(), instance);
+		Bukkit.getPluginManager().registerEvents(ChatUtil.getListener(), instance);
+		Bukkit.getPluginManager().registerEvents(ExtendedItemStack.getListener(), instance);
+		Bukkit.getPluginManager().registerEvents(PermissionUtil.getListener(), instance);
+		Bukkit.getPluginManager().registerEvents(PlayerInventory.getListener(), instance);
+		Bukkit.getPluginManager().registerEvents(ServerSign.getListener(), instance);
 	}
 
 	private static void registerCommands() {
@@ -117,10 +117,6 @@ public class ServerSystem extends JavaPlugin {
 	private static void registerWorldSigns() {
 		ServerSign.registerServerSign(new WorldSign());
 		ServerSign.registerServerSign(new WarpSign());
-	}
-
-	public static void setInstance(ServerSystem instance) {
-		ServerSystem.instance = instance;
 	}
 	
 	public static ServerSystem getInstance() {

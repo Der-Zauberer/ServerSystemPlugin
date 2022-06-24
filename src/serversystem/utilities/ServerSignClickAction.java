@@ -1,4 +1,4 @@
-package serversystem.actions;
+package serversystem.utilities;
 
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;

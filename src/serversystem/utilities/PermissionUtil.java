@@ -18,7 +18,7 @@ import serversystem.main.ServerSystem;
 
 public class PermissionUtil implements Listener {
 	
-	private static final PermissionUtil instance = new PermissionUtil();
+	private static final ListenerClass listener = new ListenerClass();
 	private static final HashMap<Player, PermissionAttachment> attachments = new HashMap<>();
 
 	private PermissionUtil() {}
@@ -169,23 +169,27 @@ public class PermissionUtil implements Listener {
 		return (material == Material.COMMAND_BLOCK || material == Material.COMMAND_BLOCK_MINECART) && !player.hasPermission("serversystem.tools.commandblock");
 	}
 	
-	public static PermissionUtil getInstance() {
-		return instance;
+	public static ListenerClass getListener() {
+		return listener;
 	}
 
-	@EventHandler
-	public static void onBlockPlace(BlockPlaceEvent event) {
-		event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
-	}
+	private static class ListenerClass implements Listener {
+		
+		@EventHandler
+		public static void onBlockPlace(BlockPlaceEvent event) {
+			event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
+		}
 
-	@EventHandler
-	public static void onBlockBreak(BlockBreakEvent event) {
-		event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
-	}
+		@EventHandler
+		public static void onBlockBreak(BlockBreakEvent event) {
+			event.setCancelled(isActionForbidden(event.getBlock().getType(), event.getPlayer()));
+		}
 
-	@EventHandler
-	public static void onPlayerInteract(PlayerInteractEvent event) {
-		if (event.getAction() == Action.RIGHT_CLICK_BLOCK && isActionForbidden(event.getClickedBlock().getType(), event.getPlayer())) event.getPlayer().closeInventory();
+		@EventHandler
+		public static void onPlayerInteract(PlayerInteractEvent event) {
+			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && isActionForbidden(event.getClickedBlock().getType(), event.getPlayer())) event.getPlayer().closeInventory();
+		}
+		
 	}
 
 }

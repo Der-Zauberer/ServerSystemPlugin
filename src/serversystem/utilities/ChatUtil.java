@@ -25,7 +25,7 @@ public class ChatUtil implements Listener {
 	public static final String NOT_ENOUGHT_ARGUMENTS = "Not enough arguments!";
 	public static final String TO_MANY_ARGUMENTS = "To many arguments!";
 	
-	private static final ChatUtil instance = new ChatUtil();
+	private static final ListenerClass listener = new ListenerClass();
 	
 	private static final ChatColor messageColor = Config.getMessageColor();
 	private static final ChatColor errorColor = Config.getErrorMessageColor();
@@ -173,14 +173,17 @@ public class ChatUtil implements Listener {
 		}
 	}
 	
-	public static ChatUtil getInstance() {
-		return instance;
+	public static ListenerClass getListener() {
+		return listener;
 	}
 	
-	@EventHandler
-	public static void onChat(AsyncPlayerChatEvent event) {
-		event.setCancelled(true);
-		sendChatMessage(event.getPlayer(), event.getMessage());
+	private static class ListenerClass implements Listener {
+		
+		@EventHandler
+		public static void onChat(AsyncPlayerChatEvent event) {
+			event.setCancelled(true);
+			sendChatMessage(event.getPlayer(), event.getMessage());
+		}
+		
 	}
-
 }
