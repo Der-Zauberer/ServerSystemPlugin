@@ -1,6 +1,7 @@
 package serversystem.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -13,9 +14,10 @@ import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.WorldGroup;
 
-public class WorldCommand implements CommandExecutor, TabCompleter{
+public class WorldCommand implements CommandExecutor, TabCompleter, CommandAssistant{
 	
 	private enum Option {TELEPORT, ADD, REMOVE, EDIT}
 	
@@ -118,28 +120,24 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		List<String> commands = new ArrayList<>();
-		if (args.length == 1) {
-			for (World world : Bukkit.getWorlds()) commands.add(world.getName());
-		} else if(sender.hasPermission("serversystem.command.world.edit")) {
-			if (args.length == 2) {
-				for (int i = 0; i < Option.values().length; i++) commands.add(Option.values()[i].toString().toLowerCase());
-			} else if (args.length == 3 && args[1].equals("teleport")) {
-				commands = ChatUtil.getReachableChatPlayers(sender);
-			} else if (args.length == 3 && args[1].equals("edit")) {
-				for (int i = 0; i < WorldOption.values().length; i++) commands.add(WorldOption.values()[i].toString().toLowerCase());
-				commands.add("world_group");
-				commands.add("gamemode");
-				commands.add("permission");
-			} else if ((args.length == 4 && args[1].equals("edit")) && !args[2].equals("gamemode") && !args[2].equals("permission")) {
-				commands.add("true");
-				commands.add("false");
-			} else if ((args.length == 4 && args[1].equals("edit")) && args[2].equals("gamemode")) {
-				for (int i = 0; i < GameMode.values().length; i++) commands.add(GameMode.values()[i].toString().toLowerCase());
+		final List<String> commands = new ArrayList<>();
+		if (getLayer(1, args)) {
+			commands.addAll(getList(Bukkit.getWorlds(), world -> world.getName()));
+		} else if (sender.hasPermission("serversystem.command.world.edit")) {
+			if (getLayer(2, args)) {
+				commands.addAll(getEnumList(Option.values()));
+			} else if (getLayer(3, args) && args[1].equals("teleport")) {
+				commands.addAll(getPlayerList(sender));
+			} else if (getLayer(3, args) && args[1].equals("edit")) {
+				commands.addAll(getEnumList(WorldOption.values()));
+				commands.addAll(Arrays.asList("world_group", "gamemode", "permission"));
+			} else if ((getLayer(4, args) && args[1].equals("edit")) && !args[2].equals("gamemode") && !args[2].equals("permission")) {
+				commands.addAll(Arrays.asList("true", "false"));
+			} else if ((getLayer(4, args) && args[1].equals("edit")) && args[2].equals("gamemode")) {
+				commands.addAll(getEnumList(GameMode.values()));
 			}
 		}
-		commands = ChatUtil.cutArguments(args, commands);
-		return commands;
+		return removeWrong(commands, args);
 	}
 	
 }

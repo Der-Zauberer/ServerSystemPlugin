@@ -10,11 +10,12 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.PermissionUtil;
 import serversystem.utilities.ServerGroup;
 import serversystem.utilities.TeamUtil;
 
-public class GroupCommand implements CommandExecutor, TabCompleter {
+public class GroupCommand implements CommandExecutor, TabCompleter, CommandAssistant {
 	
 	private enum Option {ADD, REMOVE, PLAYER, EDIT}
 	private enum EditOption {TABLIST_PRIORITY, COLOR, PREFIX, PARENT, PERMISSION}

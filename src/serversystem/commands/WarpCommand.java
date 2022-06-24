@@ -1,6 +1,7 @@
 package serversystem.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,9 +12,10 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.menus.WarpListMenu;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.ServerWarp;
 
-public class WarpCommand implements CommandExecutor, TabCompleter {
+public class WarpCommand implements CommandExecutor, TabCompleter, CommandAssistant {
 	
 	private enum Option {TELEPORT, ADD, REMOVE, EDIT}
 
@@ -107,29 +109,23 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		List<String> commands = new ArrayList<>();
-		if (args.length == 1) {
-			for (ServerWarp warp : sender instanceof Player ? ServerWarp.getWarps((Player) sender) : ServerWarp.getWarps()) {
-				commands.add(warp.getName());
-			}
+		final List<String> commands = new ArrayList<>();
+		if (getLayer(1, args)) {
+			commands.addAll(getList(sender instanceof Player ? ServerWarp.getWarps((Player) sender) : ServerWarp.getWarps(), warp -> warp.getName()));
 		} else if (sender.hasPermission("serversystem.command.warp.edit")) {
-			if (args.length == 2) {
-				for (int i = 0; i < Option.values().length; i++) commands.add(Option.values()[i].toString().toLowerCase());
-			} else if (args.length == 3 && args[1].equals("teleport")) {
-				commands = ChatUtil.getReachableChatPlayers(sender);
-			} else if (args.length == 3 && args[1].equals("edit")) {
-				commands.add("material");
-				commands.add("global");
-				commands.add("permission");
-			} else if ((args.length == 4 && args[1].equals("edit")) && args[2].equals("global")) {
-				commands.add("true");
-				commands.add("false");
-			} else if ((args.length == 4 && args[1].equals("edit")) && args[2].equals("material")) {
-				for (Material material : Material.values()) commands.add("minecraft:" + material.toString().toLowerCase());
+			if (getLayer(2, args)) {
+				commands.addAll(getEnumList(Option.values()));
+			} else if (getLayer(3, args) && args[1].equals("teleport")) {
+				commands.addAll(getPlayerList(sender));
+			} else if (getLayer(3, args) && args[1].equals("edit")) {
+				commands.addAll(Arrays.asList("material", "global", "permission"));
+			} else if ((getLayer(4, args) && args[1].equals("edit")) && args[2].equals("global")) {
+				commands.addAll(Arrays.asList("true", "false"));
+			} else if ((getLayer(4, args) && args[1].equals("edit")) && args[2].equals("material")) {
+				commands.addAll(getEnumList(Material.values()));
 			}
 		}
-		commands = ChatUtil.cutArguments(args, commands);
-		return commands;
+		return removeWrong(commands, args);
 	}
 
 }

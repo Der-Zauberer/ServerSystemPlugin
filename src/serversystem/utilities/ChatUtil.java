@@ -147,27 +147,6 @@ public class ChatUtil implements Listener {
 		return players;
 	}
 	
-	public static List<String> getReachableChatPlayers(CommandSender sender) {
-		final List<String> players = new ArrayList<>();
-		for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
-			if (!(sender instanceof Player) || sender == everyPlayer || !VanishCommand.isVanished(everyPlayer)) players.add(everyPlayer.getName());
-		}
-		return players;
-	}
-	
-	public static List<String> cutArguments(String args[], List<String> commands) {
-		final String command = args[args.length - 1];
-		final List<String> output = new ArrayList<>();
-		if (!command.isEmpty() && !command.equals("")) {
-			for (String string : commands) {
-				if (string.startsWith(command)) output.add(string);
-			}
-			return output;
-		} else {
-			return commands;
-		}
-	}
-	
 	public static <T extends Enum<T>> T getEnumValue(T t[], String string) {
 		for (T value : t) {
 			if (value.toString().equalsIgnoreCase(string)) return value;

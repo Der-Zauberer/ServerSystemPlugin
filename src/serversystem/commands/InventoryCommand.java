@@ -9,8 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.CommandAssistant;
 
-public class InventoryCommand implements CommandExecutor, TabCompleter {
+public class InventoryCommand implements CommandExecutor, TabCompleter, CommandAssistant {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
@@ -23,8 +24,8 @@ public class InventoryCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		if (args.length == 1) return ChatUtil.cutArguments(args, ChatUtil.getReachableChatPlayers(sender));
-		else return new ArrayList<>();
+		if (getLayer(1, args)) return removeWrong(getPlayerList(sender), args);
+		return new ArrayList<>();
 	}
 
 }

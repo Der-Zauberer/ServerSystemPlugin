@@ -10,11 +10,12 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.PermissionUtil;
 import serversystem.utilities.ServerGroup;
 import serversystem.utilities.TeamUtil;
 
-public class PermissionCommand implements CommandExecutor, TabCompleter {
+public class PermissionCommand implements CommandExecutor, TabCompleter, CommandAssistant {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -45,18 +46,15 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		List<String> commands = new ArrayList<>();
+		final List<String> commands = new ArrayList<>();
 		if (sender.hasPermission("serversystem.command.permission")) {
-			if (args.length == 1) {
-				commands = Config.getPlayers();
-			} else if (args.length == 2) {
-				for (ServerGroup group : ServerGroup.getGroups()) {
-					commands.add(group.getName());
-				}
+			if (getLayer(1, args)) {
+				commands.addAll(Config.getPlayers());
+			} else if (getLayer(2, args)) {
+				commands.addAll(getList(ServerGroup.getGroups(), group -> group.getName()));
 			}
 		}
-		commands = ChatUtil.cutArguments(args, commands);
-		return commands;
+		return removeWrong(commands, args);
 	}
 
 }
