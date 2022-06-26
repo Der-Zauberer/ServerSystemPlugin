@@ -34,7 +34,7 @@ public class ChatUtil implements Listener {
 	private static final ListenerClass listener = new ListenerClass();
 	
 	private static final ChatColor messageColor = Config.getMessageColor();
-	private static final ChatColor errorColor = Config.getErrorMessageColor();
+	private static final ChatColor errorColor = Config.getErrorColor();
 	private static final String prefix = Config.getMessagePrefix();
 	
 	public static enum TitleType{TITLE, SUBTITLE, ACTIONBAR}
@@ -171,6 +171,40 @@ public class ChatUtil implements Listener {
 		} else {
 			sendErrorMessage(sender, TO_MANY_ARGUMENTS);
 		}
+	}
+	
+	public static boolean processListInput(CommandSender sender, String args[], int offset, String option, List<String> list) {
+		if (args.length == offset || (args.length == offset + 1 && !args[offset].equals("list"))) {
+			sendErrorMessage(sender, NOT_ENOUGHT_ARGUMENTS);
+		} else if (args.length == offset + 2 || (args.length == offset + 1 && args[offset].equals("list"))) {
+			if (args[offset].equals("list")) {
+				ChatUtil.sendMessage(sender, "The list " + option + " has the following entries:");
+				for (int i = 0; i < 30 && i < list.size() ; i++) ChatUtil.sendMessage(sender, "    " + list.get(i));
+				if (list.size() > 29) ChatUtil.sendMessage(sender, "    " + "And " + (list.size() - 29) + "more...");
+				return false;
+			}
+			String string = args[offset + 1];
+			if (args[offset].equals("add")) {
+				if (!list.contains(string)) {
+					list.add(string);
+					ChatUtil.sendMessage(sender, "Added " + string + " to the list " + option + "!");
+					return true;
+				} else {
+					ChatUtil.sendErrorMessage(sender, string + " is already in the list " + option + "!");
+				}
+			} else if (args[offset].equals("remove")) {
+				if (list.contains(string)) {
+					list.remove(string);
+					ChatUtil.sendMessage(sender, "Removed " + string + " from the list " + option + "!");
+					return true;
+				} else {
+					ChatUtil.sendErrorMessage(sender, string + " is not in the list " + option + "!");
+				}
+			}
+		} else {
+			sendErrorMessage(sender, TO_MANY_ARGUMENTS);
+		}
+		return false;
 	}
 	
 	public static <T> T getValue(T value, T standard) {

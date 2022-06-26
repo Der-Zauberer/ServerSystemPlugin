@@ -109,7 +109,7 @@ public class Config {
 		return ChatUtil.getValue(config.getString("message.color"), ChatColor.values(), ChatColor.WHITE);
 	}
 	
-	public static ChatColor getErrorMessageColor() {
+	public static ChatColor getErrorColor() {
 		return ChatUtil.getValue(config.getString("message.error_color"), ChatColor.values(), ChatColor.WHITE);
 	}
 	

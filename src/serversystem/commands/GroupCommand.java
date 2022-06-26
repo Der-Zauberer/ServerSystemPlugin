@@ -1,7 +1,10 @@
 package serversystem.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,6 +12,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
+
 import serversystem.config.Config;
 import serversystem.entities.ServerGroup;
 import serversystem.main.ServerSystem;
@@ -99,7 +104,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 					} else if (editOption == EditOption.PARENT) {
 						ChatUtil.<ServerGroup>processInput(sender, args, 3, "group", group.getName(), "parent", true, ServerSystem.getGroups()::get, input -> true, group::setParent, () -> group.getParent().getName());
 					} else if (editOption == EditOption.PERMISSION) {
-						
+						if (ChatUtil.processListInput(sender, args, 3, "permission", group.getPermissions())) group.update();
 					}
 					if (args.length == 4) group.update();
 				}
@@ -130,6 +135,17 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("parent")) {
 				commands.addAll(ChatUtil.getList(ServerSystem.getGroups()));
 				commands.add("remove");
+			} else if ((ChatUtil.getCommandLayer(4, args) || (ChatUtil.getCommandLayer(5, args)) && args[1].equals("edit")) && args[2].equals("permission")) {
+				ServerGroup group = ServerSystem.getGroups().get(args[0]);
+				if (ChatUtil.getCommandLayer(4, args)) {
+					commands.addAll(Arrays.asList("add", "remove", "list"));
+				} else if (ChatUtil.getCommandLayer(5, args) && args[3].equals("add") && group != null) {
+					List<String> permissions = Bukkit.getServer().getPluginManager().getPermissions().stream().map(Permission::getName).collect(Collectors.toList());
+					permissions.removeAll(group.getPermissions());
+					commands.addAll(permissions);
+				} else if (ChatUtil.getCommandLayer(5, args) && args[3].equals("remove") && group != null) {
+					commands.addAll(group.getPermissions());
+				}
 			}
 		}
 		return ChatUtil.removeWrong(commands, args);

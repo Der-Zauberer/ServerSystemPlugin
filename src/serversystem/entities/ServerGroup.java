@@ -105,22 +105,6 @@ public class ServerGroup extends ServerEntity {
 		else return null;
 	}
 	
-	public void addPermission(String permission) {
-		permissions.add(permission);
-	}
-	
-	public void addAllPermissions(List<String> permissions) {
-		this.permissions.addAll(permissions);
-	}
-	
-	public void removePermission(String permission) {
-		if (permissions.contains(permission)) permissions.remove(permission);
-	}
-	
-	public boolean containsPermission(String permission) {
-		return permissions.contains(permission);
-	}
-	
 	public List<String> getPermissions() {
 		List<String> permissions = new ArrayList<>();
 		permissions.addAll(this.permissions);
