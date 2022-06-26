@@ -27,9 +27,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.CommandAssistant;
 
-public class BuildCommand implements CommandExecutor, TabCompleter, CommandAssistant, Listener {
+public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	
 	private static final ArrayList<Player> buildPlayers = new ArrayList<>();
 	
@@ -87,7 +86,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter, CommandAssis
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		if (getLayer(1, args)) return removeWrong(getPlayerList(sender), args);
+		if (ChatUtil.getCommandLayer(1, args)) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
 		return new ArrayList<>();
 	}
 	

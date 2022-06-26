@@ -14,10 +14,9 @@ import org.bukkit.entity.Player;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.WorldGroup;
 
-public class WorldCommand implements CommandExecutor, TabCompleter, CommandAssistant{
+public class WorldCommand implements CommandExecutor, TabCompleter{
 	
 	private enum Option {TELEPORT, ADD, REMOVE, EDIT}
 	
@@ -32,7 +31,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter, CommandAssis
 			else WorldGroup.teleportPlayer((Player) sender, Bukkit.getWorld(args[0]));
 		} else {
 			final World world = Bukkit.getWorld(args[0]);
-			final Option option = ChatUtil.getEnumValue(Option.values(), args[1]);
+			final Option option = ChatUtil.getValue(args[1], Option.values());
 			if (sender instanceof Player && !sender.hasPermission("serversystem.command.world.edit")) {
 				ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 			} else if (option == null) {
@@ -67,7 +66,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter, CommandAssis
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 				}
 			} else if (option == Option.EDIT) {
-				WorldOption worldOption = ChatUtil.getEnumValue(WorldOption.values(), args.length > 2 ? args[2] : null);
+				WorldOption worldOption = ChatUtil.getValue(args.length > 2 ? args[2] : null, WorldOption.values());
 				if (args.length > 4) {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 				} else if (args.length < 3) {
@@ -103,12 +102,14 @@ public class WorldCommand implements CommandExecutor, TabCompleter, CommandAssis
 					} else if (args[2].equalsIgnoreCase("gamemode")) {
 						if (args.length == 3) {
 							ChatUtil.sendMessage(sender, "The gamemode for the world " + world.getName() + " is " + Config.getWorldGamemode(world).toString().toLowerCase() + "!");
-						} else if (ChatUtil.getEnumValue(GameMode.values(), args[3]) == null) {
-							ChatUtil.sendNotExistErrorMessage(sender, "gamemode", args[3]);
 						} else {
-							GameMode gameMode = ChatUtil.getEnumValue(GameMode.values(), args[3]);
-							Config.setWorldGamemode(world, gameMode);
-							ChatUtil.sendMessage(sender, "Set gamemode for the world " + world.getName() + " to " + gameMode.toString().toLowerCase() + "!");
+							final GameMode gameMode = ChatUtil.getValue(args[3], GameMode.values());
+							if (gameMode != null) {
+								Config.setWorldGamemode(world, gameMode);
+								ChatUtil.sendMessage(sender, "Set gamemode for the world " + world.getName() + " to " + gameMode.toString().toLowerCase() + "!");
+							} else {
+								ChatUtil.sendNotExistErrorMessage(sender, "gamemode", args[3]);
+							}
 						}
 					}
 				}
@@ -121,23 +122,23 @@ public class WorldCommand implements CommandExecutor, TabCompleter, CommandAssis
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		final List<String> commands = new ArrayList<>();
-		if (getLayer(1, args)) {
-			commands.addAll(getList(Bukkit.getWorlds(), world -> world.getName()));
+		if (ChatUtil.getCommandLayer(1, args)) {
+			commands.addAll(ChatUtil.getList(Bukkit.getWorlds(), world -> world.getName()));
 		} else if (sender.hasPermission("serversystem.command.world.edit")) {
-			if (getLayer(2, args)) {
-				commands.addAll(getEnumList(Option.values()));
-			} else if (getLayer(3, args) && args[1].equals("teleport")) {
-				commands.addAll(getPlayerList(sender));
-			} else if (getLayer(3, args) && args[1].equals("edit")) {
-				commands.addAll(getEnumList(WorldOption.values()));
+			if (ChatUtil.getCommandLayer(2, args)) {
+				commands.addAll(ChatUtil.getEnumList(Option.values()));
+			} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("teleport")) {
+				commands.addAll(ChatUtil.getPlayerList(sender));
+			} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("edit")) {
+				commands.addAll(ChatUtil.getEnumList(WorldOption.values()));
 				commands.addAll(Arrays.asList("world_group", "gamemode", "permission"));
-			} else if ((getLayer(4, args) && args[1].equals("edit")) && !args[2].equals("gamemode") && !args[2].equals("permission")) {
+			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && !args[2].equals("gamemode") && !args[2].equals("permission")) {
 				commands.addAll(Arrays.asList("true", "false"));
-			} else if ((getLayer(4, args) && args[1].equals("edit")) && args[2].equals("gamemode")) {
-				commands.addAll(getEnumList(GameMode.values()));
+			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("gamemode")) {
+				commands.addAll(ChatUtil.getEnumList(GameMode.values()));
 			}
 		}
-		return removeWrong(commands, args);
+		return ChatUtil.removeWrong(commands, args);
 	}
 	
 }

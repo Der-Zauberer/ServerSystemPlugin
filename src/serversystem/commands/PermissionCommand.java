@@ -9,13 +9,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.config.Config;
+import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.PermissionUtil;
-import serversystem.utilities.ServerGroup;
 import serversystem.utilities.TeamUtil;
 
-public class PermissionCommand implements CommandExecutor, TabCompleter, CommandAssistant {
+public class PermissionCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,7 +26,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter, Command
 			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 		} else if (Bukkit.getPlayer(args[0]) == null && Config.getPlayerGroup(args[0]) == null) {
 			ChatUtil.sendNotExistErrorMessage(sender, "player", args[0]);
-		} else if (ServerGroup.getGroup(args[1]) == null) {
+		} else if (!ServerSystem.getGroups().contains(args[1])) {
 			ChatUtil.sendNotExistErrorMessage(sender, "group", args[1]);
 		} else {
 			if (Bukkit.getPlayer(args[0]) != null) {
@@ -48,13 +47,13 @@ public class PermissionCommand implements CommandExecutor, TabCompleter, Command
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		final List<String> commands = new ArrayList<>();
 		if (sender.hasPermission("serversystem.command.permission")) {
-			if (getLayer(1, args)) {
+			if (ChatUtil.getCommandLayer(1, args)) {
 				commands.addAll(Config.getPlayers());
-			} else if (getLayer(2, args)) {
-				commands.addAll(getList(ServerGroup.getGroups(), group -> group.getName()));
+			} else if (ChatUtil.getCommandLayer(2, args)) {
+				commands.addAll(ChatUtil.getList(ServerSystem.getGroups()));
 			}
 		}
-		return removeWrong(commands, args);
+		return ChatUtil.removeWrong(commands, args);
 	}
 
 }

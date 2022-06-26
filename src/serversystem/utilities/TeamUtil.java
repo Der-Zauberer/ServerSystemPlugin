@@ -6,9 +6,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
 import serversystem.commands.VanishCommand;
-import serversystem.config.Config;
+import serversystem.entities.ServerGroup;
+import serversystem.main.ServerSystem;
 
 public class TeamUtil {
 	
@@ -23,6 +23,7 @@ public class TeamUtil {
 	}
 	
 	public static void createTeams() {
+		ServerSystem.loadGroups();
 		createTeam(TEAMVANISH, "[VANISH]", ChatColor.GRAY);
 		teams.add(TEAMVANISH);
 	}
@@ -37,41 +38,51 @@ public class TeamUtil {
 	}
 	
 	public static Team createTeam(String id, String prefix, ChatColor color) {
-		Team team = getMainScoreboard().registerNewTeam(id);
-		if (prefix != null && !prefix.isEmpty()) team.setPrefix(prefix + " ");
-		team.setColor(color);
-		teams.add(id);
+		Team team;
+		if ((team = getMainScoreboard().getTeam(id)) == null) {
+			team = getMainScoreboard().registerNewTeam(id);
+			if (prefix != null && !prefix.isEmpty()) team.setPrefix(prefix + " ");
+			team.setColor(color);
+			teams.add(id);
+		}
+		if (!teams.contains(team.getName())) teams.add(team.getName());
 		return team;
 	}
 	
 	public static void removeTeam(Team team) {
-		team.unregister();
-		teams.remove(team.getName());
+		if (teams.contains(team.getName())) teams.remove(team.getName());
+		try {team.unregister();} catch (IllegalStateException exception) {}
 	}
 	
-	public static void removeTeam(String team) {
-		getMainScoreboard().getTeam(team).unregister();
-		teams.remove(team);
+	public static void removeTeam(String name) {
+		Team team;
+		if ((team = getMainScoreboard().getTeam(name)) != null) {
+			if (teams.contains(name)) teams.remove(name);
+			team.unregister();
+		}
 	}
 	
-	private static void resetTeam(String team) {
-		getMainScoreboard().getTeam(team).unregister();
+	private static void resetTeam(String name) {
+		Team team;
+		if ((team = getMainScoreboard().getTeam(name)) != null) team.unregister();
 	}
 	
 	public static void addPlayerToTeam(Team team, String player) {
-		team.addEntry(player);
+		try {team.addEntry(player);} catch (IllegalStateException exception) {}
 	}
 	
 	public static void addPlayerToTeam(String team, String player) {
-		getMainScoreboard().getTeam(team).addEntry(player);
+		final Team teamObject = getMainScoreboard().getTeam(team);
+		if (teamObject != null) teamObject.addEntry(player);
 	}
 	
 	public static void removePlayerFromTeam(String team, String player) {
-		getMainScoreboard().getTeam(team).removeEntry(player);
+		final Team teamObject = getMainScoreboard().getTeam(team);
+		if (teamObject != null) teamObject.removeEntry(player);
 	}
 	
 	public static void removePlayerFromTeam(Team team, String player) {
-		team.removeEntry(player);
+		try {team.removeEntry(player);} catch (IllegalStateException exception) {}
 	}
 	
 	public static void removePlayerFromTeam(Player player) {
@@ -92,7 +103,7 @@ public class TeamUtil {
 		if (VanishCommand.isVanished(player)) {
 			addPlayerToTeam(TEAMVANISH, player.getName());
 		} else {
-			ServerGroup group = ServerGroup.getGroup(Config.getPlayerGroup(player));
+			ServerGroup group = ServerGroup.getGroupByPlayer(player);
 			if (group != null && group.getTeam() != null) addPlayerToTeam(group.getTeam(), player.getName());
 			else removePlayerFromTeam(player);
 		}

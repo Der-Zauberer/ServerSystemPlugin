@@ -12,10 +12,9 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.menus.WarpListMenu;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.CommandAssistant;
 import serversystem.utilities.ServerWarp;
 
-public class WarpCommand implements CommandExecutor, TabCompleter, CommandAssistant {
+public class WarpCommand implements CommandExecutor, TabCompleter {
 	
 	private enum Option {TELEPORT, ADD, REMOVE, EDIT}
 
@@ -31,7 +30,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter, CommandAssist
 			else ((Player) sender).teleport(ServerWarp.getWarp(args[0]).getLocation());
 		} else {
 			final ServerWarp warp = ServerWarp.getWarp(args[0]);
-			final Option option = ChatUtil.getEnumValue(Option.values(), args[1]);
+			final Option option = ChatUtil.getValue(args[1], Option.values());
 			if (sender instanceof Player && !sender.hasPermission("serversystem.command.warp.edit")) {
 				ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 			} else if (option == null) {
@@ -75,12 +74,15 @@ public class WarpCommand implements CommandExecutor, TabCompleter, CommandAssist
 				} else {
 					if (args[2].equalsIgnoreCase("material")) {
 						if (args.length == 3) {
-							ChatUtil.sendMessage(sender, "The material for the warp " + warp.getName() + " is " + warp.getMaterial().toString().toLowerCase() + "!");
-						} else if (ChatUtil.getEnumValue(Material.values(), args[3].replace("minecraft:", "")) == null) {
-							ChatUtil.sendNotExistErrorMessage(sender, "material", args[3]);
+							ChatUtil.sendMessage(sender, "The material for the warp " + warp.getName() + " is " + warp.getMaterial().toString().toLowerCase() + "!");							
 						} else {
-							warp.setMaterial(ChatUtil.getEnumValue(Material.values(), args[3].replace("minecraft:", "")));
-							ChatUtil.sendMessage(sender, "The material has been set to " + warp.getMaterial().toString().toLowerCase() + " for the warp " + warp.getName() + "!");
+							final Material material = ChatUtil.getValue(args[3].replace("minecraft:", ""), Material.values());
+							if (material != null) {
+								warp.setMaterial(material);
+								ChatUtil.sendMessage(sender, "The material has been set to " + warp.getMaterial().toString().toLowerCase() + " for the warp " + warp.getName() + "!");
+							} else {
+								ChatUtil.sendNotExistErrorMessage(sender, "material", args[3].replace("minecraft:", ""));
+							}
 						}
 					} else if (args[2].equalsIgnoreCase("global")) {
 						if (args.length == 3) {
@@ -110,22 +112,22 @@ public class WarpCommand implements CommandExecutor, TabCompleter, CommandAssist
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 		final List<String> commands = new ArrayList<>();
-		if (getLayer(1, args)) {
-			commands.addAll(getList(sender instanceof Player ? ServerWarp.getWarps((Player) sender) : ServerWarp.getWarps(), warp -> warp.getName()));
+		if (ChatUtil.getCommandLayer(1, args)) {
+			commands.addAll(ChatUtil.getList(sender instanceof Player ? ServerWarp.getWarps((Player) sender) : ServerWarp.getWarps(), warp -> warp.getName()));
 		} else if (sender.hasPermission("serversystem.command.warp.edit")) {
-			if (getLayer(2, args)) {
-				commands.addAll(getEnumList(Option.values()));
-			} else if (getLayer(3, args) && args[1].equals("teleport")) {
-				commands.addAll(getPlayerList(sender));
-			} else if (getLayer(3, args) && args[1].equals("edit")) {
+			if (ChatUtil.getCommandLayer(2, args)) {
+				commands.addAll(ChatUtil.getEnumList(Option.values()));
+			} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("teleport")) {
+				commands.addAll(ChatUtil.getPlayerList(sender));
+			} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("edit")) {
 				commands.addAll(Arrays.asList("material", "global", "permission"));
-			} else if ((getLayer(4, args) && args[1].equals("edit")) && args[2].equals("global")) {
+			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("global")) {
 				commands.addAll(Arrays.asList("true", "false"));
-			} else if ((getLayer(4, args) && args[1].equals("edit")) && args[2].equals("material")) {
-				commands.addAll(getEnumList(Material.values()));
+			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("material")) {
+				commands.addAll(ChatUtil.getEnumList(Material.values()));
 			}
 		}
-		return removeWrong(commands, args);
+		return ChatUtil.removeWrong(commands, args);
 	}
 
 }

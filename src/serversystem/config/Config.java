@@ -12,8 +12,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import serversystem.entities.ServerGroup;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.ServerGroup;
+import serversystem.utilities.ServerList;
 
 public class Config {
 	
@@ -92,7 +93,7 @@ public class Config {
 	public static String getTitle(TitleTypeOption type) {
 		final String text = config.getString(type.toString().toLowerCase().replace('_', '.') + ".text");
 		if (text != null) {
-			final ChatColor color = ChatUtil.parseColor(config.getString(type.toString().toLowerCase().replace('_', '.') + ".color"));
+			final ChatColor color = ChatUtil.getValue(config.getString(type.name().toLowerCase().replace('_', '.') + ".color"), ChatColor.values(), ChatColor.WHITE);
 			return color + text;
 		}
 		return null;
@@ -100,16 +101,16 @@ public class Config {
 	
 	public static String getMessagePrefix() {
 		final String prefix = config.getString("message.prefix");
-		final ChatColor color = ChatUtil.parseColor(config.getString("message.prefix_color"));
+		final ChatColor color = ChatUtil.getValue(config.getString("message.prefix_color"), ChatColor.values(), ChatColor.WHITE);
 		if (prefix != null && !prefix.isEmpty()) return color + prefix; else return color + "server";
 	}
 	
 	public static ChatColor getMessageColor() {
-		return ChatUtil.parseColor(config.getString("message.color"));
+		return ChatUtil.getValue(config.getString("message.color"), ChatColor.values(), ChatColor.WHITE);
 	}
 	
 	public static ChatColor getErrorMessageColor() {
-		return ChatUtil.parseColor(config.getString("message.error_color"));
+		return ChatUtil.getValue(config.getString("message.error_color"), ChatColor.values(), ChatColor.WHITE);
 	}
 	
 	public static List<String> getDisabledPermissions() {
@@ -154,18 +155,18 @@ public class Config {
 	public static ServerGroup loadGroup(String group) {
 		final String path = "groups." + group + ".";
 		if (config.get("groups." + group) != null) {
-			final int priority = config.getInt(path + "priority");
-			final ChatColor color = ChatUtil.parseColor(config.getString(path + "color"));
+			final int priority = ChatUtil.getValue(config.getInt(path + "priority"), 99, 0, 99);
+			final ChatColor color = ChatUtil.getValue(config.getString(path + "color"), ChatColor.values(), ChatColor.WHITE);
 			final String prefix = config.getString(path + "prefix");
-			final List<String> permissions = config.getStringList(path + "permissions");
-			final ServerGroup serverGroup = new ServerGroup(group, priority, color, prefix, permissions != null ? permissions : new ArrayList<>(), false);
+			final List<String> permissions = ChatUtil.getValue(config.getStringList(path + "permissions"), new ArrayList<>());
+			final ServerGroup serverGroup = new ServerGroup(group, priority, color, prefix, permissions, false);
 			return serverGroup;
 		}
 		return null;
 	}
 	
-	public static List<ServerGroup> loadGroups() {
-		final List<ServerGroup> groups = new ArrayList<>();
+	public static void loadGroups(ServerList<ServerGroup> groups) {
+		groups.clear();
 		final HashMap<ServerGroup, String> parents = new HashMap<>();
 		for (String groupName : Config.getSection("groups", false)) {
 			final ServerGroup group = Config.loadGroup(groupName);
@@ -178,15 +179,9 @@ public class Config {
 			}
 		}
 		for (ServerGroup serverGroup : parents.keySet()) {
-			for (ServerGroup parent : groups) {
-				if (parent.getName().equals(parents.get(serverGroup))) {
-					serverGroup.setParent(parent);
-					break;
-				}
-			}
+			groups.stream().filter(parent -> parent.getName().equals(parents.get(serverGroup))).findFirst().ifPresent(parent -> serverGroup.setParent(parent));
 		}
-		groups.forEach(group -> group.update());
-		return groups;
+		groups.forEach(ServerGroup::update);
 	}
 	
 	public static void addWorld(World world) {

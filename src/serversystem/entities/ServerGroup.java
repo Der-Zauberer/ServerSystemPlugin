@@ -1,4 +1,4 @@
-package serversystem.utilities;
+package serversystem.entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 import serversystem.config.Config;
+import serversystem.main.ServerSystem;
+import serversystem.utilities.PermissionUtil;
+import serversystem.utilities.ServerEntity;
+import serversystem.utilities.TeamUtil;
 
-public class ServerGroup {
+public class ServerGroup extends ServerEntity {
 	
-	private final String name;
 	private int priority;
 	private ChatColor color;
 	private String prefix;
@@ -19,10 +22,8 @@ public class ServerGroup {
 	private Team team;
 	private final List<String> permissions;
 	
-	private static List<ServerGroup> groups = Config.loadGroups();
-	
 	public ServerGroup(String name) {
-		this.name = name;
+		super(name);
 		this.priority = 99;
 		this.color = ChatColor.WHITE;
 		this.prefix = "";
@@ -35,7 +36,7 @@ public class ServerGroup {
 	}
 	
 	public ServerGroup(String name, int priority, ChatColor color, String prefix, List<String> permissions, boolean update) {
-		this.name = name;
+		super(name);
 		this.priority = priority > 99 ? 99 : priority;
 		this.color = color;
 		this.prefix = prefix != null ? prefix : "";
@@ -46,7 +47,7 @@ public class ServerGroup {
 	public void update() {
 		String teamName = Integer.toString(priority);
 		if (teamName.length() == 1) teamName = "0" + teamName;
-		teamName += name;
+		teamName += getName();
 		if (team != null) {
 			final Set<String> entries = team.getEntries();
 			TeamUtil.removeTeam(team);
@@ -60,10 +61,6 @@ public class ServerGroup {
 			team = TeamUtil.createTeam(teamName, prefix, color);
 		}
 		Config.saveGroup(this);
-	}
-	
-	public String getName() {
-		return name;
 	}
 	
 	public void setPriority(int priority) {
@@ -140,7 +137,7 @@ public class ServerGroup {
 	
 	public static List<String> getPlayerPermissions(Player player) {
 		List<String> permissions = new ArrayList<>();
-		final ServerGroup group = getGroup(player);
+		final ServerGroup group = getGroupByPlayer(player);
 		if (group != null) permissions.addAll(group.getSelfAndParentPermissions());
 		final List<String> playerPermissions = Config.getPlayerSpecificPermissions(player);
 		if (playerPermissions != null) permissions.addAll(playerPermissions);
@@ -150,7 +147,7 @@ public class ServerGroup {
 	public static void reloadAll() {
 		TeamUtil.resetTeams();
 		Config.reloadConfig();
-		groups = Config.loadGroups();
+		Config.loadGroups(ServerSystem.getGroups());
 		TeamUtil.createTeams();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			PermissionUtil.loadPlayerPermissions(player);
@@ -158,19 +155,8 @@ public class ServerGroup {
 		}
 	}
 	
-	public static ServerGroup getGroup(Player player) {
-		return getGroup(Config.getPlayerGroup(player));
-	}
-	
-	public static ServerGroup getGroup(String name) {
-		for (ServerGroup group : groups) {
-			if (group.getName().equals(name)) return group;
-		}
-		return null;
-	}
-	
-	public static List<ServerGroup> getGroups() {
-		return groups;
+	public static ServerGroup getGroupByPlayer(Player player) {
+		return ServerSystem.getGroups().get(Config.getPlayerGroup(player.getName()));
 	}
 
 }

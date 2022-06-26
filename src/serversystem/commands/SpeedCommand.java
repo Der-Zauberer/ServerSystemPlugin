@@ -9,9 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.CommandAssistant;
 
-public class SpeedCommand implements CommandExecutor, TabCompleter, CommandAssistant {
+public class SpeedCommand implements CommandExecutor, TabCompleter {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,7 +28,7 @@ public class SpeedCommand implements CommandExecutor, TabCompleter, CommandAssis
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		if (getLayer(1, args)) return removeWrong(getPlayerList(sender), args);
+		if (ChatUtil.getCommandLayer(1, args)) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
 		return new ArrayList<>();
 	}
 	

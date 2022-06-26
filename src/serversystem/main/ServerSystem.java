@@ -3,10 +3,13 @@ package serversystem.main;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import serversystem.commands.AdminCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.EnderchestCommand;
+import serversystem.commands.GroupCommand;
 import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
 import serversystem.commands.PermissionCommand;
@@ -16,8 +19,7 @@ import serversystem.commands.VanishCommand;
 import serversystem.commands.WarpCommand;
 import serversystem.commands.WorldCommand;
 import serversystem.config.Config;
-import serversystem.config.Config.ConfigOption;
-import serversystem.config.SaveConfig;
+import serversystem.entities.ServerGroup;
 import serversystem.events.CommandPreprocessListener;
 import serversystem.events.EntityDamageListener;
 import serversystem.events.ExplotionListener;
@@ -34,12 +36,14 @@ import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ExtendedItemStack;
 import serversystem.utilities.PermissionUtil;
 import serversystem.utilities.PlayerInventory;
+import serversystem.utilities.ServerList;
 import serversystem.utilities.ServerSign;
 import serversystem.utilities.TeamUtil;
 import serversystem.utilities.WorldGroup;
 
 public class ServerSystem extends JavaPlugin {
 
+	private static ServerList<ServerGroup> groups;
 	private static ServerSystem instance;
 
 	@Override
@@ -55,20 +59,10 @@ public class ServerSystem extends JavaPlugin {
 		}
 		WorldGroup.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (WorldGroup.isEnabled() && WorldGroup.getWorldGroup(player) == null) WorldGroup.getWorldGroup(player.getWorld()).join(player);
-			for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
-				player.showPlayer(this, everyPlayer);
-			}
-			if (Config.getConfigOption(ConfigOption.LOBBY) && Config.getLobbyWorld() != null) player.teleport(Config.getLobbyWorld().getSpawnLocation());
+			PlayerQuitListener.onPlayerQuit(new PlayerQuitEvent(player, ""));
+			PlayerJoinListener.onPlayerJoin(new PlayerJoinEvent(player, ""));
 		}
 		WorldGroup.autoRemoveWorldGroups();
-		SaveConfig.autoRemoveWorldGroups();
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			PermissionUtil.loadPlayerPermissions(player);
-			TeamUtil.addGroupToPlayer(player);
-			ChatUtil.sendServerTitle(player);
-			ChatUtil.sendServerTablistTitle(player);
-		}
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(instance, () -> WorldGroup.autoSavePlayerStats(), 1L, (long) 120 * 20);
 	}
 
@@ -104,6 +98,7 @@ public class ServerSystem extends JavaPlugin {
 		instance.getCommand("admin").setExecutor(new AdminCommand());
 		instance.getCommand("build").setExecutor(new BuildCommand());
 		instance.getCommand("enderchest").setExecutor(new EnderchestCommand());
+		instance.getCommand("group").setExecutor(new GroupCommand());
 		instance.getCommand("inventory").setExecutor(new InventoryCommand());
 		instance.getCommand("lobby").setExecutor(new LobbyCommand());
 		instance.getCommand("permission").setExecutor(new PermissionCommand());
@@ -121,6 +116,14 @@ public class ServerSystem extends JavaPlugin {
 	
 	public static ServerSystem getInstance() {
 		return instance;
+	}
+	
+	public static ServerList<ServerGroup> getGroups() {
+		return groups;
+	}
+	
+	public static void loadGroups() {
+		groups = new ServerList<>(Config::loadGroups);
 	}
 
 }

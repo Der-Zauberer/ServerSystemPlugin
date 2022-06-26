@@ -18,6 +18,9 @@ commands:
     description: Open the enderchest of a player
     usage: /<command> [<player>]
     permission: serversystem.command.enderchest
+  group:
+    description: Edit permission groups
+    usage: /<command> [<group>] [<action>] [<option>] [value]
   inventory:
     description: Open the inventory of a player
     usage: /<command> [<player>]
@@ -60,6 +63,9 @@ permissions:
   serversystem.command.enderchest:
     desciption: Open the enderchest of a player
     default: op
+  serversystem.command.group:
+    desciption: Edit permission groups
+    default: false
   serversystem.command.inventory:
     desciption: Open the inventory of a player
     default: op

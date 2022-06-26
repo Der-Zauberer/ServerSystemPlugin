@@ -1,10 +1,16 @@
 package serversystem.utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -147,30 +153,65 @@ public class ChatUtil implements Listener {
 		return players;
 	}
 	
-	public static <T extends Enum<T>> T getEnumValue(T t[], String string) {
-		for (T value : t) {
-			if (value.toString().equalsIgnoreCase(string)) return value;
+	public static <T> void processInput(CommandSender sender, String args[], int offset, String type, String name, String option, boolean removable, Function<String, T> parseObject, Function<T, Boolean> faildAction, Consumer<T> setter, Supplier<?> getter) {
+		if (args.length == offset) {
+			String value = getter.get() != null ? getter.get().toString() : "not set";
+			sendMessage(sender, "The " + option + " of the " + type + " " + name + " is " + value + "!");
+		} else if (args.length == offset + 1) {
+			T object = parseObject.apply(args[offset]);
+			if (removable && args[offset].equals("remove")) {
+				setter.accept(null);
+				sendMessage(sender, "The " + option + " of the " + type + " " + name + " has been removed!");
+			} else if (object != null && faildAction.apply(object)) {
+				setter.accept(object);
+				sendMessage(sender, "The " + option + " of the " + type + " " + name + " has been set to " + args[offset] + "!");
+			} else if (object == null) {
+				sendNotExistErrorMessage(sender, option, args[offset]);
+			}
+		} else {
+			sendErrorMessage(sender, TO_MANY_ARGUMENTS);
 		}
-		return null;
 	}
 	
-	public static ChatColor parseColor(String color) {
-		try {
-			color = color.toUpperCase();
-			return ChatColor.valueOf(color);
-		} catch (IllegalArgumentException exception) {
-			return ChatColor.WHITE;
-		}
+	public static <T> T getValue(T value, T standard) {
+		return Optional.ofNullable(value).orElse(standard);
 	}
 	
-	public static Material parseMaterial(String material) {
-		try {
-			if (material.startsWith("minecraft:")) material = material.substring(10);
-			material = material.toUpperCase();
-			return Material.valueOf(material);
-		} catch (IllegalArgumentException exception) {
-			return Material.BARRIER;
-		}
+	public static <T extends Comparable<T>> T getValue(T value, T standard, T min, T max) {
+		return Optional.ofNullable(value).filter(x -> x.compareTo(min) >= 0 && x.compareTo(max) <= 0).orElse(standard);
+	}
+	
+	public static <T extends Enum<T>> T getValue(String string, T t[], T standard) {
+		return Arrays.asList(t).stream().filter(constant -> constant.name().toLowerCase().equals(string)).findFirst().orElse(standard);
+	}
+	
+	public static <T extends Enum<T>> T getValue(String string, T t[]) {
+		return Arrays.asList(t).stream().filter(constant -> constant.name().toLowerCase().equals(string)).findFirst().orElse(null);
+	}
+	
+	public static boolean getCommandLayer(int layer, String args[]) {
+		return args.length == layer && (layer < 2 || !args[layer - 2].isEmpty());
+	}
+	
+	public static List<String> getPlayerList(CommandSender sender) {
+		return Bukkit.getOnlinePlayers().stream().filter(everyPlayer -> !(sender instanceof Player) || sender == everyPlayer || !VanishCommand.isVanished(everyPlayer)).map(player -> player.getName()).collect(Collectors.toList());
+	}
+	
+	public static <T extends Enum<?>> List<String> getEnumList(T t[]) {
+		return Arrays.stream(t).map(value -> value.name().toLowerCase()).collect(Collectors.toList());
+	}
+	
+	public static <T> List<String> getList(List<T> list, Function<T, String> map) {
+		return list.stream().map(map).collect(Collectors.toList());
+	}
+	
+	public static List<String> getList(ServerList<?> list) {
+		return list.stream().map(ServerEntity::getName).collect(Collectors.toList());
+	}
+	
+	public static List<String> removeWrong(List<String> list, String args[]) {
+		list.removeIf(commandString -> !commandString.startsWith(args[args.length - 1]));
+		return list;
 	}
 	
 	public static ListenerClass getListener() {
@@ -186,4 +227,5 @@ public class ChatUtil implements Listener {
 		}
 		
 	}
+
 }

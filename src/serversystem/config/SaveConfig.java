@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -64,7 +65,7 @@ public class SaveConfig {
 	public static ServerWarp getWarp(String name) {
 		try {
 			final ServerWarp warp = new ServerWarp(name, config.getLocation("warps." + name + ".location"));
-			warp.setMaterial(ChatUtil.parseMaterial(config.getString("warps." + name + ".material")));
+			warp.setMaterial(ChatUtil.getValue(config.getString("warps." + name + ".material"), Material.values(), Material.BARRIER));
 			warp.setGlobal(config.getBoolean("warps." + name + ".global"));
 			if (config.getString("warps." + name + ".permission") != null && !config.getString("warps." + name + ".permission").isEmpty()) {
 				warp.setPermission(config.getString("warps." + name + ".permission"));
