@@ -253,7 +253,7 @@ public class Config {
 		if (Config.getSection("groups", false) != null) Config.getSection("groups", false).stream().map(Config::loadGroup).filter(group -> group != null).forEach(group -> {
 			groupList.add(group);
 			String parent;
-			if (group.getParent() == null && (parent = config.getString("groups." + group.getName() + ".parent")) != null && !parent.isEmpty()) {
+			if (group.getParent() == null && (parent = config.getString("groups." + group.getName() + ".parent")) != null && !parent.isEmpty() && !group.getName().equals(parent)) {
 				parents.put(group, parent);
 			}		
 		});

@@ -86,8 +86,9 @@ public class ServerGroup extends ServerComponent {
 	}
 	
 	public void setParent(ServerGroup parent) {
-		this.parent = parent;
-	}
+		if (!parent.getName().equals(getName())) this.parent = parent;
+		else throw new IllegalArgumentException("The parent of the group can not be the group itself!");
+	} 
 	
 	public ServerGroup getParent() {
 		return parent;
