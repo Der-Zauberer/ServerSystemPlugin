@@ -1,4 +1,4 @@
-package serversystem.entities;
+package serversystem.utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 import serversystem.config.Config;
 import serversystem.main.ServerSystem;
-import serversystem.utilities.PermissionUtil;
-import serversystem.utilities.ServerEntity;
-import serversystem.utilities.TeamUtil;
 
 public class ServerGroup extends ServerEntity {
 	
@@ -28,22 +25,17 @@ public class ServerGroup extends ServerEntity {
 		this.color = ChatColor.WHITE;
 		this.prefix = "";
 		this.permissions = new ArrayList<>();
-		update();
 	}
 	
 	public ServerGroup(String name, int priority, ChatColor color, String prefix, List<String> permissions) {
-		this(name, priority, color, prefix, permissions, true);
-	}
-	
-	public ServerGroup(String name, int priority, ChatColor color, String prefix, List<String> permissions, boolean update) {
 		super(name);
 		this.priority = priority > 99 ? 99 : priority;
 		this.color = color;
 		this.prefix = prefix != null ? prefix : "";
 		this.permissions = permissions;
-		if (update) update();
 	}
 	
+	@Override
 	public void update() {
 		String teamName = Integer.toString(priority);
 		if (teamName.length() == 1) teamName = "0" + teamName;
@@ -61,6 +53,11 @@ public class ServerGroup extends ServerEntity {
 			team = TeamUtil.createTeam(teamName, prefix, color);
 		}
 		Config.saveGroup(this);
+	}
+	
+	@Override
+	public void remove() {
+		Config.removeGroup(this);
 	}
 	
 	public void setPriority(int priority) {
@@ -106,8 +103,6 @@ public class ServerGroup extends ServerEntity {
 	}
 	
 	public List<String> getPermissions() {
-		List<String> permissions = new ArrayList<>();
-		permissions.addAll(this.permissions);
 		return permissions;
 	}
 	

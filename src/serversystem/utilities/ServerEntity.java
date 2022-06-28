@@ -11,5 +11,9 @@ public abstract class ServerEntity {
 	public String getName() {
 		return name;
 	}
+	
+	public abstract void update();
+	
+	public abstract void remove();
 
 }

@@ -6,8 +6,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
-import serversystem.entities.ServerGroup;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.ServerGroup;
 import serversystem.utilities.WorldGroup;
 
 public class PlayerDeathListener implements Listener {

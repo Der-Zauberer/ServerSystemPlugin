@@ -10,11 +10,12 @@ public class ServerList<Entity extends ServerEntity> implements Iterable<Entity>
 	private final ArrayList<Entity> entities = new ArrayList<>();
 	
 	public ServerList(Consumer<ServerList<Entity>> loadAction) {
-		loadAction.accept(this);
+		if (loadAction != null) loadAction.accept(this);
 	}
 	
 	public boolean add(Entity entity) {
 		if (!contains(entity.getName())) {
+			entity.update();
 			entities.add(entity);
 			return true;
 		}
@@ -23,6 +24,7 @@ public class ServerList<Entity extends ServerEntity> implements Iterable<Entity>
 	
 	public boolean remove(Entity entity) {
 		if (contains(entity)) {
+			entity.remove();
 			entities.remove(entity);
 			return true;
 		}

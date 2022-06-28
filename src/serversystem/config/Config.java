@@ -12,8 +12,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import serversystem.entities.ServerGroup;
+
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.ServerGroup;
 import serversystem.utilities.ServerList;
 
 public class Config {
@@ -143,12 +144,16 @@ public class Config {
 	
 	public static void saveGroup(ServerGroup group) {
 		final String path = "groups." + group.getName() + ".";
-		config.set(path + "priority", group.getPriority());
+		config.set(path + "priority", ChatUtil.getValue(group.getPriority(), 99, 1, 99));
 		config.set(path + "color", group.getColor().name().toLowerCase());
-		config.set(path + "prefix", group.getPrefix() != null ? group.getPrefix() : "");
-		if (group.hasParent()) config.set(path + "parent", group.getParent().getName());
-		else config.set(path + "parent", null);
-		if (!group.getPermissions().isEmpty()) config.set(path + "permissions", group.getPermissions());
+		config.set(path + "prefix", ChatUtil.getValue(group.getPrefix(), ""));
+		config.set(path + "parent", group.getParent() != null ? group.getParent().getName() : "");
+		config.set(path + "permissions", !group.getPermissions().isEmpty() ? group.getPermissions() : "");
+		saveConfig();
+	}
+	
+	public static void removeGroup(ServerGroup group) {
+		config.set("groups." + group.getName(), null);
 		saveConfig();
 	}
 	
@@ -159,7 +164,7 @@ public class Config {
 			final ChatColor color = ChatUtil.getValue(config.getString(path + "color"), ChatColor.values(), ChatColor.WHITE);
 			final String prefix = config.getString(path + "prefix");
 			final List<String> permissions = ChatUtil.getValue(config.getStringList(path + "permissions"), new ArrayList<>());
-			final ServerGroup serverGroup = new ServerGroup(group, priority, color, prefix, permissions, false);
+			final ServerGroup serverGroup = new ServerGroup(group, priority, color, prefix, permissions);
 			return serverGroup;
 		}
 		return null;
@@ -167,21 +172,19 @@ public class Config {
 	
 	public static void loadGroups(ServerList<ServerGroup> groups) {
 		groups.clear();
+		final ArrayList<ServerGroup> groupList = new ArrayList<>();
 		final HashMap<ServerGroup, String> parents = new HashMap<>();
-		for (String groupName : Config.getSection("groups", false)) {
-			final ServerGroup group = Config.loadGroup(groupName);
-			if (group != null) {
-				groups.add(group);
-				String parent;
-				if (group.getParent() == null && (parent = config.getString("groups." + groupName + ".parent")) != null && !parent.isEmpty()) {
-					parents.put(group, parent);
-				}
-			}
-		}
+		Config.getSection("groups", false).stream().map(Config::loadGroup).filter(group -> group != null).forEach(group -> {
+			groupList.add(group);
+			String parent;
+			if (group.getParent() == null && (parent = config.getString("groups." + group.getName() + ".parent")) != null && !parent.isEmpty()) {
+				parents.put(group, parent);
+			}		
+		});
 		for (ServerGroup serverGroup : parents.keySet()) {
-			groups.stream().filter(parent -> parent.getName().equals(parents.get(serverGroup))).findFirst().ifPresent(parent -> serverGroup.setParent(parent));
+			groupList.stream().filter(parent -> parent.getName().equals(parents.get(serverGroup))).findFirst().ifPresent(serverGroup::setParent);
 		}
-		groups.forEach(ServerGroup::update);
+		groupList.forEach(groups::add);
 	}
 	
 	public static void addWorld(World world) {

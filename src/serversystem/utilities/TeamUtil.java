@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import serversystem.commands.VanishCommand;
-import serversystem.entities.ServerGroup;
 import serversystem.main.ServerSystem;
 
 public class TeamUtil {

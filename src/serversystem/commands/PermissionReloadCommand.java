@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import serversystem.entities.ServerGroup;
 import serversystem.utilities.ChatUtil;
+import serversystem.utilities.ServerGroup;
 
 public class PermissionReloadCommand implements CommandExecutor, TabCompleter {
 

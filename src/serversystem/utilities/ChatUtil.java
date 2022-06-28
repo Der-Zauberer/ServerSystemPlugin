@@ -153,7 +153,7 @@ public class ChatUtil implements Listener {
 		return players;
 	}
 	
-	public static <T> void processInput(CommandSender sender, String args[], int offset, String type, String name, String option, boolean removable, Function<String, T> parseObject, Function<T, Boolean> faildAction, Consumer<T> setter, Supplier<?> getter) {
+	public static <T> void processInput(CommandSender sender, String args[], int offset, String type, String name, String option, boolean removable, Function<String, T> parseObject, Function<T, Boolean> faildAction, Consumer<T> successAction, Consumer<T> setter, Supplier<?> getter) {
 		if (args.length == offset) {
 			String value = getter.get() != null ? getter.get().toString() : "not set";
 			sendMessage(sender, "The " + option + " of the " + type + " " + name + " is " + value + "!");
@@ -161,9 +161,11 @@ public class ChatUtil implements Listener {
 			T object = parseObject.apply(args[offset]);
 			if (removable && args[offset].equals("remove")) {
 				setter.accept(null);
+				successAction.accept(object);
 				sendMessage(sender, "The " + option + " of the " + type + " " + name + " has been removed!");
 			} else if (object != null && faildAction.apply(object)) {
 				setter.accept(object);
+				successAction.accept(object);
 				sendMessage(sender, "The " + option + " of the " + type + " " + name + " has been set to " + args[offset] + "!");
 			} else if (object == null) {
 				sendNotExistErrorMessage(sender, option, args[offset]);
@@ -173,7 +175,7 @@ public class ChatUtil implements Listener {
 		}
 	}
 	
-	public static boolean processListInput(CommandSender sender, String args[], int offset, String option, List<String> list) {
+	public static boolean processListInput(CommandSender sender, String args[], int offset, String option, List<String> list, Runnable successAction) {
 		if (args.length == offset || (args.length == offset + 1 && !args[offset].equals("list"))) {
 			sendErrorMessage(sender, NOT_ENOUGHT_ARGUMENTS);
 		} else if (args.length == offset + 2 || (args.length == offset + 1 && args[offset].equals("list"))) {
@@ -181,14 +183,13 @@ public class ChatUtil implements Listener {
 				ChatUtil.sendMessage(sender, "The list " + option + " has the following entries:");
 				for (int i = 0; i < 30 && i < list.size() ; i++) ChatUtil.sendMessage(sender, "    " + list.get(i));
 				if (list.size() > 29) ChatUtil.sendMessage(sender, "    " + "And " + (list.size() - 29) + "more...");
-				return false;
 			}
 			String string = args[offset + 1];
 			if (args[offset].equals("add")) {
 				if (!list.contains(string)) {
 					list.add(string);
 					ChatUtil.sendMessage(sender, "Added " + string + " to the list " + option + "!");
-					return true;
+					successAction.run();
 				} else {
 					ChatUtil.sendErrorMessage(sender, string + " is already in the list " + option + "!");
 				}
@@ -196,7 +197,7 @@ public class ChatUtil implements Listener {
 				if (list.contains(string)) {
 					list.remove(string);
 					ChatUtil.sendMessage(sender, "Removed " + string + " from the list " + option + "!");
-					return true;
+					successAction.run();
 				} else {
 					ChatUtil.sendErrorMessage(sender, string + " is not in the list " + option + "!");
 				}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,12 +12,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
-
 import serversystem.config.Config;
-import serversystem.entities.ServerGroup;
 import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.PermissionUtil;
+import serversystem.utilities.ServerGroup;
 import serversystem.utilities.TeamUtil;
 
 public class GroupCommand implements CommandExecutor, TabCompleter {
@@ -77,7 +75,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 			} else if (option == Option.EDIT) {
 				if (args.length < 3) {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
-				} else if (args.length > 4) {
+				} else if (args.length > 4 && !args[2].equals("permission")) {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 				} else {
 					EditOption editOption =  ChatUtil.getValue(args[2], EditOption.values());
@@ -96,17 +94,23 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 								return false;
 							}
 							return true;
-						}, group::setPriority, group::getPriority);
+						}, input -> group.update(), group::setPriority, group::getPriority);
 					} else if (editOption == EditOption.COLOR) {
-						ChatUtil.<ChatColor>processInput(sender, args, 3, "group", group.getName(), "color", false, input -> ChatUtil.getValue(input, ChatColor.values()), input -> true, group::setColor, () -> group.getColor().name().toLowerCase());
+						ChatUtil.<ChatColor>processInput(sender, args, 3, "group", group.getName(), "color", false, input -> ChatUtil.getValue(input, ChatColor.values()), input -> true, input -> group.update(), group::setColor, () -> group.getColor().name().toLowerCase());
 					} else if (editOption == EditOption.PREFIX) {
-						ChatUtil.<String>processInput(sender, args, 3, "group", group.getName(), "prefix", true, input -> input, input -> true, group::setPrefix, group::getPrefix);
+						ChatUtil.<String>processInput(sender, args, 3, "group", group.getName(), "prefix", true, input -> input, input -> true, input -> group.update(), group::setPrefix, group::getPrefix);
 					} else if (editOption == EditOption.PARENT) {
-						ChatUtil.<ServerGroup>processInput(sender, args, 3, "group", group.getName(), "parent", true, ServerSystem.getGroups()::get, input -> true, group::setParent, () -> group.getParent().getName());
+						ChatUtil.<ServerGroup>processInput(sender, args, 3, "group", group.getName(), "parent", true, ServerSystem.getGroups()::get, input -> {
+							if (!input.getName().equals(group.getName())) {
+								return true;
+							} else {
+								ChatUtil.sendErrorMessage(sender, "The parent can not be the group itself!");
+								return false;
+							}
+						}, input -> group.update(), group::setParent, () -> group.getParent().getName());
 					} else if (editOption == EditOption.PERMISSION) {
-						if (ChatUtil.processListInput(sender, args, 3, "permission", group.getPermissions())) group.update();
+						ChatUtil.processListInput(sender, args, 3, "permission", group.getPermissions(), group::update);
 					}
-					if (args.length == 4) group.update();
 				}
 			}
 		}
@@ -119,32 +123,36 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 		if (sender.hasPermission("serversystem.command.group")) {
 			if (ChatUtil.getCommandLayer(1, args)) {
 				commands.addAll(ChatUtil.getList(ServerSystem.getGroups()));
-			} else if (ChatUtil.getCommandLayer(2, args)) {
-				commands.addAll(ChatUtil.getEnumList(Option.values()));
-			} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("teleport")) {
-				commands.addAll(ChatUtil.getPlayerList(sender));
-			} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("edit")) {
-				commands.addAll(ChatUtil.getEnumList(EditOption.values()));
-			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("priority")) {
-				for (int i = 1; i < 100; i++) commands.add((i < 10 ? "0" : "") + Integer.toString(i));
-			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("color")) {
-				commands.addAll(ChatUtil.getEnumList(ChatColor.values()));
-			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("prefix")) {
-				if (!args[3].isEmpty()) commands.add(args[3] + " ");
-				commands.add("remove");
-			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("parent")) {
-				commands.addAll(ChatUtil.getList(ServerSystem.getGroups()));
-				commands.add("remove");
-			} else if ((ChatUtil.getCommandLayer(4, args) || (ChatUtil.getCommandLayer(5, args)) && args[1].equals("edit")) && args[2].equals("permission")) {
+			} else if (args.length == 2 && ServerSystem.getGroups().get(args[0]) == null) {
+				commands.add(Option.ADD.name().toLowerCase());
+			} else if (args.length > 1 && ServerSystem.getGroups().get(args[0]) != null) {
 				ServerGroup group = ServerSystem.getGroups().get(args[0]);
-				if (ChatUtil.getCommandLayer(4, args)) {
-					commands.addAll(Arrays.asList("add", "remove", "list"));
-				} else if (ChatUtil.getCommandLayer(5, args) && args[3].equals("add") && group != null) {
-					List<String> permissions = Bukkit.getServer().getPluginManager().getPermissions().stream().map(Permission::getName).collect(Collectors.toList());
-					permissions.removeAll(group.getPermissions());
-					commands.addAll(permissions);
-				} else if (ChatUtil.getCommandLayer(5, args) && args[3].equals("remove") && group != null) {
-					commands.addAll(group.getPermissions());
+				if (ChatUtil.getCommandLayer(2, args)) {
+					commands.addAll(ChatUtil.getEnumList(Option.values()));
+				} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("teleport")) {
+					commands.addAll(ChatUtil.getPlayerList(sender));
+				} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("edit")) {
+					commands.addAll(ChatUtil.getEnumList(EditOption.values()));
+				} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("priority")) {
+					for (int i = 1; i < 100; i++) commands.add((i < 10 ? "0" : "") + Integer.toString(i));
+				} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("color")) {
+					commands.addAll(ChatUtil.getEnumList(ChatColor.values()));
+				} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("prefix")) {
+					commands.add("remove");
+				} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("parent")) {
+					commands.addAll(ChatUtil.getList(ServerSystem.getGroups()));
+					commands.remove(group.getName());
+					commands.add("remove");
+				} else if ((ChatUtil.getCommandLayer(4, args) || (ChatUtil.getCommandLayer(5, args)) && args[1].equals("edit")) && args[2].equals("permission")) {
+					if (ChatUtil.getCommandLayer(4, args)) {
+						commands.addAll(Arrays.asList("add", "remove", "list"));
+					} else if (ChatUtil.getCommandLayer(5, args) && args[3].equals("add") && group != null) {
+						List<String> permissions = Bukkit.getServer().getPluginManager().getPermissions().stream().map(Permission::getName).collect(Collectors.toList());
+						permissions.removeAll(group.getPermissions());
+						commands.addAll(permissions);
+					} else if (ChatUtil.getCommandLayer(5, args) && args[3].equals("remove") && group != null) {
+						commands.addAll(group.getPermissions());
+					}
 				}
 			}
 		}
