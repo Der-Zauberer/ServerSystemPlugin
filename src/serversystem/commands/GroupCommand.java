@@ -3,7 +3,6 @@ package serversystem.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,7 +10,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import serversystem.config.Config;
 import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatUtil;
@@ -82,7 +80,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 					if (editOption == null) {
 						ChatUtil.sendNotExistErrorMessage(sender, "option", args[2]);
 					} else if (editOption == EditOption.PRIORITY) {
-						ChatUtil.<Integer>processInput(sender, args, 3, "group", group.getName(), "priority", false, input -> {
+						ChatUtil.<Integer>processInput(sender, args, 3, "group", group.getName(), editOption.name().toLowerCase(), false, input -> {
 							Integer integer = null;
 							try {
 								integer = Integer.parseInt(input);
@@ -96,11 +94,11 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 							return true;
 						}, input -> group.update(), group::setPriority, group::getPriority);
 					} else if (editOption == EditOption.COLOR) {
-						ChatUtil.<ChatColor>processInput(sender, args, 3, "group", group.getName(), "color", false, input -> ChatUtil.getValue(input, ChatColor.values()), input -> true, input -> group.update(), group::setColor, () -> group.getColor().name().toLowerCase());
+						ChatUtil.<ChatColor>processInput(sender, args, 3, "group", group.getName(), editOption.name().toLowerCase(), false, input -> ChatUtil.getValue(input, ChatColor.values()), input -> true, input -> group.update(), group::setColor, () -> group.getColor().name().toLowerCase());
 					} else if (editOption == EditOption.PREFIX) {
-						ChatUtil.<String>processInput(sender, args, 3, "group", group.getName(), "prefix", true, input -> input, input -> true, input -> group.update(), group::setPrefix, group::getPrefix);
+						ChatUtil.<String>processInput(sender, args, 3, "group", group.getName(), editOption.name().toLowerCase(), true, input -> input, input -> true, input -> group.update(), group::setPrefix, group::getPrefix);
 					} else if (editOption == EditOption.PARENT) {
-						ChatUtil.<ServerGroup>processInput(sender, args, 3, "group", group.getName(), "parent", true, ServerSystem.getGroups()::get, input -> {
+						ChatUtil.<ServerGroup>processInput(sender, args, 3, "group", group.getName(), editOption.name().toLowerCase(), true, ServerSystem.getGroups()::get, input -> {
 							if (!input.getName().equals(group.getName())) {
 								return true;
 							} else {
@@ -109,7 +107,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 							}
 						}, input -> group.update(), group::setParent, () -> group.getParent().getName());
 					} else if (editOption == EditOption.PERMISSION) {
-						ChatUtil.processListInput(sender, args, 3, "permission", group.getPermissions(), group::update);
+						ChatUtil.processListInput(sender, args, 3, editOption.name().toLowerCase(), group.getPermissions(), group::update);
 					}
 				}
 			}
@@ -147,9 +145,8 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 					if (ChatUtil.getCommandLayer(4, args)) {
 						commands.addAll(Arrays.asList("add", "remove", "list"));
 					} else if (ChatUtil.getCommandLayer(5, args) && args[3].equals("add") && group != null) {
-						List<String> permissions = Bukkit.getServer().getPluginManager().getPermissions().stream().map(Permission::getName).collect(Collectors.toList());
-						permissions.removeAll(group.getPermissions());
-						commands.addAll(permissions);
+						commands.addAll(PermissionUtil.getBukkitPermissions());
+						commands.addAll(group.getPermissions());
 					} else if (ChatUtil.getCommandLayer(5, args) && args[3].equals("remove") && group != null) {
 						commands.addAll(group.getPermissions());
 					}

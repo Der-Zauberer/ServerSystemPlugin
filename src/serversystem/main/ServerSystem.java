@@ -38,11 +38,13 @@ import serversystem.utilities.PlayerInventory;
 import serversystem.utilities.ServerGroup;
 import serversystem.utilities.ServerList;
 import serversystem.utilities.ServerSign;
+import serversystem.utilities.ServerWarp;
 import serversystem.utilities.TeamUtil;
 import serversystem.utilities.WorldGroup;
 
 public class ServerSystem extends JavaPlugin {
 
+	private static ServerList<ServerWarp> warps = new ServerList<>(Config::loadWarps);
 	private static ServerList<ServerGroup> groups;
 	private static ServerSystem instance;
 
@@ -114,16 +116,20 @@ public class ServerSystem extends JavaPlugin {
 		ServerSign.registerServerSign(new WarpSign());
 	}
 	
-	public static ServerSystem getInstance() {
-		return instance;
+	public static ServerList<ServerWarp> getWarps() {
+		return warps;
+	}
+	
+	public static void loadGroups() {
+		groups = new ServerList<>(Config::loadGroups);
 	}
 	
 	public static ServerList<ServerGroup> getGroups() {
 		return groups;
 	}
 	
-	public static void loadGroups() {
-		groups = new ServerList<>(Config::loadGroups);
+	public static ServerSystem getInstance() {
+		return instance;
 	}
 
 }

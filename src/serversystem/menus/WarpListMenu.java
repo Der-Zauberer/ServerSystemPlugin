@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import serversystem.main.ServerSystem;
 import serversystem.utilities.ExtendedItemStack;
 import serversystem.utilities.PlayerInventory;
 import serversystem.utilities.ServerWarp;
@@ -21,7 +23,7 @@ public class WarpListMenu extends PlayerInventory {
 	}
 	
 	private void teleportPlayer(Player player, ItemStack itemstack) {
-		final ServerWarp warp = ServerWarp.getWarp(ChatColor.stripColor(itemstack.getItemMeta().getDisplayName()));
+		final ServerWarp warp = ServerSystem.getWarps().get(ChatColor.stripColor(itemstack.getItemMeta().getDisplayName()));
 		if (warp != null) player.teleport(warp.getLocation());
 	}
 	

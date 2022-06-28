@@ -241,7 +241,7 @@ public class ChatUtil implements Listener {
 	}
 	
 	public static List<String> getList(ServerList<?> list) {
-		return list.stream().map(ServerEntity::getName).collect(Collectors.toList());
+		return list.stream().map(ServerComponent::getName).collect(Collectors.toList());
 	}
 	
 	public static List<String> removeWrong(List<String> list, String args[]) {

@@ -2,6 +2,8 @@ package serversystem.utilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -105,8 +107,8 @@ public class PermissionUtil implements Listener {
 		player.setOp(!player.isOp());
 	}
 
-	private static ArrayList<String> getVanillaPermissions() {
-		ArrayList<String> permissions = new ArrayList<>();
+	private static List<String> getVanillaPermissions() {
+		List<String> permissions = new ArrayList<>();
 		permissions.add("minecraft.command.advancement");
 		permissions.add("minecraft.command.ban");
 		permissions.add("minecraft.command.ban-ip");
@@ -162,6 +164,13 @@ public class PermissionUtil implements Listener {
 		permissions.add("minecraft.autocraft");
 		permissions.add("minecraft.debugstick");
 		permissions.add("minecraft.debugstick.always");
+		return permissions;
+	}
+	
+	public static List<String> getBukkitPermissions() {
+		List<String> permissions = new ArrayList<>();
+		Bukkit.getServer().getPluginManager().getPermissions().forEach(permission -> permissions.add(permission.getName()));
+		permissions.addAll(getVanillaPermissions());
 		return permissions;
 	}
 	

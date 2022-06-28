@@ -10,7 +10,7 @@ import org.bukkit.scoreboard.Team;
 import serversystem.config.Config;
 import serversystem.main.ServerSystem;
 
-public class ServerGroup extends ServerEntity {
+public class ServerGroup extends ServerComponent {
 	
 	private int priority;
 	private ChatColor color;

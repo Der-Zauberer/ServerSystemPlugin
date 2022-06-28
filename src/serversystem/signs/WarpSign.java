@@ -2,6 +2,8 @@ package serversystem.signs;
 
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
+
+import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ServerSign;
 import serversystem.utilities.ServerWarp;
@@ -15,10 +17,10 @@ public class WarpSign extends ServerSign {
 	}
 	
 	private void clickAction(Player player, Sign sign, String args) {
-		if (ServerWarp.getWarp(args) != null) {
-			final ServerWarp warp = ServerWarp.getWarp(args);
+		if (ServerSystem.getWarps().get(args) != null) {
+			final ServerWarp warp = ServerSystem.getWarps().get(args);
 			if (warp.getPermission() == null || player.hasPermission(warp.getPermission())) {
-				player.teleport(ServerWarp.getWarp(args).getLocation());
+				player.teleport(ServerSystem.getWarps().get(args).getLocation());
 			} else {
 				ChatUtil.sendErrorMessage(player, ChatUtil.NO_PERMISSION);
 			}
@@ -26,7 +28,7 @@ public class WarpSign extends ServerSign {
 	}
 	
 	private boolean placeAction(Player player, String args) {
-		return ServerWarp.getWarp(args) != null;
+		return ServerSystem.getWarps().get(args) != null;
 	}
 
 }

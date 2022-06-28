@@ -1,10 +1,10 @@
 package serversystem.utilities;
 
-public abstract class ServerEntity {
+public abstract class ServerComponent {
 	
 	private final String name;
 	
-	public ServerEntity(String name) {
+	public ServerComponent(String name) {
 		this.name = name;
 	}
 	

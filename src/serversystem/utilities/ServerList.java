@@ -5,68 +5,68 @@ import java.util.Iterator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class ServerList<Entity extends ServerEntity> implements Iterable<Entity> {
+public class ServerList<Component extends ServerComponent> implements Iterable<Component> {
 	
-	private final ArrayList<Entity> entities = new ArrayList<>();
+	private final ArrayList<Component> components = new ArrayList<>();
 	
-	public ServerList(Consumer<ServerList<Entity>> loadAction) {
+	public ServerList(Consumer<ServerList<Component>> loadAction) {
 		if (loadAction != null) loadAction.accept(this);
 	}
 	
-	public boolean add(Entity entity) {
-		if (!contains(entity.getName())) {
-			entity.update();
-			entities.add(entity);
+	public boolean add(Component component) {
+		if (!contains(component.getName())) {
+			component.update();
+			components.add(component);
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean remove(Entity entity) {
-		if (contains(entity)) {
-			entity.remove();
-			entities.remove(entity);
+	public boolean remove(Component component) {
+		if (contains(component)) {
+			component.remove();
+			components.remove(component);
 			return true;
 		}
 		return false;
 	}
 	
 	public boolean remove(String name) {
-		ServerEntity entity = get(name);
-		if (entity != null) {
-			entities.remove(entity);
+		ServerComponent component = get(name);
+		if (component != null) {
+			components.remove(component);
 			return true;
 		}
 		return false;
 	}
 	
-	public Entity get(String name) {
-		return stream().filter(entity -> entity.getName().equals(name)).findFirst().orElse(null);
+	public Component get(String name) {
+		return stream().filter(component -> component.getName().equals(name)).findFirst().orElse(null);
 	}
 
-	public boolean contains(Entity entity) {
-		return entity != null && get(entity.getName()) != null;
+	public boolean contains(Component component) {
+		return component != null && get(component.getName()) != null;
 	}
 	
 	public boolean contains(String name) {
-		return stream().anyMatch(entity -> entity.getName().equals(name));
+		return stream().anyMatch(component -> component.getName().equals(name));
 	}
 	
 	public int size() {
-		return entities.size();
+		return components.size();
 	}
 	
 	public void clear() {
-		entities.clear();
+		components.clear();
 	}
 	
-	public Stream<Entity> stream() {
-		return entities.stream();
+	public Stream<Component> stream() {
+		return components.stream();
 	}
 	
 	@Override
-	public Iterator<Entity> iterator() {
-		return entities.iterator();
+	public Iterator<Component> iterator() {
+		return components.iterator();
 	}
 
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ServerGroup;
 import serversystem.utilities.ServerList;
+import serversystem.utilities.ServerWarp;
 
 public class Config {
 	
@@ -52,6 +54,7 @@ public class Config {
 		setDefault("load_worlds", "");
 		setDefault("worlds", "");
 		setDefault("groups", "");
+		setDefault("warps", "");
 		setDefault("players", "");
 		for(World world : Bukkit.getWorlds()) {
 			addWorld(world);
@@ -142,51 +145,6 @@ public class Config {
 		return config.getStringList("load_worlds");
 	}
 	
-	public static void saveGroup(ServerGroup group) {
-		final String path = "groups." + group.getName() + ".";
-		config.set(path + "priority", ChatUtil.getValue(group.getPriority(), 99, 1, 99));
-		config.set(path + "color", group.getColor().name().toLowerCase());
-		config.set(path + "prefix", ChatUtil.getValue(group.getPrefix(), ""));
-		config.set(path + "parent", group.getParent() != null ? group.getParent().getName() : "");
-		config.set(path + "permissions", !group.getPermissions().isEmpty() ? group.getPermissions() : "");
-		saveConfig();
-	}
-	
-	public static void removeGroup(ServerGroup group) {
-		config.set("groups." + group.getName(), null);
-		saveConfig();
-	}
-	
-	public static ServerGroup loadGroup(String group) {
-		final String path = "groups." + group + ".";
-		if (config.get("groups." + group) != null) {
-			final int priority = ChatUtil.getValue(config.getInt(path + "priority"), 99, 0, 99);
-			final ChatColor color = ChatUtil.getValue(config.getString(path + "color"), ChatColor.values(), ChatColor.WHITE);
-			final String prefix = config.getString(path + "prefix");
-			final List<String> permissions = ChatUtil.getValue(config.getStringList(path + "permissions"), new ArrayList<>());
-			final ServerGroup serverGroup = new ServerGroup(group, priority, color, prefix, permissions);
-			return serverGroup;
-		}
-		return null;
-	}
-	
-	public static void loadGroups(ServerList<ServerGroup> groups) {
-		groups.clear();
-		final ArrayList<ServerGroup> groupList = new ArrayList<>();
-		final HashMap<ServerGroup, String> parents = new HashMap<>();
-		Config.getSection("groups", false).stream().map(Config::loadGroup).filter(group -> group != null).forEach(group -> {
-			groupList.add(group);
-			String parent;
-			if (group.getParent() == null && (parent = config.getString("groups." + group.getName() + ".parent")) != null && !parent.isEmpty()) {
-				parents.put(group, parent);
-			}		
-		});
-		for (ServerGroup serverGroup : parents.keySet()) {
-			groupList.stream().filter(parent -> parent.getName().equals(parents.get(serverGroup))).findFirst().ifPresent(serverGroup::setParent);
-		}
-		groupList.forEach(groups::add);
-	}
-	
 	public static void addWorld(World world) {
 		if(config.get("worlds." + world.getName()) == null) {
 			config.set("worlds." + world.getName() + ".group", world.getName());
@@ -253,6 +211,84 @@ public class Config {
 		default: break;
 		}
 		return GameMode.ADVENTURE;
+	}
+	
+	public static void saveGroup(ServerGroup group) {
+		final String path = "groups." + group.getName() + ".";
+		config.set(path + "priority", ChatUtil.getValue(group.getPriority(), 99, 1, 99));
+		config.set(path + "color", group.getColor().name().toLowerCase());
+		config.set(path + "prefix", ChatUtil.getValue(group.getPrefix(), ""));
+		config.set(path + "parent", group.getParent() != null ? group.getParent().getName() : "");
+		config.set(path + "permissions", !group.getPermissions().isEmpty() ? group.getPermissions() : "");
+		saveConfig();
+	}
+	
+	public static void removeGroup(ServerGroup group) {
+		config.set("groups." + group.getName(), null);
+		saveConfig();
+	}
+	
+	public static ServerGroup loadGroup(String group) {
+		final String path = "groups." + group + ".";
+		if (config.get("groups." + group) != null) {
+			final int priority = ChatUtil.getValue(config.getInt(path + "priority"), 99, 0, 99);
+			final ChatColor color = ChatUtil.getValue(config.getString(path + "color"), ChatColor.values(), ChatColor.WHITE);
+			final String prefix = config.getString(path + "prefix");
+			final List<String> permissions = ChatUtil.getValue(config.getStringList(path + "permissions"), new ArrayList<>());
+			final ServerGroup serverGroup = new ServerGroup(group, priority, color, prefix, permissions);
+			return serverGroup;
+		}
+		return null;
+	}
+	
+	public static void loadGroups(ServerList<ServerGroup> groups) {
+		groups.clear();
+		final ArrayList<ServerGroup> groupList = new ArrayList<>();
+		final HashMap<ServerGroup, String> parents = new HashMap<>();
+		if (Config.getSection("groups", false) != null) Config.getSection("groups", false).stream().map(Config::loadGroup).filter(group -> group != null).forEach(group -> {
+			groupList.add(group);
+			String parent;
+			if (group.getParent() == null && (parent = config.getString("groups." + group.getName() + ".parent")) != null && !parent.isEmpty()) {
+				parents.put(group, parent);
+			}		
+		});
+		for (ServerGroup serverGroup : parents.keySet()) {
+			groupList.stream().filter(parent -> parent.getName().equals(parents.get(serverGroup))).findFirst().ifPresent(serverGroup::setParent);
+		}
+		groupList.forEach(groups::add);
+	}
+	
+	public static void saveWarp(ServerWarp warp) {
+		final String path = "warps." + warp.getName() + ".";
+		config.set(path + "location", warp.getLocation());
+		config.set(path + "material", warp.getMaterial().name().toLowerCase());
+		config.set(path + "global", warp.isGlobal());
+		config.set(path + "permission", ChatUtil.getValue(warp.getPermission(), ""));
+		saveConfig();
+	}
+
+	public static void removeWarp(ServerWarp warp) {
+		config.set("warps." + warp.getName(), null);
+		saveConfig();
+	}
+
+	public static ServerWarp loadWarp(String warp) {
+		final String path = "warps." + warp + ".";
+		if (config.get("warps." + warp) != null && config.getLocation(path + "location") != null) {
+			ServerWarp serverWarp = new ServerWarp(warp, config.getLocation(path + "location"));
+			serverWarp.setMaterial(ChatUtil.getValue(config.getString(path + "material"), Material.values(), Material.ENDER_PEARL));
+			final String global = config.getString(path + "global");
+			serverWarp.setGlobal(global != null && global.equals("false") ? false : true);
+			final String permission = config.getString(path + "prefix");
+			serverWarp.setPermission(permission != null && !permission.isEmpty() ? permission : null);
+			return serverWarp;
+		}
+		return null;
+		
+	}
+
+	public static void loadWarps(ServerList<ServerWarp> warps) {
+		if (Config.getSection("warps", false) != null) Config.getSection("warps", false).stream().map(Config::loadWarp).filter(warp -> warp != null).forEach(warps::add);
 	}
 	
 	public static void addPlayer(Player player) {

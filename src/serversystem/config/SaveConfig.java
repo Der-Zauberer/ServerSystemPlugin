@@ -6,16 +6,12 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import serversystem.config.Config.ConfigOption;
-import serversystem.utilities.ChatUtil;
-import serversystem.utilities.ServerWarp;
 import serversystem.utilities.WorldGroup;
 
 public class SaveConfig {
@@ -24,7 +20,6 @@ public class SaveConfig {
 	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 	static {
-		setDefault("warps", "");
 		setDefault("worlds", "");
 		setDefault("world_groups", "");
 		if (!file.exists()) {
@@ -46,46 +41,6 @@ public class SaveConfig {
 		} catch (NullPointerException exception) {
 			return null;
 		}
-	}
-
-	public static void setWarp(ServerWarp warp) {
-		config.set("warps." + warp.getName() + ".material", warp.getMaterial().toString().toLowerCase());
-		config.set("warps." + warp.getName() + ".location", warp.getLocation());
-		config.set("warps." + warp.getName() + ".global", warp.isGlobal());
-		if (warp.getPermission() == null || warp.getPermission().equalsIgnoreCase("null")) config.set("warps." + warp.getName() + ".permission", "");
-		else config.set("warps." + warp.getName() + ".permission", warp.getPermission());
-		saveConfig();
-	}
-
-	public static void removeWarp(ServerWarp warp) {
-		config.set("warps." + warp.getName(), null);
-		saveConfig();
-	}
-
-	public static ServerWarp getWarp(String name) {
-		try {
-			final ServerWarp warp = new ServerWarp(name, config.getLocation("warps." + name + ".location"));
-			warp.setMaterial(ChatUtil.getValue(config.getString("warps." + name + ".material"), Material.values(), Material.BARRIER));
-			warp.setGlobal(config.getBoolean("warps." + name + ".global"));
-			if (config.getString("warps." + name + ".permission") != null && !config.getString("warps." + name + ".permission").isEmpty()) {
-				warp.setPermission(config.getString("warps." + name + ".permission"));
-			}
-			return warp;
-		} catch (Exception exception) {
-			Bukkit.getLogger().warning("Something went wrong while loadig the warp " + name + "!");
-			return null;
-		}
-		
-	}
-
-	public static ArrayList<ServerWarp> getWarps() {
-		ArrayList<ServerWarp> warps = new ArrayList<>();
-		if (getSection("warps", false) != null) {
-			for (String name : getSection("warps", false)) {
-				warps.add(getWarp(name));
-			}
-		}
-		return warps;
 	}
 	
 	public static void removeWorld(String world) {
