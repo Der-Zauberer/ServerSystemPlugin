@@ -146,9 +146,10 @@ public class Config {
 	}
 	
 	public static void addWorld(World world) {
-		if(config.get("worlds." + world.getName()) == null) {
+		if (config.get("worlds." + world.getName()) == null) {
 			config.set("worlds." + world.getName() + ".group", world.getName());
 			config.set("worlds." + world.getName() + ".permission", "");
+			config.set("worlds." + world.getName() + ".gamemode", 2);
 			config.set("worlds." + world.getName() + ".damage", true);
 			config.set("worlds." + world.getName() + ".hunger", true);
 			config.set("worlds." + world.getName() + ".pvp", world.getPVP());
@@ -156,13 +157,17 @@ public class Config {
 			config.set("worlds." + world.getName() + ".protection", false);
 			config.set("worlds." + world.getName() + ".world_spawn", false);
 			config.set("worlds." + world.getName() + ".death_message", true);
-			config.set("worlds." + world.getName() + ".gamemode", 0);
 			saveConfig();
 		}
 	}
 	
+	public static void removeWorld(World world) {
+		config.set("worlds." + world.getName(), null);
+	}
+	
 	public static void setWorldGroup(World world, String worldGroup) {
-		config.set("worlds." + world.getName() + ".group", worldGroup);
+		if (worldGroup != null && !worldGroup.isEmpty()) config.set("worlds." + world.getName() + ".group", worldGroup);
+		else config.set("worlds." + world.getName() + ".group", world.getName());
 		saveConfig();
 	}
 	
@@ -171,15 +176,37 @@ public class Config {
 	}
 	
 	public static void setWorldPermission(World world, String permission) {
-		if (permission == null || permission.equalsIgnoreCase("null")) config.set("worlds." + world.getName() + ".permission", "");
+		if (permission == null) config.set("worlds." + world.getName() + ".permission", "");
 		else config.set("worlds." + world.getName() + ".permission", permission);
 		saveConfig();
 	}
 	
 	public static String getWorldPermission(World world) {
 		final String permission = config.getString("worlds." + world.getName() + ".permission");
-		if (permission != null && permission.isEmpty()) return null;
-		return permission;
+		if (permission != null && !permission.isEmpty()) return permission;
+		return null;
+	}
+	
+	public static void setWorldGamemode(World world, GameMode gamemode) {
+		switch (gamemode) {
+			case SURVIVAL: config.set("worlds." + world.getName() + ".gamemode", 0); break;
+			case CREATIVE: config.set("worlds." + world.getName() + ".gamemode", 1); break;
+			case ADVENTURE: config.set("worlds." + world.getName() + ".gamemode", 2); break;
+			case SPECTATOR: config.set("worlds." + world.getName() + ".gamemode", 3); break;
+			default: break;
+		}
+		saveConfig();
+	}
+	
+	public static GameMode getWorldGamemode(World world) {
+		switch (config.getInt("worlds." + world + ".gamemode")) {
+			case 0: return GameMode.SURVIVAL;
+			case 1: return GameMode.CREATIVE;
+			case 2: return GameMode.ADVENTURE;
+			case 3: return GameMode.SPECTATOR;
+			default: break;
+		}
+		return GameMode.ADVENTURE;
 	}
 	
 	public static void setWorldOption(World world, WorldOption option, boolean bool) {
@@ -189,28 +216,6 @@ public class Config {
 	
 	public static boolean getWorldOption(World world, WorldOption option) {
 		return config.getBoolean("worlds." + world.getName() + "." + option.toString().toLowerCase());
-	}
-	
-	public static void setWorldGamemode(World world, GameMode gamemode) {
-		switch (gamemode) {
-		case SURVIVAL: config.set("worlds." + world.getName() + ".gamemode", 0); break;
-		case CREATIVE: config.set("worlds." + world.getName() + ".gamemode", 1); break;
-		case ADVENTURE: config.set("worlds." + world.getName() + ".gamemode", 2); break;
-		case SPECTATOR: config.set("worlds." + world.getName() + ".gamemode", 3); break;
-		default: break;
-		}
-		saveConfig();
-	}
-	
-	public static GameMode getWorldGamemode(World world) {
-		switch (config.getInt("worlds." + world + ".gamemode")) {
-		case 0: return GameMode.SURVIVAL;
-		case 1: return GameMode.CREATIVE;
-		case 2: return GameMode.ADVENTURE;
-		case 3: return GameMode.SPECTATOR;
-		default: break;
-		}
-		return GameMode.ADVENTURE;
 	}
 	
 	public static void saveGroup(ServerGroup group) {
