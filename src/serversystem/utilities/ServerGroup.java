@@ -58,6 +58,17 @@ public class ServerGroup extends ServerComponent {
 	@Override
 	public void remove() {
 		Config.removeGroup(this);
+		team.unregister();
+		team = null;
+		permissions.clear();
+		for (String player : Config.getPlayers()) {
+			if (Config.getPlayerGroup(player).equals(this.getName())) Config.setPlayerGroup(player, "player");
+			final Player playerObject = Bukkit.getPlayer(player);
+			if (playerObject != null) {
+				PermissionUtil.loadPlayerPermissions(playerObject);
+				TeamUtil.addGroupToPlayer(playerObject);
+			}
+		}
 	}
 	
 	public void setPriority(int priority) {
@@ -99,8 +110,7 @@ public class ServerGroup extends ServerComponent {
 	}
 	
 	public Team getTeam() {
-		if (TeamUtil.getTeam(team.getName()) != null) return team;
-		else return null;
+		return team;
 	}
 	
 	public List<String> getPermissions() {

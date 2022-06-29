@@ -43,12 +43,18 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 				} else {
 					ServerGroup newGroup = new ServerGroup(args[0]);
 					ServerSystem.getGroups().add(newGroup);
+					for (String playerName : Config.getPlayers()) {
+						Player playerObject = Bukkit.getPlayer(playerName);
+						if (playerObject != null && Config.getPlayerGroup(playerName).equals(newGroup.getName())) {
+							PermissionUtil.loadPlayerPermissions(playerObject);
+							TeamUtil.addGroupToPlayer(playerObject);
+						}
+					}
 					ChatUtil.sendMessage(sender, "The group " + newGroup.getName() + " has been added!");		
 				}
 			} else if (option == Option.REMOVE) {
 				if (args.length < 3) {
 					ServerSystem.getGroups().remove(group);
-					ServerGroup.reloadAll();
 					ChatUtil.sendMessage(sender, "The group " + args[0] + " has been removed successfully!");
 				} else {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
@@ -67,7 +73,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 					ChatUtil.sendSeperator(sender);
 				}
 			} else if (option == Option.PLAYER) {
-				final String playerName = args[2];
+				final String playerName = args.length == 3 ?  args[2] : null;
 				if (args.length < 3) {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 				} else if (args.length > 3) {
