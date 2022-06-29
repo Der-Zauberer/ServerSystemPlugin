@@ -30,7 +30,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 		} else {
 			String playerName = args[0];
 			Player player = Bukkit.getPlayer(args[0]);
-			Option option = ChatUtil.getValue(args[1], Option.values());
+			Option option = ChatUtil.getEnumValue(args[1], Option.values());
 			if (option == null) {
 				ChatUtil.sendNotExistErrorMessage(sender, "option", args[1]);
 			} else if (option == Option.GROUP) {
@@ -69,7 +69,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 				commands.addAll(ChatUtil.getEnumList(Option.values()));
 			} else if (ChatUtil.getCommandLayer(3, args)) {
 				if (args[1].equals("group")) {
-					commands.addAll(ChatUtil.getList(ServerSystem.getGroups()));
+					commands.addAll(ChatUtil.getStringList(ServerSystem.getGroups()));
 					commands.add("player");
 				} else if (args[1].equals("permissions")) {
 					commands.addAll(Arrays.asList("add", "remove", "list"));

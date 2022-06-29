@@ -217,11 +217,11 @@ public class ChatUtil implements Listener {
 		return Optional.ofNullable(value).filter(x -> x.compareTo(min) >= 0 && x.compareTo(max) <= 0).orElse(standard);
 	}
 	
-	public static <T extends Enum<T>> T getValue(String string, T t[], T standard) {
+	public static <T extends Enum<T>> T getEnumValue(String string, T t[], T standard) {
 		return Arrays.asList(t).stream().filter(constant -> constant.name().toLowerCase().equals(string)).findFirst().orElse(standard);
 	}
 	
-	public static <T extends Enum<T>> T getValue(String string, T t[]) {
+	public static <T extends Enum<T>> T getEnumValue(String string, T t[]) {
 		return Arrays.asList(t).stream().filter(constant -> constant.name().toLowerCase().equals(string)).findFirst().orElse(null);
 	}
 	
@@ -237,11 +237,11 @@ public class ChatUtil implements Listener {
 		return Arrays.stream(t).map(value -> value.name().toLowerCase()).collect(Collectors.toList());
 	}
 	
-	public static <T> List<String> getList(List<T> list, Function<T, String> map) {
+	public static <T> List<String> getStringList(List<T> list, Function<T, String> map) {
 		return list.stream().map(map).collect(Collectors.toList());
 	}
 	
-	public static List<String> getList(ServerList<?> list) {
+	public static List<String> getStringList(ServerList<?> list) {
 		return list.stream().map(ServerComponent::getName).collect(Collectors.toList());
 	}
 	

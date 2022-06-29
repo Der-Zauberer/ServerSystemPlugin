@@ -33,7 +33,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 			else ((Player) sender).teleport(ServerSystem.getWarps().get(args[0]).getLocation());
 		} else {
 			final ServerWarp warp = ServerSystem.getWarps().get(args[0]);
-			final Option option = ChatUtil.getValue(args[1], Option.values());
+			final Option option = ChatUtil.getEnumValue(args[1], Option.values());
 			if (sender instanceof Player && !sender.hasPermission("serversystem.command.warp.edit")) {
 				ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 			} else if (option == null) {
@@ -73,12 +73,12 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 				} else if (args.length < 3) {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 				} else {
-					EditOption editOption = ChatUtil.getValue(args[2], EditOption.values());
+					EditOption editOption = ChatUtil.getEnumValue(args[2], EditOption.values());
 					if (editOption == null) {
 						ChatUtil.sendNotExistErrorMessage(sender, "option", args[2]);
 					} else if (editOption == EditOption.MATERIAL) {
 						ChatUtil.<Material>processInput(sender, args, 3, "warp", warp.getName(), editOption.name().toLowerCase(), false, input -> {
-							return ChatUtil.getValue(input, Material.values());
+							return ChatUtil.getEnumValue(input, Material.values());
 						}, input -> true, input -> warp.update(), warp::setMaterial, () -> warp.getMaterial().name().toLowerCase());
 					} else if (editOption == EditOption.GLOBAL) {
 						ChatUtil.<Boolean>processInput(sender, args, 3, "warp", warp.getName(), editOption.name().toLowerCase(), false, input -> {
@@ -100,9 +100,9 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 		final List<String> commands = new ArrayList<>();
 		if (ChatUtil.getCommandLayer(1, args)) {
 			if (sender instanceof Player && !sender.hasPermission("serversystem.command.warp.edit")) {
-				commands.addAll(ChatUtil.getList(ServerWarp.getWarps((Player) sender), warp -> warp.getName()));
+				commands.addAll(ChatUtil.getStringList(ServerWarp.getWarps((Player) sender), warp -> warp.getName()));
 			} else {
-				commands.addAll(ChatUtil.getList(ServerSystem.getWarps()));
+				commands.addAll(ChatUtil.getStringList(ServerSystem.getWarps()));
 			}
 		} else if (sender.hasPermission("serversystem.command.warp.edit")) {
 			ServerWarp warp = ServerSystem.getWarps().get(args[0]);

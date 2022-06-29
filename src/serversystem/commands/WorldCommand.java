@@ -35,7 +35,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			else WorldGroup.teleportPlayer((Player) sender, Bukkit.getWorld(args[0]));
 		} else {
 			final World world = Bukkit.getWorld(args[0]);
-			final Option option = ChatUtil.getValue(args[1], Option.values());
+			final Option option = ChatUtil.getEnumValue(args[1], Option.values());
 			if (sender instanceof Player && !sender.hasPermission("serversystem.command.world.edit")) {
 				ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 			} else if (option == null) {
@@ -76,8 +76,8 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				} else if (args.length < 3) {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 				} else {
-					EditOption editOption = ChatUtil.getValue(args[2], EditOption.values());
-					WorldOption worldOption = ChatUtil.getValue(args[2], WorldOption.values());
+					EditOption editOption = ChatUtil.getEnumValue(args[2], EditOption.values());
+					WorldOption worldOption = ChatUtil.getEnumValue(args[2], WorldOption.values());
 					if (worldOption != null) {
 						ChatUtil.<Boolean>processInput(sender, args, 3, "warp", world.getName(), worldOption.name().toLowerCase(), false, input -> {
 							if (input.equals("true")) return new Boolean(true);
@@ -91,7 +91,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 							ChatUtil.<String>processInput(sender, args, 3, "warp", world.getName(), editOption.name().toLowerCase(), false, input -> input, input -> true , input -> {}, permission -> Config.setWorldPermission(world, permission), () ->  Config.getWorldPermission(world));
 						} else if (editOption == EditOption.GAMEMODE) {
 							ChatUtil.<GameMode>processInput(sender, args, 3, "warp", world.getName(), editOption.name().toLowerCase(), true, input -> {
-								return ChatUtil.getValue(input, GameMode.values());
+								return ChatUtil.getEnumValue(input, GameMode.values());
 							}, input -> true , input -> {}, gamemode -> Config.setWorldGamemode(world, gamemode), () ->  Config.getWorldGamemode(world));
 						}
 					} else  {
@@ -111,7 +111,7 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			if (sender instanceof Player && !sender.hasPermission("serversystem.command.world.edit")) {
 				commands.addAll(Bukkit.getWorlds().stream().filter(world -> Config.getWorldPermission(world) != null && sender.hasPermission(Config.getWorldPermission(world))).map(World::getName).collect(Collectors.toList()));
 			} else {
-				commands.addAll(ChatUtil.getList(Bukkit.getWorlds(), World::getName));
+				commands.addAll(ChatUtil.getStringList(Bukkit.getWorlds(), World::getName));
 			}
 		} else if (sender.hasPermission("serversystem.command.world.edit")) {
 			World world = Bukkit.getWorld(args[0]);

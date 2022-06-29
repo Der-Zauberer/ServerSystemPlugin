@@ -30,7 +30,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 		} else {
 			final ServerGroup group = ServerSystem.getGroups().get(args[0]);
-			final Option option = ChatUtil.getValue(args[1], Option.values());
+			final Option option = ChatUtil.getEnumValue(args[1], Option.values());
 			if (group == null && option != Option.ADD) {
 				ChatUtil.sendNotExistErrorMessage(sender, "group", args[0]);
 			} else if (option == null) {
@@ -76,7 +76,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 				} else if (args.length > 4 && !args[2].equals("permission")) {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 				} else {
-					EditOption editOption =  ChatUtil.getValue(args[2], EditOption.values());
+					EditOption editOption =  ChatUtil.getEnumValue(args[2], EditOption.values());
 					if (editOption == null) {
 						ChatUtil.sendNotExistErrorMessage(sender, "option", args[2]);
 					} else if (editOption == EditOption.PRIORITY) {
@@ -94,7 +94,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 							return true;
 						}, input -> group.update(), group::setPriority, group::getPriority);
 					} else if (editOption == EditOption.COLOR) {
-						ChatUtil.<ChatColor>processInput(sender, args, 3, "group", group.getName(), editOption.name().toLowerCase(), false, input -> ChatUtil.getValue(input, ChatColor.values()), input -> true, input -> group.update(), group::setColor, () -> group.getColor().name().toLowerCase());
+						ChatUtil.<ChatColor>processInput(sender, args, 3, "group", group.getName(), editOption.name().toLowerCase(), false, input -> ChatUtil.getEnumValue(input, ChatColor.values()), input -> true, input -> group.update(), group::setColor, () -> group.getColor().name().toLowerCase());
 					} else if (editOption == EditOption.PREFIX) {
 						ChatUtil.<String>processInput(sender, args, 3, "group", group.getName(), editOption.name().toLowerCase(), true, input -> input, input -> true, input -> group.update(), group::setPrefix, group::getPrefix);
 					} else if (editOption == EditOption.PARENT) {
@@ -120,7 +120,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 		final List<String> commands = new ArrayList<>();
 		if (sender.hasPermission("serversystem.command.group")) {
 			if (ChatUtil.getCommandLayer(1, args)) {
-				commands.addAll(ChatUtil.getList(ServerSystem.getGroups()));
+				commands.addAll(ChatUtil.getStringList(ServerSystem.getGroups()));
 			} else if (args.length == 2 && ServerSystem.getGroups().get(args[0]) == null) {
 				commands.add(Option.ADD.name().toLowerCase());
 			} else if (args.length > 1 && ServerSystem.getGroups().get(args[0]) != null) {
@@ -138,7 +138,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 				} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("prefix")) {
 					commands.add("remove");
 				} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("parent")) {
-					commands.addAll(ChatUtil.getList(ServerSystem.getGroups()));
+					commands.addAll(ChatUtil.getStringList(ServerSystem.getGroups()));
 					commands.remove(group.getName());
 					commands.add("remove");
 				} else if ((ChatUtil.getCommandLayer(4, args) || (ChatUtil.getCommandLayer(5, args)) && args[1].equals("edit")) && args[2].equals("permission")) {

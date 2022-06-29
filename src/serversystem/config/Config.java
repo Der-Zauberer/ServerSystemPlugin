@@ -96,7 +96,7 @@ public class Config {
 	public static String getTitle(TitleTypeOption type) {
 		final String text = config.getString(type.toString().toLowerCase().replace('_', '.') + ".text");
 		if (text != null) {
-			final ChatColor color = ChatUtil.getValue(config.getString(type.name().toLowerCase().replace('_', '.') + ".color"), ChatColor.values(), ChatColor.WHITE);
+			final ChatColor color = ChatUtil.getEnumValue(config.getString(type.name().toLowerCase().replace('_', '.') + ".color"), ChatColor.values(), ChatColor.WHITE);
 			return color + text;
 		}
 		return null;
@@ -104,16 +104,16 @@ public class Config {
 	
 	public static String getMessagePrefix() {
 		final String prefix = config.getString("message.prefix");
-		final ChatColor color = ChatUtil.getValue(config.getString("message.prefix_color"), ChatColor.values(), ChatColor.WHITE);
+		final ChatColor color = ChatUtil.getEnumValue(config.getString("message.prefix_color"), ChatColor.values(), ChatColor.WHITE);
 		if (prefix != null && !prefix.isEmpty()) return color + prefix; else return color + "server";
 	}
 	
 	public static ChatColor getMessageColor() {
-		return ChatUtil.getValue(config.getString("message.color"), ChatColor.values(), ChatColor.WHITE);
+		return ChatUtil.getEnumValue(config.getString("message.color"), ChatColor.values(), ChatColor.WHITE);
 	}
 	
 	public static ChatColor getErrorColor() {
-		return ChatUtil.getValue(config.getString("message.error_color"), ChatColor.values(), ChatColor.WHITE);
+		return ChatUtil.getEnumValue(config.getString("message.error_color"), ChatColor.values(), ChatColor.WHITE);
 	}
 	
 	public static List<String> getDisabledPermissions() {
@@ -236,7 +236,7 @@ public class Config {
 		final String path = "groups." + group + ".";
 		if (config.get("groups." + group) != null) {
 			final int priority = ChatUtil.getValue(config.getInt(path + "priority"), 99, 0, 99);
-			final ChatColor color = ChatUtil.getValue(config.getString(path + "color"), ChatColor.values(), ChatColor.WHITE);
+			final ChatColor color = ChatUtil.getEnumValue(config.getString(path + "color"), ChatColor.values(), ChatColor.WHITE);
 			final String prefix = config.getString(path + "prefix");
 			final List<String> permissions = ChatUtil.getValue(config.getStringList(path + "permissions"), new ArrayList<>());
 			final ServerGroup serverGroup = new ServerGroup(group, priority, color, prefix, permissions);
@@ -280,7 +280,7 @@ public class Config {
 		final String path = "warps." + warp + ".";
 		if (config.get("warps." + warp) != null && config.getLocation(path + "location") != null) {
 			ServerWarp serverWarp = new ServerWarp(warp, config.getLocation(path + "location"));
-			serverWarp.setMaterial(ChatUtil.getValue(config.getString(path + "material"), Material.values(), Material.ENDER_PEARL));
+			serverWarp.setMaterial(ChatUtil.getEnumValue(config.getString(path + "material"), Material.values(), Material.ENDER_PEARL));
 			final String global = config.getString(path + "global");
 			serverWarp.setGlobal(global != null && global.equals("false") ? false : true);
 			final String permission = config.getString(path + "prefix");
