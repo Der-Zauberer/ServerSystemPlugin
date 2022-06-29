@@ -13,7 +13,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.ServerGroup;
 import serversystem.utilities.ServerList;
@@ -300,6 +299,7 @@ public class Config {
 		if (config.get("players." + player.getUniqueId()) == null) {
 			config.set("players." + player.getUniqueId() + ".name", player.getName());
 			config.set("players." + player.getUniqueId() + ".group", "player");
+			config.set("players." + player.getUniqueId() + ".permissions", new ArrayList<String>());
 			saveConfig();
 		} else if (!config.getString("players." + player.getUniqueId() + ".name").equals(player.getName())) {
 			config.set("players." + player.getUniqueId() + ".name", player.getName());
@@ -308,11 +308,18 @@ public class Config {
 	}
 	
 	public static void setPlayerGroup(Player player, String group) {
+		if (group == null) group = "player";
 		config.set("players." + player.getUniqueId() + ".group", group);
 		saveConfig();
 	}
 	
 	public static void setPlayerGroup(String player, String group) {
+		if (group == null) group = "player";
+		Player playerObject = Bukkit.getPlayer(player);
+		if (playerObject != null) {
+			setPlayerGroup(playerObject, group);
+			return;
+		}
 		for (String key : getSection("players", false)) {
 			if (config.getString("players." + key + ".name").equals(player)) {
 				config.set("players." + key + ".group", group);
@@ -323,27 +330,59 @@ public class Config {
 	}
 	
 	public static String getPlayerGroup(Player player) {
-		return config.getString("players." + player.getUniqueId() + ".group");
+		final String group = config.getString("players." + player.getUniqueId() + ".group");
+		if (group != null) return group;
+		else return "player";
 	}
 	
 	public static String getPlayerGroup(String player) {
+		final Player playerObject = Bukkit.getPlayer(player);
+		if (playerObject != null) return getPlayerGroup(playerObject);
 		for (String key : getSection("players", false)) {
 			if (config.getString("players." + key + ".name").equals(player)) {
 				return config.getString("players." + key + ".group");
 			}
 		}
-		return null;
+		return "player";
+	}
+	
+	public static void setPlayerSpecificPermissions(Player player, List<String> permissions) {
+		if (permissions == null) permissions = new ArrayList<>();
+		config.set("players." + player.getUniqueId() + ".permissions", permissions);
+		saveConfig();
+	}
+	
+	public static void setPlayerSpecificPermissions(String player, List<String> permissions) {
+		if (permissions == null) permissions = new ArrayList<>();
+		Player playerObject = Bukkit.getPlayer(player);
+		if (playerObject != null) {
+			setPlayerSpecificPermissions(playerObject, permissions);
+			return;
+		}
+		for (String key : getSection("players", false)) {
+			if (config.getString("players." + key + ".name").equals(player)) {
+				config.set("players." + key + ".permissions", permissions);
+				saveConfig();
+				return;
+			}
+		}
 	}
 	
 	public static List<String> getPlayerSpecificPermissions(Player player) {
-		return config.getStringList("players." + player.getUniqueId() + ".permissions");
+		final List<String> permissions = config.getStringList("players." + player.getUniqueId() + ".permissions");
+		if (permissions != null) return permissions;
+		else return new ArrayList<>();
 	}
 	
-	public static boolean isPlayerExisting(String player) {
+	public static List<String> getPlayerSpecificPermissions(String player) {
+		final Player playerObject = Bukkit.getPlayer(player);
+		if (playerObject != null) return getPlayerSpecificPermissions(playerObject);
 		for (String key : getSection("players", false)) {
-			if (config.getString("players." + key + ".name").equals(player)) return true;
+			if (config.getString("players." + key + ".name").equals(player)) {
+				return config.getStringList("players." + key + ".permissions");
+			}
 		}
-		return false;
+		return new ArrayList<>();
 	}
 	
 	public static List<String> getPlayers() {

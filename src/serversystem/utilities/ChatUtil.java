@@ -175,14 +175,15 @@ public class ChatUtil implements Listener {
 		}
 	}
 	
-	public static boolean processListInput(CommandSender sender, String args[], int offset, String option, List<String> list, Runnable successAction) {
+	public static void processListInput(CommandSender sender, String args[], int offset, String option, List<String> list, Runnable successAction) {
 		if (args.length == offset || (args.length == offset + 1 && !args[offset].equals("list"))) {
 			sendErrorMessage(sender, NOT_ENOUGHT_ARGUMENTS);
 		} else if (args.length == offset + 2 || (args.length == offset + 1 && args[offset].equals("list"))) {
 			if (args[offset].equals("list")) {
-				ChatUtil.sendMessage(sender, "The list " + option + " has the following entries:");
-				for (int i = 0; i < 30 && i < list.size() ; i++) ChatUtil.sendMessage(sender, "    " + list.get(i));
+				ChatUtil.sendMessage(sender, "The list " + option + " contains following:");
+				for (int i = 0; i < 30 && i < list.size() ; i++) ChatUtil.sendMessage(sender, "  - " + list.get(i));
 				if (list.size() > 29) ChatUtil.sendMessage(sender, "    " + "And " + (list.size() - 29) + "more...");
+				return;
 			}
 			String string = args[offset + 1];
 			if (args[offset].equals("add")) {
@@ -191,7 +192,7 @@ public class ChatUtil implements Listener {
 					ChatUtil.sendMessage(sender, "Added " + string + " to the list " + option + "!");
 					successAction.run();
 				} else {
-					ChatUtil.sendErrorMessage(sender, string + " is already in the list " + option + "!");
+					ChatUtil.sendErrorMessage(sender, "The list " + option + " already contains " + string + "!");
 				}
 			} else if (args[offset].equals("remove")) {
 				if (list.contains(string)) {
@@ -199,13 +200,13 @@ public class ChatUtil implements Listener {
 					ChatUtil.sendMessage(sender, "Removed " + string + " from the list " + option + "!");
 					successAction.run();
 				} else {
-					ChatUtil.sendErrorMessage(sender, string + " is not in the list " + option + "!");
+					ChatUtil.sendErrorMessage(sender, "The list " + option + " does not contain " + string + "!");
 				}
 			}
 		} else {
 			sendErrorMessage(sender, TO_MANY_ARGUMENTS);
 		}
-		return false;
+		return;
 	}
 	
 	public static <T> T getValue(T value, T standard) {
