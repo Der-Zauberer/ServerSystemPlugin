@@ -21,7 +21,7 @@ import serversystem.utilities.WorldGroup;
 
 public class WorldCommand implements CommandExecutor, TabCompleter{
 	
-	private enum Option {TELEPORT, ADD, REMOVE, EDIT}
+	private enum Option {TELEPORT, ADD, REMOVE, INFO, EDIT}
 	private enum EditOption {WORLD_GROUP, GAMEMODE, PERMISSION}
 	
 	@Override
@@ -69,6 +69,24 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 					ChatUtil.sendMessage(sender, "The world " + world.getName() + " will be removed after a restart!");
 				} else {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
+				}
+			} else if (option == Option.INFO) {
+				if (args.length > 2) {
+					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
+				} else {
+					ChatUtil.sendSeperator(sender);
+					ChatUtil.sendMessage(sender, "World " + world.getName() + ":");
+					ChatUtil.sendMessage(sender, "  world_group: " + Config.getWorldGroup(world));
+					ChatUtil.sendMessage(sender, "  permission: " + (Config.getWorldPermission(world) != null ? Config.getWorldPermission(world) : "-"));
+					ChatUtil.sendMessage(sender, "  gamemode: " + Config.getWorldGamemode(world).name().toLowerCase());
+					ChatUtil.sendMessage(sender, "  damage: " + Config.getWorldOption(world, WorldOption.DAMAGE));
+					ChatUtil.sendMessage(sender, "  hunger: " + Config.getWorldOption(world, WorldOption.HUNGER));
+					ChatUtil.sendMessage(sender, "  pvp: " + Config.getWorldOption(world, WorldOption.PVP));
+					ChatUtil.sendMessage(sender, "  explosion: " + Config.getWorldOption(world, WorldOption.EXPLOSION));
+					ChatUtil.sendMessage(sender, "  protection: " + Config.getWorldOption(world, WorldOption.PROTECTION));
+					ChatUtil.sendMessage(sender, "  world_spawn: " + Config.getWorldOption(world, WorldOption.WORLD_SPAWN));
+					ChatUtil.sendMessage(sender, "  death_message: " + Config.getWorldOption(world, WorldOption.DEATH_MESSAGE));
+					ChatUtil.sendSeperator(sender);
 				}
 			} else if (option == Option.EDIT) {
 				if (args.length > 4) {

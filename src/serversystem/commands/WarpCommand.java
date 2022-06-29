@@ -18,7 +18,7 @@ import serversystem.utilities.ServerWarp;
 
 public class WarpCommand implements CommandExecutor, TabCompleter {
 	
-	private enum Option {TELEPORT, ADD, REMOVE, EDIT}
+	private enum Option {TELEPORT, ADD, REMOVE, INFO, EDIT}
 	private enum EditOption {MATERIAL, GLOBAL, PERMISSION}
 
 	@Override
@@ -67,6 +67,18 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 				} else {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 				}
+			} else if (option == Option.INFO) {
+					if (args.length > 2) {
+						ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
+					} else {
+						ChatUtil.sendSeperator(sender);
+						ChatUtil.sendMessage(sender, "Warp " + warp.getName() + ":");
+						ChatUtil.sendMessage(sender, "  location: " + (int) warp.getLocation().getX() + " " + (int) warp.getLocation().getY() + " " + (int) warp.getLocation().getZ());
+						ChatUtil.sendMessage(sender, "  material: " + warp.getMaterial().name().toLowerCase());
+						ChatUtil.sendMessage(sender, "  global: " + warp.isGlobal());
+						ChatUtil.sendMessage(sender, "  permission: " + (!warp.getPermission().isEmpty() ? warp.getPermission() : "-"));
+						ChatUtil.sendSeperator(sender);
+					}
 			} else if (option == Option.EDIT) {
 				if (args.length > 4) {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);

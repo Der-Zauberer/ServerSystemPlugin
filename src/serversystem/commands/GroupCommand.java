@@ -19,7 +19,7 @@ import serversystem.utilities.TeamUtil;
 
 public class GroupCommand implements CommandExecutor, TabCompleter {
 	
-	private enum Option {ADD, REMOVE, PLAYER, EDIT}
+	private enum Option {ADD, REMOVE, INFO, PLAYER, EDIT}
 	private enum EditOption {PRIORITY, COLOR, PREFIX, PARENT, PERMISSION}
 
 	@Override
@@ -53,6 +53,19 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 				} else {
 					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
 				}
+			} else if (option == Option.INFO) {
+				if (args.length > 2) {
+					ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
+				} else {
+					ChatUtil.sendSeperator(sender);
+					ChatUtil.sendMessage(sender, "Group " + group.getName() + ":");
+					ChatUtil.sendMessage(sender, "  priority: " + group.getPriority());
+					ChatUtil.sendMessage(sender, "  color: " + group.getColor().name().toLowerCase());
+					ChatUtil.sendMessage(sender, "  prefix: " + (!group.getPrefix().isEmpty() ? group.getPrefix() : "-"));
+					ChatUtil.sendMessage(sender, "  parent: " + (group.getParent() != null ? group.getParent().getName() : "-"));
+					ChatUtil.sendMessage(sender, "  permission: [" + group.getPermissions().size() + "]");
+					ChatUtil.sendSeperator(sender);
+				}
 			} else if (option == Option.PLAYER) {
 				final String playerName = args[2];
 				if (args.length < 3) {
@@ -68,7 +81,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 						PermissionUtil.resetPlayerPermissions(player);
 						TeamUtil.addGroupToPlayer(player);
 					}
-					ChatUtil.sendMessage(sender, "Moved the player " + playerName + " in group " + group.getName() + "!");
+					ChatUtil.sendMessage(sender, "The group of the player " + playerName + " has been set to " + group.getName() + "!");
 				}
 			} else if (option == Option.EDIT) {
 				if (args.length < 3) {
@@ -129,6 +142,8 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 					commands.addAll(ChatUtil.getEnumList(Option.values()));
 				} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("teleport")) {
 					commands.addAll(ChatUtil.getPlayerList(sender));
+				} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("player")) {
+					commands.addAll(Config.getPlayers());
 				} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("edit")) {
 					commands.addAll(ChatUtil.getEnumList(EditOption.values()));
 				} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("priority")) {

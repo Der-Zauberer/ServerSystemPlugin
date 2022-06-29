@@ -65,6 +65,10 @@ public class ChatUtil implements Listener {
 		sender.sendMessage(prefix + errorColor + " The " + type + " " + name + " does not exist");
 	}
 	
+	public static void sendSeperator(CommandSender sender) {
+		sender.sendMessage(messageColor + "----------------------------------------");
+	}
+	
 	public static void sendBroadcastMessage(String message) {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.sendMessage(prefix + messageColor + " " + message);
@@ -183,9 +187,11 @@ public class ChatUtil implements Listener {
 				if (list.isEmpty()) {
 					ChatUtil.sendMessage(sender, "The list " + option + " is empty!");
 				} else {
+					ChatUtil.sendSeperator(sender);
 					ChatUtil.sendMessage(sender, "The list " + option + " contains following:");
 					for (int i = 0; i < 30 && i < list.size() ; i++) ChatUtil.sendMessage(sender, "  - " + list.get(i));
 					if (list.size() > 29) ChatUtil.sendMessage(sender, "    " + "And " + (list.size() - 29) + "more...");
+					ChatUtil.sendSeperator(sender);
 				}
 				return;
 			}

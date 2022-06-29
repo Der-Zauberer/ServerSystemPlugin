@@ -119,8 +119,7 @@ public class ServerGroup extends ServerComponent {
 		List<String> permissions = new ArrayList<>();
 		final ServerGroup group = getGroupByPlayer(player);
 		if (group != null) permissions.addAll(group.getSelfAndParentPermissions());
-		final List<String> playerPermissions = Config.getPlayerSpecificPermissions(player);
-		if (playerPermissions != null) permissions.addAll(playerPermissions);
+		permissions.addAll(Config.getPlayerSpecificPermissions(player));
 		return permissions;
 	}
 	
