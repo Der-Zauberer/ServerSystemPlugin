@@ -180,9 +180,13 @@ public class ChatUtil implements Listener {
 			sendErrorMessage(sender, NOT_ENOUGHT_ARGUMENTS);
 		} else if (args.length == offset + 2 || (args.length == offset + 1 && args[offset].equals("list"))) {
 			if (args[offset].equals("list")) {
-				ChatUtil.sendMessage(sender, "The list " + option + " contains following:");
-				for (int i = 0; i < 30 && i < list.size() ; i++) ChatUtil.sendMessage(sender, "  - " + list.get(i));
-				if (list.size() > 29) ChatUtil.sendMessage(sender, "    " + "And " + (list.size() - 29) + "more...");
+				if (list.isEmpty()) {
+					ChatUtil.sendMessage(sender, "The list " + option + " is empty!");
+				} else {
+					ChatUtil.sendMessage(sender, "The list " + option + " contains following:");
+					for (int i = 0; i < 30 && i < list.size() ; i++) ChatUtil.sendMessage(sender, "  - " + list.get(i));
+					if (list.size() > 29) ChatUtil.sendMessage(sender, "    " + "And " + (list.size() - 29) + "more...");
+				}
 				return;
 			}
 			String string = args[offset + 1];
