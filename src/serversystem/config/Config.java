@@ -55,9 +55,7 @@ public class Config {
 		setDefault("groups", "");
 		setDefault("warps", "");
 		setDefault("players", "");
-		for(World world : Bukkit.getWorlds()) {
-			addWorld(world);
-		}
+		Bukkit.getWorlds().forEach(Config::addWorld);
 		saveConfig();
 	}
 	

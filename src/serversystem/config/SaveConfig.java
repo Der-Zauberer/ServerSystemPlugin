@@ -65,6 +65,15 @@ public class SaveConfig {
 		config.set(path + ".pitch", player.getLocation().getPitch());
 		config.set(path + ".yaw", player.getLocation().getYaw());
 		config.set(path + ".fly", player.isFlying());
+		int gamemode = 2;
+		switch (player.getGameMode()) {
+			case SURVIVAL: gamemode = 0; break;
+			case CREATIVE: gamemode = 1; break;
+			case ADVENTURE: gamemode = 2; break;
+			case SPECTATOR: gamemode = 3; break;
+			default: break;
+		}
+		config.set(path + ".gamemode", gamemode);
 		saveConfig();
 	}
 
@@ -87,6 +96,26 @@ public class SaveConfig {
 		} catch (Exception exception) {
 			Bukkit.getLogger().warning("Something went wrong while loadig fly mode of " + player.getDisplayName() + "!");
 			return false;
+		}
+	}
+	
+	public static GameMode loadGamemode(Player player, World world) {
+		try {
+			final String path = "worlds." + world.getName() + "." + player.getUniqueId();
+				if (config.get(path + ".gamemode") != null) {
+					switch (config.getInt(path + ".gamemode")) {
+					case 0: return GameMode.SURVIVAL;
+					case 1: return GameMode.CREATIVE;
+					case 2: return GameMode.ADVENTURE;
+					case 3: return GameMode.SPECTATOR;
+					default: return Config.getWorldGamemode(world);
+				}
+			} else {
+				return Config.getWorldGamemode(world);
+			}
+		} catch (Exception exception) {
+			Bukkit.getLogger().warning("Something went wrong while loadig gamemode mode of " + player.getDisplayName() + "!");
+			return Config.getWorldGamemode(world);
 		}
 	}
 	
