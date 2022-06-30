@@ -153,7 +153,6 @@ public class WorldGroup {
 		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
 		final World world = Bukkit.getWorld(name);
 		Config.addWorld(world);
-		Config.addLoadWorld(world.getName());
 		addWorldGroup(new WorldGroup(world.getName(), world));
 	}
 	
@@ -161,7 +160,6 @@ public class WorldGroup {
 		Bukkit.getWorlds().add(new WorldCreator(name).createWorld());
 		final World world = Bukkit.getWorld(name);
 		Config.addWorld(world);
-		Config.addLoadWorld(world.getName());
 		worldgroup.addWorld(world);
 	}
 	

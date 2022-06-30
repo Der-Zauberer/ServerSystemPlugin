@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import serversystem.commands.VanishCommand;
-import serversystem.main.ServerSystem;
 
 public class TeamUtil {
 	
@@ -22,7 +21,6 @@ public class TeamUtil {
 	}
 	
 	public static void createTeams() {
-		ServerSystem.loadGroups();
 		createTeam(TEAMVANISH, "[VANISH]", ChatColor.GRAY);
 		teams.add(TEAMVANISH);
 	}

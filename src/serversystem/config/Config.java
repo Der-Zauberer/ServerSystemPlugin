@@ -28,6 +28,7 @@ public class Config {
 	public enum WorldOption{DAMAGE, HUNGER, PVP, EXPLOSION, PROTECTION, WORLD_SPAWN, DEATH_MESSAGE}
 	
 	static {
+		loadConfig();
 		setDefault("join_message", true);
 		setDefault("leave_message", true);
 		setDefault("enable_portals", true);
@@ -48,9 +49,8 @@ public class Config {
 		setDefault("message.prefix_color", "yellow");
 		setDefault("message.color", "yellow");
 		setDefault("message.error_color", "red");
-		setDefault("disabled_permissions", "");
-		setDefault("disabled_blocks", "");
-		setDefault("load_worlds", "");
+		setDefault("disabled_permissions", new ArrayList<String>());
+		setDefault("disabled_blocks", new ArrayList<String>());
 		setDefault("worlds", "");
 		setDefault("groups", "");
 		setDefault("warps", "");
@@ -122,26 +122,6 @@ public class Config {
 	
 	public static List<String> getDisabledBlocks() {
 		return config.getStringList("disabled_blocks");
-	}
-	
-	public static void addLoadWorld(String world) {
-		List<String> list = getLoadWorlds();
-		list.add(world);
-		config.set("load_worlds", list);
-		saveConfig();
-	}
-	
-	public static void removeLoadWorld(String world) {
-		final List<String> list = getLoadWorlds();
-		list.remove(world);
-		config.set("load_worlds", list);
-		config.set("worlds." + world, null);
-		SaveConfig.removeWorld(world);
-		saveConfig();
-	}
-	
-	public static List<String> getLoadWorlds() {
-		return config.getStringList("load_worlds");
 	}
 	
 	public static void addWorld(World world) {
@@ -217,13 +197,19 @@ public class Config {
 		return config.getBoolean("worlds." + world.getName() + "." + option.toString().toLowerCase());
 	}
 	
+	public static List<String> getWorlds() {
+		final List<String> worlds = new ArrayList<>();
+		getSection("worlds", false).forEach(worlds::add);
+		return worlds;
+	}
+	
 	public static void saveGroup(ServerGroup group) {
 		final String path = "groups." + group.getName() + ".";
 		config.set(path + "priority", ChatUtil.getValue(group.getPriority(), 99, 1, 99));
 		config.set(path + "color", group.getColor().name().toLowerCase());
 		config.set(path + "prefix", ChatUtil.getValue(group.getPrefix(), ""));
 		config.set(path + "parent", group.getParent() != null ? group.getParent().getName() : "");
-		config.set(path + "permissions", !group.getPermissions().isEmpty() ? group.getPermissions() : "");
+		config.set(path + "permissions", group.getPermissions());
 		saveConfig();
 	}
 	
@@ -401,8 +387,10 @@ public class Config {
 		}
 	}
 	
-	public static void reloadConfig() {
-		config = YamlConfiguration.loadConfiguration(file);
+	public static void loadConfig() {
+		try {
+			config = YamlConfiguration.loadConfiguration(file);
+		} catch (IllegalArgumentException exception) {}
 	}
 
 }

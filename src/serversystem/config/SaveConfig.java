@@ -17,9 +17,10 @@ import serversystem.utilities.WorldGroup;
 public class SaveConfig {
 
 	private static final File file = new File("plugins/ServerSystem", "save_config.yml");
-	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+	public static FileConfiguration config;
 
 	static {
+		loadConfig();
 		setDefault("worlds", "");
 		setDefault("world_groups", "");
 		if (!file.exists()) {
@@ -179,6 +180,12 @@ public class SaveConfig {
 		} catch (IOException exception) {
 			Bukkit.getLogger().warning("Something went wrong while saving plugins/ServerSystem/save_config.yml!");
 		}
+	}
+	
+	public static void loadConfig() {
+		try {
+			config = YamlConfiguration.loadConfiguration(file);
+		} catch (IllegalArgumentException exception) {}
 	}
 
 }

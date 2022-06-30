@@ -135,7 +135,7 @@ public class ServerGroup extends ServerComponent {
 	
 	public static void reloadAll() {
 		TeamUtil.resetTeams();
-		Config.reloadConfig();
+		Config.loadConfig();
 		Config.loadGroups(ServerSystem.getGroups());
 		TeamUtil.createTeams();
 		for (Player player : Bukkit.getOnlinePlayers()) {

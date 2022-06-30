@@ -44,7 +44,7 @@ import serversystem.utilities.WorldGroup;
 
 public class ServerSystem extends JavaPlugin {
 
-	private static ServerList<ServerWarp> warps = new ServerList<>(Config::loadWarps);
+	private static ServerList<ServerWarp> warps;
 	private static ServerList<ServerGroup> groups;
 	private static ServerSystem instance;
 
@@ -54,11 +54,9 @@ public class ServerSystem extends JavaPlugin {
 		registerEvents();
 		registerCommands();
 		registerWorldSigns();
-		for (String world : Config.getLoadWorlds()) {
-			if (Bukkit.getWorld(world) == null) {
-				Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
-			}
-		}
+		Config.getWorlds().stream().filter(world -> Bukkit.getWorld(world) == null).forEach(world ->  {
+			Bukkit.getWorlds().add(new WorldCreator(world).createWorld());
+		});
 		WorldGroup.autoCreateWorldGroups();
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			PlayerQuitListener.onPlayerQuit(new PlayerQuitEvent(player, ""));
@@ -117,14 +115,12 @@ public class ServerSystem extends JavaPlugin {
 	}
 	
 	public static ServerList<ServerWarp> getWarps() {
+		if (warps == null) warps = new ServerList<>(Config::loadWarps);
 		return warps;
 	}
 	
-	public static void loadGroups() {
-		groups = new ServerList<>(Config::loadGroups);
-	}
-	
 	public static ServerList<ServerGroup> getGroups() {
+		if (groups == null) groups = new ServerList<>(Config::loadGroups);
 		return groups;
 	}
 	

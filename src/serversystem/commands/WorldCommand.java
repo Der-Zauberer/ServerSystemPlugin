@@ -64,7 +64,6 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 				}
 			} else if (option == Option.REMOVE) {
 				if (args.length < 3) {
-					Config.removeLoadWorld(world.getName());
 					Config.removeWorld(world);
 					ChatUtil.sendMessage(sender, "The world " + world.getName() + " will be removed after a restart!");
 				} else {
