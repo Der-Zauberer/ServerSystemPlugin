@@ -132,7 +132,6 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 			vorbiddenMaterials.add(Material.ARMOR_STAND);
 			vorbiddenMaterials.add(Material.PAINTING);
 			vorbiddenMaterials.add(Material.ITEM_FRAME);
-			vorbiddenMaterials.add(Material.GLOW_ITEM_FRAME);
 			for (Material material : vorbiddenMaterials) {
 				if (mainMaterial == material || secondaryMaterial == material) {
 					event.setCancelled(true);
@@ -144,6 +143,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 			else if (mainMaterial.name().contains("ITEM_FRAME") || secondaryMaterial.name().contains("ITEM_FRAME")) event.setCancelled(true);
 			else if (mainMaterial.name().contains("SPAWN_EGG") || secondaryMaterial.name().contains("SPAWN_EGG")) event.setCancelled(true);
 			else if (mainMaterial.name().contains("BUCKET") || secondaryMaterial.name().contains("BUCKET")) event.setCancelled(true);
+			else if (mainMaterial.name().contains("ITEM_FRAME") || secondaryMaterial.name().contains("ITEM_FRAME")) event.setCancelled(true);
 		}
 	}
 	
