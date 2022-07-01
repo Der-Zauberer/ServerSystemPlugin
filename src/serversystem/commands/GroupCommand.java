@@ -84,7 +84,7 @@ public class GroupCommand implements CommandExecutor, TabCompleter {
 					Config.setPlayerGroup(playerName, group.getName());
 					Player player = Bukkit.getPlayer(playerName);
 					if (player != null) {
-						PermissionUtil.resetPlayerPermissions(player);
+						PermissionUtil.loadPlayerPermissions(player);
 						TeamUtil.addGroupToPlayer(player);
 					}
 					ChatUtil.sendMessage(sender, "The group of the player " + playerName + " has been set to " + group.getName() + "!");
