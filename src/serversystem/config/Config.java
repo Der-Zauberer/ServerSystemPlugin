@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,7 +22,7 @@ import serversystem.utilities.ServerWarp;
 public class Config {
 	
 	private static final File file = new File("plugins/ServerSystem", "config.yml");
-	public static FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+	public static FileConfiguration config;
 	
 	public enum ConfigOption{JOIN_MESSAGE, QUIT_MESSAGE, ENABLE_PORTALS, ENABLE_WORLD_GROUPS, GLOBAL_CHAT_AND_TABLIST, GLOBAL_INVENTORY, LOBBY}
 	public enum TitleTypeOption{TITLE, SUBTITLE, TABLIST_TITLE, TABLIST_SUBTITLE}
@@ -248,7 +249,12 @@ public class Config {
 	
 	public static void saveWarp(ServerWarp warp) {
 		final String path = "warps." + warp.getName() + ".";
-		config.set(path + "location", warp.getLocation());
+		config.set(path + "location.world", warp.getLocation().getWorld().getName());
+		config.set(path + "location.x", warp.getLocation().getBlockX());
+		config.set(path + "location.y", warp.getLocation().getBlockY());
+		config.set(path + "location.z", warp.getLocation().getZ());
+		config.set(path + "location.pitch", warp.getLocation().getPitch());
+		config.set(path + "location.yaw", warp.getLocation().getYaw());
 		config.set(path + "material", warp.getMaterial().name().toLowerCase());
 		config.set(path + "global", warp.isGlobal());
 		config.set(path + "permission", ChatUtil.getValue(warp.getPermission(), ""));
@@ -262,8 +268,8 @@ public class Config {
 
 	public static ServerWarp loadWarp(String warp) {
 		final String path = "warps." + warp + ".";
-		if (config.get("warps." + warp) != null && config.getLocation(path + "location") != null) {
-			ServerWarp serverWarp = new ServerWarp(warp, config.getLocation(path + "location"));
+		if (config.get("warps." + warp) != null && getLocation(path + "location") != null) {
+			ServerWarp serverWarp = new ServerWarp(warp, getLocation(path + "location"));
 			serverWarp.setMaterial(ChatUtil.getEnumValue(config.getString(path + "material"), Material.values(), Material.ENDER_PEARL));
 			final String global = config.getString(path + "global");
 			serverWarp.setGlobal(global != null && global.equals("false") ? false : true);
@@ -375,6 +381,20 @@ public class Config {
 			players.add(config.getString("players." + key + ".name"));
 		}
 		return players;
+	}
+	
+	private static Location getLocation(String path) {
+		if (config.get(path) != null && config.getString(path + ".world") != null && Bukkit.getWorld(config.getString(path + ".world")) != null) {
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("world", config.getString(path + ".world"));
+			map.put("x", config.get(path + ".x", 0));
+			map.put("y", config.get(path + ".y", 0));
+			map.put("z", config.get(path + ".z", 0));
+			map.put("pitch", config.get(path + ".pitch", 0));
+			map.put("yaw", config.get(path + ".yaw", 0));
+			return Location.deserialize(map);
+		}
+		return null;
 	}
 	
 	public static void saveConfig() {

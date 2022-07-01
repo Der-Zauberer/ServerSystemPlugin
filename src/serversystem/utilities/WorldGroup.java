@@ -3,6 +3,7 @@ package serversystem.utilities;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -106,10 +107,13 @@ public class WorldGroup {
 	}
 	
 	public static void teleportPlayer(Player player, World world) {
-		if (Config.getWorldOption(world, WorldOption.WORLD_SPAWN) || SaveConfig.loadLocation(player, world) == null) {
-			player.teleport(world.getSpawnLocation());
-		} else {
-			player.teleport(SaveConfig.loadLocation(player, world));
+		if (player.getWorld() != world) {
+			final Location location = SaveConfig.loadLocation(player, world);
+			if (Config.getWorldOption(world, WorldOption.WORLD_SPAWN) || location == null) {
+				player.teleport(world.getSpawnLocation());
+			} else {
+				player.teleport(location);
+			}
 		}
 	}
 	

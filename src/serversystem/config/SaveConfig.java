@@ -3,6 +3,7 @@ package serversystem.config;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -57,14 +58,15 @@ public class SaveConfig {
 	}
 	
 	public static void saveLocation(Player player) {
-		final String path = "worlds." + player.getWorld().getName() + "." + player.getUniqueId();
-		config.set(path + ".name", player.getDisplayName());
-		config.set(path + ".x", player.getLocation().getX());
-		config.set(path + ".y", player.getLocation().getY());
-		config.set(path + ".z", player.getLocation().getZ());
-		config.set(path + ".pitch", player.getLocation().getPitch());
-		config.set(path + ".yaw", player.getLocation().getYaw());
-		config.set(path + ".fly", player.isFlying());
+		final String path = "worlds." + player.getWorld().getName() + "." + player.getUniqueId() + ".";
+		config.set(path + "name", player.getDisplayName());
+		config.set(path + "location.world", player.getLocation().getWorld().getName());
+		config.set(path + "location.x", player.getLocation().getX());
+		config.set(path + "location.y", player.getLocation().getY());
+		config.set(path + "location.z", player.getLocation().getZ());
+		config.set(path + "location.pitch", player.getLocation().getPitch());
+		config.set(path + "location.yaw", player.getLocation().getYaw());
+		config.set(path + "fly", player.isFlying());
 		int gamemode = 2;
 		switch (player.getGameMode()) {
 			case SURVIVAL: gamemode = 0; break;
@@ -73,16 +75,14 @@ public class SaveConfig {
 			case SPECTATOR: gamemode = 3; break;
 			default: break;
 		}
-		config.set(path + ".gamemode", gamemode);
+		config.set(path + "gamemode", gamemode);
 		saveConfig();
 	}
 
 	public static Location loadLocation(Player player, World world) {
 		try {
-			if (config.get("worlds." + world.getName() + "." + player.getUniqueId()) == null) return null;
-			final String path = "worlds." + world.getName() + "." + player.getUniqueId();
-			final Location location = new Location(world, config.getDouble(path + ".x"), config.getDouble(path + ".y"), config.getDouble(path + ".z"), (float) config.getDouble(path + ".pitch"), (float) config.getDouble(path + ".yaw"));
-			return location;
+			final String path = "worlds." + world.getName() + "." + player.getUniqueId() + ".location";
+			return getLocation(path);
 		} catch (Exception exception) {
 			Bukkit.getLogger().warning("Something went wrong while loadig location of " + player.getDisplayName() + "!");
 			return null;
@@ -203,6 +203,20 @@ public class SaveConfig {
 		player.getInventory().setContents(content);
 	}
 
+	private static Location getLocation(String path) {
+		if (config.get(path) != null && config.getString(path + ".world") != null && Bukkit.getWorld(config.getString(path + ".world")) != null) {
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("world", config.getString(path + ".world"));
+			map.put("x", config.get(path + ".x", 0));
+			map.put("y", config.get(path + ".y", 0));
+			map.put("z", config.get(path + ".z", 0));
+			map.put("pitch", config.get(path + ".pitch", 0));
+			map.put("yaw", config.get(path + ".yaw", 0));
+			return Location.deserialize(map);
+		}
+		return null;
+	}
+	
 	public static void saveConfig() {
 		try {
 			config.save(file);
