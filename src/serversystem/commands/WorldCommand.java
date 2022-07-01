@@ -103,7 +103,9 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 						}, input -> true , input -> {}, bool -> Config.setWorldOption(world, worldOption, bool), () -> Config.getWorldOption(world, worldOption));
 					} else if (editOption != null) {
 						if (editOption == EditOption.WORLD_GROUP) {
-							ChatUtil.<String>processInput(sender, args, 3, "warp", world.getName(), editOption.name().toLowerCase(), false, input -> input, input -> true , input -> {}, group -> Config.setWorldGroup(world, group), () ->  Config.getWorldGroup(world));
+							ChatUtil.<String>processInput(sender, args, 3, "warp", world.getName(), editOption.name().toLowerCase(), false, input -> input, input -> true , input -> {
+								ChatUtil.sendMessage(sender, "The world " + world.getName() + " will update the world_group after a restart or reload!");
+							}, group -> Config.setWorldGroup(world, group), () ->  Config.getWorldGroup(world));
 						} else if (editOption == EditOption.PERMISSION) {
 							ChatUtil.<String>processInput(sender, args, 3, "warp", world.getName(), editOption.name().toLowerCase(), false, input -> input, input -> true , input -> {}, permission -> Config.setWorldPermission(world, permission), () ->  Config.getWorldPermission(world));
 						} else if (editOption == EditOption.GAMEMODE) {
