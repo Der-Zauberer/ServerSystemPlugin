@@ -64,6 +64,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	private static boolean isBlockDisabled(Block block, Player player) {
 		if(!player.hasPermission("serversystem.tools.disabledblocks")) {
 			for (String string : Config.getDisabledBlocks()) {
+				if (!string.contains(":")) string = "minecraft:" + string;
 				if (block.getBlockData().getAsString().equals(string)) return true;
 			}
 		}
