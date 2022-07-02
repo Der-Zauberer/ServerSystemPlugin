@@ -17,7 +17,7 @@ public class WorldListMenu extends PlayerInventory {
 		setFixed(true);
 		final ArrayList<ItemStack> items = new ArrayList<>();
 		for (World world : Bukkit.getWorlds()) {
-			items.add(new ExtendedItemStack(world.getName(), Material.ZOMBIE_HEAD));
+			items.add(new ExtendedItemStack(world.getName(), Material.LAPIS_BLOCK));
 		}
 		setItemList(items, event -> setWorld(event.getCurrentItem(), player), event -> new AdminMenu(player).open());
 	}

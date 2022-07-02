@@ -32,7 +32,6 @@ import serversystem.events.PlayerTeleportListener;
 import serversystem.signs.WarpSign;
 import serversystem.signs.WorldSign;
 import serversystem.utilities.ChatUtil;
-import serversystem.utilities.ExtendedItemStack;
 import serversystem.utilities.PermissionUtil;
 import serversystem.utilities.PlayerInventory;
 import serversystem.utilities.ServerGroup;
@@ -88,7 +87,6 @@ public class ServerSystem extends JavaPlugin {
 		Bukkit.getPluginManager().registerEvents(new BuildCommand(), instance);
 		
 		Bukkit.getPluginManager().registerEvents(ChatUtil.getListener(), instance);
-		Bukkit.getPluginManager().registerEvents(ExtendedItemStack.getListener(), instance);
 		Bukkit.getPluginManager().registerEvents(PermissionUtil.getListener(), instance);
 		Bukkit.getPluginManager().registerEvents(PlayerInventory.getListener(), instance);
 		Bukkit.getPluginManager().registerEvents(ServerSign.getListener(), instance);

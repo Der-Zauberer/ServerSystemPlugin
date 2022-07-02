@@ -1,5 +1,6 @@
 package serversystem.utilities;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,12 +13,17 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
 import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
@@ -144,8 +150,30 @@ public class ChatUtil implements Listener {
 	public static void sendServerTablistTitle(Player player) {
 		final String tablistTitle = Config.getTitle(TitleTypeOption.TABLIST_TITLE);
 		final String tablistSubtitle = Config.getTitle(TitleTypeOption.TABLIST_SUBTITLE);
-		if (tablistTitle != null) player.setPlayerListHeader(tablistTitle);
-		if (tablistSubtitle != null) player.setPlayerListFooter(tablistSubtitle);
+		final String tablistTitleColor = Config.getTitle(TitleTypeOption.TABLIST_TITLE_COLOR);
+		final String tablistSubtitleColor = Config.getTitle(TitleTypeOption.TABLIST_SUBTITLE_COLOR);
+		sendTablist(player, tablistTitle, tablistTitleColor, tablistSubtitle, tablistSubtitleColor);
+	}
+	
+	private static void sendTablist(Player player, String title, String titleColor, String subtitle, String subtitleColor) {
+        IChatBaseComponent tabheader = ChatSerializer.a("{\"text\": \"" + title + "\",\"color\":\"" + titleColor + "\"}");
+        IChatBaseComponent tabfooter = ChatSerializer.a("{\"text\": \"" + subtitle + "\",\"color\":\"" + subtitleColor + "\"}");
+        PacketPlayOutPlayerListHeaderFooter tablist = new PacketPlayOutPlayerListHeaderFooter();
+
+        try {
+            Field headerField = tablist.getClass().getDeclaredField("a");
+            headerField.setAccessible(true);
+            headerField.set(tablist, tabheader);
+            headerField.setAccessible(!headerField.isAccessible());
+            Field footerField = tablist.getClass().getDeclaredField("b");
+            footerField.setAccessible(true);
+            footerField.set(tablist, tabfooter);
+            footerField.setAccessible(!footerField.isAccessible());
+        } catch (Exception exception) {
+        	exception.printStackTrace();
+        } finally {
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket(tablist);
+        }
 	}
 	
 	public static List<Player> getVisiblePlayers(Player player, boolean excludeVanished) {

@@ -175,7 +175,7 @@ public class PermissionUtil implements Listener {
 	}
 	
 	private static boolean isActionForbidden(Material material, Player player) {
-		return (material == Material.COMMAND_BLOCK || material == Material.COMMAND_BLOCK_MINECART) && !player.hasPermission("serversystem.tools.commandblock");
+		return (material == Material.COMMAND || material == Material.COMMAND_MINECART) && !player.hasPermission("serversystem.tools.commandblock");
 	}
 	
 	public static ListenerClass getListener() {

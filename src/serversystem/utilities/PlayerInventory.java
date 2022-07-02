@@ -126,7 +126,7 @@ public class PlayerInventory {
             try {
                 if (event.getCurrentItem() == null) return;
                 for (PlayerInventory inventory : inventories) {
-                    if (event.getClickedInventory().equals(inventory.inventory)) {
+                    if (event.getInventory().equals(inventory.inventory)) {
                         if (inventory.actions.containsKey(event.getSlot()))
                             inventory.actions.get(event.getSlot()).accept(event);
                         if (inventory.isFixed()) event.setCancelled(true);

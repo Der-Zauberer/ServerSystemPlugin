@@ -19,26 +19,26 @@ public class WorldMenu extends PlayerInventory {
 		setItem(2, new ExtendedItemStack("Hunger", Material.COOKED_BEEF));
 		setItem(4, new ExtendedItemStack("PVP", Material.IRON_SWORD));
 		setItem(6, new ExtendedItemStack("Explosion", Material.TNT));
-		setItem(8, new ExtendedItemStack("Protection", Material.GOLDEN_PICKAXE));
+		setItem(8, new ExtendedItemStack("Protection", Material.GOLD_SPADE));
 		createBooleanItem(9, world, WorldOption.DAMAGE);
 		createBooleanItem(11, world, WorldOption.HUNGER);
 		createBooleanItem(13, world, WorldOption.PVP);
 		createBooleanItem(15, world, WorldOption.EXPLOSION);
 		createBooleanItem(17, world, WorldOption.PROTECTION);
-		setItem(27, new ExtendedItemStack(world.getName(), Material.ZOMBIE_HEAD));
+		setItem(27, new ExtendedItemStack(world.getName(), Material.LAPIS_BLOCK));
 		setItem(31, new ExtendedItemStack("Back", Material.SPECTRAL_ARROW), event -> new WorldListMenu(player).open());
 		setItem(35, new ExtendedItemStack("Teleport to " + world.getName(), Material.ENDER_PEARL), event -> WorldGroup.teleportPlayer(player, world));
 	}
 	
 	private void createBooleanItem(int slot, World world, WorldOption option) {
 		final String name = option.toString().substring(0, 1).toUpperCase() + option.toString().substring(1).toLowerCase();
-		setItem(slot, new ExtendedItemStack(name, (Config.getWorldOption(world, option)) ? Material.GREEN_DYE : Material.RED_DYE), event -> {
+		setItem(slot, new ExtendedItemStack(name, (Config.getWorldOption(world, option)) ? Material.GREEN_SHULKER_BOX : Material.RED_SHULKER_BOX), event -> {
 			Config.setWorldOption(world, option, invertItemStack(event.getCurrentItem(), slot, Config.getWorldOption(world, option)));
 		});
 	}
 	
 	private boolean invertItemStack(ItemStack itemStack, int slot, boolean option) {
-		this.setItem(slot, new ExtendedItemStack(itemStack.getItemMeta().getDisplayName(), (!option) ? Material.GREEN_DYE : Material.RED_DYE), this.getInventoryClickAction(slot));
+		this.setItem(slot, new ExtendedItemStack(itemStack.getItemMeta().getDisplayName(), (!option) ? Material.GREEN_SHULKER_BOX : Material.RED_SHULKER_BOX), this.getInventoryClickAction(slot));
 		return !option;
 	}
 

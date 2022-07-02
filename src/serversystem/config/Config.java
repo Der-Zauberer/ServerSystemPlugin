@@ -25,7 +25,7 @@ public class Config {
 	public static FileConfiguration config;
 	
 	public enum ConfigOption{JOIN_MESSAGE, QUIT_MESSAGE, ENABLE_WORLD_GROUPS, GLOBAL_CHAT_AND_TABLIST, GLOBAL_INVENTORY, ENABLE_PORTALS, LOBBY}
-	public enum TitleTypeOption{TITLE, SUBTITLE, TABLIST_TITLE, TABLIST_SUBTITLE}
+	public enum TitleTypeOption{TITLE, SUBTITLE, TABLIST_TITLE, TABLIST_TITLE_COLOR, TABLIST_SUBTITLE, TABLIST_SUBTITLE_COLOR}
 	public enum WorldOption{DAMAGE, HUNGER, PVP, EXPLOSION, PROTECTION, WORLD_SPAWN, DEATH_MESSAGE}
 	
 	static {
@@ -93,10 +93,22 @@ public class Config {
 	}
 	
 	public static String getTitle(TitleTypeOption type) {
-		final String text = config.getString(type.toString().toLowerCase().replace('_', '.') + ".text");
-		if (text != null) {
-			final ChatColor color = ChatUtil.getEnumValue(config.getString(type.name().toLowerCase().replace('_', '.') + ".color"), ChatColor.values(), ChatColor.WHITE);
-			return color + text;
+		if (type == TitleTypeOption.TITLE || type == TitleTypeOption.SUBTITLE) {
+			final String text = config.getString(type.toString().toLowerCase().replace('_', '.') + ".text");
+			if (text != null) {
+				final ChatColor color = ChatUtil.getEnumValue(config.getString(type.name().toLowerCase().replace('_', '.') + ".color"), ChatColor.values(), ChatColor.WHITE);
+				return color + text;
+			}
+		} else if (type == TitleTypeOption.TABLIST_TITLE) {
+			return config.getString("tablist.title.text", "");
+		} else if (type == TitleTypeOption.TABLIST_TITLE_COLOR) {
+			if (config.getString("tablist.title.color") != null) return ChatUtil.getEnumValue(config.getString("tablist.title.color"), ChatColor.values(), ChatColor.WHITE).name().toLowerCase();
+			else return ChatColor.WHITE.name().toLowerCase();
+		} else if (type == TitleTypeOption.TABLIST_SUBTITLE) {
+			return config.getString("tablist.subtitle.text", "");
+		} else if (type == TitleTypeOption.TABLIST_SUBTITLE_COLOR) {
+			if (config.getString("tablist.subtitle.color") != null) return ChatUtil.getEnumValue(config.getString("tablist.subtitle.color"), ChatColor.values(), ChatColor.WHITE).name().toLowerCase();
+			else return ChatColor.WHITE.name().toLowerCase();
 		}
 		return null;
 	}

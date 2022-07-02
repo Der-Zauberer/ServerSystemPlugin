@@ -16,7 +16,7 @@ public class PlayerListMenu extends PlayerInventory {
 		setFixed(true);
 		final ArrayList<ItemStack> items = new ArrayList<>();
 		for (Player target : Bukkit.getOnlinePlayers()) {
-			items.add(new ExtendedItemStack(target.getDisplayName(), Material.PLAYER_HEAD).addPlayerSkullMeta(target));
+			items.add(new ExtendedItemStack(target.getDisplayName(), Material.REDSTONE_BLOCK));
 		}
 		setItemList(items, event -> setPlayer(event.getCurrentItem(), player), event -> new AdminMenu(player).open());
 	}

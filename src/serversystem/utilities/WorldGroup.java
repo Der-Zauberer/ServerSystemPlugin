@@ -7,13 +7,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
-
 import serversystem.commands.VanishCommand;
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
 import serversystem.config.Config.WorldOption;
 import serversystem.config.SaveConfig;
-import serversystem.main.ServerSystem;
 
 public class WorldGroup {
 
@@ -42,12 +40,12 @@ public class WorldGroup {
 	public void join(Player player) {
 		players.add(player);
 		for (Player everyPlayer : Bukkit.getOnlinePlayers()) {
-			everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
-			player.hidePlayer(ServerSystem.getInstance(), everyPlayer);
+			everyPlayer.hidePlayer(player);
+			player.hidePlayer(everyPlayer);
 		}
 		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
-			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
-			if (!VanishCommand.isVanished(everyPlayer)) player.showPlayer(ServerSystem.getInstance(), everyPlayer);
+			everyPlayer.showPlayer(player);
+			if (!VanishCommand.isVanished(everyPlayer)) player.showPlayer(everyPlayer);
 		}
 		SaveConfig.loadPlayerProfile(player, this);
 		TeamUtil.addGroupToPlayer(player);

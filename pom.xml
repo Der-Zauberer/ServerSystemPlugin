@@ -32,23 +32,18 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.2.0</version>
         <configuration>
-          <outputDirectory>D:\Server\derzauberer.eu - Kopie\plugins</outputDirectory>
+          <outputDirectory>D:\Server\girc\plugins</outputDirectory>
         </configuration>
       </plugin>
     </plugins>
   </build>
-  <repositories>
-    <repository>
-      <id>spigot-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-    </repository>
-  </repositories>
   <dependencies>
     <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.14-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot-api</artifactId>
+      <version>1.12.2-R0.1-SNAPSHOT</version>
+      <scope>system</scope>
+      <systemPath>D:\Server\girc\spigot.jar</systemPath>
     </dependency>
   </dependencies>
 </project>
