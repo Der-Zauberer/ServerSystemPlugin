@@ -49,12 +49,12 @@ The commands `world` and `warp` can be used to teleport with `serversystem.comma
 |`serversystem.command.inventory`|op|Open the inventory of a player|
 |`serversystem.command.lobby`|true|Teleport player to lobby|
 |`serversystem.command.permission`|false|Set the permissions and group of a player|
-|`serversystem.command.speed`|op|Toggle players flyspeed|
+|`serversystem.command.speed`|op|Toggle players fly speed|
 |`serversystem.command.vanish`|op|Allow the player to vanish|
 |`serversystem.command.warp`|op|Teleport player to a warp or edit a warp|
 |`serversystem.command.world`|op|Teleport player to an other world or edit an other world|
-|`serversystem.tools.adminstar`|op|Open the admin inventory with a netherstar|
-|`serversystem.tools.commandblock`|false|Allow to use commandblocks|
+|`serversystem.tools.adminstar`|op|Open the admin inventory with a nether star|
+|`serversystem.tools.commandblock`|false|Allow to use command blocks|
 |`serversystem.tools.disabledblocks`|op|Allow to use in the config disabled blocks|
 |`serversystem.tools.signedit`|op|Allow to create clickable signs|
 
@@ -85,7 +85,7 @@ leave_message: false
 ```
 
 ### Deal with world groups
-You have the opportunity to enable the world groups. If they are enables worlds in the same worldgroup share players inventories chat and tablist. Players, who are in different world with different worldgroups doesn't see each other in chat and tablist. This can also be changed with the global setting. The global settings do not have any impact if the world groups are disabled.
+You have the opportunity to enable the world groups. If they are enables worlds in the same world group share players inventories chat and tablist. Players, who are in different world with different world groups doesn't see each other in chat and tablist. This can also be changed with the global setting. The global settings do not have any impact if the world groups are disabled.
 
 ```json
 enable_world_groups: true
@@ -151,7 +151,7 @@ tablist:
 You can use the colors codes listed in the [Minecraft Wiki](https://minecraft.gamepedia.com/Formatting_codes#Color_codes "Color Codes").
 
 ### Disable commands and default permissions
-You can disable permissions simply by adding the permission to the list. For example, you can disable minecraft's default commands by adding it's permission. Permissions can't be shortet by using a `*`!
+You can disable permissions simply by adding the permission to the list. For example, you can disable minecraft's default commands by adding it's permission. Permissions can't be shorted by using a `*`!
 
 ```json
 disabled_permissions:
@@ -161,6 +161,14 @@ disabled_permissions:
 ```
 
 You can find minecraft standard commands in the [Bukkit Wiki](https://bukkit.gamepedia.com/CraftBukkit_Commands "Commands").
+
+### Disable block
+You can disable block. You need the id of the block for that. Players can not build an break them, even if they are in build mode. you need the `serversystem.tools.disabledblocks` permission if you want do break or place them. This does not work for entities.
+
+```json
+disabled_blocks:
+- 13
+```
 
 ### Worlds
 You can load other worlds to your server, if there in your server directory. You can add a new world just by adding the world as a new section. The world 'world' and the subworlds 'world_nether' and 'world_the_end' are loaded by default. You can change the default world in the file `server.properties`.
@@ -203,10 +211,10 @@ worlds:
     permission: 'your.own.permission'
 ```
 
-### Groups [until v2.1]
+### Groups
 The plugin have a permission system. If you don't want do use this add nothing to the groups. A player in a group will get all the groups permissions the colored prefix in front of the name if set. He will also get all permission from the groups parent group if set.
 
-`priority` this defines the ranking in the tablist. The lower the number, the higher will the player shown in the tablist (1: higest 99:lowest)<br>
+`priority` this defines the ranking in the tablist. The lower the number, the higher will the player shown in the tablist (1: highest 99:lowest)<br>
 `color` The name of the player in that group will be colored<br>
 `prefix` if this is set, the players in that group have a prefix in front of their names in the tablist<br>
 `parent` if set, the group will add all permissions from the parent group to it's own group<br>
@@ -262,7 +270,7 @@ For versions before v2.1 please look at [the old Documentation](https://github.c
 `location` the location of the warp<br>
 `material` the item which is displays if a player browse warps with `/warp`<br>
 `global` if this is false, the warp can only be accessed in the world, the warps location is in<br>
-`permission` if set, a permission which is reqired to teleport to this warp<br>
+`permission` if set, a permission which is required to teleport to this warp<br>
 
 ```json
 warps:
@@ -280,7 +288,7 @@ warps:
 ```
 
 ### Players
-A player is identified by this UUID if he change his name. For easier editing the actual name is saved to to config. The player can add to a permission group (more information at "Groups"). The player can also have own permissions, which are independent from groups. The group player does always exist, even if not defined in the groups section. It is the default group for new players.
+A player is identified by this UUID if he change his name. For easier editing the actual name is saved to to configuration. The player can add to a permission group (more information at "Groups"). The player can also have own permissions, which are independent from groups. The group player does always exist, even if not defined in the groups section. It is the default group for new players.
 
 ```json
 players:
