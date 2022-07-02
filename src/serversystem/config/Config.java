@@ -131,8 +131,8 @@ public class Config {
 		return config.getStringList("disabled_permissions");
 	}
 	
-	public static List<String> getDisabledBlocks() {
-		return config.getStringList("disabled_blocks");
+	public static List<Integer> getDisabledBlocks() {
+		return config.getIntegerList("disabled_blocks");
 	}
 	
 	public static void addWorld(World world) {
