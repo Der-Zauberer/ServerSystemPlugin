@@ -94,11 +94,11 @@ public class ServerSign implements Listener {
 		public static void onSignChange(SignChangeEvent event) {
 			if (event.getLine(0) != null && event.getLine(3) != null) {
 				if (event.getLine(1).contains("[") || event.getLine(1).contains("]")) {
-					if (event.getPlayer().hasPermission("serversystem.tools.signeddit")) {
+					if (event.getPlayer().hasPermission("serversystem.tools.signedit")) {
 						final String label = event.getLine(1).substring(1, event.getLine(1).length() -1);
 						if (getStatus(event.getPlayer(), label, event.getLine(2))) event.setLine(2, "\u00A72" + event.getLine(2));
 						else event.setLine(2, "\u00A74" + event.getLine(2));
-					} else if(!event.getPlayer().hasPermission("serversystem.tools.signeddit")){
+					} else {
 						event.setLine(1, "\u00A74Permissions");
 						event.setLine(2, "\u00A74required!");
 					}

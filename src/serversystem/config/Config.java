@@ -24,7 +24,7 @@ public class Config {
 	private static final File file = new File("plugins/ServerSystem", "config.yml");
 	public static FileConfiguration config;
 	
-	public enum ConfigOption{JOIN_MESSAGE, QUIT_MESSAGE, ENABLE_PORTALS, ENABLE_WORLD_GROUPS, GLOBAL_CHAT_AND_TABLIST, GLOBAL_INVENTORY, LOBBY}
+	public enum ConfigOption{JOIN_MESSAGE, QUIT_MESSAGE, ENABLE_WORLD_GROUPS, GLOBAL_CHAT_AND_TABLIST, GLOBAL_INVENTORY, ENABLE_PORTALS, LOBBY}
 	public enum TitleTypeOption{TITLE, SUBTITLE, TABLIST_TITLE, TABLIST_SUBTITLE}
 	public enum WorldOption{DAMAGE, HUNGER, PVP, EXPLOSION, PROTECTION, WORLD_SPAWN, DEATH_MESSAGE}
 	
@@ -32,10 +32,10 @@ public class Config {
 		loadConfig();
 		setDefault("join_message", true);
 		setDefault("leave_message", true);
-		setDefault("enable_portals", true);
 		setDefault("enable_world_groups", false);
 		setDefault("global_chat_and_tablist", false);
 		setDefault("global_inventory", false);
+		setDefault("enable_portals", true);
 		setDefault("lobby", false);
 		setDefault("lobby_world", "world");
 		setDefault("title.text", "");
