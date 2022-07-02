@@ -31,8 +31,8 @@ commands:
     aliases: [hub, h, l]
     permission: serversystem.command.lobby
   permission:
-    description: Set the permissions of a player
-    usage: /<command> [<player>] [<group>]
+    description: Set the permissions and group of a player
+    usage: /<command> [<player>] [<option>] [value]
   permissionreload:
     description: Reloads all permissions for all players
     usage: /<command>
@@ -45,7 +45,7 @@ commands:
     usage: /<command> [<player>]
     permission: serversystem.command.vanish
   warp:
-    description: Teleport player to a location
+    description: Teleport player to a warp or edit a warp
     usage: /<command> <warp>] [<action>] [<option>] [value]
     permission: serversystem.command.warp
   world:
@@ -102,6 +102,6 @@ permissions:
   serversystem.tools.disabledblocks:
     description: Allow to use in the config disabled blocks
     default: op
-  serversystem.tools.signeddit:
+  serversystem.tools.signedit:
     description: Allow to create executable signs
     default: op
