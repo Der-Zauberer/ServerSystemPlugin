@@ -212,7 +212,7 @@ worlds:
     permission: 'your.own.permission'
 ```
 
-### Groups [until v2.1]
+### Groups
 The plugin have a permission system. If you don't want do use this add nothing to the groups. A player in a group will get all the groups permissions the colored prefix in front of the name if set. He will also get all permission from the groups parent group if set.
 
 `priority` this defines the ranking in the tablist. The lower the number, the higher will the player shown in the tablist (1: highest 99:lowest)<br>
