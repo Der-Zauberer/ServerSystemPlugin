@@ -57,6 +57,9 @@ public class WorldGroup {
 		TeamUtil.removePlayerFromTeam(player);
 		SaveConfig.savePlayerProfile(player, this);
 		players.remove(player);
+		player.getInventory().clear();
+		player.setLevel(0);
+		player.setExp(0);
 	}
 
 	public String getName() {

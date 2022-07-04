@@ -17,7 +17,10 @@ public class PlayerQuitListener implements Listener {
 		if (VanishCommand.isVanished(event.getPlayer())) VanishCommand.toggleVanish(event.getPlayer(), false);
 		if (event.getPlayer().getFlySpeed() > 0.2) event.getPlayer().setFlySpeed((float) 0.1);
 		SaveConfig.saveLocation(event.getPlayer());
-		if (WorldGroup.isEnabled()) WorldGroup.getWorldGroup(event.getPlayer()).quit(event.getPlayer());
+		if (WorldGroup.isEnabled()) {
+			WorldGroup worldGroup = WorldGroup.getWorldGroup(event.getPlayer());
+			if (worldGroup != null) worldGroup.quit(event.getPlayer());
+		}
 		PermissionUtil.resetPlayerPermissions(event.getPlayer());
 	}
 

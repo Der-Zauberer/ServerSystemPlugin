@@ -125,9 +125,6 @@ public class SaveConfig {
 		if (!Config.getConfigOption(ConfigOption.GLOBAL_INVENTORY)) {
 			saveXp(player, worldGroup);
 			saveInventory(player, worldGroup);
-			player.getInventory().clear();
-			player.setLevel(0);
-			player.setExp(0);
 		}
 		saveConfig();
 	}
