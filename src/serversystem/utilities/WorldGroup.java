@@ -122,7 +122,10 @@ public class WorldGroup {
 	
 	public static void autoSavePlayerStats() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (enabled) SaveConfig.savePlayerProfile(player, getWorldGroup(player));
+			if (enabled) {
+				WorldGroup worldGroup = WorldGroup.getWorldGroup(player);
+				if (worldGroup != null) SaveConfig.savePlayerProfile(player, worldGroup);
+			}
 			SaveConfig.saveLocation(player);
 		}
 	}
