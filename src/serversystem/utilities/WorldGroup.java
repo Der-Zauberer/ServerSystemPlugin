@@ -55,6 +55,9 @@ public class WorldGroup {
 		TeamUtil.removePlayerFromTeam(player);
 		SaveConfig.savePlayerProfile(player, this);
 		players.remove(player);
+		player.getInventory().clear();
+		player.setLevel(0);
+		player.setExp(0);
 	}
 
 	public String getName() {
@@ -117,7 +120,10 @@ public class WorldGroup {
 	
 	public static void autoSavePlayerStats() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
-			if (enabled) SaveConfig.savePlayerProfile(player, getWorldGroup(player));
+			if (enabled) {
+				WorldGroup worldGroup = WorldGroup.getWorldGroup(player);
+				if (worldGroup != null) SaveConfig.savePlayerProfile(player, worldGroup);
+			}
 			SaveConfig.saveLocation(player);
 		}
 	}
