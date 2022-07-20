@@ -81,7 +81,7 @@ You have the oportunity to disable the join- and leavemessage if you don't want 
 
 ```json
 join_message: false
-leave_message: false
+quit_message: false
 ```
 
 ### Deal with world groups

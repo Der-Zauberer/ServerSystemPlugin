@@ -31,7 +31,7 @@ public class Config {
 	static {
 		loadConfig();
 		setDefault("join_message", true);
-		setDefault("leave_message", true);
+		setDefault("quit_message", true);
 		setDefault("enable_world_groups", false);
 		setDefault("global_chat_and_tablist", false);
 		setDefault("global_inventory", false);
