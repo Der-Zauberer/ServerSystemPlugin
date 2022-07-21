@@ -142,7 +142,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 					return;
 				}
 			}
-			if (mainMaterial.name().contains("MINECARD") || secondaryMaterial.name().contains("MINECARD")) event.setCancelled(true);
+			if (mainMaterial.name().contains("MINECART") || secondaryMaterial.name().contains("MINECART")) event.setCancelled(true);
 			else if (mainMaterial.name().contains("BOAT") || secondaryMaterial.name().contains("BOAT")) event.setCancelled(true);
 			else if (mainMaterial.name().contains("ITEM_FRAME") || secondaryMaterial.name().contains("ITEM_FRAME")) event.setCancelled(true);
 			else if (mainMaterial.name().contains("SPAWN_EGG") || secondaryMaterial.name().contains("SPAWN_EGG")) event.setCancelled(true);
