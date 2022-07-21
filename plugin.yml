@@ -60,6 +60,9 @@ permissions:
   serversystem.command.build:
     description: Allow the player to build in protected worlds
     default: op
+  serversystem.command.build.other:
+    description: Allow other players to build in protected worlds
+    default: op
   serversystem.command.enderchest:
     desciption: Open the enderchest of a player
     default: op

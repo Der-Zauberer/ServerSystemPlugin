@@ -44,6 +44,7 @@ The commands `world` and `warp` can be used to teleport with `serversystem.comma
 |---|---|---|
 |`serversystem.command.admin`|op|Open the admin inventory|
 |`serversystem.command.build`|op|Allow the player to build in protected worlds|
+|`serversystem.command.build.other`|op|Allow other players to build in protected worlds|
 |`serversystem.command.enderchest`|op|Open the enderchest of a player|
 |`serversystem.command.group`|false|Edit permission groups|
 |`serversystem.command.inventory`|op|Open the inventory of a player|
