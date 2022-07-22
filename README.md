@@ -22,24 +22,26 @@ Java Class Version: *52 (Java8)*<br>
 
 ## Commands
 
-|Command|Usage|Permission|Default Permission|Description|
-|---|---|---|---|---|
-|admin|`/admin`|`serversystem.command.admin`|false|Open the admin menu|
-|back|`/back`|`serversystem.command.admin`|false|Teleport back to the last location|
-|build|`/build [<player>]`|`serversystem.command.build`|false|Allow the player to build in protected worlds|
-|enderchest|`/enderchest [<player>]`|`serversystem.command.enderchest`|false|Open the enderchest of a player|
-|fly|`/fly [<player>]`|`serversystem.command.fly`|false|Allow the player to fly|
-|group|`/group [<group>] [<action>] [<option>] [value]`|`serversystem.command.group`|false|Edit permission groups|
-|inventory|`/inventory [<player>]`|`serversystem.command.inventory`|false|Open the inventory of a player|
-|lobby|`/lobby`|`serversystem.command.lobby`|true|Teleport player to lobby|
-|permission|`[<player>] [<option>] [value]`|`serversystem.command.permission`|false|Set the permissions and group of a player|
-|permissionreload|`/permissionreload`|`serversystem.command.permission`|false|Reloads all permissions for all players|
-|speed|`/speed`|`serversystem.command.speed`|false|Toggle players flyspeed|
-|vanish|`/vanish [<player>]`|`serversystem.command.vanish`|false|Allow the player to vanish|
-|warp|`[/warp <warp>] [<action>] [<option>] [value]`|`serversystem.command.warp` `serversystem.command.warp.edit`|true|Teleport player to a warp or edit a warp|
-|world|`/world [<world>] [<action>] [<option>] [value]`|`serversystem.command.world` `serversystem.command.world.edit`|false|Teleport player to an other world or edit an other world|
+|Command|Usage|Permission|Description|
+|---|---|---|---|
+|admin|`/admin`|`serversystem.command.admin`|Open the admin menu|
+|back|`/back`|`serversystem.command.admin`|Teleport back to the last location|
+|build|`/build [<player>]`|`serversystem.command.build`|Allow the player to build in protected worlds|
+|enderchest|`/enderchest [<player>]`|`serversystem.command.enderchest`|Open the enderchest of a player|
+|fly|`/fly [<player>]`|`serversystem.command.fly`|Allow the player to fly|
+|group|`/group [<group>] [<action>] [<option>] [value]`|`serversystem.command.group`|Edit permission groups|
+|inventory|`/inventory [<player>]`|`serversystem.command.inventory`|Open the inventory of a player|
+|lobby|`/lobby`|`serversystem.command.lobby`|Teleport player to lobby|
+|permission|`[<player>] [<option>] [value]`|`serversystem.command.permission`|Set the permissions and group of a player|
+|permissionreload|`/permissionreload`|`serversystem.command.permission`|Reloads all permissions for all players|
+|speed|`/speed`|`serversystem.command.speed`|Toggle players flyspeed|
+|vanish|`/vanish [<player>]`|`serversystem.command.vanish`|Allow the player to vanish|
+|warp|`[/warp <warp>] [<action>] [<option>] [value]`|`serversystem.command.warp` `serversystem.command.warp.edit`|Teleport player to a warp or edit a warp|
+|world|`/world [<world>] [<action>] [<option>] [value]`|`serversystem.command.world` `serversystem.command.world.edit`|Teleport player to an other world or edit an other world|
 
 The commands `world` and `warp` can be used to teleport with `serversystem.command.world` and `serversystem.command.warp`. The edit the warps and worlds use the same command, but with the permissions `serversystem.command.world.edit` and `serversystem.command.warp.edit`.
+
+The commands `build`, `enderchest`, `fly`, `speed` and `vanish` can only used for the player, who run the command. If the player should have the opportunity to impact other players add `.other` to the permission. Example:  `serversystem.command.build` -> `serversystem.command.build.other`
 
 ## Permissions
 |Permission|Default|Description|
