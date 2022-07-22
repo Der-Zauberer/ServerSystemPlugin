@@ -18,7 +18,8 @@ public class SpeedCommand implements CommandExecutor, TabCompleter {
 			if (sender instanceof Player) toggleFlight((Player) sender);
 			else ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 		} else if (args.length == 1) {
-			if (Bukkit.getPlayer(args[0]) != null) toggleFlight(Bukkit.getPlayer(args[0]), sender);
+			if (!sender.hasPermission("serversystem.command.speed.other")) ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
+			else if (Bukkit.getPlayer(args[0]) != null) toggleFlight(Bukkit.getPlayer(args[0]), sender);
 			else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		} else {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
@@ -28,7 +29,9 @@ public class SpeedCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		if (ChatUtil.getCommandLayer(1, args)) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
+		if (ChatUtil.getCommandLayer(1, args) && sender.hasPermission("serversystem.command.speed.other")) {
+			return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
+		}
 		return new ArrayList<>();
 	}
 	

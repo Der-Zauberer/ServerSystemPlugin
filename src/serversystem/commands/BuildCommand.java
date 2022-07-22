@@ -42,8 +42,6 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 		if (!Config.getWorldOption(player.getWorld(), WorldOption.PROTECTION)) {
 			ChatUtil.sendErrorMessage(sender, "This world is not protected!");
 			return;
-		} else if (player != sender && !sender.hasPermission("serversystem.command.build.other")) {
-			ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
 		} else if (buildPlayers.contains(player)) {
 			buildPlayers.remove(player);
 			ChatUtil.sendMessage(player, "You can no longer build!");
@@ -90,7 +88,9 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		if (ChatUtil.getCommandLayer(1, args) && sender.hasPermission("serversystem.command.build.other")) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
+		if (ChatUtil.getCommandLayer(1, args) && sender.hasPermission("serversystem.command.build.other")) {
+			return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
+		}
 		return new ArrayList<>();
 	}
 	

@@ -81,8 +81,14 @@ permissions:
   serversystem.command.speed:
     description: Toggle players flyspeed
     default: op
+  serversystem.command.speed.other:
+    description: Toggle other players flyspeed
+    default: op
   serversystem.command.vanish:
-    description: Allow the player to vanish
+    description: Vanish the player
+    default: op
+  serversystem.command.vanish.other:
+    description: Vanish other players
     default: op
   serversystem.command.warp:
     description: Teleport player to a warp

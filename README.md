@@ -51,7 +51,9 @@ The commands `world` and `warp` can be used to teleport with `serversystem.comma
 |`serversystem.command.lobby`|true|Teleport player to lobby|
 |`serversystem.command.permission`|false|Set the permissions and group of a player|
 |`serversystem.command.speed`|op|Toggle players fly speed|
-|`serversystem.command.vanish`|op|Allow the player to vanish|
+|`serversystem.command.speed.other`|op|Toggle other players flyspeed|
+|`serversystem.command.vanish`|op|Vanish the player|
+|`serversystem.command.vanish.other`|op|Vanish other players|
 |`serversystem.command.warp`|op|Teleport player to a warp or edit a warp|
 |`serversystem.command.world`|op|Teleport player to an other world or edit an other world|
 |`serversystem.tools.adminstar`|op|Open the admin inventory with a nether star|
