@@ -10,6 +10,10 @@ commands:
     description: Open the admin menu
     usage: /<command>
     permission: serversystem.command.admin
+  back:
+    description: Teleport back to the last location
+    usage: /<command>
+    permission: serversystem.command.back
   build:
     description: Allow the player to build in protected worlds
     usage: /<command> [<player>]
@@ -18,6 +22,10 @@ commands:
     description: Open the enderchest of a player
     usage: /<command> [<player>]
     permission: serversystem.command.enderchest
+  fly:
+    description: Allow the player to fly
+    usage: /<command> [<player>]
+    permission: serversystem.command.fly  
   group:
     description: Edit permission groups
     usage: /<command> [<group>] [<action>] [<option>] [value]
@@ -57,6 +65,9 @@ permissions:
   serversystem.command.admin:
     description: Open the admin inventory
     default: op
+  serversystem.command.back:
+    description: Teleport back to the last location
+    default: op
   serversystem.command.build:
     description: Allow the player to build in protected worlds
     default: op
@@ -64,7 +75,16 @@ permissions:
     description: Allow other players to build in protected worlds
     default: op
   serversystem.command.enderchest:
-    desciption: Open the enderchest of a player
+    desciption: Open your enderchest
+    default: op
+  serversystem.command.enderchest.other:
+    desciption: Open an other players enderchest
+    default: op
+  serversystem.command.fly:
+    desciption: Allow the player to fly
+    default: op
+  serversystem.command.fly.other:
+    desciption: Allow other players to fly
     default: op
   serversystem.command.group:
     desciption: Edit permission groups

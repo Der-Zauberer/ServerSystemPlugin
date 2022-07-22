@@ -25,8 +25,10 @@ Java Class Version: *52 (Java8)*<br>
 |Command|Usage|Permission|Default Permission|Description|
 |---|---|---|---|---|
 |admin|`/admin`|`serversystem.command.admin`|false|Open the admin menu|
+|back|`/back`|`serversystem.command.admin`|false|Teleport back to the last location|
 |build|`/build [<player>]`|`serversystem.command.build`|false|Allow the player to build in protected worlds|
 |enderchest|`/enderchest [<player>]`|`serversystem.command.enderchest`|false|Open the enderchest of a player|
+|fly|`/fly [<player>]`|`serversystem.command.fly`|false|Allow the player to fly|
 |group|`/group [<group>] [<action>] [<option>] [value]`|`serversystem.command.group`|false|Edit permission groups|
 |inventory|`/inventory [<player>]`|`serversystem.command.inventory`|false|Open the inventory of a player|
 |lobby|`/lobby`|`serversystem.command.lobby`|true|Teleport player to lobby|
@@ -43,9 +45,13 @@ The commands `world` and `warp` can be used to teleport with `serversystem.comma
 |Permission|Default|Description|
 |---|---|---|
 |`serversystem.command.admin`|op|Open the admin inventory|
+|`serversystem.command.back`|op|Teleport back to the last location|
 |`serversystem.command.build`|op|Allow the player to build in protected worlds|
 |`serversystem.command.build.other`|op|Allow other players to build in protected worlds|
-|`serversystem.command.enderchest`|op|Open the enderchest of a player|
+|`serversystem.command.enderchest`|op|Open your enderchest|
+|`serversystem.command.enderchest`|op|Open an other players enderchest|
+|`serversystem.command.fly`|op|Allow the player to fly|
+|`serversystem.command.fly.other`|op|Allow other players to fly|
 |`serversystem.command.group`|false|Edit permission groups|
 |`serversystem.command.inventory`|op|Open the inventory of a player|
 |`serversystem.command.lobby`|true|Teleport player to lobby|

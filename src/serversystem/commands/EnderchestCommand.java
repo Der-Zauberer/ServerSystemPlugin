@@ -16,21 +16,22 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!(sender instanceof Player)) {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.ONLY_PLAYER);
-			return true;
 		} else if (args.length > 1) {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
-			return true;
+		} else if (args.length == 1 && !sender.hasPermission("serversystem.command.enderchest.other")) {
+			ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
+		} else {
+			final Player player = (Player) sender;
+			if (args.length == 0) player.openInventory(player.getEnderChest());
+			else if (Bukkit.getPlayer(args[0]) != null) player.openInventory(Bukkit.getPlayer(args[0]).getEnderChest());
+			else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		}
-		final Player player = (Player) sender;
-		if (args.length == 0) player.openInventory(player.getEnderChest());
-		else if (Bukkit.getPlayer(args[0]) != null) player.openInventory(Bukkit.getPlayer(args[0]).getEnderChest());
-		else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		return true;
 	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		if (ChatUtil.getCommandLayer(1, args)) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
+		if (ChatUtil.getCommandLayer(1, args) && sender.hasPermission("serversystem.command.enderchest.other")) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
 		return new ArrayList<>();
 	}
 
