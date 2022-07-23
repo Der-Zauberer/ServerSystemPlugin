@@ -83,7 +83,7 @@ public class ServerSign implements Listener {
 		public static void onInteract(PlayerInteractEvent event) {
 			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getState() instanceof Sign) {
 				Sign sign = (Sign) event.getClickedBlock().getState();
-				if (sign.getLine(0) != null && sign.getLine(3) != null) {
+				if (!sign.getLine(1).isEmpty() && !sign.getLine(2).isEmpty() && sign.getLine(1).startsWith("[") && sign.getLine(1).endsWith("]")) {
 					String label = ChatColor.stripColor(sign.getLine(1)).substring(1, sign.getLine(1).length() -1);
 					executeServerSign(event.getPlayer(), sign, label, ChatColor.stripColor(sign.getLine(2)));
 				}
