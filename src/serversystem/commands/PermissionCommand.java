@@ -17,7 +17,7 @@ import serversystem.utilities.TeamUtil;
 
 public class PermissionCommand implements CommandExecutor, TabCompleter {
 	
-	private enum Option {GROUP, PERMISSIONS}
+	private enum Option {GROUP, PERMISSION}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -48,7 +48,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 					if (ServerSystem.getGroups().get(group) != null || group.equals("player")) return group;
 					else return null;
 				});
-			} else if (option == Option.PERMISSIONS) {
+			} else if (option == Option.PERMISSION) {
 				final List<String> permissions = Config.getPlayerSpecificPermissions(playerName);
 				ChatUtil.processListInput(sender, args, 2, option.name().toLowerCase(), permissions, () -> {
 					Config.setPlayerSpecificPermissions(playerName, permissions);
