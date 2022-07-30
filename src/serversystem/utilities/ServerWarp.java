@@ -58,8 +58,7 @@ public class ServerWarp extends ServerComponent {
 	}
 	
 	public void setPermission(String permission) {
-		if (permission == null) this.permission = "";
-		else this.permission = permission;
+		this.permission = permission;
 	}
 	
 	public String getPermission() {

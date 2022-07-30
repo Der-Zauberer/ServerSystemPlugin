@@ -7,8 +7,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import serversystem.commands.AdminCommand;
+import serversystem.commands.BackCommand;
 import serversystem.commands.BuildCommand;
 import serversystem.commands.EnderchestCommand;
+import serversystem.commands.FlyCommand;
 import serversystem.commands.GroupCommand;
 import serversystem.commands.InventoryCommand;
 import serversystem.commands.LobbyCommand;
@@ -94,8 +96,10 @@ public class ServerSystem extends JavaPlugin {
 
 	private static void registerCommands() {
 		instance.getCommand("admin").setExecutor(new AdminCommand());
+		instance.getCommand("back").setExecutor(new BackCommand());
 		instance.getCommand("build").setExecutor(new BuildCommand());
 		instance.getCommand("enderchest").setExecutor(new EnderchestCommand());
+		instance.getCommand("fly").setExecutor(new FlyCommand());
 		instance.getCommand("group").setExecutor(new GroupCommand());
 		instance.getCommand("inventory").setExecutor(new InventoryCommand());
 		instance.getCommand("lobby").setExecutor(new LobbyCommand());

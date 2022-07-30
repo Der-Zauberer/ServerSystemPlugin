@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ChatUtil;
@@ -96,20 +97,20 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 					EditOption editOption = ChatUtil.getEnumValue(args[2], EditOption.values());
 					WorldOption worldOption = ChatUtil.getEnumValue(args[2], WorldOption.values());
 					if (worldOption != null) {
-						ChatUtil.<Boolean>processInput(sender, args, 3, "warp", world.getName(), worldOption.name().toLowerCase(), false, input -> {
+						ChatUtil.<Boolean>processInput(sender, args, 3, "world", world.getName(), worldOption.name().toLowerCase(), false, input -> {
 							if (input.equals("true")) return new Boolean(true);
 							else if (input.equals("false")) return new Boolean(false);
 							else return null;
 						}, input -> true , input -> {}, bool -> Config.setWorldOption(world, worldOption, bool), () -> Config.getWorldOption(world, worldOption));
 					} else if (editOption != null) {
 						if (editOption == EditOption.WORLD_GROUP) {
-							ChatUtil.<String>processInput(sender, args, 3, "warp", world.getName(), editOption.name().toLowerCase(), false, input -> input, input -> true , input -> {
+							ChatUtil.<String>processInput(sender, args, 3, "world", world.getName(), editOption.name().toLowerCase(), false, input -> input, input -> true , input -> {
 								ChatUtil.sendMessage(sender, "The world " + world.getName() + " will update the world_group after a restart or reload!");
 							}, group -> Config.setWorldGroup(world, group), () ->  Config.getWorldGroup(world));
 						} else if (editOption == EditOption.PERMISSION) {
-							ChatUtil.<String>processInput(sender, args, 3, "warp", world.getName(), editOption.name().toLowerCase(), false, input -> input, input -> true , input -> {}, permission -> Config.setWorldPermission(world, permission), () ->  Config.getWorldPermission(world));
+							ChatUtil.<String>processInput(sender, args, 3, "world", world.getName(), editOption.name().toLowerCase(), false, input -> input, input -> true , input -> {}, permission -> Config.setWorldPermission(world, permission), () ->  Config.getWorldPermission(world));
 						} else if (editOption == EditOption.GAMEMODE) {
-							ChatUtil.<GameMode>processInput(sender, args, 3, "warp", world.getName(), editOption.name().toLowerCase(), true, input -> {
+							ChatUtil.<GameMode>processInput(sender, args, 3, "world", world.getName(), editOption.name().toLowerCase(), true, input -> {
 								return ChatUtil.getEnumValue(input, GameMode.values());
 							}, input -> true , input -> {}, gamemode -> Config.setWorldGamemode(world, gamemode), () ->  Config.getWorldGamemode(world));
 						}
@@ -142,16 +143,15 @@ public class WorldCommand implements CommandExecutor, TabCompleter{
 			} else if (ChatUtil.getCommandLayer(3, args) && args[1].equals("edit")) {
 				commands.addAll(ChatUtil.getEnumList(EditOption.values()));
 				commands.addAll(ChatUtil.getEnumList(WorldOption.values()));
-			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("material")) {
-				commands.addAll(ChatUtil.getEnumList(Material.values()));
-			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("global")) {
-				commands.addAll(Arrays.asList("true", "false"));
+			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("gamemode")) {
+				commands.addAll(ChatUtil.getEnumList(GameMode.values()));
 			} else if ((ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) && args[2].equals("permission")) {
 				commands.addAll(PermissionUtil.getBukkitPermissions());
 				commands.add("remove");
+			} else if (ChatUtil.getCommandLayer(4, args) && args[1].equals("edit")) {
+				commands.addAll(Arrays.asList("true", "false"));
 			}
 		}
-		
 		return ChatUtil.removeWrong(commands, args);
 	}
 	

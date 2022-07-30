@@ -76,7 +76,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
 						ChatUtil.sendMessage(sender, "  location: " + (int) warp.getLocation().getX() + " " + (int) warp.getLocation().getY() + " " + (int) warp.getLocation().getZ());
 						ChatUtil.sendMessage(sender, "  material: " + warp.getMaterial().name().toLowerCase());
 						ChatUtil.sendMessage(sender, "  global: " + warp.isGlobal());
-						ChatUtil.sendMessage(sender, "  permission: " + (!warp.getPermission().isEmpty() ? warp.getPermission() : "-"));
+						ChatUtil.sendMessage(sender, "  permission: " + (warp.getPermission() != null ? warp.getPermission() : "-"));
 						ChatUtil.sendSeperator(sender);
 					}
 			} else if (option == Option.EDIT) {

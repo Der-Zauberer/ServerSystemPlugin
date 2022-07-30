@@ -2,6 +2,7 @@ package serversystem.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -24,6 +25,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+
 import serversystem.config.Config;
 import serversystem.config.Config.WorldOption;
 import serversystem.utilities.ChatUtil;
@@ -37,20 +39,18 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 	}
 	
 	private static void toggleBuildMode(Player player, CommandSender sender) {
-		if (Config.getWorldOption(player.getWorld(), WorldOption.PROTECTION)) {
-			if (buildPlayers.contains(player)) {
-				buildPlayers.remove(player);
-				ChatUtil.sendMessage(player, "You can no longer build!");
-				if (player != sender) ChatUtil.sendMessage(sender, player.getName() + " can no longer build!");
-			} else {
-				buildPlayers.add(player);
-				ChatUtil.sendMessage(player, "You can build now!");
-				if(player != sender) ChatUtil.sendMessage(sender, player.getName() + " can build now!");
-			}
-		} else {
+		if (!Config.getWorldOption(player.getWorld(), WorldOption.PROTECTION)) {
 			ChatUtil.sendErrorMessage(sender, "This world is not protected!");
+			return;
+		} else if (buildPlayers.contains(player)) {
+			buildPlayers.remove(player);
+			ChatUtil.sendMessage(player, "You can no longer build!");
+			if (player != sender) ChatUtil.sendMessage(sender, player.getName() + " can no longer build!");
+		} else {
+			buildPlayers.add(player);
+			ChatUtil.sendMessage(player, "You can build now!");
+			if(player != sender) ChatUtil.sendMessage(sender, player.getName() + " can build now!");
 		}
-		
 	}
 	
 	public static boolean isInBuildmode(Player player) {
@@ -76,7 +76,8 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 			if (sender instanceof Player) toggleBuildMode((Player) sender);
 			else ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 		} else if (args.length == 1) {
-			if (Bukkit.getPlayer(args[0]) != null) toggleBuildMode(Bukkit.getPlayer(args[0]), sender);
+			if (!sender.hasPermission("serversystem.command.build.other")) ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
+			else if (Bukkit.getPlayer(args[0]) != null) toggleBuildMode(Bukkit.getPlayer(args[0]), sender);
 			else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		} else {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
@@ -86,7 +87,9 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		if (ChatUtil.getCommandLayer(1, args)) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
+		if (ChatUtil.getCommandLayer(1, args) && sender.hasPermission("serversystem.command.build.other")) {
+			return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
+		}
 		return new ArrayList<>();
 	}
 	
@@ -138,7 +141,7 @@ public class BuildCommand implements CommandExecutor, TabCompleter, Listener {
 					return;
 				}
 			}
-			if (mainMaterial.name().contains("MINECARD") || secondaryMaterial.name().contains("MINECARD")) event.setCancelled(true);
+			if (mainMaterial.name().contains("MINECART") || secondaryMaterial.name().contains("MINECART")) event.setCancelled(true);
 			else if (mainMaterial.name().contains("BOAT") || secondaryMaterial.name().contains("BOAT")) event.setCancelled(true);
 			else if (mainMaterial.name().contains("ITEM_FRAME") || secondaryMaterial.name().contains("ITEM_FRAME")) event.setCancelled(true);
 			else if (mainMaterial.name().contains("SPAWN_EGG") || secondaryMaterial.name().contains("SPAWN_EGG")) event.setCancelled(true);

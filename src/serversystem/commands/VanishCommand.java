@@ -77,7 +77,8 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 			if (sender instanceof Player) toggleVanish((Player) sender, true);
 			else ChatUtil.sendErrorMessage(sender, ChatUtil.NOT_ENOUGHT_ARGUMENTS);
 		} else if (args.length == 1) {
-			if (Bukkit.getPlayer(args[0]) != null) toggleVanish(Bukkit.getPlayer(args[0]), sender, true);
+			if (!sender.hasPermission("serversystem.command.vanish.other")) ChatUtil.sendErrorMessage(sender, ChatUtil.NO_PERMISSION);
+			else if (Bukkit.getPlayer(args[0]) != null) toggleVanish(Bukkit.getPlayer(args[0]), sender, true);
 			else ChatUtil.sendPlayerNotOnlineErrorMessage(sender, args[0]);
 		} else {
 			ChatUtil.sendErrorMessage(sender, ChatUtil.TO_MANY_ARGUMENTS);
@@ -87,7 +88,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-		if (ChatUtil.getCommandLayer(1, args)) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
+		if (ChatUtil.getCommandLayer(1, args) && sender.hasPermission("serversystem.command.vanish.other")) return ChatUtil.removeWrong(ChatUtil.getPlayerList(sender), args);
 		return new ArrayList<>();
 	}
 
