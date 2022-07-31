@@ -17,7 +17,7 @@ This is a bukkit plugin for permissions, multiworld, warps, lobby, clickable sig
 ## Develpement and Version
 
 API Version: *1.14.x - 1.19.x*<br>
-Plugin Version: *v3.0*<br>
+Plugin Version: *v3.1*<br>
 Java Class Version: *52 (Java8)*<br>
 
 ## Commands
