@@ -35,10 +35,10 @@ public class TeamUtil {
 	}
 	
 	public static Team createTeam(String id, String prefix, ChatColor color) {
-		Team team;
-		if ((team = getMainScoreboard().getTeam(id)) == null) {
+		Team team = getMainScoreboard().getTeam(id);
+		if (team == null) {
 			team = getMainScoreboard().registerNewTeam(id);
-			if (prefix != null && !prefix.isEmpty()) team.setPrefix(prefix + " ");
+			if (prefix != null && !prefix.isEmpty()) team.setPrefix(color + prefix + " ");
 			team.setColor(color);
 			teams.add(id);
 		}
