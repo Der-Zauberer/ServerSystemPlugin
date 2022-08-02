@@ -19,7 +19,6 @@ public class ServerWarp extends ServerComponent {
 		this.location = location;
 		material = Material.ENDER_PEARL;
 		global = true;
-		permission = "";
 	}
 	
 	@Override
