@@ -56,7 +56,6 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	}
 	
 	private static void show(Player player) {
-		TeamUtil.addGroupToPlayer(player);
 		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
 			everyPlayer.showPlayer(player);
 			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(player, player.getName() + " joined the game!");
@@ -65,6 +64,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 			player.hidePlayer(vanishedPlayer);
 		}
 		vanishedPlayers.remove(player);
+		TeamUtil.addGroupToPlayer(player);
 	}
 	
 	public static void getVisualPlayers(Player player) {
