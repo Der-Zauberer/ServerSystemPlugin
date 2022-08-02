@@ -74,7 +74,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 				} else if (args[1].equals("permission")) {
 					commands.addAll(Arrays.asList("add", "remove", "list"));
 				}
-			} else if (ChatUtil.getCommandLayer(4, args) && args[1].equals("permissions")) {
+			} else if (ChatUtil.getCommandLayer(4, args) && args[1].equals("permission")) {
 				final String player = args[0];
 				if (args[2].equals("add")) {
 					commands.addAll(PermissionUtil.getBukkitPermissions());

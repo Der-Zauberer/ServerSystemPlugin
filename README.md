@@ -32,7 +32,7 @@ Java Class Version: *52 (Java8)*<br>
 |group|`/group [<group>] [<action>] [<option>] [value]`|`serversystem.command.group`|Edit permission groups|
 |inventory|`/inventory [<player>]`|`serversystem.command.inventory`|Open the inventory of a player|
 |lobby|`/lobby`|`serversystem.command.lobby`|Teleport player to lobby|
-|permission|`[<player>] [<option>] [value]`|`serversystem.command.permission`|Set the permissions and group of a player|
+|permission|`/permission [<player>] [<option>] [value]`|`serversystem.command.permission`|Set the permissions and group of a player|
 |permissionreload|`/permissionreload`|`serversystem.command.permission`|Reloads all permissions for all players|
 |speed|`/speed`|`serversystem.command.speed`|Toggle players flyspeed|
 |vanish|`/vanish [<player>]`|`serversystem.command.vanish`|Allow the player to vanish|
