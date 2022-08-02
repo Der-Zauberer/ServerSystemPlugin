@@ -71,7 +71,7 @@ public class PermissionCommand implements CommandExecutor, TabCompleter {
 				if (args[1].equals("group")) {
 					commands.addAll(ChatUtil.getStringList(ServerSystem.getGroups()));
 					commands.add("player");
-				} else if (args[1].equals("permissions")) {
+				} else if (args[1].equals("permission")) {
 					commands.addAll(Arrays.asList("add", "remove", "list"));
 				}
 			} else if (ChatUtil.getCommandLayer(4, args) && args[1].equals("permissions")) {
