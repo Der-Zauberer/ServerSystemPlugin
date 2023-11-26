@@ -46,7 +46,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	private static void hide(Player player) {
 		TeamUtil.addPlayerToTeam(TeamUtil.TEAMVANISH, player.getName());
 		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
-			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(player, player.getName() + " left the game!");
+			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(everyPlayer, player.getName() + " left the game!");
 			if (isVanished(everyPlayer)) {
 				player.showPlayer(ServerSystem.getInstance(), everyPlayer);
 				everyPlayer.showPlayer(ServerSystem.getInstance(), player);
@@ -60,7 +60,7 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	private static void show(Player player) {
 		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
 			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
-			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(player, player.getName() + " joined the game!");
+			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(everyPlayer, player.getName() + " joined the game!");
 		}
 		for (Player vanishedPlayer : vanishedPlayers) {
 			player.hidePlayer(ServerSystem.getInstance(), vanishedPlayer);
