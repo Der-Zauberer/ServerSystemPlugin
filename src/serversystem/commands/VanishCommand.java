@@ -8,8 +8,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+
 import serversystem.config.Config;
 import serversystem.config.Config.ConfigOption;
+import serversystem.main.ServerSystem;
 import serversystem.utilities.ChatUtil;
 import serversystem.utilities.TeamUtil;
 
@@ -44,12 +46,12 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	private static void hide(Player player) {
 		TeamUtil.addPlayerToTeam(TeamUtil.TEAMVANISH, player.getName());
 		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
-			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(player, player.getName() + " left the game!");
+			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(everyPlayer, player.getName() + " left the game!");
 			if (isVanished(everyPlayer)) {
-				player.showPlayer(everyPlayer);
-				everyPlayer.showPlayer(player);
+				player.showPlayer(ServerSystem.getInstance(), everyPlayer);
+				everyPlayer.showPlayer(ServerSystem.getInstance(), player);
 			} else {
-				everyPlayer.hidePlayer(player);
+				everyPlayer.hidePlayer(ServerSystem.getInstance(), player);
 			}	
 		}
 		vanishedPlayers.add(player);	
@@ -57,11 +59,11 @@ public class VanishCommand implements CommandExecutor, TabCompleter {
 	
 	private static void show(Player player) {
 		for (Player everyPlayer : ChatUtil.getVisiblePlayers(player, false)) {
-			everyPlayer.showPlayer(player);
-			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(player, player.getName() + " joined the game!");
+			everyPlayer.showPlayer(ServerSystem.getInstance(), player);
+			if (Config.getConfigOption(ConfigOption.JOIN_MESSAGE)) ChatUtil.sendMessage(everyPlayer, player.getName() + " joined the game!");
 		}
 		for (Player vanishedPlayer : vanishedPlayers) {
-			player.hidePlayer(vanishedPlayer);
+			player.hidePlayer(ServerSystem.getInstance(), vanishedPlayer);
 		}
 		vanishedPlayers.remove(player);
 		TeamUtil.addGroupToPlayer(player);

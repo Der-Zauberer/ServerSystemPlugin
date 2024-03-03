@@ -46,7 +46,7 @@ commands:
     usage: /<command>
   speed:
     description: Toggle players flyspeed
-    usage: /<command> 
+    usage: /<command> [<speed>] [<player>]
     permission: serversystem.command.speed
   vanish:
     description: Allow the player to vanish

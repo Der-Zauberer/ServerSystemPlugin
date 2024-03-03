@@ -34,7 +34,7 @@ Java Class Version: *52 (Java8)*<br>
 |lobby|`/lobby`|`serversystem.command.lobby`|Teleport player to lobby|
 |permission|`/permission [<player>] [<option>] [value]`|`serversystem.command.permission`|Set the permissions and group of a player|
 |permissionreload|`/permissionreload`|`serversystem.command.permission`|Reloads all permissions for all players|
-|speed|`/speed`|`serversystem.command.speed`|Toggle players flyspeed|
+|speed|`/speed [<speed>] [<player>]`|`serversystem.command.speed`|Toggle players flyspeed|
 |vanish|`/vanish [<player>]`|`serversystem.command.vanish`|Allow the player to vanish|
 |warp|`[/warp <warp>] [<action>] [<option>] [value]`|`serversystem.command.warp` `serversystem.command.warp.edit`|Teleport player to a warp or edit a warp|
 |world|`/world [<world>] [<action>] [<option>] [value]`|`serversystem.command.world` `serversystem.command.world.edit`|Teleport player to an other world or edit an other world|
